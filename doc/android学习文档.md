@@ -1,0 +1,1 @@
+﻿#Android 学习文档#Android 用intent进行activity的转化 类似vue的route#Android 七个声明周期## 创建新的activity 调用oncreate onstart onresumn## 用intent调用另一个 acitivity 会对第一个activity 按照遮盖度决定调用onstop 或者 ondestory
