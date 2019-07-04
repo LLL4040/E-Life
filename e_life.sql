@@ -3,6 +3,21 @@ create database e_life;
 use e_life;
 
 /* ============================================================== */
+/* Table: community                                                                                                                   */
+/* ============================================================== */
+
+CREATE TABLE community (
+    `id` BIGINT AUTO_INCREMENT,
+    `communityname` VARCHAR(50) NOT NULL,
+    `communityinfo` VARCHAR(1024) NOT NULL,
+    `manager` VARCHAR(50) NOT NULL,
+    `password` VARCHAR(50) NOT NULL,
+    `phone` VARCHAR(20) NOT NULL,
+    `email` varchar(50) NOT NULL,
+    PRIMARY KEY (`id`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+/* ============================================================== */
 /* Table: user                                                                                                                            */
 /* ============================================================== */
 
@@ -13,7 +28,11 @@ CREATE TABLE user
   `phone` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
   `role` smallint NOT NULL,
-  PRIMARY KEY(`username`)
+  `community_id` bigint,
+  PRIMARY KEY(`username`),
+  FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
@@ -46,7 +65,11 @@ CREATE TABLE manager
   `phone` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
   `role` smallint NOT NULL,
-  PRIMARY KEY(`username`)
+  `community_id` bigint,
+  PRIMARY KEY(`username`),
+  FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
