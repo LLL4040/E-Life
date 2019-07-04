@@ -13,31 +13,46 @@ import java.sql.Timestamp;
 
 public class PostComments {
     @Id
-    private int cid;
+
     private int pid;
-    private int commenterId;
-    private Timestamp commentsTime;
+    /**总评论数*/
+    private static int count=1;
+    private String commenterName;
+    private String commentsTime;
     private String postComment;
 
     /**楼数*/
     private int location;
 
-    private PostComments() {super();}
+    public PostComments() {super();}
 
-
-    public void setCid(int cid) {
-        this.cid = cid;
+    public PostComments(int pid,String commenterName,String commentsTime,String postComment){
+        this.pid=pid;
+        this.commenterName=commenterName;
+        this.commentsTime=commentsTime;
+        this.postComment=postComment;
+        this.location=count;
+        count++;
     }
+
+    public void setLocation(int location) {
+        this.location = location;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
 
     public void setpid(int pid) {
         this.pid = pid;
     }
 
-    public void setCommenter(int commenter) {
-        this.commenterId = commenter;
+    public void setCommenterName(String commenter) {
+        this.commenterName = commenter;
     }
 
-    public void setCommentsTime(Timestamp commentsTime) {
+    public void setCommentsTime(String commentsTime) {
         this.commentsTime = commentsTime;
     }
 
@@ -45,19 +60,19 @@ public class PostComments {
         this.postComment = postComment;
     }
 
-    public int getCid() {
-        return cid;
+    public int getCount() {
+        return count;
     }
 
     public int getPid() {
         return pid;
     }
 
-    public int getCommenter() {
-        return commenterId;
+    public  String getCommenterName() {
+        return commenterName;
     }
 
-    public Timestamp getCommentsTime() {
+    public String getCommentsTime() {
         return commentsTime;
     }
 

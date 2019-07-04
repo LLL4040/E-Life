@@ -1,7 +1,13 @@
 package estateforum.estateforum.forumserviceimpl;
 
+import estateforum.estateforum.formentity.PostComments;
+import estateforum.estateforum.forumdao.PostCommentsDao;
 import estateforum.estateforum.forumservice.PostCommentsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 /**
  * postComments class
  *
@@ -10,4 +16,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostCommentsServiceImpl implements PostCommentsService {
+    @Autowired
+    private PostCommentsDao postCommentsDao;
+    @Override
+    public List<PostComments> findAllByPid(int Pid){
+        return  postCommentsDao.findAllByPid(Pid);
+    }
+    @Override
+    public void saveComments(PostComments postComments){
+        postCommentsDao.saveComments(postComments);
+    }
 }
