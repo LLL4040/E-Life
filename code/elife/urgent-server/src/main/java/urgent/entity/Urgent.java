@@ -1,6 +1,4 @@
-package inform.entity;
-
-import io.swagger.models.auth.In;
+package urgent.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,60 +8,79 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "inform")
+@Table(name = "urgent")
 /**
- * Inform class
+ * Urgent class
  *
  * @author wyx
  * @date 2019.07.04
  */
-public class Inform implements Serializable {
+public class Urgent implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "id")
     private int id;
     @Column(name = "time")
     private Date time;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "managername")
+    private String managerName;
     @Column(name = "content")
     private String content;
+    @Column(name = "status")
+    private int status;
 
     public int getId() {
+
         return id;
     }
     public void setId(int id) {
+
         this.id = id;
     }
     public Date getTime() {
+
         return time;
     }
     public void setTime(Date time) {
+
         this.time = time;
     }
 
-    public String getName() {
-        return name;
+    public String getManagerName() {
+        return managerName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setManagerName(String managerName) {
+
+        this.managerName = managerName;
     }
 
     public String getContent() {
+
         return content;
     }
 
     public void setContent(String content) {
+
         this.content = content;
     }
-    public Inform(int id, Date time, String name, String content) {
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getStatus() {
+
+        return status;
+    }
+
+    public Urgent(int id, String managerName, String content, int status) {
         this.id = id;
-        this.time = time;
-        this.name = name;
+        this.managerName = managerName;
         this.content = content;
+        this.status = status;
     }
-    public Inform() {
+    public Urgent() {
         super();
     }
 }

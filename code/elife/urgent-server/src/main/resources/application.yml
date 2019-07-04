@@ -1,10 +1,10 @@
 # application name
 spring:
   application:
-    name: inform-server
+    name: urgent-server
   # Mysql jpa config
   datasource:
-    url: jdbc:Mysql://localhost:3306/second_hand?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:Mysql://localhost:3306/e_life?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -18,7 +18,7 @@ spring:
 
 # server monitor port
 server:
-  port: 9094
+  port: 9194
 
 # eureka server cluster
 eureka:
