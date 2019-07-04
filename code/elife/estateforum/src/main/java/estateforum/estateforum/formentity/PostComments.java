@@ -12,12 +12,12 @@ import java.sql.Timestamp;
  * @date 2019/07/04*/
 
 public class PostComments {
-    @Id
 
-    private int pid;
-    /**总评论数*/
-    private static int count=1;
+    @Id
     private String commenterName;
+    private int pid;
+
+
     private String commentsTime;
     private String postComment;
 
@@ -26,13 +26,13 @@ public class PostComments {
 
     public PostComments() {super();}
 
-    public PostComments(int pid,String commenterName,String commentsTime,String postComment){
+    public PostComments(int pid,String commenterName,String commentsTime,String postComment,int location){
         this.pid=pid;
         this.commenterName=commenterName;
         this.commentsTime=commentsTime;
         this.postComment=postComment;
-        this.location=count;
-        count++;
+        this.location=location;
+
     }
 
     public void setLocation(int location) {
@@ -60,9 +60,7 @@ public class PostComments {
         this.postComment = postComment;
     }
 
-    public int getCount() {
-        return count;
-    }
+
 
     public int getPid() {
         return pid;

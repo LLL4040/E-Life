@@ -4,7 +4,7 @@ spring:
     name: estateforum
   # Mysql jpa config
   datasource:
-    url: jdbc:Mysql://localhost:3306/elifedata?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:Mysql://localhost:3306/elifedata?
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,13 +15,21 @@ spring:
         ddl-auto: update
         format_sql: true
         enable_lazy_load_no_trans: true
+  data:
+    mongodb:
+      host: localhost
+      post: 27017
+      database: post
+  main:
+    allow-bean-definition-overriding: true
+
 
 # server monitor port
 server:
   port: 9094
 
 # eureka server cluster
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:9000/eureka/
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:9000/eureka/

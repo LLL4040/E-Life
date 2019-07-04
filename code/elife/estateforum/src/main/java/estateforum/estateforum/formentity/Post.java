@@ -10,27 +10,29 @@ import java.sql.Timestamp;
  *
  * @author 符永锐
  * @date 2019/07/04*/
+
 public class Post {
     @Id
     private int pid;
+    private String posterName;
     private String title;
     private String postContent;
     private String postTime;
-    private String posterName;
+
     public Post(){
         super();
     }
-    public Post(String title,String postContent,String postTime,String posterName){
+    public Post(String title,String postContent,String postTime,String posterName,int pid){
         this.title=title;
         this.postContent=postContent;
         this.postTime=postTime;
         this.posterName=posterName;
+        this.pid=pid;
+
 
     }
 
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
+
 
     public void setTitle(String title) {
         this.title = title;
