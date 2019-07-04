@@ -82,8 +82,8 @@ public class Identify implements Serializable {
         String domain = "dysmsapi.aliyuncs.com";
 
         /* 阿里云access key */
-        String accessKeyId = "LTAI9hske46Yv2pI";
-        String accessKeySecret = "vfR2qZIpewPxwyRo2nSXUNUvc8IxTc";
+        String accessKeyId = "";
+        String accessKeySecret = "";
 
         /* 超时时间 */
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
