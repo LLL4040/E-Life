@@ -4,7 +4,7 @@ spring:
     name: estateforum
   # Mysql jpa config
   datasource:
-    url: jdbc:Mysql://localhost:3306/e_life?
+    url: jdbc:Mysql://localhost:3306/elifedata?
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,11 +15,6 @@ spring:
         ddl-auto: update
         format_sql: true
         enable_lazy_load_no_trans: true
-  data:
-    mongodb:
-      host: localhost
-      post: 27017
-      database: post
   main:
     allow-bean-definition-overriding: true
 
