@@ -8,7 +8,10 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>news-server</module>
+    </modules>
     <modelVersion>4.0.0</modelVersion>
     <name>eureka-server</name>
     <artifactId>eureka-server</artifactId>
