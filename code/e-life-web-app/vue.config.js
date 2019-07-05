@@ -1,15 +1,24 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   // 基本路径
-  baseUrl: './',
+  publicPath: '/',
   // 输出文件目录
   outputDir: 'static',
   // eslint-loader 是否在保存的时候检查
   lintOnSave: true,
   // webpack配置
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-  chainWebpack: () => {},
+  chainWebpack: (config) => {
+    config.plugin('provide').use(webpack.ProvidePlugin, [{
+      $: 'jquery',
+      jquery: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default'] // 在jquery的配置下添加多这一行配置
+    }])
+  },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       // 为生产环境修改配置...
@@ -24,6 +33,11 @@ module.exports = {
         alias: {
           '@': path.resolve(__dirname, './src'),
           '@c': path.resolve(__dirname, './src/components')
+          // 'jquery-1.9.1': path.resolve(__dirname, './src/assets/js/jquery-1.9.1.min.js'),
+          // 'slick': path.resolve(__dirname, './src/assets/slick/slick.min.js'),
+          // 'jquery.magnific-popup': path.resolve(__dirname, './src/assets/magnific-popup/jquery.magnific-popup.min.js'),
+          // 'jquery.singlePageNav': path.resolve(__dirname, './src/assets/js/jquery.singlePageNav.min.js'),
+          // 'bootstrap': path.resolve(__dirname, './src/assets/js/bootstrap.min.js')
         }
       }
     })
@@ -49,19 +63,24 @@ module.exports = {
   // see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   pwa: {},
   // webpack-dev-server 相关配置
-  // devServer: {
-  //   disableHostCheck: true,
-  //   proxy: {
-  //     '': {
-  //       target: 'http://localhost:9010/',
-  //       changeOrigin: true,
-  //       ws: true,
-  //       pathRewrite: {
-  //         '^/': ''
-  //       }
-  //     }
-  //   }
-  // },
+  devServer: {
+    disableHostCheck: true,
+    host: '0.0.0.0',
+    port: 8081,
+    https: false,
+    open: false,
+    hotOnly: false
+    // proxy: {
+    //   '': {
+    //     target: 'http://0.0.0.0:8081/',
+    //     changeOrigin: true,
+    //     ws: true,
+    //     pathRewrite: {
+    //       '^/': ''
+    //     }
+    //   }
+    // }
+  },
   // 第三方插件配置
   pluginOptions: {
     // ...
