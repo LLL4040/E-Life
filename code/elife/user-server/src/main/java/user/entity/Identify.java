@@ -6,7 +6,6 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import com.netflix.client.ClientException;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -76,14 +75,14 @@ public class Identify implements Serializable {
         return super.toString();
     }
 
-    public boolean sendMessage() throws ClientException, com.aliyuncs.exceptions.ClientException {
+    public boolean sendMessage() throws com.aliyuncs.exceptions.ClientException {
         /* 云通信API产品名和域名 */
         String product = "Dysmsapi";
         String domain = "dysmsapi.aliyuncs.com";
 
         /* 阿里云access key */
-        String accessKeyId = "";
-        String accessKeySecret = "";
+        String accessKeyId = "LTAI9hske46Yv2pI";
+        String accessKeySecret = "vfR2qZIpewPxwyRo2nSXUNUvc8IxTc";
 
         /* 超时时间 */
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");

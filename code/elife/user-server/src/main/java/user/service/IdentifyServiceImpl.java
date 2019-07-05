@@ -7,6 +7,7 @@ import user.entity.Identify;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * @author ztHou
@@ -14,6 +15,7 @@ import java.util.Date;
 @Service
 public class IdentifyServiceImpl implements IdentifyService{
     private final IdentifyDao identifyDao;
+    private static Pattern pattern = Pattern.compile("^[1]\\d{10}$");
 
     public IdentifyServiceImpl(IdentifyDao identifyDao) {
         this.identifyDao = identifyDao;
@@ -21,21 +23,23 @@ public class IdentifyServiceImpl implements IdentifyService{
 
     @Override
     public Boolean sendIdentifyCode(String phone){
-        Integer number = (int)((Math.random()*9+1)*100000);
+        if(!pattern.matcher(phone).matches()){
+            return false;
+        }
+        int number = (int)((Math.random()*9+1)*100000);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateTime = df.format(new Date());
         try{
             Identify identify;
             try{
                 identify = identifyDao.findByPhone(phone);
-                identify.setCode(number.toString());
+                identify.setCode(Integer.toString(number));
                 identify.setTime(dateTime);
             }catch (Exception ex){
-                identify = new Identify(phone, number.toString(), dateTime);
+                identify = new Identify(phone, Integer.toString(number), dateTime);
             }
             identifyDao.save(identify);
-            identify.sendMessage();
-            return true;
+            return identify.sendMessage();
         }catch (Exception e){
             return false;
         }
