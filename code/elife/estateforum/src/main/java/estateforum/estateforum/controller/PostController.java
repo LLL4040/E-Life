@@ -37,9 +37,9 @@ public class PostController {
         postService.save(post);
         return "发表帖子成功";
     }
-    @GetMapping(path = "/allPost")
+    @GetMapping(path = "/findPost")
     @ResponseBody
-    public List<Post> allPost(@RequestParam int communityId){
+    public List<Post> findPost(@RequestParam int communityId){
         return postService.findAllByCommunityId(communityId);
     }
 
