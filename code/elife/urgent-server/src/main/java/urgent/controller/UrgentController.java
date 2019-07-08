@@ -21,12 +21,17 @@ public class UrgentController {
     private UrgentService urgentService;
 
     @RequestMapping("/saveUrgent")
-    public void save(int id, String managerName, String content, int status, int communityId){
+    public void saveUrgent(int id, String managerName, String content, int status, int communityId){
         urgentService.save(id, managerName, content, status, communityId);
     }
 
     @RequestMapping("getUrgent")
-    public JSONObject findOne(int id) {
+    public JSONObject findUrgent(int id) {
         return urgentService.findOne(id);
+    }
+
+    @RequestMapping("deleteUrgent")
+    public boolean deleteUrgent(int id){
+        return urgentService.deleteOne(id);
     }
 }

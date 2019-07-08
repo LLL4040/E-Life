@@ -26,4 +26,12 @@ public interface UrgentDao {
      * @return
      */
     Urgent findOne(int id);
+
+    /**
+     * delete one urgent by ID and return it
+     *
+     * @param id
+     * @return none
+     */
+    void deleteOne(int id);
 }

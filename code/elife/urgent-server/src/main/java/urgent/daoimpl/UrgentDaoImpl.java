@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * @author wyx
  * @date 2019.07.04
  */
-public class UrgentDaoImpl implements UrgentDao {
+public class UrgentDaoImpl implements UrgentDao{
     @Autowired
     private UrgentRepository urgentRepository;
 
@@ -27,6 +27,11 @@ public class UrgentDaoImpl implements UrgentDao {
     public Urgent findOne(int id){
 
         return urgentRepository.getOne(id);
+    }
+    @Override
+    public void deleteOne(int id){
+        urgentRepository.deleteById(id);
+
     }
 
 }

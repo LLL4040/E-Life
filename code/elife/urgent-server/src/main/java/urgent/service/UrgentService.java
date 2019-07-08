@@ -29,4 +29,12 @@ public interface UrgentService {
      */
     JSONObject findOne(int id);
 
+    /**
+     * delete Urgent by Id
+     *
+     * @param id
+     * @return boolean delete success or not
+     */
+    boolean deleteOne(int id);
+
 }
