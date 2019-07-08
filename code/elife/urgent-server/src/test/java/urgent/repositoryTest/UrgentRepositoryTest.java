@@ -19,13 +19,12 @@ public class UrgentRepositoryTest {
     @Test
     @Transactional
     public void saveUrgenttest(){
-        urgentRepository.saveUrgent(55555,"1","test",1,1);
+        urgentRepository.saveUrgent(55555,"1","test",0,1);
         Urgent urgentResult=this.urgentRepository.getOne(55555);
         Assert.assertEquals("urgent save fails", "1",urgentResult.getManagerName());
         Assert.assertEquals("urgent save fails", "test",urgentResult.getContent());
         Assert.assertEquals("urgent save fails", 1,urgentResult.getStatus());
         Assert.assertEquals("urgent save fails", 1,urgentResult.getCommunityId());
-
 
     }
 }

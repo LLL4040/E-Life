@@ -27,4 +27,8 @@ public interface UrgentRepository extends JpaRepository<Urgent, Integer> {
     @Transactional(rollbackFor = Exception.class)
     @Query(value=" INSERT INTO urgent(id,managername,content,status,community_id) VALUES (?1,?2,?3,?4,?5) ",nativeQuery = true)
     void saveUrgent(int id, String managerName, String content, int status, int communityId);
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value=" call cStatus(?1) ",nativeQuery = true)
+    void changeStatus(int communityId);
 }

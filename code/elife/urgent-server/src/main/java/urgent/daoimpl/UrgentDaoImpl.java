@@ -19,8 +19,9 @@ public class UrgentDaoImpl implements UrgentDao{
 
     @Override
     public void save(int id, String managerName, String content, int status, int communityId){
-
+        urgentRepository.changeStatus(communityId);
         urgentRepository.saveUrgent(id,managerName,content,status,communityId);
+
     }
 
     @Override
