@@ -28,6 +28,8 @@ public class Urgent implements Serializable {
     private String content;
     @Column(name = "status")
     private int status;
+    @Column(name = "community_id")
+    private int communityId;
 
     public int getId() {
 
@@ -54,18 +56,19 @@ public class Urgent implements Serializable {
 
         this.managerName = managerName;
     }
+    public void setContent(String content) {
+
+        this.content = content;
+    }
 
     public String getContent() {
 
         return content;
     }
 
-    public void setContent(String content) {
-
-        this.content = content;
-    }
 
     public void setStatus(int status) {
+
         this.status = status;
     }
 
@@ -74,11 +77,20 @@ public class Urgent implements Serializable {
         return status;
     }
 
-    public Urgent(int id, String managerName, String content, int status) {
+    public void setCommunityId(int communityId) {
+        this.communityId = communityId;
+    }
+
+    public int getCommunityId() {
+        return communityId;
+    }
+
+    public Urgent(int id, String managerName, String content, int status, int communityId) {
         this.id = id;
         this.managerName = managerName;
         this.content = content;
         this.status = status;
+        this.communityId = communityId;
     }
     public Urgent() {
         super();

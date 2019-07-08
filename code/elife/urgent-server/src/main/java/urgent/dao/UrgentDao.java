@@ -17,7 +17,7 @@ public interface UrgentDao {
      * @param managerName
      * @param status
      */
-    void save(int id, String content, String managerName, int status);
+    void save(int id, String content, String managerName, int status, int communityId);
 
     /**
      * find special Urgent with Id

@@ -18,9 +18,9 @@ public class UrgentDaoImpl implements UrgentDao {
     private UrgentRepository urgentRepository;
 
     @Override
-    public void save(int id, String managerName, String content, int status){
+    public void save(int id, String managerName, String content, int status, int communityId){
 
-        urgentRepository.saveUrgent(id,managerName,content,status);
+        urgentRepository.saveUrgent(id,managerName,content,status,communityId);
     }
 
     @Override

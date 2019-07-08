@@ -19,7 +19,7 @@ public interface UrgentService {
      * @param content
      * @param status
      */
-    void save(int id, String managerName, String content, int status);
+    void save(int id, String managerName, String content, int status, int communityId);
 
     /**
      * find special Urgent with id
