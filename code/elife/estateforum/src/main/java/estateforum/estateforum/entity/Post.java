@@ -1,7 +1,12 @@
 package estateforum.estateforum.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Arrays;
 
 @Entity
 /**
@@ -9,25 +14,25 @@ import javax.persistence.Id;
  *
  * @author 符永锐
  * @date 2019/07/04*/
-
+@Document(collection = "post")
 public class Post {
+
+
     @Id
-    private int pid;
+    private String id;
     private String posterName;
     private String title;
     private String postContent;
     private String postTime;
     private int communityId;
 
-    public Post(){
-        super();
-    }
-    public Post(String title,String postContent,String postTime,String posterName,int pid,int communityId){
+
+    public Post(String title,String postContent,String postTime,String posterName,int communityId){
         this.title=title;
         this.postContent=postContent;
         this.postTime=postTime;
         this.posterName=posterName;
-        this.pid=pid;
+
         this.communityId=communityId;
 
 
@@ -49,16 +54,20 @@ public class Post {
         this.postContent = postContent;
     }
 
-    public void setPosterName(String posterId) {
-        this.posterName = posterId;
+    public void setPosterName(String posterName) {
+        this.posterName = posterName;
     }
 
     public void setPostTime(String postTime) {
         this.postTime = postTime;
     }
 
-    public int getPid() {
-        return pid;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -76,4 +85,7 @@ public class Post {
     public String getPostTime() {
         return postTime;
     }
+
+
+
 }

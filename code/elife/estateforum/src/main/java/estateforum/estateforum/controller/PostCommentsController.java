@@ -25,13 +25,13 @@ public class PostCommentsController {
 
     @GetMapping(path = "/findComments")
     @ResponseBody
-    public List<PostComments> findComment(@RequestParam int pid){
+    public List<PostComments> findComment(@RequestParam String pid){
         return postCommentsService.findAllByPid(pid);
     }
     @PostMapping(path = "/addComments")
     @ResponseBody
-    public String addComments(@RequestParam int pid,@RequestParam  String commenterName,@RequestParam String postComment){
-        if(postComment.equals("")||pid<0||commenterName.equals("")){
+    public String addComments(@RequestParam String pid,@RequestParam  String commenterName,@RequestParam String postComment){
+        if(postComment.equals("")||pid.equals("")||commenterName.equals("")){
             return "评论内容不能为空";
         }
         List<PostComments> p1=postCommentsService.findAllByPid(pid);
@@ -41,5 +41,11 @@ public class PostCommentsController {
         PostComments postComments = new PostComments(pid,commenterName,commentsTime,postComment,location);
         postCommentsService.saveComments(postComments);
         return "发表评论成功";
+    }
+    @GetMapping(path = "/deleteComments")
+    @ResponseBody
+    public String deleteComments(@RequestParam String pid,@RequestParam int location){
+        postCommentsService.deleteComments(pid,location);
+        return "删除评论成功";
     }
 }

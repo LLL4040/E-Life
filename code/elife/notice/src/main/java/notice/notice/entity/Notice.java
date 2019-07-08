@@ -21,17 +21,17 @@ public class Notice {
     @Column(name = "content")
     private String noticeContent;
     @Column(name = "managername")
-    private String managername;
+    private String managerName;
     @Column(name = "communityId")
     private int communityId;
     Notice(){
         super();
     }
-    Notice(int noticeId,String noticeTime,String noticeContent,String managername,int communityId){
-        this.noticeId=noticeId;
+    public Notice(String noticeTime,String noticeContent,String managerName,int communityId){
+
         this.noticeTime=noticeTime;
         this.noticeContent=noticeContent;
-        this.managername=managername;
+        this.managerName=managerName;
         this.communityId=communityId;
 
     }
@@ -40,8 +40,8 @@ public class Notice {
         this.communityId = communityId;
     }
 
-    public void setManagername(String managername) {
-        this.managername = managername;
+    public void setManagerame(String managername) {
+        this.managerName = managerName;
     }
 
     public void setNoticeContent(String noticeContent) {
@@ -64,8 +64,8 @@ public class Notice {
         return noticeId;
     }
 
-    public String getManagername() {
-        return managername;
+    public String getManagerName() {
+        return managerName;
     }
 
     public String getNoticeContent() {

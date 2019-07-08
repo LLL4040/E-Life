@@ -19,11 +19,15 @@ public class PostCommentsServiceImpl implements PostCommentsService {
     @Autowired
     private PostCommentsDao postCommentsDao;
     @Override
-    public List<PostComments> findAllByPid(int Pid){
-        return  postCommentsDao.findAllByPid(Pid);
+    public List<PostComments> findAllByPid(String pid){
+        return  postCommentsDao.findAllByPid(pid);
     }
     @Override
     public void saveComments(PostComments postComments){
         postCommentsDao.saveComments(postComments);
     }
+    @Override
+    public void deleteComments(String pid, int location){
+        postCommentsDao.deleteComments(pid,location);
+    };
 }

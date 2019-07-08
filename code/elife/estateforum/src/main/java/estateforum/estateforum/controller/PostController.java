@@ -31,16 +31,19 @@ public class PostController {
         }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String postTime = df.format(new Date());
-        List<Post> p1=postService.findAllByCommunityId(communityId);
-        int pid=p1.size();
-        Post post=new Post(title,postContent,postTime,posterName,pid,communityId);
-        postService.save(post);
-        return "发表帖子成功";
+        Post post=new Post(title,postContent,postTime,posterName,communityId);
+        return postService.save(post);
+        //return "发表帖子成功";
     }
     @GetMapping(path = "/findPost")
     @ResponseBody
     public List<Post> findPost(@RequestParam int communityId){
         return postService.findAllByCommunityId(communityId);
+    }
+    @GetMapping(path = "/deletePost")
+    @ResponseBody String deletePost(@RequestParam String id){
+        postService.deletePost(id);
+         return "删除成功";
     }
 
 }

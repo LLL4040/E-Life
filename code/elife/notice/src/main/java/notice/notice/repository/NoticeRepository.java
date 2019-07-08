@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author 符永锐
  * @date 2019/07/05*/
 public interface NoticeRepository extends JpaRepository<Notice,Long> {
+
 }

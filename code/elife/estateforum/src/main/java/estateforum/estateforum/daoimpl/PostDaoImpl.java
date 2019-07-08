@@ -20,12 +20,20 @@ public class PostDaoImpl implements PostDao {
     @Autowired
     private PostRepository postRepository;
     @Override
-    public void save(Post post){
-        postRepository.save(post);
+    public String save(Post post){
+        return  postRepository.save(post).getId();
     }
 
     @Override
     public List<Post> findAllByCommunityId(int communityId){
         return postRepository.findAllByCommunityId(communityId);
+    }
+    @Override
+    public void deletePost(String id){
+        postRepository.deleteById(id);
+    };
+    @Override
+    public Post findPost(String id){
+       return postRepository.getById(id);
     }
 }

@@ -4,6 +4,9 @@ import estateforum.estateforum.entity.Post;
 import estateforum.estateforum.dao.PostDao;
 import estateforum.estateforum.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +24,26 @@ public class PostServiceImpl implements PostService {
     private PostDao postDao;
 
     @Override
-    public void save(Post post) {
-        postDao.save(post);
+    public String  save(Post post) {
+        return postDao.save(post);
     }
 
     @Override
     public List<Post> findAllByCommunityId(int communityId) {
         return postDao.findAllByCommunityId(communityId);
+    }
+    @Override
+    public Post findPost(String id){
+        return postDao.findPost(id);
+    }
+    @Override
+    public void deletePost(String pid){
+          postDao.deletePost(pid);
+    };
+    @Override
+    public List<Post>findPageablePost(int communityId,Integer page,Integer size){
+
+        return postDao.findAllByCommunityId(communityId);
+
     }
 }

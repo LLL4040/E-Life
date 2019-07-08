@@ -1,7 +1,10 @@
 package estateforum.estateforum.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Arrays;
 
 @Entity
 /**
@@ -9,12 +12,12 @@ import javax.persistence.Id;
  *
  * @author 符永锐
  * @date 2019/07/04*/
-
+@Document(collection = "postComments")
 public class PostComments {
 
     @Id
     private String commenterName;
-    private int pid;
+    private String pid;
 
 
     private String commentsTime;
@@ -25,7 +28,7 @@ public class PostComments {
 
     public PostComments() {super();}
 
-    public PostComments(int pid,String commenterName,String commentsTime,String postComment,int location){
+    public PostComments(String pid,String commenterName,String commentsTime,String postComment,int location){
         this.pid=pid;
         this.commenterName=commenterName;
         this.commentsTime=commentsTime;
@@ -43,7 +46,7 @@ public class PostComments {
     }
 
 
-    public void setpid(int pid) {
+    public void setPid(String pid) {
         this.pid = pid;
     }
 
@@ -61,7 +64,7 @@ public class PostComments {
 
 
 
-    public int getPid() {
+    public String getPid() {
         return pid;
     }
 
@@ -75,5 +78,12 @@ public class PostComments {
 
     public String getpostComment() {
         return postComment;
+    }
+    @Override
+    public int hashCode(){
+        int result = 0;
+        result = 31 * result + (commenterName != null ? commenterName.hashCode() : 0);
+        result = 31 * result + (commentsTime != null ? commentsTime.hashCode() : 0);
+        return result;
     }
 }

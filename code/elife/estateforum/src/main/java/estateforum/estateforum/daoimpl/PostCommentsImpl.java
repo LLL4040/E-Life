@@ -20,11 +20,15 @@ public class PostCommentsImpl implements PostCommentsDao {
     @Autowired
     private PostCommentsRepository postCommentsRepository;
     @Override
-    public List<PostComments> findAllByPid(int Pid){
-        return  postCommentsRepository.findAllByPid(Pid);
+    public List<PostComments> findAllByPid(String pid){
+        return  postCommentsRepository.findAllByPid(pid);
     }
     @Override
     public void saveComments(PostComments postComments){
         postCommentsRepository.save(postComments);
+    }
+    @Override
+    public void deleteComments(String pid,int location){
+        postCommentsRepository.deleteByPidAndLocation(pid,location);
     }
 }
