@@ -3,6 +3,8 @@ package user.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import user.entity.User;
 
+import javax.transaction.Transactional;
+
 /**
  * @author ztHou
  */
@@ -27,5 +29,19 @@ public interface UserRepository extends JpaRepository<User, String> {
      * @return user found
      */
     User findByUsername(String username);
+
+    /**
+     * find user by phone
+     * @param phone phone
+     * @return user found
+     */
+    User findByPhone(String phone);
+
+    /**
+     * delete data from database by username
+     * @param username username
+     */
+    @Transactional(rollbackOn = Exception.class)
+    void deleteByUsername(String username);
 
 }

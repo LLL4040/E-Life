@@ -30,10 +30,10 @@ public class User implements Serializable {
     private Integer role;
 
     @Column(name = "community_id")
-    private String communityId;
+    private Integer communityId;
 
     public User(){}
-    public User(String username, String password, String phone, String email, Integer role, String communityId){
+    public User(String username, String password, String phone, String email, Integer role, Integer communityId){
         this.username = username;
         this.password = password;
         this.phone = phone;
@@ -82,11 +82,11 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public String getCommunityId() {
+    public Integer getCommunityId() {
         return communityId;
     }
 
-    public void setCommunityId(String communityId) {
+    public void setCommunityId(Integer communityId) {
         this.communityId = communityId;
     }
 
