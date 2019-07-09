@@ -10,7 +10,11 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>eureka-server</module>
+<<<<<<< HEAD
         <module>inform-server</module>
+=======
+        <module>user-server</module>
+>>>>>>> e824eddf9b5ba2d08baaf603abd15de294f275bf
     </modules>
 
     <properties>

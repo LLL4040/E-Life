@@ -1,176 +1,261 @@
-/*==============================================================*/
-/* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/7/2 16:19:36                            */
-/*==============================================================*/
+DROP DATABASE IF EXISTS e_life;
+create database e_life;
+use e_life;
 
+/* ============================================================== */
+/* Table: community                                                                                                                   */
+/* ============================================================== */
 
-drop table if exists User;
+CREATE TABLE community (
+    `id` BIGINT AUTO_INCREMENT,
+    `communityname` VARCHAR(50) NOT NULL,
+    `communityinfo` VARCHAR(1024) NOT NULL,
+    `manager` VARCHAR(50) NOT NULL,
+    `password` VARCHAR(50) NOT NULL,
+    `phone` VARCHAR(20) NOT NULL,
+    `email` varchar(50) NOT NULL,
+    PRIMARY KEY (`id`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
-drop table if exists antivity;
+/* ============================================================== */
+/* Table: user                                                                                                                            */
+/* ============================================================== */
 
-drop table if exists billrecord;
-
-drop table if exists disgoods;
-
-drop table if exists estate;
-
-drop table if exists latestnew;
-
-drop table if exists manager;
-
-drop table if exists merchant;
-
-drop table if exists parcel;
-
-drop table if exists popnotice;
-
-drop table if exists resident;
-
-drop table if exists store;
-
-drop table if exists urgmessage;
-
-/*==============================================================*/
-/* Table: User                                                  */
-/*==============================================================*/
-create table User
-(
-   Uderid               varchar(24),
-   userpassword         varchar(24),
-   userphone            varchar(12),
-   useremail            varchar(48)
-);
+CREATE TABLE user
+( 
+  `username`  varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `role` smallint NOT NULL,
+  `community_id` bigint,
+  PRIMARY KEY(`username`),
+  FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
-/* Table: antivity            活动                                  */
+/* Table: merchant                                                                                                                   */
 /*==============================================================*/
-create table antivity
-(
-   anticityid           varchar(24),
-   launchid             varchar(24),
-   antivitydetail       varchar(1024)
-);
+
+CREATE TABLE merchant
+( 
+  `id`        bigint AUTO_INCREMENT,
+  `username`  varchar(50) NOT NULL,
+  `name`      varchar(100) NOT NULL,
+  `phone`     varchar(20) NOT NULL,
+  `address`   varchar(200) NOT NULL,
+  `detail`    varchar(1024) NOT NULL,
+  `type`      varchar(100) NOT NULL, 
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
-/* Table: billrecord            每月账单                                */
+/* Table: manager                                                                                                                   */
 /*==============================================================*/
-create table billrecord
-(
-   recordid             varchar(24),
-   managerid            varchar(24),
-   recordtime           date,
-   totalpay             decimal(8,2),
-   status               int
-);
+
+CREATE TABLE manager
+( 
+  `username`  varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `role` smallint NOT NULL,
+  `community_id` bigint,
+  PRIMARY KEY(`username`),
+  FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
-/* Table: disgoods             优惠商品                                 */
+/* Table: friend                                                                                                                        */
 /*==============================================================*/
-create table disgoods
-(
-   goodid               varchar(24),
-   goodname             varchar(24),
-   goodprice            decimal(8,2)
-);
+
+CREATE TABLE friend
+( 
+  `id`       bigint AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `friend`   varchar(50) NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`friend`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
-/* Table: estate      小区                                          */
+/* Table: urgent                                                                                                                       */
 /*==============================================================*/
-create table estate
-(
-   estateid             varchar(24),
-   statename            varchar(24),
-   estatelocation       varchar(1024)-- 待定
-);
+
+CREATE TABLE urgent
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `time`        varchar(20) NOT NULL,
+  `content`     varchar(1024) NOT NULL,
+  `managername` varchar(50) NOT NULL,
+  `status`      smallint NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`managername`)
+        REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
-/* Table: latestnew          小区最新资讯                                   */
+/* Table: news                                                                                                                         */
 /*==============================================================*/
-create table latestnew
-(
-   newid                varchar(24),
-   newtime              date,
-   newcontent           varchar(1024),
-   managerid            varchar(24)
-);
+
+CREATE TABLE news
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `time`        varchar(20) NOT NULL,
+  `content`     varchar(1024) NOT NULL,
+  `managername` varchar(50) NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`managername`)
+        REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
-/* Table: manager             管理员                                  */
+/* Table: activity                                                                                                                      */
 /*==============================================================*/
-create table manager
-(
-   role                 int,-- 有物业通知管理员，物业缴费管理员，小区资讯管理，小区邮包管理员，小区负责人（小区创建者）
-   managerid               varchar(24),
-   managerpassword         varchar(24),
-   managerphone            varchar(12),
-   manageremail            varchar(48)
-);
+
+CREATE TABLE activity
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `time`        varchar(20) NOT NULL,
+  `content`     varchar(1024) NOT NULL,
+  `managername` varchar(50) NOT NULL,
+  `title`       varchar(50) NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`managername`)
+        REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
-/* Table: merchant    商家                                          */
+/* Table: notice                                                                                                                        */
 /*==============================================================*/
-create table merchant
-(
-   storename            varchar(48),
-   storephone           varchar(12),
-   merchantid           varchar(24),
-   merchantpassword         varchar(24),
-   merchantphone            varchar(12),
-   merchantemail            varchar(48)
-);
 
-/*==============================================================*/
-/* Table: parcel        邮包                                        */
-/*==============================================================*/
-create table parcel
-(
-   parcelid             varchar(48),
-   parcelowner          varchar(24),
-   parceltime           date,
-   parcelphone          varchar(12)
-);
-
-/*==============================================================*/
-/* Table: popnotice           小区最新资讯                                  */
-/*==============================================================*/
-create table popnotice
-(
-   noticeid             long,
-   managerid            varchar(24),
-   noticetime           date,
-   noticeconntent       varchar(2048)
-);
-
-/*==============================================================*/
-/* Table: resident        小区居民                                      */
-/*==============================================================*/
-create table resident
-(
-   residentid               varchar(24),
-   residentpassword         varchar(24),
-   residentphone            varchar(12),
-   residentemail            varchar(48)
-);
-
-/*==============================================================*/
-/* Table: store     地图上的商店                                            */
-/*==============================================================*/
-create table store
-(
-   location             varchar(1024),-- 待定
-   storeid              varchar(24)
-);
-
-/*==============================================================*/
-/* Table: urgmessage      紧急通知                                      */
-/*==============================================================*/
-create table urgmessage
-(
-   urgid                varchar(24),
-   urgtime              date,
-   urgcontent           varchar(2048),
-   managerid            varchar(24),
-   status               int -- 看是否过期
-);
+CREATE TABLE notice
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `time`        varchar(20) NOT NULL,
+  `content`     varchar(1024) NOT NULL,
+  `managername` varchar(50) NOT NULL,
+  `username`    varchar(50) NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`managername`)
+        REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 
+/*==============================================================*/
+/* Table: package                                                                                                                    */
+/*==============================================================*/
+
+CREATE TABLE package
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `time`        varchar(20) NOT NULL,
+  `status`      smallint NOT NULL,
+  `managername` varchar(50) NOT NULL,
+  `username`    varchar(50) NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`managername`)
+        REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+/*==============================================================*/
+/* Table: maintain                                                                                                                    */
+/*==============================================================*/
+
+CREATE TABLE maintain
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `time`        varchar(20) NOT NULL,
+  `status`      smallint NOT NULL,
+  `content`     varchar(1024) NOT NULL,
+  `maintainname` varchar(100),
+  `phone`    varchar(100),
+  `managername` varchar(50) NOT NULL,
+  `username`    varchar(50) NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`managername`)
+        REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+/*==============================================================*/
+/* Table: maintain                                                                                                                    */
+/*==============================================================*/
+
+CREATE TABLE demand
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `starttime`   varchar(20) NOT NULL,
+  `endtime`   varchar(20) NOT NULL,
+  `content`     varchar(1024) NOT NULL,
+  `username`    varchar(50) NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+
+/*==============================================================*/
+/* Table: discount                                                                                                                     */
+/*==============================================================*/
+
+CREATE TABLE discount
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `starttime`   varchar(20) NOT NULL,
+  `endtime`     varchar(20) NOT NULL,
+  `merchantid`  bigint NOT NULL,
+  `number`      int NOT NULL,
+  `content`     varchar(1024) NOT NULL,
+  `status`      smallint NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`merchantid`)
+        REFERENCES merchant (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+/*==============================================================*/
+/* Table: bargain                                                                                                                     */
+/*==============================================================*/
+
+CREATE TABLE bargain
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `starttime`   varchar(20) NOT NULL,
+  `endtime`     varchar(20) NOT NULL,
+  `merchantid`  bigint NOT NULL,
+  `goods`       varchar(1024) NOT NULL,
+  `content`     varchar(1024) NOT NULL,
+  `status`      smallint NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`merchantid`)
+        REFERENCES merchant (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
