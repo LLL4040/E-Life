@@ -31,7 +31,7 @@ public class NoticeServiceImpl implements NoticeService {
         noticeDao.deleteAllByUsername(username);
     }
     @Override
-    public void deleteByNotcieId(int noticeId){
-        noticeDao.deleteAllByNotcieId(noticeId);
+    public String deleteByNotcieId(int noticeId){
+        return noticeDao.deleteByNotcieId(noticeId);
     }
 }

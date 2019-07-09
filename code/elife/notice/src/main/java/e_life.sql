@@ -245,10 +245,10 @@ CREATE TABLE notice
     `managername` varchar(50) NOT NULL,
     `communityId` BIGINT,
 
-    PRIMARY KEY(`id`),
-    FOREIGN KEY (`managername`)
-        REFERENCES manager (`username`)
-        ON DELETE CASCADE ON UPDATE CASCADE
+    PRIMARY KEY(`id`)
+#     FOREIGN KEY (`managername`)
+#         REFERENCES manager (`username`)
+#         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
@@ -257,11 +257,11 @@ CREATE TABLE notice
 CREATE TABLE noticeUser
 (
     `id`          bigint NOT NULL,
-    `username`    varchar(50) NOT NULL,
+    `username`    varchar(50) NOT NULL
 
-    FOREIGN KEY (`username`)
-        REFERENCES user (`username`)
-        ON DELETE CASCADE ON UPDATE CASCADE
+#     FOREIGN KEY (`username`)
+#         REFERENCES user (`username`)
+#         ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 /*==============================================================*/
 /* Table: package                                                                                                                    */

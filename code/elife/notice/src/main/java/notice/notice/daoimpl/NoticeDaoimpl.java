@@ -8,6 +8,7 @@ import notice.notice.repository.NoticeUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class NoticeDaoimpl implements NoticeDao {
     @Override
     public List<Notice> findByUsername(String username){
          List<NoticeUser> noticeUsers=noticeUserRepository.findAllByUsername(username);
-         List<Notice> notices = null;
+         List<Notice> notices = new ArrayList<>();
          for (int i=0;i<noticeUsers.size();i++){
              NoticeUser nu1=noticeUsers.get(i);
              Notice n1=noticeRepository.findByNoticeId(nu1.getNoticeId());
@@ -38,9 +39,15 @@ public class NoticeDaoimpl implements NoticeDao {
          return notices;
     }
     @Override
-    public void deleteAllByNotcieId(int noticeId){
-        noticeRepository.deleteByNoticeId(noticeId);
-        noticeUserRepository.deleteByNoticeId(noticeId);
+    public String deleteByNotcieId(int noticeId){
+
+
+            NoticeUser n2 = noticeUserRepository.findByNoticeId(noticeId);
+
+            noticeUserRepository.delete(n2);
+            return "删除这一条物业信息成功";
+
+
     }
     @Override
     public String deleteAllByUsername(String username){
@@ -48,9 +55,10 @@ public class NoticeDaoimpl implements NoticeDao {
         List<NoticeUser> noticeUsers=noticeUserRepository.findAllByUsername(username);
         int length = noticeUsers.size();
         for (int i=0;i<length;i++){
-            noticeRepository.deleteByNoticeId(noticeUsers.get(i).getNoticeId());
-            noticeUserRepository.deleteByNoticeId(noticeUsers.get(i).getNoticeId());
+            NoticeUser n2 = noticeUserRepository.findByNoticeId(noticeUsers.get(i).getNoticeId());
+            noticeUserRepository.delete(n2);
+
         }
-        return "删除成功";
+        return "删除我的所有物业信息成功";
     }
 }

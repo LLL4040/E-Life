@@ -1,9 +1,6 @@
 package notice.notice.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * postComments class
@@ -12,9 +9,11 @@ import javax.persistence.Table;
  * @date 2019/07/05*/
 @Entity
 @Table(name = "notice")
+
 public class Notice {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int noticeId;
     @Column(name = "time")
     private String noticeTime;
@@ -22,7 +21,7 @@ public class Notice {
     private String noticeContent;
     @Column(name = "managername")
     private String managerName;
-    @Column(name = "communityId")
+    @Column(name = "communityid")
     private int communityId;
     Notice(){
         super();

@@ -1,4 +1,4 @@
-package notice.notice.entity;
+package noticemap.noticemap;
 
 import javax.persistence.*;
 
@@ -8,7 +8,7 @@ import javax.persistence.*;
  * @author 符永锐
  * @date 2019/07/05*/
 @Entity
-@Table(name = "noticeuser")
+@Table(name = "noticeUser")
 @IdClass(noticeUserMap.class)
 public class NoticeUser {
     @Id
@@ -23,22 +23,22 @@ public class NoticeUser {
 
     }
     public NoticeUser(int noticeId,String username){
-        this.id=noticeId;
+        this.id =noticeId;
         this.username=username;
     }
     public void setUsername(String username) {
         this.username=username;
     }
 
-    public void setNoticeId(int noticeId) {
-        this.id=noticeId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
         return this.username;
     }
 
-    public int getNoticeId() {
+    public int getId() {
         return this.id;
     }
 }

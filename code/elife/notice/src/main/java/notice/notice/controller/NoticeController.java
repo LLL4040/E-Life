@@ -41,8 +41,6 @@ public class NoticeController {
              NoticeUser noticeUser=new NoticeUser(noticeId,username);
              noticeUserRepository.save(noticeUser);
 
-         }else {
-
          }
         return "发布物业通知成功";
     }
@@ -54,13 +52,15 @@ public class NoticeController {
     @RequestMapping(path = "/deleteOneNotice")
     @ResponseBody
     public String deleteOneNotice(@RequestParam int noticeId){
-        noticeService.deleteByNotcieId(noticeId);
-        return "删除该条通知成功";
+        if(!noticeService.deleteByNotcieId(noticeId).equals("")){
+            return "删除该条通知成功";
+        }
+        return "删除该条通知失败";
     }
     @RequestMapping(path = "/deleteMyNotice")
     @ResponseBody
     public String deleteMyNotice(@RequestParam String username){
         noticeService.deleteAllByUsername(username);
-        return "删除所有通知成功";
+        return "删除我的所有通知成功";
     }
 }

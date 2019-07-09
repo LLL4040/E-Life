@@ -27,6 +27,7 @@ public interface NoticeDao {
     String deleteAllByUsername(String username);
     /**
      * 该函数删除特定一条物业通知
-     * @param noticeId 物业通知id*/
-    void deleteAllByNotcieId(int noticeId);
+     * @param noticeId 物业通知id
+     * @return 返回删除成功的信息*/
+    String deleteByNotcieId(int noticeId);
 }

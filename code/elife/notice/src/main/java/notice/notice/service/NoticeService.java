@@ -31,6 +31,6 @@ public interface NoticeService {
     /**
      * 该函数删除特定一条物业通知
      * @param noticeId 物业通知id*/
-    void deleteByNotcieId(int noticeId);
+    String deleteByNotcieId(int noticeId);
 
 }
