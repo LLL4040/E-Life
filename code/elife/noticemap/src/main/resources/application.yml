@@ -1,0 +1,31 @@
+# application name
+spring:
+  application:
+    name: estateforum
+  # Mysql jpa config
+  datasource:
+    url: jdbc:Mysql://localhost:3306/e_life?
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: update
+        format_sql: true
+        enable_lazy_load_no_trans: true
+
+  main:
+    allow-bean-definition-overriding: true
+
+
+# server monitor port
+server:
+  port: 9094
+
+# eureka server cluster
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:9000/eureka/

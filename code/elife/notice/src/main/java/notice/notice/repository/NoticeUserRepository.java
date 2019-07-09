@@ -1,0 +1,44 @@
+package notice.notice.repository;
+
+import notice.notice.entity.NoticeUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+/**
+ * postComments class
+ *
+ * @author 符永锐
+ * @date 2019/07/05*/
+public interface NoticeUserRepository extends JpaRepository<NoticeUser,Long> {
+    /**
+     * 该函数返回特定的NoticeUser
+     * @return 特定的NoticeUser
+     * @param  username 用户名
+     * @param noticeId 物业通知的Id*/
+    @Query(value = "select * from noticeUser where username=?1 and id=?2", nativeQuery = true)
+    NoticeUser findByUsernameAndNoticeId(String username,int noticeId);
+    /**
+     * 该函数返回特定的NoticeUser
+     * @return 特定的NoticeUser
+     * @param noticeId 物业通知的Id*/
+    @Query(value = "select * from noticeUser where  id=?1", nativeQuery = true)
+    NoticeUser findByNoticeId(int noticeId);
+    /**
+     * 该函数返回特定的NoticeUser
+     * @return 特定的NoticeUser
+     * @param  username 用户名
+     */
+    @Query(value = "select * from noticeUser where username=?1", nativeQuery = true)
+    List<NoticeUser> findAllByUsername(String username);
+    /**
+     * 该函数删除特定id的NoticeUser
+     * @param  noticeId 物业通知的id
+     */
+    @Query(value = "delete from noticeUser p where p.id=?1", nativeQuery = true)
+    void deleteByNoticeId(int noticeId);
+
+    //boolean existsById(int noticeId);
+}

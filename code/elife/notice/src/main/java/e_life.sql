@@ -20,7 +20,7 @@ CREATE TABLE community (
 /* ============================================================== */
 /* Table: user                                                                                                                            */
 /* ============================================================== */
-
+/* role: 0:user, 1:merchant */
 CREATE TABLE user
 (
     `username`  varchar(50) NOT NULL,
@@ -97,13 +97,17 @@ CREATE TABLE friend
 CREATE TABLE urgent
 (
     `id`          bigint AUTO_INCREMENT,
-    `time`        varchar(20) NOT NULL,
+    `time`        timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     `content`     varchar(1024) NOT NULL,
     `managername` varchar(50) NOT NULL,
     `status`      smallint NOT NULL,
+    `community_id` bigint,
     PRIMARY KEY(`id`),
     FOREIGN KEY (`managername`)
         REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
@@ -117,11 +121,61 @@ CREATE TABLE news
     `time`        varchar(20) NOT NULL,
     `content`     varchar(1024) NOT NULL,
     `managername` varchar(50) NOT NULL,
+    `title` varchar(20) NOT NULL,
+    `status` SMALLINT,
+    `photo` VARCHAR(50),
+    `community_id` bigint,
     PRIMARY KEY(`id`),
     FOREIGN KEY (`managername`)
         REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+/*==============================================================*/
+/* Table: urgentused                                                                                                                       */
+/*==============================================================*/
+
+CREATE TABLE urgentused
+(
+    `id`          bigint AUTO_INCREMENT,
+    `time`        timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `content`     varchar(1024) NOT NULL,
+    `managername` varchar(50) NOT NULL,
+    `community_id` bigint,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY (`managername`)
+        REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+/*==============================================================*/
+/* Table: newsused                                                                                                                         */
+/*==============================================================*/
+
+CREATE TABLE newsused
+(
+    `id`          bigint AUTO_INCREMENT,
+    `time`        varchar(20) NOT NULL,
+    `content`     varchar(1024) NOT NULL,
+    `managername` varchar(50) NOT NULL,
+    `title` varchar(20) NOT NULL,
+    `photo` VARCHAR(50),
+    `community_id` bigint,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY (`managername`)
+        REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
 
 /*==============================================================*/
 /* Table: activity                                                                                                                      */
@@ -134,14 +188,53 @@ CREATE TABLE activity
     `content`     varchar(1024) NOT NULL,
     `managername` varchar(50) NOT NULL,
     `title`       varchar(50) NOT NULL,
+    `community_id` bigint,
     PRIMARY KEY(`id`),
     FOREIGN KEY (`managername`)
         REFERENCES manager (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
-/* Table: notice          物业通知                                                                                                              */
+/* Table: participator                                                                                                                */
+/*==============================================================*/
+CREATE TABLE Participator
+(
+    `id`          bigint AUTO_INCREMENT,
+    `aid`        bigint NOT NULL,
+    `content`    VARCHAR(100),
+    `username` varchar(50) NOT NULL,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`aid`)
+        REFERENCES activity (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+/*==============================================================*/
+/* Table: pay                                                                                                                         */
+/*==============================================================*/
+
+CREATE TABLE pay
+(
+    `id`          bigint AUTO_INCREMENT,
+    `username`    varchar(20) NOT NULL,
+    `bill`        DECIMAL(8,2),
+    `status`      SMALLINT,
+    `community_id` bigint,
+    `time` timestamp NOT NULL ,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+/*==============================================================*/
+/* Table: notice                                                                                                                        */
 /*==============================================================*/
 
 CREATE TABLE notice
@@ -152,25 +245,24 @@ CREATE TABLE notice
     `managername` varchar(50) NOT NULL,
     `communityId` BIGINT,
 
-    PRIMARY KEY(`id`),
-    FOREIGN KEY (`managername`)
-        REFERENCES manager (`username`)
-        ON DELETE CASCADE ON UPDATE CASCADE
-
+    PRIMARY KEY(`id`)
+#     FOREIGN KEY (`managername`)
+#         REFERENCES manager (`username`)
+#         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
 /*==============================================================*/
 /* Table: noticeUser          物业通知关联的用户                                                                                                              */
 /*==============================================================*/
 CREATE TABLE noticeUser
 (
     `id`          bigint NOT NULL,
-    `username`    varchar(50) NOT NULL,
+    `username`    varchar(50) NOT NULL
 
-    FOREIGN KEY (`username`)
-        REFERENCES user (`username`)
-        ON DELETE CASCADE ON UPDATE CASCADE
+#     FOREIGN KEY (`username`)
+#         REFERENCES user (`username`)
+#         ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
-
 /*==============================================================*/
 /* Table: package                                                                                                                    */
 /*==============================================================*/
@@ -269,3 +361,13 @@ CREATE TABLE bargain
         REFERENCES merchant (`id`)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+/*==============================================================*/
+/* Table: identify                                                                                                                     */
+/*==============================================================*/
+CREATE TABLE identify (
+                          `phone` VARCHAR(20) NOT NULL,
+                          `code` VARCHAR(10) NOT NULL,
+                          `time` VARCHAR(20) NOT NULL,
+                          PRIMARY KEY (`phone`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
