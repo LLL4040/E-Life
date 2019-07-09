@@ -16,14 +16,26 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link tm-nav-link" href="#introduction">登录</a>
+              <router-link router-link :to="{name:'Login'}" class="nav-link tm-nav-link">登录</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link tm-nav-link" href="#work">注册</a>
+              <router-link router-link :to="{name:'Register'}" class="nav-link tm-nav-link">注册</router-link>
             </li>
             <li class="nav-item">
               <a class="nav-link tm-nav-link" href="#contact">联系我们</a>
             </li>
+<!--                          <li class="nav-item">-->
+<!--              <a class="nav-link tm-nav-link" href="#introduction">小区资讯</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link tm-nav-link" href="#work">小区团购</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link tm-nav-link" href="#contact">小区服务</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link tm-nav-link" href="#contact">小区论坛</a>-->
+<!--            </li>-->
           </ul>
         </div>
       </div>
@@ -172,15 +184,14 @@
     <div class="container tm-container-contact">
       <div class="row">
         <div class="col-12">
-          <h2 class="mb-4 tm-section-title">Contact Us</h2>
+          <h2 class="mb-4 tm-section-title">联系我们</h2>
           <div class="mb-5 tm-underline">
             <div class="tm-underline-inner"></div>
           </div>
           <p class="mb-5">
-            Nullam tincidunt, lacus a suscipit luctus, elit turpis tincidunt dui,
-            non tempus sem turpis vitae lorem. Maecenas eget odio in sapien ultrices
-            viverra vitae vel leo. Curabitur at elit eu risus pharetra pellentesque
-            at at velit.
+            没有找到自己的小区？请小区负责人通过以下方式联系我们，即可将自己的小区注册成为智能生活小区平台的一员，
+            享受我们平台带来的种种快捷与便利！如果在使用过程中出现问题，也可以通过以下方式联系我们解决哦：)<br>
+            (点击电话号码或者邮箱地址即可快速拨打电话或发邮件)
           </p>
         </div>
 
@@ -207,9 +218,10 @@
 </style>
 
 <script>
+/* eslint-disable */
 function getOffSet () {
-  var _offset = 450
-  var windowHeight = window.innerHeight
+  let _offset = 450
+  let windowHeight = window.innerHeight
 
   if (windowHeight > 500) {
     _offset = 400
