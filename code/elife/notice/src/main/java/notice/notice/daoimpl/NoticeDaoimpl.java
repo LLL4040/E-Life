@@ -41,11 +41,13 @@ public class NoticeDaoimpl implements NoticeDao {
     @Override
     public String deleteByNotcieId(int noticeId){
 
+           if(noticeUserRepository.existsById(noticeId)!=0&&noticeRepository.existsByNoticeid(noticeId)!=0){
+               NoticeUser n2 = noticeUserRepository.findByNoticeId(noticeId);
 
-            NoticeUser n2 = noticeUserRepository.findByNoticeId(noticeId);
-
-            noticeUserRepository.delete(n2);
-            return "删除这一条物业信息成功";
+               noticeUserRepository.delete(n2);
+               return "删除这一条物业信息成功";
+           }
+            return "数据库中不存在这条数据";
 
 
     }

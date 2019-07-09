@@ -36,6 +36,7 @@ public class NoticeController {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String noticeTime = df.format(new Date());
         Notice notice=new Notice(noticeTime,content,managerName,communityId);
+        /**先在notice数据库中存*/
          int noticeId = noticeService.save(notice);
          if(isMass==0){
              NoticeUser noticeUser=new NoticeUser(noticeId,username);
@@ -52,7 +53,7 @@ public class NoticeController {
     @RequestMapping(path = "/deleteOneNotice")
     @ResponseBody
     public String deleteOneNotice(@RequestParam int noticeId){
-        if(!noticeService.deleteByNotcieId(noticeId).equals("")){
+        if(noticeService.deleteByNotcieId(noticeId).equals("删除这一条物业信息成功")){
             return "删除该条通知成功";
         }
         return "删除该条通知失败";

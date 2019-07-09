@@ -21,8 +21,9 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
      * 该函数根据noticeId删除一条物业通知
      * @param noticeId 物业通知的id
      */
-    @Query(value = "delete from notice p where p.id=?1", nativeQuery = true)
+    @Query(value = "delete from noticeUser  where id=?1", nativeQuery = true)
     void deleteByNoticeId(int noticeId);
 
-    //boolean existsById(int noticeId);
+    @Query(value = "select count(*) from (select * from noticeUser where id=?1 limit 1)as A", nativeQuery = true)
+    int existsByNoticeid(int noticeId);
 }

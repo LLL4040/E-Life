@@ -39,7 +39,7 @@ public class Notice {
         this.communityId = communityId;
     }
 
-    public void setManagerame(String managername) {
+    public void setManagerName(String managerName) {
         this.managerName = managerName;
     }
 

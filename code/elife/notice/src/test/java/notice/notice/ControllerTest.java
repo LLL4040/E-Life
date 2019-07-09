@@ -38,7 +38,7 @@ public class ControllerTest {
     @Test
     public void deleteOneNotice() throws Exception {
 
-        mvc.perform(get("/api/deleteOneNotice").param("noticeId","3"))
+        mvc.perform(get("/api/deleteOneNotice").param("noticeId","9"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
