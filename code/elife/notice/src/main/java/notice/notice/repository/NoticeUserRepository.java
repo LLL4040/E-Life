@@ -25,7 +25,7 @@ public interface NoticeUserRepository extends JpaRepository<NoticeUser,Long> {
      * @return 特定的NoticeUser
      * @param noticeId 物业通知的Id*/
     @Query(value = "select * from noticeUser where  id=?1", nativeQuery = true)
-    NoticeUser findByNoticeId(int noticeId);
+    List<NoticeUser> findByNoticeId(int noticeId);
     /**
      * 该函数返回特定的NoticeUser
      * @return 特定的NoticeUser
@@ -40,6 +40,11 @@ public interface NoticeUserRepository extends JpaRepository<NoticeUser,Long> {
     @Query(value = "delete from noticeUser  where id=?1", nativeQuery = true)
     void deleteByNoticeId(int noticeId);
 
+    /**
+     * 该函数判断是否存在NoticeUser，不为0则存在
+     * @param  noticeId 物业通知的id
+     * @return  返回0代表不存在*/
     @Query(value = "select count(*) from (select * from noticeUser where id=?1 limit 1)as A", nativeQuery = true)
     int existsById(int noticeId);
+
 }

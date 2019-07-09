@@ -29,27 +29,43 @@ public class ServiceTest {
 
 
     @Test
-    public void NoticeServiceTest() throws Exception{
+    public void findByUsernameTest() throws Exception{
         int n1=noticeService.save(notice);
 
         NoticeUser noticeUser=new NoticeUser(n1,"哮天犬");
 
         noticeUserRepository.save(noticeUser);
-
         List<Notice> noticeList =noticeService.findByUsername("哮天犬");
         Assert.assertNotNull(noticeList);
         Assert.assertEquals("get notice fail", notice.getNoticeId(), noticeList.get(noticeList.size()-1).getNoticeId());
         Assert.assertEquals("get notice fail", notice.getNoticeContent(), noticeList.get(noticeList.size()-1).getNoticeContent());
-
+        noticeService.deleteByNotcieId(n1);
     }
     @Test
-    public void NoticeServiceTest2()throws Exception{
+    public void deleteByUsernameTest(){
+        int n1=noticeService.save(notice);
+        NoticeUser noticeUser=new NoticeUser(n1,"哮天犬");
+        noticeUserRepository.save(noticeUser);
+        String deleteResult=noticeService.deleteAllByUsername("哮天犬");
+        Assert.assertEquals("delete fail","删除我的所有物业信息成功",deleteResult);
+    }
+    @Test
+    public void deleteByNotcieIdTest()throws Exception{
         int n1=noticeService.save(notice);
         NoticeUser noticeUser=new NoticeUser(n1,"哮天犬");
         noticeUserRepository.save(noticeUser);
         String deleteResult=noticeService.deleteByNotcieId(n1);
         String deleteResult2=noticeService.deleteByNotcieId(n1);
-        Assert.assertEquals("delete nitice by id fail","删除这一条物业信息成功",deleteResult);
-        Assert.assertEquals("delete nitice by id fail","数据库中不存在这条数据",deleteResult2);
+        Assert.assertEquals("delete notice by id fail","删除这一条物业信息成功",deleteResult);
+        Assert.assertEquals("delete notice by id fail","数据库中不存在这条数据",deleteResult2);
+    }
+    @Test
+    public void deleteByUsernameAndNoticeIdTest3()throws Exception{
+        int n1=noticeService.save(notice);
+        NoticeUser noticeUser=new NoticeUser(n1,"哮天犬");
+        noticeUserRepository.save(noticeUser);
+        String deleteResult=noticeService.deleteByUsernameAndNoticeId("哮天犬",n1);
+        Assert.assertEquals("delete my One notice by username and id fail","删除我的该条物业信息成功",deleteResult);
+
     }
 }

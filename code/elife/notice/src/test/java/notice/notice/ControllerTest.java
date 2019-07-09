@@ -41,6 +41,7 @@ public class ControllerTest {
         mvc.perform(get("/api/deleteOneNotice").param("noticeId","9"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
+
     @Test
     public void deleteMyNotice() throws Exception {
         mvc.perform(get("/api/addNotice").param("content","今晚停水").param("managerName","二郎神").param("communityId","1").param("username","哮天犬").param("isMass","0"))

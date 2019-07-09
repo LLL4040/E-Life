@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,6 +36,36 @@ public class RepositoryTest {
 
         Assert.assertNotNull(noticeReslut);
         Assert.assertEquals("get post fail", notice.getNoticeTime(), noticeReslut.getNoticeTime());
+        Assert.assertEquals("get post fail", notice.getNoticeContent(), noticeReslut.getNoticeContent());
+        Assert.assertEquals("get post fail", notice.getManagerName(), noticeReslut.getManagerName());
+        Assert.assertEquals("get post fail", notice.getCommunityId(), noticeReslut.getCommunityId());
+
+        int exist=noticeRepository.existsByNoticeId(n1);
+        Assert.assertEquals("get post fail", 1, exist);
+        Notice notice1=noticeRepository.findByNoticeId(n1);
+        noticeRepository.delete(notice1);
+        exist=noticeRepository.existsByNoticeId(n1);
+        Assert.assertEquals("get post fail", 0, exist);
+
+    }
+    @Test
+    public void noticeUserrepoTest(){
+        Notice noticeReslut = noticeRepository.save(notice);
+        int n1=noticeReslut.getNoticeId();
+        NoticeUser noticeUser=new NoticeUser(n1,"哪吒");
+        noticeUserRepository.save(noticeUser);
+
+        int exist =noticeUserRepository.existsById(n1);
+        Assert.assertEquals("get post fail", 1, exist);
+        NoticeUser noticeUser1=noticeUserRepository.findByUsernameAndNoticeId("哪吒",n1);
+        Assert.assertNotNull(noticeUser1);
+        List<NoticeUser> noticeUserList=noticeUserRepository.findAllByUsername("哪吒");
+        Assert.assertNotNull(noticeUserList);
+
+
+        noticeUserRepository.delete(noticeUser1);
+        Assert.assertEquals("get post fail", 1, exist);
+
 
     }
 }

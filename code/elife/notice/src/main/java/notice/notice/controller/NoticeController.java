@@ -50,14 +50,28 @@ public class NoticeController {
     public List<Notice> findMyNotice(@RequestParam String username){
         return noticeService.findByUsername(username);
     }
+    /**
+     * 管理员功能，删除数据库中一条物业信息，包括notice表中和noticeUser表中*/
     @RequestMapping(path = "/deleteOneNotice")
     @ResponseBody
     public String deleteOneNotice(@RequestParam int noticeId){
         if(noticeService.deleteByNotcieId(noticeId).equals("删除这一条物业信息成功")){
-            return "删除该条通知成功";
+            return "删除这一条物业信息成功";
         }
-        return "删除该条通知失败";
+        return "删除这一条物业信息成功";
     }
+    /**
+     * 用户功能，删除我的通知列表中的某一条通知*/
+    @RequestMapping(path = "/deleteMyOneNotice")
+    @ResponseBody
+    public String deleteMyOneNotice(@RequestParam String username,@RequestParam int noticeId){
+        if(noticeService.deleteByUsernameAndNoticeId(username,noticeId).equals("删除我的该条物业信息成功")){
+            return "删除我的该条物业信息成功";
+        }
+        return "删除我的该条物业信息失败";
+    }
+    /**
+     * 用户功能，删除我的通知列表中的所有条通知*/
     @RequestMapping(path = "/deleteMyNotice")
     @ResponseBody
     public String deleteMyNotice(@RequestParam String username){
