@@ -28,30 +28,46 @@ public class UrgentControllerTest {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
     @Test
-    public void saveUrgentTest() throws Exception {
+    public void Test1() throws Exception {
         MvcResult result = mvc.perform(get("/api/urgent/saveUrgent").param("id", "55555").param("managerName","1").param("content","222@.com").param("status","0").param("communityId","1"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
-    public void getUrgentTest() throws Exception {
+    public void Test2() throws Exception {
         MvcResult result = mvc.perform(get("/api/urgent/getUrgent").param("id", "55555"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
-    public void getUrgentErrorTest() throws Exception {
+    public void Test3() throws Exception {
+        MvcResult result = mvc.perform(get("/api/urgent/getNewUrgent").param("communityId", "1"))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+    }
+    @Test
+    public void Test4() throws Exception {
         MvcResult result = mvc.perform(get("/api/urgent/getUrgent").param("id", "555555"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
-    public void deleteUrgentTest() throws Exception {
+    public void Test6() throws Exception {
         MvcResult result = mvc.perform(get("/api/urgent/deleteUrgent").param("id", "55555"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
-    public void deleteUrgentErrorTest() throws Exception {
+    public void Test7() throws Exception {
         MvcResult result = mvc.perform(get("/api/urgent/deleteUrgent").param("id", "555555"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
+    @Test
+    public void Test5() throws Exception {
+        MvcResult result = mvc.perform(get("/api/urgent/moveTable"))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+    }
+    @Test
+    public void Test8() throws Exception {
+        MvcResult result = mvc.perform(get("/api/urgent/findHistory").param("communityId", "1"))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+    }
+
 
 }
 

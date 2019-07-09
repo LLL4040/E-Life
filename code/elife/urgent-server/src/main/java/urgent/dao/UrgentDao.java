@@ -1,6 +1,9 @@
 package urgent.dao;
 
 import urgent.entity.Urgent;
+import urgent.entity.UrgentUsed;
+
+import java.util.List;
 
 /**
  * UrgentDao interface
@@ -34,4 +37,32 @@ public interface UrgentDao {
      * @return none
      */
     void deleteOne(int id);
+
+    /**
+     * find newest urgent by communityId
+     *
+     * @param communityId
+     * @return
+     */
+    Urgent findNew(int communityId);
+    /**
+     * move cold table data to history table
+     */
+    void moveTable();
+
+    /**
+     * return history urgent by communityId from clod table
+     *
+     * @param communityId
+     * @return
+     */
+    List<UrgentUsed> findHistory(int communityId);
+
+    /**
+     * return List from chot table
+     *
+     * @param communityId
+     * @return
+     */
+    List<Urgent> findHistoryHot(int communityId);
 }

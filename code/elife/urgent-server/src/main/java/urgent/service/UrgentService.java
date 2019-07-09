@@ -1,6 +1,7 @@
 package urgent.service;
 
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 /**
@@ -37,4 +38,24 @@ public interface UrgentService {
      */
     boolean deleteOne(int id);
 
+    /**
+     * move cold data to history data table
+     */
+    void moveTable();
+
+    /**
+     * find newest Urgent by communityId return JSONObject
+     *
+     * @param communityId
+     * @return
+     */
+    JSONObject findNew(int communityId);
+
+    /**
+     * find history table from teo table
+     *
+     * @param communityId
+     * @return
+     */
+    JSONArray findHistory(int communityId);
 }

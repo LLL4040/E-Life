@@ -1,6 +1,7 @@
 package urgent.controller;
 
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,13 +26,28 @@ public class UrgentController {
         urgentService.save(id, managerName, content, status, communityId);
     }
 
-    @RequestMapping("getUrgent")
+    @RequestMapping("/getUrgent")
     public JSONObject findUrgent(int id) {
         return urgentService.findOne(id);
     }
 
-    @RequestMapping("deleteUrgent")
+    @RequestMapping("/getNewUrgent")
+    public JSONObject findUrgentNew(int communityId) {
+        return urgentService.findNew(communityId);
+    }
+    @RequestMapping("/deleteUrgent")
     public boolean deleteUrgent(int id){
         return urgentService.deleteOne(id);
     }
+
+    @RequestMapping("/moveTable")
+        public void moveTable(){
+        urgentService.moveTable();
+    }
+
+    @RequestMapping("/findHistory")
+    public JSONArray findHistory(int communityId){
+        return urgentService.findHistory(communityId);
+    }
+
 }

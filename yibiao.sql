@@ -1,7 +1,7 @@
 
 DELIMITER//
 DROP PROCEDURE if EXISTS moveurgent;
-create PROCEDURE moveurgent()
+create PROCEDURE moveurgent(in nonused int)
 begin
 DECLARE done INT DEFAULT 0;
  DECLARE id_temp int DEFAULT 0;
