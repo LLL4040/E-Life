@@ -28,6 +28,29 @@ public class NoticeDaoimpl implements NoticeDao {
     }
     @Override
     public List<Notice> findByUsername(String username){
-         List<NoticeUser> noticeUsers=noticeUserRepository.
+         List<NoticeUser> noticeUsers=noticeUserRepository.findAllByUsername(username);
+         List<Notice> notices = null;
+         for (int i=0;i<noticeUsers.size();i++){
+             NoticeUser nu1=noticeUsers.get(i);
+             Notice n1=noticeRepository.findByNoticeId(nu1.getNoticeId());
+             notices.add(n1);
+         }
+         return notices;
+    }
+    @Override
+    public void deleteAllByNotcieId(int noticeId){
+        noticeRepository.deleteByNoticeId(noticeId);
+        noticeUserRepository.deleteByNoticeId(noticeId);
+    }
+    @Override
+    public String deleteAllByUsername(String username){
+
+        List<NoticeUser> noticeUsers=noticeUserRepository.findAllByUsername(username);
+        int length = noticeUsers.size();
+        for (int i=0;i<length;i++){
+            noticeRepository.deleteByNoticeId(noticeUsers.get(i).getNoticeId());
+            noticeUserRepository.deleteByNoticeId(noticeUsers.get(i).getNoticeId());
+        }
+        return "删除成功";
     }
 }

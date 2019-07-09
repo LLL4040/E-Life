@@ -22,10 +22,11 @@ public interface NoticeDao {
     List<Notice> findByUsername(String username);
     /**
      * 该函数删除特定用户的所有物业通知
-     * @param username 用户名*/
-    void deleteAllByUsername(String username);
+     * @param username 用户名
+     * @return 返回删除成功的信息*/
+    String deleteAllByUsername(String username);
     /**
      * 该函数删除特定一条物业通知
-     * @param NoticeId 物业通知id*/
-    void deleteAllByNotcieId(int NoticeId);
+     * @param noticeId 物业通知id*/
+    void deleteAllByNotcieId(int noticeId);
 }
