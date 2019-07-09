@@ -50,45 +50,31 @@
             <div style="clear:both"></div>
           </div>
           <el-menu-item index="1">
-            <i class="el-icon-chat-dot-round"></i>
-            <span slot="title" style="font-size: 16px">
-              我的通知
-              <el-badge class="mark" :value="100" :max="99" style="background-color: transparent" />
-            </span>
+            <i class="el-icon-chat-dot-round"></i><span slot="title" style="font-size: 16px">发布资讯</span>
           </el-menu-item>
-          <el-submenu index="2">
+          <el-menu-item index="2">
+            <i class="el-icon-alarm-clock"></i><span slot="title" style="font-size: 16px">安排活动</span>
+          </el-menu-item>
+          <el-submenu index="3">
             <template slot="title" style="font-size: 16px">
-              <i class="el-icon-bank-card"></i>
-              <span style="font-size: 16px">我的账单</span>
+              <i class="el-icon-setting"></i>
+              <span style="font-size: 16px">管理用户</span>
             </template>
-            <el-submenu index="2-1">
-              <template slot="title">物业费</template>
-              <el-menu-item index="2-1-1">查询</el-menu-item>
-              <el-menu-item index="2-1-2">缴纳</el-menu-item>
+            <el-submenu index="3-1">
+              <template slot="title">管理账单</template>
+              <el-menu-item index="3-1-1">未缴费</el-menu-item>
+              <el-menu-item index="3-1-2">已缴费</el-menu-item>
             </el-submenu>
-            <el-submenu index="2-2">
-              <template slot="title">停车费</template>
-              <el-menu-item index="2-2-1">查询</el-menu-item>
-              <el-menu-item index="2-2-2">缴纳</el-menu-item>
-            </el-submenu>
+            <el-menu-item index="3-2">通知用户</el-menu-item>
           </el-submenu>
-          <el-menu-item index="3">
-            <i class="el-icon-user"></i><span slot="title" style="font-size: 16px">我的好友</span>
-          </el-menu-item>
           <el-submenu index="4">
             <template slot="title">
-              <i class="el-icon-message"></i>
-              <span style="font-size: 16px">
-                我的邮包
-                <el-badge class="mark" :value="100" :max="99" style="background-color: transparent" />
-              </span>
+              <i class="el-icon-service"></i>
+              <span style="font-size: 16px">处理报修</span>
             </template>
-            <el-menu-item index="4-1">邮包通知</el-menu-item>
-            <el-menu-item index="4-2">上门寄件</el-menu-item>
+            <el-menu-item index="4-1">未处理</el-menu-item>
+            <el-menu-item index="4-2">已处理</el-menu-item>
           </el-submenu>
-          <el-menu-item index="5">
-            <i class="el-icon-map-location"></i><span slot="title" style="font-size: 16px">我的周边</span>
-          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -105,7 +91,7 @@ import page1 from './CommunityInformation.vue'
 import page2 from './GroupBuy.vue'
 import page3 from './Forum.vue'
 export default {
-  name: 'User',
+  name: 'Manager',
   data () {
     return {
       tabView: 'page1'

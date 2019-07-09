@@ -274,7 +274,7 @@ $(function () {
     if ($(document).scrollTop() > 120) {
       $('.tm-navbar').addClass('scroll')
     } else {
-      $('.tm-navbar').removeClass('scroll')
+      // $('.tm-navbar').removeClass('scroll')
     }
   })
 

@@ -21,7 +21,7 @@
               <router-link router-link :to="{name:'Register'}" class="nav-link tm-nav-link">注册</router-link>
             </li>
             <li class="nav-item">
-              <router-link router-link :to="{name:'home'}" class="nav-link tm-nav-link">联系我们</router-link>
+              <a class="nav-link tm-nav-link" href="/#contact">联系我们</a>
             </li>
           </ul>
         </div>
@@ -91,6 +91,17 @@
               <el-button type="primary" @click="submit()">提交</el-button>
             </el-form-item>
           </el-form>
+          <el-form v-if="x === 3 && form.id === '管理员'" label-width="60px">
+            <el-form-item>
+              <p>提交成功！等待审核，请等待邮箱提醒。</p>
+            </el-form-item>
+          </el-form>
+          <el-form v-if="x === 3 && form.id !== '管理员'" label-width="60px">
+            <el-form-item>
+              <br>
+              <router-link router-link :to="{name:'Login'}" style="font-size: 17px; color: #3ba0dd">提交成功！点此跳转。</router-link>
+            </el-form-item>
+          </el-form>
         </el-card>
       </div>
     </div>
@@ -154,21 +165,20 @@ export default {
           }
         }
       }
-      if (this.x === 2) {
-        if (this.form.number === '' || this.form.pass === '') {
-          this.$alert('表单必须填写完整才能提交！')
-          return 0
-        }
-      }
       this.x++
     },
     submit () {
-      let url = ''
-      this.$axios
-        .post(url, this.form)
-        .then(response => {
-          this.$alert(response.data)
-        })
+      if (this.form.number === '' || this.form.pass === '') {
+        this.$alert('表单必须填写完整才能提交！')
+        return 0
+      }
+      // let url = ''
+      // this.$axios
+      //   .post(url, this.form)
+      //   .then(response => {
+      //     this.$alert(response.data)
+      //   })
+      this.x++
     },
     getPass () {
       console.log('获取验证码！')
