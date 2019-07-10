@@ -8,6 +8,7 @@ import user.entity.Identify;
 public interface IdentifyDao {
     /**
      * save identify
+     *
      * @param identify identify
      * @return saved identify
      */
@@ -15,13 +16,14 @@ public interface IdentifyDao {
 
     /**
      * whether exists phone number
-     *      * @param phone phone number
-     *      * @return whether exists phone number
+     * * @param phone phone number
+     * * @return whether exists phone number
      */
     Boolean exists(String phone);
 
     /**
      * find identify by phone number
+     *
      * @param phone phone number
      * @return identify found
      */
@@ -29,6 +31,7 @@ public interface IdentifyDao {
 
     /**
      * delete identify by phone number
+     *
      * @param phone phone number
      */
     void deleteByPhone(String phone);

@@ -15,8 +15,8 @@ public class IdentifyDaoTest {
     private IdentifyDao identifyDao;
 
     @Test
-    public void identifyDaoTest(){
-        Identify identify = new Identify("123456","123456","2019-07-05 09:04:30");
+    public void identifyDaoTest() {
+        Identify identify = new Identify("123456", "123456", "2019-07-05 09:04:30");
         Identify identifySave = identifyDao.save(identify);
         Assert.assertTrue(identifyDao.exists("123456"));
         Identify identifyResult = identifyDao.findByPhone("123456");

@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 public interface ManagerRepository extends JpaRepository<Manager, String> {
     /**
      * whether exists username
+     *
      * @param username username
      * @return whether exists username
      */
@@ -18,6 +19,7 @@ public interface ManagerRepository extends JpaRepository<Manager, String> {
 
     /**
      * whether exists phone
+     *
      * @param phone phone
      * @return whether exists phone
      */
@@ -25,6 +27,7 @@ public interface ManagerRepository extends JpaRepository<Manager, String> {
 
     /**
      * find manager by username
+     *
      * @param username username
      * @return manager found
      */
@@ -32,6 +35,7 @@ public interface ManagerRepository extends JpaRepository<Manager, String> {
 
     /**
      * find manager by phone
+     *
      * @param phone phone
      * @return manager found
      */
@@ -39,6 +43,7 @@ public interface ManagerRepository extends JpaRepository<Manager, String> {
 
     /**
      * delete data from database by username
+     *
      * @param username username
      */
     @Transactional(rollbackOn = Exception.class)

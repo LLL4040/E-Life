@@ -1,15 +1,17 @@
 package user.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Repository;
 import user.entity.User;
 import user.repository.UserRepository;
+
+import java.util.List;
 
 /**
  * @author ztHou
  */
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
     private final UserRepository userRepository;
 
     public UserDaoImpl(UserRepository userRepository) {
@@ -17,32 +19,37 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User save(User user){
+    public User save(User user) {
         return userRepository.save(user);
     }
 
     @Override
-    public Boolean existByUsername(String username){
+    public Boolean existByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
 
     @Override
-    public Boolean existsByPhone(String phone){
+    public Boolean existsByPhone(String phone) {
         return userRepository.existsByPhone(phone);
     }
 
     @Override
-    public User findByUsername(String username){
+    public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public User findByPhone(String phone){
+    public User findByPhone(String phone) {
         return userRepository.findByPhone(phone);
     }
 
     @Override
-    public void deleteByUsername(String username){
+    public void deleteByUsername(String username) {
         userRepository.deleteByUsername(username);
+    }
+
+    @Override
+    public List<User> findAllByUsernameContains(String username){
+        return userRepository.findAllByUsernameContains(username);
     }
 }
