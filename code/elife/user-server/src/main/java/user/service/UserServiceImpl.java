@@ -1,74 +1,81 @@
 package user.service;
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import user.dao.ManagerDao;
 import user.dao.UserDao;
+import user.entity.Community;
 import user.entity.Manager;
 import user.entity.User;
+import user.repository.CommunityRepository;
+
+import java.util.List;
 
 /**
  * @author ztHou
  */
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final ManagerDao managerDao;
     private final IdentifyService identifyService;
+    private final CommunityRepository communityRepository;
 
-    public UserServiceImpl(UserDao userDao,ManagerDao managerDao, IdentifyService identifyService) {
+    public UserServiceImpl(UserDao userDao, ManagerDao managerDao, IdentifyService identifyService, CommunityRepository communityRepository) {
         this.userDao = userDao;
         this.managerDao = managerDao;
         this.identifyService = identifyService;
+        this.communityRepository = communityRepository;
     }
 
 
     @Override
-    public JSONObject usernameAvailable(String username){
+    public JSONObject usernameAvailable(String username) {
         JSONObject result = new JSONObject();
         Boolean flag = userDao.existByUsername(username);
-        result.put("available", (flag)?0:1);
+        result.put("available", (flag) ? 0 : 1);
         return result;
     }
 
     @Override
-    public JSONObject usernameAvailableManager(String username){
+    public JSONObject usernameAvailableManager(String username) {
         JSONObject result = new JSONObject();
         Boolean flag = managerDao.existByUsername(username);
-        result.put("available", (flag)?0:1);
+        result.put("available", (flag) ? 0 : 1);
         return result;
     }
 
     @Override
-    public JSONObject phoneAvailable(String phone){
+    public JSONObject phoneAvailable(String phone) {
         JSONObject result = new JSONObject();
         Boolean flag = userDao.existsByPhone(phone);
-        result.put("available", (flag)?0:1);
+        result.put("available", (flag) ? 0 : 1);
         return result;
     }
 
     @Override
-    public JSONObject phoneAvailableManager(String phone){
+    public JSONObject phoneAvailableManager(String phone) {
         JSONObject result = new JSONObject();
         Boolean flag = managerDao.existsByPhone(phone);
-        result.put("available", (flag)?0:1);
+        result.put("available", (flag) ? 0 : 1);
         return result;
     }
 
 
     @Override
-    public JSONObject registerUser(String username, String password, String phone, String code, String email, Integer communityId){
+    public JSONObject registerUser(String username, String password, String phone, String code, String email, Long communityId) {
         JSONObject result = new JSONObject();
         result.put("register", 0);
         String available = "available";
-        if(((int)usernameAvailable(username).get(available) != 1) || ((int)usernameAvailable(phone).get(available) != 1)){
+        if (((int) usernameAvailable(username).get(available) != 1) || ((int) usernameAvailable(phone).get(available) != 1)) {
             return result;
         }
-        try{
+        try {
             User user = new User(username, password, phone, email, 0, communityId);
             Boolean flag = identifyService.verifyIdentifyCode(phone, code);
-            if(!flag){
+            if (!flag) {
                 /* 手机验证码错误 */
                 return result;
             } else {
@@ -76,24 +83,24 @@ public class UserServiceImpl implements UserService{
                 result.put("register", 1);
                 return result;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             result.put("register", 0);
         }
         return result;
     }
 
     @Override
-    public JSONObject registerManager(String username, String password, String phone, String code, String email, Integer communityId){
+    public JSONObject registerManager(String username, String password, String phone, String code, String email, Long communityId) {
         JSONObject result = new JSONObject();
         result.put("register", 0);
         String available = "available";
-        if(((int)usernameAvailableManager(username).get(available) != 1) || ((int)usernameAvailableManager(phone).get(available) != 1)){
+        if (((int) usernameAvailableManager(username).get(available) != 1) || ((int) usernameAvailableManager(phone).get(available) != 1)) {
             return result;
         }
-        try{
+        try {
             Manager manager = new Manager(username, password, phone, email, 0, communityId);
             Boolean flag = identifyService.verifyIdentifyCode(phone, code);
-            if(!flag){
+            if (!flag) {
                 /* 手机验证码错误 */
                 return result;
             } else {
@@ -101,39 +108,21 @@ public class UserServiceImpl implements UserService{
                 result.put("register", 1);
                 return result;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             result.put("register", 0);
         }
         return result;
     }
 
     @Override
-    public JSONObject login(String username, String password){
+    public JSONObject login(String username, String password) {
         JSONObject result = new JSONObject();
         result.put("login", 0);
-        if(!userDao.existByUsername(username)){
+        if (!userDao.existByUsername(username)) {
             return result;
-        }else {
+        } else {
             User user = userDao.findByUsername(username);
-            if(!user.getPassword().equals(password)){
-                return result;
-            }else {
-                result.put("username", user.getUsername());
-                result.put("login", 1);
-                return result;
-            }
-        }
-    }
-
-    @Override
-    public JSONObject loginPhone(String phone, String code){
-        JSONObject result = new JSONObject();
-        result.put("login", 0);
-        if(!userDao.existsByPhone(phone)){
-            return result;
-        }else {
-            User user = userDao.findByPhone(phone);
-            if(!identifyService.verifyIdentifyCode(phone, code)){
+            if (!user.getPassword().equals(password)) {
                 return result;
             } else {
                 result.put("username", user.getUsername());
@@ -144,15 +133,33 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public JSONObject findPassword(String phone, String code, String password){
+    public JSONObject loginPhone(String phone, String code) {
+        JSONObject result = new JSONObject();
+        result.put("login", 0);
+        if (!userDao.existsByPhone(phone)) {
+            return result;
+        } else {
+            User user = userDao.findByPhone(phone);
+            if (!identifyService.verifyIdentifyCode(phone, code)) {
+                return result;
+            } else {
+                result.put("username", user.getUsername());
+                result.put("login", 1);
+                return result;
+            }
+        }
+    }
+
+    @Override
+    public JSONObject findPassword(String phone, String code, String password) {
         JSONObject result = new JSONObject();
         result.put("findPassword", 0);
-        if(!userDao.existsByPhone(phone)){
+        if (!userDao.existsByPhone(phone)) {
             result.put("exists", 0);
             return result;
-        }else {
+        } else {
             result.put("exists", 1);
-            if(!identifyService.verifyIdentifyCode(phone, code)){
+            if (!identifyService.verifyIdentifyCode(phone, code)) {
                 result.put("identify", 0);
                 return result;
             } else {
@@ -166,32 +173,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public JSONObject loginManager(String username, String password){
+    public JSONObject loginManager(String username, String password) {
         JSONObject result = new JSONObject();
         result.put("login", 0);
-        if(!managerDao.existByUsername(username)){
+        if (!managerDao.existByUsername(username)) {
             return result;
-        }else {
+        } else {
             Manager manager = managerDao.findByUsername(username);
-            if(!manager.getPassword().equals(password)){
-                return result;
-            }else {
-                result.put("username", manager.getUsername());
-                result.put("login", 1);
-                return result;
-            }
-        }
-    }
-
-    @Override
-    public JSONObject loginPhoneManager(String phone, String code){
-        JSONObject result = new JSONObject();
-        result.put("login", 0);
-        if(!managerDao.existsByPhone(phone)){
-            return result;
-        }else {
-            Manager manager = managerDao.findByPhone(phone);
-            if(!identifyService.verifyIdentifyCode(phone, code)){
+            if (!manager.getPassword().equals(password)) {
                 return result;
             } else {
                 result.put("username", manager.getUsername());
@@ -202,15 +191,33 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public JSONObject findPasswordManager(String phone, String code, String password){
+    public JSONObject loginPhoneManager(String phone, String code) {
+        JSONObject result = new JSONObject();
+        result.put("login", 0);
+        if (!managerDao.existsByPhone(phone)) {
+            return result;
+        } else {
+            Manager manager = managerDao.findByPhone(phone);
+            if (!identifyService.verifyIdentifyCode(phone, code)) {
+                return result;
+            } else {
+                result.put("username", manager.getUsername());
+                result.put("login", 1);
+                return result;
+            }
+        }
+    }
+
+    @Override
+    public JSONObject findPasswordManager(String phone, String code, String password) {
         JSONObject result = new JSONObject();
         result.put("findPassword", 0);
-        if(!managerDao.existsByPhone(phone)){
+        if (!managerDao.existsByPhone(phone)) {
             result.put("exists", 0);
             return result;
-        }else {
+        } else {
             result.put("exists", 1);
-            if(!identifyService.verifyIdentifyCode(phone, code)){
+            if (!identifyService.verifyIdentifyCode(phone, code)) {
                 result.put("identify", 0);
                 return result;
             } else {
@@ -224,24 +231,38 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public JSONObject changeManagerRole(String username, Integer role){
+    public JSONObject changeManagerRole(String username, Integer role) {
         JSONObject result = new JSONObject();
         result.put("changeRole", 0);
-        if(!managerDao.existByUsername(username)){
+        if (!managerDao.existByUsername(username)) {
             result.put("exists", 0);
             return result;
         } else {
             result.put("exists", 1);
-            try{
+            try {
                 Manager manager = managerDao.findByUsername(username);
                 manager.setRole(role);
                 result.put("changeRole", 1);
                 return result;
-            }catch (Exception e){
+            } catch (Exception e) {
                 return result;
             }
 
         }
+    }
+
+    @Override
+    public JSONArray showCommunities(){
+        JSONArray jsonArray = new JSONArray();
+        List<Community> communityList = communityRepository.findAll();
+        for(Community community : communityList){
+            JSONObject object = new JSONObject();
+            object.put("id", community.getId());
+            object.put("name", community.getCommunityName());
+            object.put("information", community.getCommunityInfo());
+            jsonArray.appendElement(object);
+        }
+        return jsonArray;
     }
 
 }

@@ -17,32 +17,32 @@ public class ManagerDaoImpl implements ManagerDao {
     }
 
     @Override
-    public Manager save(Manager manager){
+    public Manager save(Manager manager) {
         return managerRepository.save(manager);
     }
 
     @Override
-    public Boolean existByUsername(String username){
+    public Boolean existByUsername(String username) {
         return managerRepository.existsByUsername(username);
     }
 
     @Override
-    public Boolean existsByPhone(String phone){
+    public Boolean existsByPhone(String phone) {
         return managerRepository.existsByPhone(phone);
     }
 
     @Override
-    public Manager findByUsername(String username){
+    public Manager findByUsername(String username) {
         return managerRepository.findByUsername(username);
     }
 
     @Override
-    public Manager findByPhone(String phone){
+    public Manager findByPhone(String phone) {
         return managerRepository.findByPhone(phone);
     }
 
     @Override
-    public void deleteByUsername(String username){
+    public void deleteByUsername(String username) {
         managerRepository.deleteByUsername(username);
     }
 }

@@ -12,10 +12,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class IdentifyTest {
-    private Identify identify = new Identify("123456","123456","2019-07-05 09:04:30");
+    private Identify identify = new Identify("123456", "123456", "2019-07-05 09:04:30");
 
     @Test
-    public void usernameTest(){
+    public void usernameTest() {
         Assert.assertEquals("get phone fails", "123456", identify.getPhone());
         identify.setPhone("12345");
         Assert.assertEquals("set phone fails", "12345", identify.getPhone());
@@ -23,7 +23,7 @@ public class IdentifyTest {
     }
 
     @Test
-    public void codeTest(){
+    public void codeTest() {
         Assert.assertEquals("get code fails", "123456", identify.getCode());
         identify.setCode("12345");
         Assert.assertEquals("set code fails", "12345", identify.getCode());
@@ -31,7 +31,7 @@ public class IdentifyTest {
     }
 
     @Test
-    public void timeTest(){
+    public void timeTest() {
         Assert.assertEquals("get time fails", "2019-07-05 09:04:30", identify.getTime());
         identify.setTime("2019-07-05 09:05:30");
         Assert.assertEquals("set time fails", "2019-07-05 09:05:30", identify.getTime());

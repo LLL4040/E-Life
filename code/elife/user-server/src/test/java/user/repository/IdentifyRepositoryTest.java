@@ -18,8 +18,8 @@ public class IdentifyRepositoryTest {
     private IdentifyRepository identifyRepository;
 
     @Test
-    public void identifyRepositoryTest(){
-        Identify identify = new Identify("123456","123456","2019-07-05 09:04:30");
+    public void identifyRepositoryTest() {
+        Identify identify = new Identify("123456", "123456", "2019-07-05 09:04:30");
         Identify identifySave = identifyRepository.save(identify);
         Identify identifyResult = identifyRepository.findByPhone("123456");
         Assert.assertEquals("save or find fail", identifySave.getPhone(), identifyResult.getPhone());
