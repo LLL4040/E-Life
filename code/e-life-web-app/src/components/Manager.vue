@@ -49,48 +49,36 @@
             <h6 class="text-center tm-text-primary mb-4">用户名</h6>
             <div style="clear:both"></div>
           </div>
-          <el-menu-item index="1" @click="toPage(7)">
-            <i class="el-icon-chat-dot-round"></i>
-            <span slot="title" style="font-size: 16px">我的通知
-              <el-badge v-if="newMessage !== 0" class="mark" :value=newMessage :max="99" style="background-color: transparent" />
-            </span>
+          <el-menu-item index="1">
+            <i class="el-icon-chat-dot-round"></i><span slot="title" style="font-size: 16px">发布资讯</span>
           </el-menu-item>
-          <el-submenu index="2">
-            <template slot="title" style="font-size: 16px">
-              <i class="el-icon-bank-card"></i>
-              <span style="font-size: 16px">我的账单</span>
-            </template>
-            <el-menu-item index="2-1" @click="toPage(8)">查询</el-menu-item>
-            <el-menu-item index="2-2">缴纳</el-menu-item>
-          </el-submenu>
+          <el-menu-item index="2">
+            <i class="el-icon-alarm-clock"></i><span slot="title" style="font-size: 16px">安排活动</span>
+          </el-menu-item>
           <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-message"></i>
-              <span style="font-size: 16px">我的好友
-                <el-badge v-if="newFriend !== 0" class="mark" :value=newFriend :max="99" style="background-color: transparent" />
-              </span>
+            <template slot="title" style="font-size: 16px">
+              <i class="el-icon-setting"></i>
+              <span style="font-size: 16px">管理用户</span>
             </template>
-            <el-menu-item index="3-1" @click="toPage(9)">好友列表</el-menu-item>
-            <el-menu-item index="3-2" @click="toPage(10)">添加好友</el-menu-item>
-            <el-menu-item index="3-3" @click="toPage(11)">申请列表
-              <el-badge v-if="newFriend !== 0" class="mark" :value=newFriend :max="99" style="background-color: transparent" />
-            </el-menu-item>
+            <el-submenu index="3-1">
+              <template slot="title">管理账单</template>
+              <el-menu-item index="3-1-1">未缴费</el-menu-item>
+              <el-menu-item index="3-1-2">已缴费</el-menu-item>
+            </el-submenu>
+            <el-menu-item index="3-2">通知用户</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
-              <i class="el-icon-message"></i>
-              <span style="font-size: 16px">我的邮包
-                <el-badge v-if="newParcel !== 0" class="mark" :value=newParcel :max="99" style="background-color: transparent" />
+              <i class="el-icon-service"></i>
+              <span style="font-size: 16px">处理报修
+                <el-badge v-if="newRepaire !== 0" class="mark" :value=newRepaire :max="99" style="background-color: transparent" />
               </span>
             </template>
-            <el-menu-item index="4-1">邮包通知
-              <el-badge v-if="newParcel !== 0" class="mark" :value=newParcel :max="99" style="background-color: transparent" />
+            <el-menu-item index="4-1">未处理
+              <el-badge v-if="newRepaire !== 0" class="mark" :value=newRepaire :max="99" style="background-color: transparent" />
             </el-menu-item>
-            <el-menu-item index="4-2">上门寄件</el-menu-item>
+            <el-menu-item index="4-2">已处理</el-menu-item>
           </el-submenu>
-          <el-menu-item index="5">
-            <i class="el-icon-map-location"></i><span slot="title" style="font-size: 16px">我的周边</span>
-          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -109,20 +97,12 @@ import page3 from './Forum.vue'
 import page4 from './MarketService.vue'
 import page5 from './ComputerService.vue'
 import page6 from './PropertyService.vue'
-import page7 from './MyMessage.vue'
-import page8 from './MyBill.vue'
-import page9 from './MyFriend.vue'
-import page10 from './MyFriendAdd.vue'
-import page11 from './MyFriendApply.vue'
-
 export default {
-  name: 'User',
+  name: 'Manager',
   data () {
     return {
       tabView: 'page1',
-      newMessage: 10,
-      newFriend: 10,
-      newParcel: 10
+      newRepaire: 10
     }
   },
   methods: {
@@ -133,9 +113,7 @@ export default {
       this.$axios
         .get('')
         .then(response => {
-          this.newMessage = response.data('message')
-          this.newFriend = response.data('friend')
-          this.newParcel = response.data('parcel')
+          this.newRepaire = response.data
         })
     }
   },
@@ -145,12 +123,7 @@ export default {
     page3,
     page4,
     page5,
-    page6,
-    page7,
-    page8,
-    page9,
-    page10,
-    page11
+    page6
   },
   mounted () {
     // this.getNew()

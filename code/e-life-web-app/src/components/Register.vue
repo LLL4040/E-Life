@@ -21,7 +21,7 @@
               <router-link router-link :to="{name:'Register'}" class="nav-link tm-nav-link">注册</router-link>
             </li>
             <li class="nav-item">
-              <router-link router-link :to="{name:'home'}" class="nav-link tm-nav-link">联系我们</router-link>
+              <a class="nav-link tm-nav-link" href="/#contact">联系我们</a>
             </li>
           </ul>
         </div>
@@ -65,7 +65,7 @@
               <el-button type="primary" @click="nextStep()">下一步</el-button>
             </el-form-item>
           </el-form>
-          <el-form v-if="x === 1 && this.form.id !== '商家'" ref="form" :model="form" label-width="60px">
+          <el-form v-if="x === 1 && this.form.id !== '商家'" ref="form" :model="form" label-width="60px" style="padding-left: 20%; width: 77%">
             <el-form-item label="用户名">
               <el-input v-model="form.username"></el-input>
             </el-form-item>
@@ -79,7 +79,38 @@
               <el-button type="primary" @click="nextStep()">下一步</el-button>
             </el-form-item>
           </el-form>
-          <el-form v-if="x === 2" ref="form" :model="form" label-width="60px">
+          <el-form v-if="x === 1 && this.form.id === '商家'" ref="form" :inline="true" :model="form" label-width="70px">
+            <el-form-item label="用户名">
+              <el-input v-model="form.username" style="width: 200px"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+              <el-input v-model="form.password" show-password style="width: 200px"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱">
+              <el-input v-model="form.email" style="width: 200px"></el-input>
+            </el-form-item>
+            <el-form-item label="商店名称">
+              <el-input v-model="form.shop" style="width: 200px"></el-input>
+            </el-form-item>
+            <el-form-item label="商店电话">
+              <el-input v-model="form.phone" style="width: 200px"></el-input>
+            </el-form-item>
+            <el-form-item label="商店类型">
+              <el-select v-model="form.type" placeholder="请选择" style="width: 200px">
+                <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商店描述">
+              <el-input v-model="form.description" type="textarea" :rows="2" style="width: 200px"></el-input>
+            </el-form-item>
+            <el-form-item label="商店地址" style="padding-right: 40px">
+              <el-button style="float: right; padding: 10px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">选择地址</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="nextStep()">下一步</el-button>
+            </el-form-item>
+          </el-form>
+          <el-form v-if="x === 2" ref="form" :model="form" label-width="60px" style="padding-left: 20%; width: 70%; padding-top: 5%">
             <el-form-item label="手机号">
               <el-input v-model="form.number" style="float:left; width: 64%"></el-input>
               <el-button type="primary" @click="getPass()" style="float:left">获取验证码</el-button>
@@ -91,9 +122,26 @@
               <el-button type="primary" @click="submit()">提交</el-button>
             </el-form-item>
           </el-form>
+          <el-form v-if="x === 3 && form.id === '管理员'" label-width="60px">
+            <el-form-item>
+              <p>提交成功！等待审核，请等待邮箱提醒。</p>
+            </el-form-item>
+          </el-form>
+          <el-form v-if="x === 3 && form.id !== '管理员'" label-width="60px">
+            <el-form-item>
+              <br>
+              <router-link router-link :to="{name:'Login'}" style="font-size: 17px; color: #3ba0dd">提交成功！点此跳转。</router-link>
+            </el-form-item>
+          </el-form>
         </el-card>
       </div>
     </div>
+    <el-dialog title="商店地址选择" :visible.sync="dialogFormVisible">
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </section>
 </template>
 
@@ -103,6 +151,7 @@ export default {
   data () {
     return {
       x: 0,
+      dialogFormVisible: false,
       form: {
         community: '',
         id: '',
@@ -131,6 +180,19 @@ export default {
         value: 'xx小区',
         label: 'xx小区'
       }],
+      types: [{
+        value: '周边餐饮',
+        label: '周边餐饮'
+      }, {
+        value: '超市购物',
+        label: '超市购物'
+      }, {
+        value: '休闲娱乐',
+        label: '休闲娱乐'
+      }, {
+        value: '生活服务',
+        label: '生活服务'
+      }],
       result: ''
     }
   },
@@ -154,21 +216,20 @@ export default {
           }
         }
       }
-      if (this.x === 2) {
-        if (this.form.number === '' || this.form.pass === '') {
-          this.$alert('表单必须填写完整才能提交！')
-          return 0
-        }
-      }
       this.x++
     },
     submit () {
-      let url = ''
-      this.$axios
-        .post(url, this.form)
-        .then(response => {
-          this.$alert(response.data)
-        })
+      if (this.form.number === '' || this.form.pass === '') {
+        this.$alert('表单必须填写完整才能提交！')
+        return 0
+      }
+      // let url = ''
+      // this.$axios
+      //   .post(url, this.form)
+      //   .then(response => {
+      //     this.$alert(response.data)
+      //   })
+      this.x++
     },
     getPass () {
       console.log('获取验证码！')
