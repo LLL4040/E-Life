@@ -1,5 +1,6 @@
 package urgent.daoimpl;
 
+import net.minidev.json.JSONObject;
 import urgent.dao.UrgentDao;
 import urgent.entity.Urgent;
 import urgent.entity.UrgentUsed;
@@ -24,9 +25,9 @@ public class UrgentDaoImpl implements UrgentDao{
     private UrgentUsedRepository urgentUsedRepository;
 
     @Override
-    public void save(int id, String managerName, String content, int status, int communityId){
+    public void save(String managerName, String content, int status, int communityId){
         urgentRepository.changeStatus(communityId);
-        urgentRepository.saveUrgent(id,managerName,content,status,communityId);
+        urgentRepository.saveUrgent(managerName,content,status,communityId);
 
     }
 

@@ -15,12 +15,11 @@ public interface UrgentService {
     /**
      * save Urgent without time
      *
-     * @param id
      * @param managerName
      * @param content
      * @param status
      */
-    void save(int id, String managerName, String content, int status, int communityId);
+    void save(String managerName, String content, int status, int communityId);
 
     /**
      * find special Urgent with id

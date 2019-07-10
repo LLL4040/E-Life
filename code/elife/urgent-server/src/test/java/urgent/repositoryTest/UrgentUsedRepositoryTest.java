@@ -22,7 +22,7 @@ public class UrgentUsedRepositoryTest {
     @Test
     @Transactional
     public void findHistoryTest(){
-        urgentRepository.saveUrgent(55555,"1","test",0,1);
+        urgentRepository.saveUrgent("1","test",0,1);
         urgentRepository.moveTable(1);
         urgentUsedRepository.findHistory(1);
     }

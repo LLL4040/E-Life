@@ -1,5 +1,6 @@
 package urgent.dao;
 
+import net.minidev.json.JSONObject;
 import urgent.entity.Urgent;
 import urgent.entity.UrgentUsed;
 
@@ -15,12 +16,11 @@ public interface UrgentDao {
     /**
      * save Urgent withou time
      *
-     * @param id
      * @param content
      * @param managerName
      * @param status
      */
-    void save(int id, String content, String managerName, int status, int communityId);
+    void save( String content, String managerName, int status, int communityId);
 
     /**
      * find special Urgent with Id
