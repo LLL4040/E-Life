@@ -21,14 +21,14 @@
                   <a class="nav-link tm-nav-link" @click="toPage(2)">小区团购</a>
                 </li>
                 <li class="nav-item">
-                  <el-dropdown>
+                  <el-dropdown @command="toPage">
                     <span class="nav-link tm-nav-link" style="font-size: 1.25rem">
                       <i class="el-icon-arrow-down el-icon--right"></i>小区服务
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>超市送货</el-dropdown-item>
-                      <el-dropdown-item>电脑维修</el-dropdown-item>
-                      <el-dropdown-item>物业维修</el-dropdown-item>
+                      <el-dropdown-item command="4">超市送货</el-dropdown-item>
+                      <el-dropdown-item command="5">电脑维修</el-dropdown-item>
+                      <el-dropdown-item command="6">物业维修</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </li>
@@ -70,9 +70,13 @@
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-service"></i>
-              <span style="font-size: 16px">处理报修</span>
+              <span style="font-size: 16px">处理报修
+                <el-badge v-if="newRepaire !== 0" class="mark" :value=newRepaire :max="99" style="background-color: transparent" />
+              </span>
             </template>
-            <el-menu-item index="4-1">未处理</el-menu-item>
+            <el-menu-item index="4-1">未处理
+              <el-badge v-if="newRepaire !== 0" class="mark" :value=newRepaire :max="99" style="background-color: transparent" />
+            </el-menu-item>
             <el-menu-item index="4-2">已处理</el-menu-item>
           </el-submenu>
         </el-menu>
@@ -90,24 +94,39 @@
 import page1 from './CommunityInformation.vue'
 import page2 from './GroupBuy.vue'
 import page3 from './Forum.vue'
+import page4 from './MarketService.vue'
+import page5 from './ComputerService.vue'
+import page6 from './PropertyService.vue'
 export default {
   name: 'Manager',
   data () {
     return {
-      tabView: 'page1'
+      tabView: 'page1',
+      newRepaire: 10
     }
   },
   methods: {
     toPage (index) {
       this.tabView = `page${index}`
+    },
+    getNew () {
+      this.$axios
+        .get('')
+        .then(response => {
+          this.newRepaire = response.data
+        })
     }
   },
   components: {
     page1,
     page2,
-    page3
+    page3,
+    page4,
+    page5,
+    page6
   },
   mounted () {
+    // this.getNew()
     let start = window.location.href.lastIndexOf('/')
     this.activeIndex = window.location.href.slice(start + 1)
   }

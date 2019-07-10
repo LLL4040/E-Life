@@ -89,9 +89,9 @@
             </el-tabs>
             <h4>&nbsp;</h4>
             <div class="tm-next" align="center">
-              <a href="#work" class="tm-intro-text tm-btn-primary">登录</a>
+              <router-link router-link :to="{name:'Login'}" class="tm-intro-text tm-btn-primary">登录</router-link>
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <a href="#work" class="tm-intro-text tm-btn-primary">注册</a>
+              <router-link router-link :to="{name:'Register'}" class="tm-intro-text tm-btn-primary">注册</router-link>
             </div>
           </div>
         </div>

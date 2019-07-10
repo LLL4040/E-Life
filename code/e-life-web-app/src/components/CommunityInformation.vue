@@ -8,9 +8,9 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <el-row :gutter="20">
+    <el-row :gutter="10">
       <el-col :span="12">
-        <el-card class="box-card" shadow="never">
+        <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>最新资讯</span>
           </div>
@@ -20,7 +20,7 @@
         </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card class="box-card" shadow="never">
+        <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>活动安排</span>
           </div>
