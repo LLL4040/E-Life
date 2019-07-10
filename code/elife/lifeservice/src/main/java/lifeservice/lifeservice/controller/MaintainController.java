@@ -25,30 +25,34 @@ public class MaintainController {
 
     @RequestMapping(path = "/addMaintain")
     @ResponseBody
-    public String addMaintain(@RequestParam String content, @RequestParam String usernname){
-        if("".equals(content)||"".equals(usernname)){
+    public String addMaintain(@RequestParam String content, @RequestParam String username,@RequestParam String userphone){
+        if("".equals(content)||"".equals(username)||"".equals(userphone)){
             return "信息不能为空";
         }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String maintainTime = df.format(new Date());
-        Maintain maintain=new Maintain(maintainTime,content,usernname);
-        if(maintainService.saveMaintian(maintain)!=0){
+        Maintain maintain=new Maintain(maintainTime,content,username,userphone);
+        long saveReult=maintainService.saveMaintian(maintain);
+        System.out.println(saveReult);
+        if(saveReult!=0){
             return "增加物业维修请求成功";
         }else {
             return "增加物业维护请求失败";
         }
 
     }
+    /**
+     * 难点*/
     @RequestMapping(path = "/managerFindMaintain")
     @ResponseBody
     public List<Maintain> managerFindMaintain(@RequestParam int communityId){
 
-        return null;
+        return maintainService.findMaintainByCommunityId(communityId);
     }
     @RequestMapping(path = "/userFindMaintain")
     @ResponseBody
-    public List<Maintain> userFindMaintain(@RequestParam String username,@RequestParam int status){
-        List<Maintain> maintainList= maintainService.findbyUsernameAndStatus(username,status);
+    public List<Maintain> userFindMaintain(@RequestParam String username){
+        List<Maintain> maintainList= maintainService.findbyUsernameAndStatus(username);
         if(!maintainList.isEmpty()){
             return maintainList;
         }
@@ -57,8 +61,8 @@ public class MaintainController {
         }
     }
     @RequestMapping(path = "/manageMaintain")
-    @ResponseBody String manageMaintain(@RequestParam long id,@RequestParam String maintainname,@RequestParam String phone,@RequestParam String managername){
-        String managerResult= maintainService.managerMaintain(id,maintainname,phone,managername);
+    @ResponseBody String manageMaintain(@RequestParam long id,@RequestParam int status,@RequestParam String maintainname,@RequestParam String phone,@RequestParam String managername){
+        String managerResult= maintainService.managerMaintain(id,status,maintainname,phone,managername);
         if(managerResult.equals("完成管理物业维修")){
             return "完成管理物业维修";
         }
@@ -71,5 +75,11 @@ public class MaintainController {
             return "修改物业维修状态成功";
         }
         return "修改物业维修状态失败";
+    }
+    @RequestMapping(path = "/countMaintain")
+    @ResponseBody
+    public long countMaintain(@RequestParam int communityId){
+
+        return maintainService.countMaintain(communityId);
     }
 }

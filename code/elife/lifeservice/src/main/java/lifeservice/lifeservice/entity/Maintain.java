@@ -1,8 +1,6 @@
 package lifeservice.lifeservice.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * postComments class
@@ -13,23 +11,30 @@ import javax.persistence.Table;
 @Table(name = "maintain")
 public class Maintain {
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private  long id;
     private String time;
+    /**
+     * 维修单的状态，0为已提交，1为已派人维修，2是取消，3是已完成*/
     private int status;
     private String content;
     private String maintainname;
     private String phone;
     private String managername;
     private String username;
+    @Column(name = "userphone")
+    private String userPhone;
 
     public Maintain(){
 
     }
-    public Maintain(String time,String content,String username){
+    public Maintain(String time,String content,String username,String userPhone){
         this.time=time;
         this.status=0;
         this.content=content;
         this.username=username;
+        this.userPhone=userPhone;
     }
 
     public long getId() {
@@ -64,6 +69,10 @@ public class Maintain {
         return username;
     }
 
+    public String getUserPhone() {
+        return userPhone;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -94,5 +103,9 @@ public class Maintain {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 }

@@ -21,29 +21,64 @@ public class MaintainDaoImpl implements MaintainDao {
     @Override
     public long saveMaintian(Maintain maintain) {
         return maintainRepository.save(maintain).getId();
+
     }
 
     @Override
-    public String managerMaintain(long id, String maintianname, String phone, String managername) {
-        Maintain maintain=maintainRepository.getOne(id);
-        maintain.setMaintainname(maintianname);
-        maintain.setPhone(phone);
-        maintain.setManagername(managername);
-        maintain.setStatus(1);
-        maintainRepository.save(maintain);
-        return "完成管理物业维修";
+    public String managerMaintain(long id,int status, String maintianname, String phone, String managername) {
+        try{
+            Maintain maintain=maintainRepository.getOne(id);
+            maintain.setMaintainname(maintianname);
+            maintain.setPhone(phone);
+            maintain.setManagername(managername);
+            maintain.setStatus(status);
+            maintainRepository.save(maintain);
+            return "完成管理物业维修";
+        }
+        catch (Exception e){
+            return "管理物业维修失败";
+        }
+
     }
 
     @Override
-    public List<Maintain> findbyUsernameAndStatus(String username, int status) {
+    public List<Maintain> findbyUsernameAndStatus(String username) {
 
-        return maintainRepository.findbyUsernameAndStatus(username,status);
+        return maintainRepository.findbyUsernameAndStatus(username);
     }
 
     @Override
     public String userEditMaintain(long id, int status) {
-        Maintain maintain = maintainRepository.getOne(id);
-        maintain.setStatus(status);
-        return "修改物业维修状态成功";
+        try {
+            Maintain maintain = maintainRepository.getOne(id);
+            maintain.setStatus(status);
+            return "修改物业维修状态成功";
+        }catch (Exception e){
+            return "修改物业维修状态失败";
+        }
+
     }
+
+    @Override
+    public List<Maintain> findMaintainByCommunityId(int communityId) {
+
+        return maintainRepository.findMaintainByCommunityId(communityId);
+    }
+
+    @Override
+    public Maintain getOne(long id) {
+        return maintainRepository.getOne(id);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        maintainRepository.deleteById(id);
+
+    }
+
+    @Override
+    public long countMaintain(int communityId) {
+        return maintainRepository.countMaintain(communityId);
+    }
+
 }

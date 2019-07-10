@@ -25,17 +25,42 @@ public class MaintainServiceImpl implements MaintainService {
     }
 
     @Override
-    public String managerMaintain(long id, String maintianname, String phone, String managername) {
-        return maintainDao.managerMaintain(id,maintianname,phone,managername);
+    public String managerMaintain(long id, int status,String maintianname, String phone, String managername) {
+        return maintainDao.managerMaintain(id,status,maintianname,phone,managername);
     }
 
     @Override
-    public List<Maintain> findbyUsernameAndStatus(String username, int status) {
-        return maintainDao.findbyUsernameAndStatus(username,status);
+    public List<Maintain> findbyUsernameAndStatus(String username) {
+        return maintainDao.findbyUsernameAndStatus(username);
     }
 
     @Override
     public String userEditMaintain(long id, int status) {
         return maintainDao.userEditMaintain(id,status);
+    }
+
+    @Override
+    public List<Maintain> findMaintainByCommunityId(int communityId) {
+        return maintainDao.findMaintainByCommunityId(communityId);
+    }
+
+    @Override
+    public Maintain getOne(long id) {
+        return maintainDao.getOne(id);
+    }
+
+    @Override
+    public boolean deleteById(long id) {
+        try{
+            maintainDao.deleteById(id);
+            return true;
+        }catch (org.springframework.dao.EmptyResultDataAccessException e){
+            return false;
+        }
+    }
+
+    @Override
+    public long countMaintain(int communityId) {
+        return maintainDao.countMaintain(communityId);
     }
 }
