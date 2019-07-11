@@ -17,13 +17,13 @@ public class IdentifyController {
 
     @GetMapping(path = "/sendIdentify")
     @ResponseBody
-    public Boolean sendIdentify(@RequestParam String phone){
+    public Boolean sendIdentify(@RequestParam String phone) {
         return identifyService.sendIdentifyCode(phone);
     }
 
     @GetMapping(path = "/verifyIdentify")
     @ResponseBody
-    public Boolean verifyIdentify(@RequestParam String phone, @RequestParam String code){
+    public Boolean verifyIdentify(@RequestParam String phone, @RequestParam String code) {
         return identifyService.verifyIdentifyCode(phone, code);
     }
 }

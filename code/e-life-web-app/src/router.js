@@ -4,6 +4,9 @@ import Home from './views/Home.vue'
 import Login from './components/Login.vue'
 import User from './components/User.vue'
 import Register from './components/Register.vue'
+import Manager from './components/Manager.vue'
+import Merchant from './components/Merchant.vue'
+import Forum from './components/Forum.vue'
 
 Vue.use(Router)
 
@@ -38,6 +41,21 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/manager',
+      name: 'Manager',
+      component: Manager
+    },
+    {
+      path: '/merchant',
+      name: 'Merchant',
+      component: Merchant
+    },
+    {
+      path: '/forum',
+      name: 'Forum',
+      component: Forum
     }
   ]
 })

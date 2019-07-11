@@ -21,7 +21,7 @@ public class IdentifyServiceTest {
     private IdentifyDao identifyDao;
 
     @Test
-    public void identifyServiceTest(){
+    public void identifyServiceTest() {
         String phone = "18621805582";
         Assert.assertTrue(identifyService.sendIdentifyCode(phone));
         Identify identify = identifyDao.findByPhone(phone);

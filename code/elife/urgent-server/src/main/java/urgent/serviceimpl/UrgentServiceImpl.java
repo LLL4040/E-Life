@@ -27,8 +27,8 @@ public class UrgentServiceImpl implements UrgentService {
     private UrgentDao urgentDao;
 
     @Override
-    public void save(int id, String managerName, String content, int status, int communityId) {
-        urgentDao.save(id, managerName, content, status, communityId);
+    public void save(String managerName, String content, int status, int communityId) {
+        urgentDao.save(managerName, content, status, communityId);
     }
 
     @Override

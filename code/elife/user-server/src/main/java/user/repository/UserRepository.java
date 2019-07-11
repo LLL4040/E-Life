@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import user.entity.User;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author ztHou
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 public interface UserRepository extends JpaRepository<User, String> {
     /**
      * whether exists username
+     *
      * @param username username
      * @return whether exists username
      */
@@ -18,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     /**
      * whether exists phone
+     *
      * @param phone phone
      * @return whether exists phone
      */
@@ -25,6 +28,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     /**
      * find user by username
+     *
      * @param username username
      * @return user found
      */
@@ -32,6 +36,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     /**
      * find user by phone
+     *
      * @param phone phone
      * @return user found
      */
@@ -39,9 +44,17 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     /**
      * delete data from database by username
+     *
      * @param username username
      */
     @Transactional(rollbackOn = Exception.class)
     void deleteByUsername(String username);
+
+    /**
+     * find all user information contains the username
+     * @param username username
+     * @return all user that contains the username
+     */
+    List<User> findAllByUsernameContains(String username);
 
 }

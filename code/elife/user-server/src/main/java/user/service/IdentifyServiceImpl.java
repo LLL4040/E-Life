@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @author ztHou
  */
 @Service
-public class IdentifyServiceImpl implements IdentifyService{
+public class IdentifyServiceImpl implements IdentifyService {
     private final IdentifyDao identifyDao;
     private static Pattern pattern = Pattern.compile("^[1]\\d{10}$");
 
@@ -22,34 +22,35 @@ public class IdentifyServiceImpl implements IdentifyService{
     }
 
     @Override
-    public Boolean sendIdentifyCode(String phone){
-        if(!pattern.matcher(phone).matches()){
+    public Boolean sendIdentifyCode(String phone) {
+        if (!pattern.matcher(phone).matches()) {
             return false;
         }
-        int number = (int)((Math.random()*9+1)*100000);
+        int number = (int) ((Math.random() * 9 + 1) * 100000);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateTime = df.format(new Date());
-        try{
+        try {
             Identify identify;
-            try{
+            try {
                 identify = identifyDao.findByPhone(phone);
                 identify.setCode(Integer.toString(number));
                 identify.setTime(dateTime);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 identify = new Identify(phone, Integer.toString(number), dateTime);
             }
             identifyDao.save(identify);
             return identify.sendMessage();
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
+
     @Override
-    public Boolean verifyIdentifyCode(String phone, String code){
-        try{
-            if(!identifyDao.exists(phone)){
+    public Boolean verifyIdentifyCode(String phone, String code) {
+        try {
+            if (!identifyDao.exists(phone)) {
                 return false;
-            }else {
+            } else {
                 Identify identify = identifyDao.findByPhone(phone);
                 /* 时间格式 */
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -65,15 +66,15 @@ public class IdentifyServiceImpl implements IdentifyService{
                 Calendar end = Calendar.getInstance();
                 end.setTime(originTime);
                 end.add(Calendar.MINUTE, 5);
-                Boolean flag =  (code.equals(identify.getCode()) && (now.after(begin) && now.before(end)));
-                if(flag){
+                Boolean flag = (code.equals(identify.getCode()) && (now.after(begin) && now.before(end)));
+                if (flag) {
                     System.out.println("delete");
                     identifyDao.deleteByPhone(phone);
                 }
                 System.out.println("yes");
                 return flag;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("no");
             return false;
         }

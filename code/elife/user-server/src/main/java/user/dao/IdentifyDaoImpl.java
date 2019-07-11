@@ -9,7 +9,7 @@ import user.repository.IdentifyRepository;
  * @author ztHou
  */
 @Repository
-public class IdentifyDaoImpl implements IdentifyDao{
+public class IdentifyDaoImpl implements IdentifyDao {
     private final IdentifyRepository identifyRepository;
 
     public IdentifyDaoImpl(IdentifyRepository identifyRepository) {
@@ -17,22 +17,22 @@ public class IdentifyDaoImpl implements IdentifyDao{
     }
 
     @Override
-    public Boolean exists(String phone){
+    public Boolean exists(String phone) {
         return identifyRepository.existsByPhone(phone);
     }
 
     @Override
-    public Identify save(Identify identify){
+    public Identify save(Identify identify) {
         return identifyRepository.save(identify);
     }
 
     @Override
-    public Identify findByPhone(String phone){
+    public Identify findByPhone(String phone) {
         return identifyRepository.findByPhone(phone);
     }
 
     @Override
-    public void deleteByPhone(String phone){
+    public void deleteByPhone(String phone) {
         identifyRepository.deleteByPhone(phone);
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableEurekaClient
 @RestController
 public class UserApplication {
-    public static  void main(String[] args){
+    public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
     }
 }

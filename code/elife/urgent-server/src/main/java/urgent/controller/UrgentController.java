@@ -22,8 +22,8 @@ public class UrgentController {
     private UrgentService urgentService;
 
     @RequestMapping("/saveUrgent")
-    public void saveUrgent(int id, String managerName, String content, int status, int communityId){
-        urgentService.save(id, managerName, content, status, communityId);
+    public void saveUrgent(String managerName, String content, int status, int communityId){
+        urgentService.save(managerName, content, status, communityId);
     }
 
     @RequestMapping("/getUrgent")

@@ -27,10 +27,10 @@ public class Identify implements Serializable {
     @Column(name = "time")
     private String time;
 
-    public Identify(){
+    public Identify() {
     }
 
-    public Identify(String phone, String code, String time){
+    public Identify(String phone, String code, String time) {
         this.phone = phone;
         this.code = code;
         this.time = time;
@@ -109,10 +109,10 @@ public class Identify implements Serializable {
         /* 发送短信 */
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
         String success = "OK";
-        if(sendSmsResponse.getCode()!= null && success.equals(sendSmsResponse.getCode())){
+        if (sendSmsResponse.getCode() != null && success.equals(sendSmsResponse.getCode())) {
             System.out.println("短信发送成功！");
             return true;
-        }else {
+        } else {
             System.out.println("短信发送失败！");
             return false;
         }

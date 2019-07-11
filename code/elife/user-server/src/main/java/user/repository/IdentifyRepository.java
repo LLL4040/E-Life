@@ -2,6 +2,7 @@ package user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import user.entity.Identify;
+
 import javax.transaction.Transactional;
 
 
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 public interface IdentifyRepository extends JpaRepository<Identify, String> {
     /**
      * delete data by phone number
+     *
      * @param phone phone number
      */
     @Transactional(rollbackOn = Exception.class)
@@ -18,6 +20,7 @@ public interface IdentifyRepository extends JpaRepository<Identify, String> {
 
     /**
      * whether exists phone number
+     *
      * @param phone phone number
      * @return whether exists phone number
      */
@@ -25,6 +28,7 @@ public interface IdentifyRepository extends JpaRepository<Identify, String> {
 
     /**
      * find data by phone number
+     *
      * @param phone phone number
      * @return identify
      */

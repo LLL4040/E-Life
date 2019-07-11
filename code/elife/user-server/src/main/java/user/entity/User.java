@@ -30,10 +30,12 @@ public class User implements Serializable {
     private Integer role;
 
     @Column(name = "community_id")
-    private Integer communityId;
+    private Long communityId;
 
-    public User(){}
-    public User(String username, String password, String phone, String email, Integer role, Integer communityId){
+    public User() {
+    }
+
+    public User(String username, String password, String phone, String email, Integer role, Long communityId) {
         this.username = username;
         this.password = password;
         this.phone = phone;
@@ -82,11 +84,11 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public Integer getCommunityId() {
+    public Long getCommunityId() {
         return communityId;
     }
 
-    public void setCommunityId(Integer communityId) {
+    public void setCommunityId(Long communityId) {
         this.communityId = communityId;
     }
 

@@ -8,6 +8,7 @@ import user.entity.Manager;
 public interface ManagerDao {
     /**
      * save manager in database
+     *
      * @param manager manager
      * @return manager saved
      */
@@ -15,6 +16,7 @@ public interface ManagerDao {
 
     /**
      * whether exists username in database
+     *
      * @param username username
      * @return whether exists username
      */
@@ -22,6 +24,7 @@ public interface ManagerDao {
 
     /**
      * whether exists phone in database
+     *
      * @param phone phone
      * @return whether exists phone
      */
@@ -29,6 +32,7 @@ public interface ManagerDao {
 
     /**
      * find manager by username
+     *
      * @param username username
      * @return manager found
      */
@@ -36,6 +40,7 @@ public interface ManagerDao {
 
     /**
      * find manager by phone
+     *
      * @param phone phone
      * @return manager found
      */
@@ -43,6 +48,7 @@ public interface ManagerDao {
 
     /**
      * delete data from database by username
+     *
      * @param username username
      */
     void deleteByUsername(String username);
