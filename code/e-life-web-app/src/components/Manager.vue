@@ -15,13 +15,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage(1)">小区资讯</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(1)">小区资讯</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage(2)">小区团购</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(2)">小区团购</a>
                 </li>
                 <li class="nav-item">
-                  <el-dropdown @command="toPage">
+                  <el-dropdown @command="toPage1">
                     <span class="nav-link tm-nav-link" style="font-size: 1.25rem">
                       <i class="el-icon-arrow-down el-icon--right"></i>小区服务
                     </span>
@@ -33,7 +33,7 @@
                   </el-dropdown>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage(3)">小区论坛</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(3)">小区论坛</a>
                 </li>
               </ul>
             </div>
@@ -43,17 +43,18 @@
     </el-header>
     <el-container style="padding-top: 30px">
       <el-aside width="220px" style="background-color: rgb(238, 241, 246)">
-        <el-menu :default-openeds="[]" style="height:100vh;width:220px;float:left;overflow-y:auto">
+        <el-menu :default-openeds="openList" style="height:100vh;width:220px;float:left;overflow-y:auto">
           <div align="center">
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
-            <h6 class="text-center tm-text-primary mb-4">用户名</h6>
+            <div style="clear:both"></div>
+            <el-button class="text-center tm-text-primary mb-4" type="primary" plain size="mini" icon="el-icon-edit" @click="dialogFormVisible = true">{{ userInfo.username }}</el-button>
             <div style="clear:both"></div>
           </div>
-          <el-menu-item index="1">
-            <i class="el-icon-chat-dot-round"></i><span slot="title" style="font-size: 16px">发布资讯</span>
+          <el-menu-item index="1" @click="toPage2(1, 7)">
+            <i class="el-icon-chat-dot-round"></i><span slot="title" style="font-size: 16px">管理资讯</span>
           </el-menu-item>
           <el-menu-item index="2">
-            <i class="el-icon-alarm-clock"></i><span slot="title" style="font-size: 16px">安排活动</span>
+            <i class="el-icon-alarm-clock"></i><span slot="title" style="font-size: 16px">管理活动</span>
           </el-menu-item>
           <el-submenu index="3">
             <template slot="title" style="font-size: 16px">
@@ -65,17 +66,17 @@
               <el-menu-item index="3-1-1">未缴费</el-menu-item>
               <el-menu-item index="3-1-2">已缴费</el-menu-item>
             </el-submenu>
-            <el-menu-item index="3-2">通知用户</el-menu-item>
+            <el-menu-item index="3-2">管理通知</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-service"></i>
               <span style="font-size: 16px">处理报修
-                <el-badge v-if="newRepaire !== 0" class="mark" :value=newRepaire :max="99" style="background-color: transparent" />
+                <el-badge v-if="newRepair !== 0" class="mark" :value=newRepair :max="99" style="background-color: transparent" />
               </span>
             </template>
             <el-menu-item index="4-1">未处理
-              <el-badge v-if="newRepaire !== 0" class="mark" :value=newRepaire :max="99" style="background-color: transparent" />
+              <el-badge v-if="newRepair !== 0" class="mark" :value=newRepair :max="99" style="background-color: transparent" />
             </el-menu-item>
             <el-menu-item index="4-2">已处理</el-menu-item>
           </el-submenu>
@@ -87,6 +88,26 @@
         </keep-alive>
       </el-main>
     </el-container>
+    <el-dialog title="编辑个人信息" :visible.sync="dialogFormVisible">
+      <el-form :model="userInfo">
+        <el-form-item label="小区">
+          <el-input v-model="userInfo.community" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="用户名">
+          <el-input v-model="userInfo.username" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="userInfo.email"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号">
+          <el-input v-model="userInfo.phone" :disabled="true"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleModify()">提 交</el-button>
+      </div>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -97,17 +118,32 @@ import page3 from './Forum.vue'
 import page4 from './MarketService.vue'
 import page5 from './ComputerService.vue'
 import page6 from './PropertyService.vue'
+import page7 from './AdminSendNotice.vue'
+
 export default {
   name: 'Manager',
   data () {
     return {
       tabView: 'page1',
-      newRepaire: 10
+      openList: ['1'],
+      newRepair: 10,
+      dialogFormVisible: false,
+      userInfo: {
+        community: '快乐小区',
+        username: '233',
+        email: '233@233.com',
+        phone: '2333333333333'
+      }
     }
   },
   methods: {
-    toPage (index) {
-      this.tabView = `page${index}`
+    toPage1 (id) {
+      this.openList[0] = '1'
+      this.tabView = `page${id}`
+    },
+    toPage2 (id1, id2) {
+      this.openList[0] = id1
+      this.tabView = `page${id2}`
     },
     getNew () {
       this.$axios
@@ -115,6 +151,9 @@ export default {
         .then(response => {
           this.newRepaire = response.data
         })
+    },
+    handleModify () {
+      this.dialogFormVisible = false
     }
   },
   components: {
@@ -123,12 +162,11 @@ export default {
     page3,
     page4,
     page5,
-    page6
+    page6,
+    page7
   },
   mounted () {
     // this.getNew()
-    let start = window.location.href.lastIndexOf('/')
-    this.activeIndex = window.location.href.slice(start + 1)
   }
 }
 </script>

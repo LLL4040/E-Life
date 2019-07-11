@@ -76,6 +76,7 @@
               <el-input v-model="form.email"></el-input>
             </el-form-item>
             <el-form-item>
+              <el-button type="success" @click="preStep()">上一步</el-button>
               <el-button type="primary" @click="nextStep()">下一步</el-button>
             </el-form-item>
           </el-form>
@@ -103,10 +104,12 @@
             <el-form-item label="商店描述">
               <el-input v-model="form.description" type="textarea" :rows="2" style="width: 200px"></el-input>
             </el-form-item>
-            <el-form-item label="商店地址" style="padding-right: 40px">
+            <el-form-item label="商店地址" style="padding-right: 130px">
               <el-button style="float: right; padding: 10px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">选择地址</el-button>
             </el-form-item>
+            <div style="clear:both"></div>
             <el-form-item>
+              <el-button type="success" @click="preStep()">上一步</el-button>
               <el-button type="primary" @click="nextStep()">下一步</el-button>
             </el-form-item>
           </el-form>
@@ -119,6 +122,7 @@
               <el-input v-model="form.pass"></el-input>
             </el-form-item>
             <el-form-item>
+              <el-button type="success" @click="preStep()">上一步</el-button>
               <el-button type="primary" @click="submit()">提交</el-button>
             </el-form-item>
           </el-form>
@@ -197,6 +201,9 @@ export default {
     }
   },
   methods: {
+    preStep () {
+      this.x--
+    },
     nextStep () {
       if (this.x === 0) {
         if (this.form.community === '' || this.form.id === '') {

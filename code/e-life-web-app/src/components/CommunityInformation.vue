@@ -27,6 +27,16 @@
           <div v-for="o in 4" :key="o" class="text item">
             {{'列表内容 ' + o }}
           </div>
+<!--          <el-table :data="messages" style="width: 100%">-->
+<!--            <el-table-column prop="time" label="时间" align="center"></el-table-column>-->
+<!--            <el-table-column prop="manager" label="发送人" align="center"></el-table-column>-->
+<!--            <el-table-column prop="content" label="内容" align="center"></el-table-column>-->
+<!--            <el-table-column label="操作" align="center">-->
+<!--              <template slot-scope="scope">-->
+<!--                <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+<!--          </el-table>-->
         </el-card>
       </el-col>
     </el-row>
@@ -40,7 +50,8 @@ export default {
     return {
       notice: [],
       news: [],
-      activity: []
+      activity: [{
+      }]
     }
   },
   mounted () {
