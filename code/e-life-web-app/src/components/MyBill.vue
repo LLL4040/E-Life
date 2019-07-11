@@ -1,7 +1,7 @@
 <template>
   <div>
     <div align="center">
-      <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入状态关键字搜索，如：未缴费、已缴费"/>
+      <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入0或1筛选状态-(1:已缴费、0:未缴费)"/>
     </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="12">
@@ -9,10 +9,15 @@
           <div slot="header" class="clearfix">
             <span>停车费账单</span>
           </div>
-          <el-table :data="parkBill.filter(data => !search || data.status.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="parkBill.filter(data => !search || data.status === search)" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
             <el-table-column label="金额" prop="amount" align="center"></el-table-column>
-            <el-table-column label="状态" prop="status" align="center"></el-table-column>
+            <el-table-column label="状态" prop="status" align="center">
+              <template slot-scope="scope">
+                <el-button v-if="scope.row.status === '1'" type="success" plain size="small">已缴费</el-button>
+                <el-button v-if="scope.row.status === '0'" type="danger" plain size="small">未缴费</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-col>
@@ -21,10 +26,15 @@
           <div slot="header" class="clearfix">
             <span>物业费账单</span>
           </div>
-          <el-table :data="propertyBill.filter(data => !search || data.status.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="propertyBill.filter(data => !search || data.status === search)" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
             <el-table-column label="金额" prop="amount" align="center"></el-table-column>
-            <el-table-column label="状态" prop="status" align="center"></el-table-column>
+            <el-table-column label="状态" prop="status" align="center">
+              <template slot-scope="scope">
+                <el-button v-if="scope.row.status === '1'" type="success" plain size="small">已缴费</el-button>
+                <el-button v-if="scope.row.status === '0'" type="danger" plain size="small">未缴费</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-col>
@@ -41,12 +51,12 @@ export default {
       parkBill: [{
         time: '1',
         amount: '1',
-        status: '未缴费'
+        status: '1'
       }],
       propertyBill: [{
         time: '1',
         amount: '1',
-        status: '未缴费'
+        status: '0'
       }]
     }
   },
