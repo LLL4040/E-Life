@@ -54,6 +54,19 @@ public interface UserService {
     JSONObject registerUser(String username, String password, String phone, String code, String email, Long communityId);
 
     /**
+     * register into database as a merchant
+     *
+     * @param username    username
+     * @param password    password
+     * @param phone       phone
+     * @param code        identify code
+     * @param email       email
+     * @param communityId community id chosen by user
+     * @return whether register successfully 1:success, 0:fail
+     */
+    JSONObject registerMerchant(String username, String password, String phone, String code, String email, Long communityId);
+
+    /**
      * register into database as a manager
      *
      * @param username    username
