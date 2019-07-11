@@ -27,6 +27,17 @@ public class NoticeDaoimpl implements NoticeDao {
     public int save(Notice notice){
        return noticeRepository.save(notice).getNoticeId();
     }
+
+    @Override
+    public int saveNoticeUser(NoticeUser noticeUser) {
+        return noticeUserRepository.save(noticeUser).getNoticeId();
+    }
+
+    @Override
+    public List<Notice> managerFindNotice(String managerName,int pageNumber,int pageSize) {
+        return noticeRepository.findByManagerName(managerName,(pageNumber-1)*pageSize,pageSize);
+    }
+
     @Override
     public List<Notice> findByUsername(String username){
          List<NoticeUser> noticeUsers=noticeUserRepository.findAllByUsername(username);
@@ -75,5 +86,10 @@ public class NoticeDaoimpl implements NoticeDao {
         NoticeUser nu=noticeUserRepository.findByUsernameAndNoticeId(username,noticeId);
         noticeUserRepository.delete(nu);
         return "删除我的该条物业信息成功";
+    }
+
+    @Override
+    public List<String> findUsernameByCommunityId(int communityId) {
+        return noticeUserRepository.findUsernameByCommunityId(communityId);
     }
 }

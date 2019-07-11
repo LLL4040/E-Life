@@ -25,8 +25,7 @@ import java.util.List;
 public class NoticeController {
     @Autowired
     private NoticeService noticeService;
-    @Autowired
-    private NoticeUserRepository noticeUserRepository;
+
     @RequestMapping(path = "/addNotice")
     @ResponseBody
     public String addNotice(@RequestParam String content,@RequestParam String managerName,@RequestParam int communityId, @RequestParam String username,@RequestParam int isMass){
@@ -38,16 +37,31 @@ public class NoticeController {
         Notice notice=new Notice(noticeTime,content,managerName,communityId);
         /**先在notice数据库中存*/
          int noticeId = noticeService.save(notice);
+
          if(isMass==0){
              NoticeUser noticeUser=new NoticeUser(noticeId,username);
-             noticeUserRepository.save(noticeUser);
+             noticeService.saveNoticeUser(noticeUser);
 
+         }else {
+             List<String> usernameList=noticeService.findUsernameByCommunityId(communityId);
+             int length=usernameList.size();
+             for (int i=0;i<length;i++){
+                 NoticeUser noticeUser1=new NoticeUser(noticeId,usernameList.get(i));
+                 noticeService.saveNoticeUser(noticeUser1);
+             }
          }
         return "发布物业通知成功";
+    }
+    @RequestMapping(path = "/ManagerFindNotice")
+    @ResponseBody
+    public List<Notice> managerFindNotice(@RequestParam String managerName,@RequestParam int pageNumber,@RequestParam int pageSize){
+
+        return noticeService.managerFindNotice(managerName,pageNumber,pageSize);
     }
     @RequestMapping(path = "/findMyNotice")
     @ResponseBody
     public List<Notice> findMyNotice(@RequestParam String username){
+
         return noticeService.findByUsername(username);
     }
     /**
@@ -58,7 +72,7 @@ public class NoticeController {
         if(noticeService.deleteByNotcieId(noticeId).equals("删除这一条物业信息成功")){
             return "删除这一条物业信息成功";
         }
-        return "删除这一条物业信息成功";
+        return "删除这一条物业信息失败";
     }
     /**
      * 用户功能，删除我的通知列表中的某一条通知*/

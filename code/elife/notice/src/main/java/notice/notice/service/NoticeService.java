@@ -2,6 +2,7 @@ package notice.notice.service;
 
 import notice.notice.dao.NoticeDao;
 import notice.notice.entity.Notice;
+import notice.notice.entity.NoticeUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,16 @@ public interface NoticeService {
      * @return 返回生成的物业通知的id
      * @param  notice 要存的物业通知*/
     int save(Notice notice);
+    /**
+     * 该函数增加一条noticeUser
+     * @return 返回生成的物业通知的id
+     * @param  noticeUser 要存noticeUser*/
+    int saveNoticeUser(NoticeUser noticeUser);
+    /**
+     * 该函数查询特定管理员发布的的所有物业通知
+     * @return 返回特定管理员发布的的所有物业通知
+     * @param managerName 管理员名*/
+    List<Notice> managerFindNotice(String managerName,int pageNumber,int pageSize);
     /**
      * 该函数查询特定用户的物业通知
      * @return 返回特定用户的物业通知的id
@@ -40,5 +51,7 @@ public interface NoticeService {
      * @param username 用户名
      * @return 返回删除成功的信息*/
     String deleteByUsernameAndNoticeId(String username,int noticeId);
+
+    List<String> findUsernameByCommunityId(int communityId);
 
 }

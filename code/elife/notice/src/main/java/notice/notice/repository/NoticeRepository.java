@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 /**
  * postComments class
@@ -13,6 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @author 符永锐
  * @date 2019/07/05*/
 public interface NoticeRepository extends JpaRepository<Notice,Long> {
+    /**
+     * 该函数查询特定管理员发布的的所有物业通知
+     * @return 返回特定管理员发布的的所有物业通知
+     * @param managerName 管理员名*/
+    @Query(value = "select * from notice where managername=?1 order by id  limit ?2,?3", nativeQuery = true)
+    List<Notice> findByManagerName(String managerName,int pageNumber,int pageSize);
     /**
      * 该函数根据noticeId返回物业通知
      * @return  返回得到的一条物业通知

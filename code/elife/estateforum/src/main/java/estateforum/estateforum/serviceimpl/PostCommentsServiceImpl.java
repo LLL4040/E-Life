@@ -18,10 +18,17 @@ import java.util.List;
 public class PostCommentsServiceImpl implements PostCommentsService {
     @Autowired
     private PostCommentsDao postCommentsDao;
+
     @Override
     public List<PostComments> findAllByPid(String pid){
         return  postCommentsDao.findAllByPid(pid);
     }
+
+    @Override
+    public List<PostComments> findAllByPidPage(String pid, int page, int size) {
+        return postCommentsDao.findAllByPidPage(pid,page,size);
+    }
+
     @Override
     public void saveComments(PostComments postComments){
         postCommentsDao.saveComments(postComments);

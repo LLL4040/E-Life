@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +45,7 @@ public class RepositoryTest {
         String pid = postresult.getId();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String postCommentsTime = df.format(new Date());
+
         List<PostComments> p1=postCommentsRepository.findAllByPid(pid);
         int location = p1.size()+2;
         PostComments postComments = new PostComments(pid,"我是小二",postCommentsTime,"人家想和哥哥一起赏月嗷",location);

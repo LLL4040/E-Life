@@ -14,6 +14,13 @@ public interface PostCommentsService {
     /**
      * 该函数旨在返回特定的一条帖子的所有评论
      * @param pid 帖子的id
+     * @param page 当前页数
+     * @param size 每页帖子数
+     * @return List<PostComments> 该函数返回一条帖子的所有评论*/
+    List<PostComments> findAllByPidPage(String pid,int page,int size);
+    /**
+     * 该函数旨在返回特定的一条帖子的所有评论
+     * @param pid 帖子的id
      * @return List<PostComments> 该函数返回一条帖子的所有评论*/
     List<PostComments> findAllByPid(String pid);
     /**

@@ -29,8 +29,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findAllByCommunityId(int communityId) {
-        return postDao.findAllByCommunityId(communityId);
+    public List<Post> findAllByCommunityId(int communityId,int page,int size) {
+        return postDao.findAllByCommunityId(communityId,page,size);
     }
     @Override
     public Post findPost(String id){
@@ -40,10 +40,5 @@ public class PostServiceImpl implements PostService {
     public void deletePost(String pid){
           postDao.deletePost(pid);
     };
-    @Override
-    public List<Post>findPageablePost(int communityId,Integer page,Integer size){
 
-        return postDao.findAllByCommunityId(communityId);
-
-    }
 }

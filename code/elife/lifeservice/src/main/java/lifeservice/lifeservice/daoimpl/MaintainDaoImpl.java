@@ -60,9 +60,14 @@ public class MaintainDaoImpl implements MaintainDao {
     }
 
     @Override
-    public List<Maintain> findMaintainByCommunityId(int communityId) {
+    public List<Maintain> findMaintainByCommunityId(int communityId,int pageNumber,int pageSize) {
 
-        return maintainRepository.findMaintainByCommunityId(communityId);
+        return maintainRepository.findMaintainByCommunityId(communityId,(pageNumber-1)*pageSize,pageSize);
+    }
+
+    @Override
+    public List<Maintain> findHaveMaintainByCommunityId(int communityId, int pageNumber, int pageSize) {
+        return maintainRepository.findHaveMaintainByCommunityId(communityId,(pageNumber-1)*pageSize,pageSize);
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface PostDao {
      * 此函数以列表形式返回所有帖子
      * @return 以列表形式返回的所有帖子
      * @param communityId 小区的id*/
-    List<Post> findAllByCommunityId(int communityId);
+    List<Post> findAllByCommunityId(int communityId,int page,int size);
     /**
      *该方法返回特定pid的的帖子
      * @param  id 指定的帖子id*/

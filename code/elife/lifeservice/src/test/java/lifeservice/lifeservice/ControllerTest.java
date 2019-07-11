@@ -36,8 +36,13 @@ public class ControllerTest {
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
-    public void managerFindMaintain() throws Exception {
-        mvc.perform(get("/api/managerFindMaintain").param("communityId","1"))
+    public void managerFindUnMaintain() throws Exception {
+        mvc.perform(get("/api/managerFindUnMaintain").param("communityId","1").param("pageNumber","1").param("pageSize","2"))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+    }
+    @Test
+    public void managerFindHaveMaintain() throws Exception {
+        mvc.perform(get("/api/managerFindHaveMaintain").param("communityId","1").param("pageNumber","1").param("pageSize","2"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test

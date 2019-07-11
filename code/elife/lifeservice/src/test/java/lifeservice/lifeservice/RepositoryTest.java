@@ -37,7 +37,7 @@ public class RepositoryTest {
     @Test
     public void repofindMaintainByCommunityId() throws Exception{
         long m1=maintainRepository.save(maintain).getId();
-        List<Maintain> maintainList=maintainRepository.findMaintainByCommunityId(1);
+        List<Maintain> maintainList=maintainRepository.findMaintainByCommunityId(1,1,1);
         Assert.assertNotNull(maintainList);
         maintainRepository.deleteById(m1);
     }

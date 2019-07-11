@@ -39,9 +39,20 @@ public interface MaintainService {
     /**
      * 该函数返回特定小区的所有的待处理的请求
      * @return 返回请求单的列表
+     * @param pageNumber 当前的页数
+     * @param pageSize 当前的页中数据的数量
      * @param communityId 小区id
      */
-    List<Maintain> findMaintainByCommunityId(int communityId);
+    List<Maintain> findMaintainByCommunityId(int communityId,int pageNumber,int pageSize);
+    /**
+     * 该函数返回特定小区的所有的已处理和已完成的请求
+     * @return 返回请求单的列表
+     * @param communityId 小区id
+     * @param pageNumber 当前的页数
+     * @param pageSize 当前的页中数据的数量
+     */
+    List<Maintain> findHaveMaintainByCommunityId(int communityId,int pageNumber,int pageSize);
+
     /**
      * 该函数返回特定小区的所有的待处理的请求
      * @return 返回维修单
