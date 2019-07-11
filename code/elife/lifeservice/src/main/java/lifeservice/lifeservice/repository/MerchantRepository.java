@@ -14,9 +14,16 @@ import java.util.List;
 public interface MerchantRepository extends JpaRepository<Merchant,Long> {
 
     /**
-     * 该函数返回该小区的所有商家列表
+     * 该函数返回该小区的所有电脑维修的商家列表
      * @param communityId 小区的id
      * @return 返回电脑维修商家的列表*/
-    @Query(value = "select * from (merchant natural join (select username from user where community_id=1)as A) where (type='周边餐饮'or type='超市购物'or type='休闲娱乐')",nativeQuery = true)
+    @Query(value = "select * from (merchant natural join (select username from user where community_id=1)as A) where type='生活服务'",nativeQuery = true)
     List<Merchant> findComputerMaintain(int communityId);
+    /**
+     * 该函数返回该小区的所有超市送货的商家列表
+     * @param communityId 小区的id
+     * @return 返回超市送货商家的列表*/
+    @Query(value = "select * from (merchant natural join (select username from user where community_id=1)as A) where (type='周边餐饮'or type='超市购物'or type='休闲娱乐')",nativeQuery = true)
+    List<Merchant> findSupermarket(int communityId);
+
 }

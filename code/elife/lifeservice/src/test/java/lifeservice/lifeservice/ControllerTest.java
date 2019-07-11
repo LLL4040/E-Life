@@ -60,4 +60,14 @@ public class ControllerTest {
         mvc.perform(get("/api/countMaintain").param("communityId","1"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
+    @Test
+    public void findSupermarket() throws Exception {
+        mvc.perform(get("/api/findSupermarket").param("communityId","1"))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+    }
+    @Test
+    public void findComputerMaintain() throws Exception {
+        mvc.perform(get("/api/findComputerMaintain").param("communityId","1"))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+    }
 }

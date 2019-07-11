@@ -11,3 +11,4 @@ insert into `merchant`(id,username,name,phone,address,detail,type)value (
 insert into `merchant`(id,username,name,phone,address,detail,type)value
     (6,'悟能','KTV','123345','你家大门口','唱歌的小伙伴有吗','休闲娱乐');
 select * from (merchant natural join (select username from user where community_id=1)as A) where (type='周边餐饮'or type='超市购物'or type='休闲娱乐') ;
+select * from (merchant natural join (select username from user where community_id=1)as A) where type='生活服务' ;

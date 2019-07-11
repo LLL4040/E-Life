@@ -1,7 +1,9 @@
 package lifeservice.lifeservice;
 
 import lifeservice.lifeservice.entity.Maintain;
+import lifeservice.lifeservice.entity.Merchant;
 import lifeservice.lifeservice.repository.MaintainRepository;
+import lifeservice.lifeservice.repository.MerchantRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +21,8 @@ import java.util.List;
 public class RepositoryTest {
     @Autowired
     private MaintainRepository maintainRepository;
+    @Autowired
+    MerchantRepository merchantRepository;
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String maintainTime = df.format(new Date());
     Maintain maintain=new Maintain(maintainTime,"我家窗户破了","哪吒","12345");
@@ -36,5 +40,17 @@ public class RepositoryTest {
         List<Maintain> maintainList=maintainRepository.findMaintainByCommunityId(1);
         Assert.assertNotNull(maintainList);
         maintainRepository.deleteById(m1);
+    }
+    @Test
+    public void findComputerMaintain() throws Exception{
+
+        List<Merchant> merchantList=merchantRepository.findComputerMaintain(1);
+        Assert.assertNotNull(merchantList);
+    }
+    @Test
+    public void findSupermarket() throws Exception{
+
+        List<Merchant> merchantList=merchantRepository.findSupermarket(1);
+        Assert.assertNotNull(merchantList);
     }
 }

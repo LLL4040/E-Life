@@ -2,7 +2,10 @@ package lifeservice.lifeservice;
 
 import com.mysql.cj.protocol.x.Notice;
 import lifeservice.lifeservice.entity.Maintain;
+import lifeservice.lifeservice.entity.Merchant;
+import lifeservice.lifeservice.service.ComputerService;
 import lifeservice.lifeservice.service.MaintainService;
+import lifeservice.lifeservice.service.SupermarketService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +23,10 @@ import java.util.List;
 public class ServiceTest {
     @Autowired
     private MaintainService maintainService;
+    @Autowired
+    private SupermarketService supermarketService;
+    @Autowired
+    private ComputerService computerService;
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String maintainTime = df.format(new Date());
     Maintain maintain=new Maintain(maintainTime,"我家窗户破了","哪吒","12345");
@@ -60,6 +67,18 @@ public class ServiceTest {
 
         List<Maintain> maintainList=maintainService.findbyUsernameAndStatus("哪吒");
         Assert.assertNotNull(maintainList);
+    }
+    @Test
+    public void findSupermarket() throws Exception{
+
+        List<Merchant> merchantList=supermarketService.findSupermarket(1);
+        Assert.assertNotNull(merchantList);
+    }
+    @Test
+    public void findComputerMaintain() throws Exception{
+
+        List<Merchant> merchantList=computerService.findComputerMaintain(1);
+        Assert.assertNotNull(merchantList);
     }
 
 }

@@ -24,6 +24,7 @@ public class ComputerController {
 
     @ResponseBody
     public List<Merchant> findComputerMaintain(@RequestParam int communityId){
-        return null;
+
+        return computerService.findComputerMaintain(communityId);
     }
 }

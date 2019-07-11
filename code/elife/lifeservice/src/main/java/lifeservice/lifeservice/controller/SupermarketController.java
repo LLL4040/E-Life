@@ -23,6 +23,7 @@ public class SupermarketController {
     @RequestMapping(path = "/findSupermarket")
     @ResponseBody
     public List<Merchant> findSupermarket(@RequestParam int communityId){
-        return null;
+
+        return supermarketService.findSupermarket(communityId);
     }
 }

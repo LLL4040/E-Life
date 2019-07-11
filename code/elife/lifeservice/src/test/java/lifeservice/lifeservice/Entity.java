@@ -1,6 +1,7 @@
 package lifeservice.lifeservice;
 
 import lifeservice.lifeservice.entity.Maintain;
+import lifeservice.lifeservice.entity.Merchant;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ public class Entity {
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String maintainTime = df.format(new Date());
     Maintain maintain=new Maintain(maintainTime,"我家窗户破了","哪吒","12345");
+    Merchant merchant=new Merchant("哪吒","风火烤肉店","123456","小区门口","风火轮专属烤肉店，来过的人都说好","周边餐饮");
     @Test
     public void maintainIdTest(){
 
@@ -77,4 +79,47 @@ public class Entity {
         Assert.assertEquals("get userphone fail","54321",maintain.getUserPhone());
 
     }
+    @Test
+    public void MerchantUsernameTest(){
+        Assert.assertEquals("get MerchantUsername fail","哪吒",merchant.getUsername());
+        merchant.setUsername("悟能");
+        Assert.assertEquals("get MerchantUsername fail","悟能",merchant.getUsername());
+
+    }
+    @Test
+    public void MerchantNameTest(){
+        Assert.assertEquals("get MerchantName fail","风火烤肉店",merchant.getName());
+        merchant.setName("火风烤肉店");
+        Assert.assertEquals("get MerchantName fail","火风烤肉店",merchant.getName());
+
+    }
+    @Test
+    public void MerchantPhoneTest(){
+        Assert.assertEquals("get MerchantPhone fail","123456",merchant.getPhone());
+        merchant.setPhone("654321");
+        Assert.assertEquals("get MerchantPhone fail","654321",merchant.getPhone());
+
+    }
+    @Test
+    public void MerchantAddressTest(){
+        Assert.assertEquals("get MerchantAddress fail","小区门口",merchant.getAddress());
+        merchant.setAddress("小区大门");
+        Assert.assertEquals("get MerchantAddress fail","小区大门",merchant.getAddress());
+
+    }
+    @Test
+    public void MerchantDetailTest(){
+        Assert.assertEquals("get MerchantDetail fail","风火轮专属烤肉店，来过的人都说好",merchant.getDetail());
+        merchant.setDetail("风火轮专属烤肉店，没来过的人也说好");
+        Assert.assertEquals("get MerchantDetail fail","风火轮专属烤肉店，没来过的人也说好",merchant.getDetail());
+
+    }
+    @Test
+    public void MerchantTypeTest(){
+        Assert.assertEquals("get MerchantType fail","周边餐饮",merchant.getType());
+        merchant.setType("休闲娱乐");
+        Assert.assertEquals("get MerchantType fail","休闲娱乐",merchant.getType());
+
+    }
+
 }
