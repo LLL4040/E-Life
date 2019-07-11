@@ -53,7 +53,7 @@
           <el-menu-item index="1" @click="toPage2(1, 7)">
             <i class="el-icon-chat-dot-round"></i><span slot="title" style="font-size: 16px">管理资讯</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="2" @click="toPage2(2, 8)">
             <i class="el-icon-alarm-clock"></i><span slot="title" style="font-size: 16px">管理活动</span>
           </el-menu-item>
           <el-submenu index="3">
@@ -63,10 +63,10 @@
             </template>
             <el-submenu index="3-1">
               <template slot="title">管理账单</template>
-              <el-menu-item index="3-1-1">未缴费</el-menu-item>
-              <el-menu-item index="3-1-2">已缴费</el-menu-item>
+              <el-menu-item index="3-1-1" @click="toPage2(3-1, 9)">未缴费</el-menu-item>
+              <el-menu-item index="3-1-2" @click="toPage2(3-1, 10)">已缴费</el-menu-item>
             </el-submenu>
-            <el-menu-item index="3-2">管理通知</el-menu-item>
+            <el-menu-item index="3-2" @click="toPage2(3-2, 11)">管理通知</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
@@ -75,10 +75,10 @@
                 <el-badge v-if="newRepair !== 0" class="mark" :value=newRepair :max="99" style="background-color: transparent" />
               </span>
             </template>
-            <el-menu-item index="4-1">未处理
+            <el-menu-item index="4-1" @click="toPage2(4-1, 12)">未处理
               <el-badge v-if="newRepair !== 0" class="mark" :value=newRepair :max="99" style="background-color: transparent" />
             </el-menu-item>
-            <el-menu-item index="4-2">已处理</el-menu-item>
+            <el-menu-item index="4-2" @click="toPage2(4-1, 13)">已处理</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -119,6 +119,12 @@ import page4 from './MarketService.vue'
 import page5 from './ComputerService.vue'
 import page6 from './PropertyService.vue'
 import page7 from './AdminSendNotice.vue'
+import page8 from './AdminActivity.vue'
+import page9 from './AdminBillW.vue'
+import page10 from './AdminBillY.vue'
+import page11 from './AdminMessage.vue'
+import page12 from './AdminRepairW.vue'
+import page13 from './AdminRepairY.vue'
 
 export default {
   name: 'Manager',
@@ -163,7 +169,13 @@ export default {
     page4,
     page5,
     page6,
-    page7
+    page7,
+    page8,
+    page9,
+    page10,
+    page11,
+    page12,
+    page13
   },
   mounted () {
     // this.getNew()

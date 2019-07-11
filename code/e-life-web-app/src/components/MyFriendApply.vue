@@ -95,7 +95,7 @@ export default {
   methods: {
     handleA (row) {
     },
-    handleD (row) {
+    handleR (row) {
     }
   }
 }
@@ -106,12 +106,12 @@ export default {
     font-size: 0;
   }
   .demo-table-expand label {
-    width: 90px;
+    width: 125px;
     color: #99a9bf;
   }
   .demo-table-expand .el-form-item {
     margin-right: 0;
     margin-bottom: 0;
-    width: 50%;
+    width: 90%;
   }
 </style>
