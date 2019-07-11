@@ -64,6 +64,7 @@ public class NewsServiceImpl implements NewsSevice {
             jsonObject.put("photo" , "data:image/jpg;base64,"+photo);
             jsonObject.put("id",temp.getId());
             jsonObject.put("time",temp.getTime());
+            jsonObject.put("title",temp.getTitle());
             jsonObject.put("content",temp.getContent());
             jsonObject.put("managerName",temp.getManagerName());
             jsonArray.add(jsonObject);
@@ -81,6 +82,7 @@ public class NewsServiceImpl implements NewsSevice {
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
             jsonObject.put("id", temp.getId());
             jsonObject.put("time", temp.getTime());
+            jsonObject.put("title",temp.getTitle());
             jsonObject.put("content", temp.getContent());
             jsonObject.put("managerName", temp.getManagerName());
             return jsonObject;
@@ -130,6 +132,7 @@ public class NewsServiceImpl implements NewsSevice {
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
             jsonObject.put("id", temp.getId());
             jsonObject.put("time", temp.getTime());
+            jsonObject.put("title",temp.getTitle());
             jsonObject.put("content", temp.getContent());
             jsonObject.put("managerName", temp.getManagerName());
             jsonArray.add(jsonObject);
@@ -143,6 +146,7 @@ public class NewsServiceImpl implements NewsSevice {
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
             jsonObject.put("id", temp.getId());
             jsonObject.put("time", temp.getTime());
+            jsonObject.put("title",temp.getTitle());
             jsonObject.put("content", temp.getContent());
             jsonObject.put("managerName", temp.getManagerName());
             jsonArray.add(jsonObject);
