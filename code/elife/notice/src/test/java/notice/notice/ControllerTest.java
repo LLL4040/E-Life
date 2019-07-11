@@ -27,7 +27,7 @@ public class ControllerTest {
     }
     @Test
     public void addNotice() throws Exception {
-        mvc.perform(get("/api/addNotice").param("content","今晚停水").param("managerName","二郎神").param("communityId","1").param("username","哮天犬").param("isMass","0"))
+        mvc.perform(get("/api/addNotice").param("content","你水表欠费了今晚停水").param("managerName","二郎神").param("communityId","1").param("username","哮天犬").param("isMass","0"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
@@ -44,7 +44,7 @@ public class ControllerTest {
 
     @Test
     public void deleteMyNotice() throws Exception {
-        mvc.perform(get("/api/addNotice").param("content","今晚停水").param("managerName","二郎神").param("communityId","1").param("username","哮天犬").param("isMass","0"))
+        mvc.perform(get("/api/addNotice").param("content","你水表欠费了今晚停水").param("managerName","二郎神").param("communityId","1").param("username","哮天犬").param("isMass","0"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
         mvc.perform(get("/api/deleteMyNotice").param("username","哮天犬"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();

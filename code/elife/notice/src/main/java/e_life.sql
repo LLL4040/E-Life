@@ -295,8 +295,9 @@ CREATE TABLE maintain
     `content`     varchar(1024) NOT NULL,
     `maintainname` varchar(100),
     `phone`    varchar(100),
-    `managername` varchar(50) NOT NULL,
+    `managername` varchar(50),
     `username`    varchar(50) NOT NULL,
+    `userphone`   varchar(100),
     PRIMARY KEY(`id`),
     FOREIGN KEY (`managername`)
         REFERENCES manager (`username`)

@@ -2,8 +2,10 @@ package notice.notice.repository;
 
 import notice.notice.entity.NoticeUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +39,8 @@ public interface NoticeUserRepository extends JpaRepository<NoticeUser,Long> {
      * 该函数删除特定id的NoticeUser
      * @param  noticeId 物业通知的id
      */
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
     @Query(value = "delete from noticeUser  where id=?1", nativeQuery = true)
     void deleteByNoticeId(int noticeId);
 

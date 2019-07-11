@@ -2,8 +2,10 @@ package notice.notice.repository;
 
 import notice.notice.entity.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * postComments class
@@ -18,9 +20,11 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
     @Query(value = "select * from notice where id=?1", nativeQuery = true)
     Notice findByNoticeId(int noticeId);
     /**
-     * 该函数根据noticeId删除一条物业通知
+     * 该函数根据noticeId删除一条物业通知,好了现在可以用了
      * @param noticeId 物业通知的id
      */
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
     @Query(value = "delete from notice  where id=?1", nativeQuery = true)
     void deleteByNoticeId(int noticeId);
     /**
