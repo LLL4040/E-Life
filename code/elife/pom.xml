@@ -13,6 +13,7 @@
         <module>user-server</module>
         <module>auth-server</module>
         <module>service-hi</module>
+        <module>group-server</module>
     </modules>
 
     <properties>
