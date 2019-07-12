@@ -1,0 +1,54 @@
+package activityserver.repositoryTest;
+
+import activityserver.entity.Activity;
+import activityserver.repository.ActivityRepository;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.List;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ActivityRepositoryTest {
+    @Autowired
+    ActivityRepository activityRepository;
+
+    @Test
+    @Transactional
+    public void saveNewsTest(){
+        activityRepository.saveActivity("2019-07-09 11:22:11","2019-07-09 11:22:11","hello","1",
+                "test",0,"guigui.jpg",1);
+
+    }
+
+    @Test
+    @Transactional
+    public void findAllActivityTest(){
+        Activity activity = new Activity(99999,"todayHaveFun","2019-07-09 11:22:11"
+                ,"2020-07-09 11:22:11","1","hello",0,"guigui.jpg",1);
+        activityRepository.save(activity);
+        List<Activity> list = activityRepository.findAllActivity(1);
+        Activity activity1 = list.get(list.size()-1);
+        Assert.assertEquals("findNewTest fails", 99999, activity1.getId());
+
+
+    }
+
+    @Test
+    @Transactional
+    public void findNewTest(){
+         Activity activity = new Activity(99999,"todayHaveFun","2019-07-09 11:22:11"
+                ,"2020-07-09 11:22:11","1","hello",0,"guigui.jpg",1);
+        activityRepository.save(activity);
+        List<Activity> list = activityRepository.findNew(1);
+        Activity activity1 = list.get(0);
+        Assert.assertEquals("findNewTest fails", 99999, activity1.getId());
+
+    }
+}
