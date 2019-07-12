@@ -17,6 +17,9 @@
         <module>news-server</module>
         <module>group-server</module>
         <module>bargain-server</module>
+        <module>notice</module>
+        <module>estateforum</module>
+        <module>lifeservice</module>
         <module>gateway</module>
     </modules>
 
