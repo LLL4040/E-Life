@@ -4,9 +4,9 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import packageserver.dao.PackageDao;
 import packageserver.entity.Package;
-import newsserver.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;;
+import org.springframework.stereotype.Service;
+import packageserver.service.PackageService;
 
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
  * @Author wyx
  * @Date 2019.07.12
  */
-public class PackageServiceImpl implements PackageService {
+public class PayServiceImpl implements PackageService {
 
     @Autowired
     private PackageDao packageDao;

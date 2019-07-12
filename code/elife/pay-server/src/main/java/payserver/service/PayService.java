@@ -1,27 +1,30 @@
-package packageserver.service;
+package payserver.service;
 
 import net.minidev.json.JSONArray;
 
+import java.math.BigDecimal;
+
 
 /**
- * packageService interface
+ * payService interface
  *
  * @Author wyx
  * @Date 2019.07.12
  */
-public interface PackageService {
+public interface PayService {
     /**
-     * save package without id and status is 0
+     * save pay without id and status is 0
      * @param time
+     * @param bill
      * @param managerName
      * @param username
      * @param communityId
      * @return
      */
-    boolean save(String time, String managerName, String username, int communityId);
+    boolean save(String time, BigDecimal bill, String managerName, String username, int communityId);
 
     /**
-     * find List<package> turn to JSON
+     * find List<pay> turn to JSON
      *
      * @param username
      * @return JSONArray
@@ -29,7 +32,7 @@ public interface PackageService {
     JSONArray findNew(String username);
 
     /**
-     * find specific News with ID
+     * find specific pay with ID
      *
      * @param id
      * @return JSONArray
@@ -37,7 +40,7 @@ public interface PackageService {
     JSONArray findOne(int id);
 
     /**
-     * delete special package with ID
+     * delete special pay with ID
      *
      * @param id
      * @return boolean
@@ -49,7 +52,7 @@ public interface PackageService {
      * @param id
      * @return boolean
      */
-    boolean takeOut(int id);
+    boolean payBill(int id);
 
     /**
      * move hot data to cold table
@@ -59,9 +62,16 @@ public interface PackageService {
     JSONArray findHistory(String username);
 
     /**
-     * manager find those package not taken
+     * manager find those pay not pay
      * @param communityId
      * @return JSONArray
      */
-    JSONArray findHistoryManager(int communityId);
+    JSONArray findUnPayHistoryManager(int communityId);
+
+    /**
+     * manager find those pay  payed
+     * @param communityId
+     * @return JSONArray
+     */
+    JSONArray findPayHistoryManager(int communityId);
 }
