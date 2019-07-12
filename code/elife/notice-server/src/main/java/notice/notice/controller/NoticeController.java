@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author 符永锐
  * @date 2019/07/05*/
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/notice")
 @Controller
 
 public class NoticeController {

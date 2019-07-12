@@ -246,7 +246,7 @@ CREATE TABLE pay
   `status`      SMALLINT,
   `managername` varchar(50) NOT NULL,
   `community_id` bigint,
-  `time` timestamp NOT NULL ,
+  `time` varchar(50) NOT NULL ,
   PRIMARY KEY(`id`),
   FOREIGN KEY (`community_id`)
         REFERENCES community (`id`)
