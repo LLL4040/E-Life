@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @Author wyx
  * @Date 2019.07.10
  */
-public interface NewsSevice {
+public interface NewsService {
     /**
      * save News with photo
      * \

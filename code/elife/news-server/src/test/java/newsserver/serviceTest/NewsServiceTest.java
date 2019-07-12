@@ -4,7 +4,7 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import newsserver.entity.News;
 import newsserver.repository.NewsRepository;
-import newsserver.service.NewsSevice;
+import newsserver.service.NewsService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import java.io.IOException;
 @SpringBootTest
 public class NewsServiceTest {
     @Autowired
-    private NewsSevice newsSevice;
+    private NewsService newsSevice;
     @Autowired
     private NewsRepository newsRepository;
 
