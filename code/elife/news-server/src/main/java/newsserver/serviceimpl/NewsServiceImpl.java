@@ -5,7 +5,7 @@ import net.minidev.json.JSONObject;
 import newsserver.dao.NewsDao;
 import newsserver.entity.News;
 import newsserver.entity.NewsUsed;
-import newsserver.service.NewsSevice;
+import newsserver.service.NewsService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import static com.google.common.io.ByteStreams.toByteArray;
-
 @Service
 /**
  * newsService class
@@ -26,7 +24,7 @@ import static com.google.common.io.ByteStreams.toByteArray;
  * @Author wyx
  * @Date 2019.07.10
  */
-public class NewsServiceImpl implements NewsSevice {
+public class NewsServiceImpl implements NewsService {
 
     @Autowired
     private NewsDao newsDao;
@@ -38,7 +36,7 @@ public class NewsServiceImpl implements NewsSevice {
             if (!photo.isEmpty()) {
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream bufferedOutputStream = new
-                        BufferedOutputStream(new FileOutputStream(new File("E:\\upload\\" + path)));
+                        BufferedOutputStream(new FileOutputStream(new File("./news-server/pic/" + path)));
                 bufferedOutputStream.write(bytes);
                 bufferedOutputStream.close();
             }
@@ -58,7 +56,7 @@ public class NewsServiceImpl implements NewsSevice {
         while(iter.hasNext()){
             News temp = iter.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("E:\\upload\\"+temp.getPhoto());
+            File file = new File("./news-server/pic/"+temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo=Base64.encodeBase64String(data);
             jsonObject.put("photo" , "data:image/jpg;base64,"+photo);
@@ -76,7 +74,7 @@ public class NewsServiceImpl implements NewsSevice {
             JSONObject jsonObject = new JSONObject();
         try {
             News temp = newsDao.findOne(id);
-            File file = new File("E:\\upload\\" + temp.getPhoto());
+            File file = new File("./news-server/pic/" + temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
@@ -126,7 +124,7 @@ public class NewsServiceImpl implements NewsSevice {
         while (hot.hasNext()) {
             News temp = hot.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("E:\\upload\\" + temp.getPhoto());
+            File file = new File("./news-server/pic/" + temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
@@ -140,7 +138,7 @@ public class NewsServiceImpl implements NewsSevice {
         while (cold.hasNext()) {
             NewsUsed temp = cold.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("E:\\upload\\" + temp.getPhoto());
+            File file = new File("./news-server/pic/" + temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
