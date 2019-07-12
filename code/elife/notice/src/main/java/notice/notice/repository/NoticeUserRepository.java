@@ -50,5 +50,11 @@ public interface NoticeUserRepository extends JpaRepository<NoticeUser,Long> {
      * @return  返回0代表不存在*/
     @Query(value = "select count(*) from (select * from noticeUser where id=?1 limit 1)as A", nativeQuery = true)
     int existsById(int noticeId);
+    /**
+     * 该函数返回某个小区所有用户的列表
+     * @param  communityId 物业通知的id
+     * @return  返回0代表不存在*/
+    @Query(value = "select username from user where community_id=?1", nativeQuery = true)
+    List<String> findUsernameByCommunityId(int communityId);
 
 }

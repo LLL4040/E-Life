@@ -2,9 +2,10 @@ package estateforum.estateforum.repository;
 
 
 import estateforum.estateforum.entity.Post;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
+import org.springframework.data.domain.PageRequest;import java.util.List;
 /**
  * postComments class
  *
@@ -18,8 +19,10 @@ public interface PostRepository extends MongoRepository <Post,Long>{
     List<Post> findByPosterName(String posterName);
     /**
      * 该方法返回指定小区用户发布的所有帖子
-     * @param communityId 小区的id*/
-    List<Post>findAllByCommunityId(int communityId);
+     * @param communityId 小区的id
+     * @param pageable 用来分页的参数
+     * @return 返回帖子的列表*/
+    List<Post>findAllByCommunityId(int communityId, Pageable pageable);
     /**
      *该方法返回特定id的的帖子
      * @param  id 指定的帖子id

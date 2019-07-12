@@ -43,11 +43,17 @@ public class MaintainController {
     }
     /**
      * 难点*/
-    @RequestMapping(path = "/managerFindMaintain")
+    @RequestMapping(path = "/managerFindUnMaintain")
     @ResponseBody
-    public List<Maintain> managerFindMaintain(@RequestParam int communityId){
+    public List<Maintain> managerFindUnMaintain(@RequestParam int communityId,@RequestParam int pageNumber,@RequestParam int pageSize){
 
-        return maintainService.findMaintainByCommunityId(communityId);
+        return maintainService.findMaintainByCommunityId(communityId,pageNumber,pageSize);
+    }
+    @RequestMapping(path = "/managerFindHaveMaintain")
+    @ResponseBody
+    public List<Maintain> managerFindHaveMaintain(@RequestParam int communityId,@RequestParam int pageNumber,@RequestParam int pageSize){
+
+        return maintainService.findHaveMaintainByCommunityId(communityId,pageNumber,pageSize);
     }
     @RequestMapping(path = "/userFindMaintain")
     @ResponseBody

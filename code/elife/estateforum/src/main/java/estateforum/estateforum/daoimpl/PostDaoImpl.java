@@ -5,6 +5,7 @@ import estateforum.estateforum.entity.Post;
 import estateforum.estateforum.dao.PostDao;
 import estateforum.estateforum.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,8 +26,9 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public List<Post> findAllByCommunityId(int communityId){
-        return postRepository.findAllByCommunityId(communityId);
+    public List<Post> findAllByCommunityId(int communityId,int page,int size){
+        PageRequest pageable = new PageRequest(page-1, size);
+        return postRepository.findAllByCommunityId(communityId,pageable);
     }
     @Override
     public void deletePost(String id){

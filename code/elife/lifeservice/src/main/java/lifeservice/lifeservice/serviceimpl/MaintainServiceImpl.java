@@ -40,8 +40,13 @@ public class MaintainServiceImpl implements MaintainService {
     }
 
     @Override
-    public List<Maintain> findMaintainByCommunityId(int communityId) {
-        return maintainDao.findMaintainByCommunityId(communityId);
+    public List<Maintain> findMaintainByCommunityId(int communityId,int pageNumber,int pageSize) {
+        return maintainDao.findMaintainByCommunityId(communityId,pageNumber,pageSize);
+    }
+
+    @Override
+    public List<Maintain> findHaveMaintainByCommunityId(int communityId, int pageNumber, int pageSize) {
+        return maintainDao.findHaveMaintainByCommunityId(communityId,pageNumber,pageSize);
     }
 
     @Override

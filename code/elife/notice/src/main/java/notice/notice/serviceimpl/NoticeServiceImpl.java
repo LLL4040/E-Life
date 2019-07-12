@@ -23,6 +23,17 @@ public class NoticeServiceImpl implements NoticeService {
     public int save(Notice notice){
         return noticeDao.save(notice);
     }
+
+    @Override
+    public int saveNoticeUser(NoticeUser noticeUser) {
+        return noticeDao.saveNoticeUser(noticeUser);
+    }
+
+    @Override
+    public List<Notice> managerFindNotice(String managerName,int pageNumber,int pageSize) {
+        return noticeDao.managerFindNotice(managerName,pageNumber,pageSize);
+    }
+
     @Override
     public List<Notice> findByUsername(String username){
         return noticeDao.findByUsername(username);
@@ -38,5 +49,10 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public String deleteByUsernameAndNoticeId(String username,int noticeId){
         return noticeDao.deleteByUsernameAndNoticeId(username,noticeId);
+    }
+
+    @Override
+    public List<String> findUsernameByCommunityId(int communityId) {
+        return noticeDao.findUsernameByCommunityId(communityId);
     }
 }

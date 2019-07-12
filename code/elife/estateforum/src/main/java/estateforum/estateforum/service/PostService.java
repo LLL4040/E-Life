@@ -13,13 +13,16 @@ import java.util.List;
 public interface PostService {
     /**
      * 此函数存一条帖子
-     * @param post 帖子*/
+     * @param post 帖子
+     * @return 返回成功储存的id号*/
     String save(Post post);
     /**
      * 此函数以列表形式返回所有帖子
      * @return 以列表形式返回的所有帖子
-     * @param communityId 小区id*/
-    List<Post> findAllByCommunityId(int communityId);
+     * @param communityId 小区id
+     * @param page 当前页数
+     * @param size 大小*/
+    List<Post> findAllByCommunityId(int communityId,int page,int size);
     /**
      *该方法返回特定id的的帖子
      * @param  id 指定的帖子id
@@ -30,12 +33,6 @@ public interface PostService {
      * @param  id 指定的帖子id*/
     void deletePost(String id);
 
-    /**
-     * 此函数以列表形式返回所有帖子
-     * @return 以分页列表形式返回的所有帖子
-     * @param communityId 小区id
-     * @param page 页表
-     * @param size 大小*/
-    List<Post> findPageablePost(int communityId,Integer page,Integer size);
+
 
 }

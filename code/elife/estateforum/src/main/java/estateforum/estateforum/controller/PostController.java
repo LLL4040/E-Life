@@ -37,8 +37,8 @@ public class PostController {
     }
     @GetMapping(path = "/findPost")
     @ResponseBody
-    public List<Post> findPost(@RequestParam int communityId){
-        return postService.findAllByCommunityId(communityId);
+    public List<Post> findPost(@RequestParam int communityId,@RequestParam int page,@RequestParam int size){
+        return postService.findAllByCommunityId(communityId,page,size);
     }
     @GetMapping(path = "/deletePost")
     @ResponseBody String deletePost(@RequestParam String id){

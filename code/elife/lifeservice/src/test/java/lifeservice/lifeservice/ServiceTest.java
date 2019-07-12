@@ -59,7 +59,7 @@ public class ServiceTest {
     @Test
     public void findMaintainByCommunityId() throws Exception{
 
-        List<Maintain> maintainList=maintainService.findMaintainByCommunityId(1);
+        List<Maintain> maintainList=maintainService.findMaintainByCommunityId(1,1,1);
         Assert.assertNotNull(maintainList);
     }
     @Test

@@ -25,8 +25,9 @@ public class PostCommentsController {
 
     @GetMapping(path = "/findComments")
     @ResponseBody
-    public List<PostComments> findComment(@RequestParam String pid){
-        return postCommentsService.findAllByPid(pid);
+    public List<PostComments> findComment(@RequestParam String pid,@RequestParam int page,@RequestParam int size){
+
+        return postCommentsService.findAllByPidPage(pid,page,size);
     }
     @PostMapping(path = "/addComments")
     @ResponseBody
