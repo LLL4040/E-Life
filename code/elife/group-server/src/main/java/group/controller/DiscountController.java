@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author ztHou
  */
-@RequestMapping(path = "/discount")
+@RequestMapping(path = "/api/discount")
 @RestController
 public class DiscountController {
     private final DiscountService discountService;

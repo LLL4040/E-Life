@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author ztHou
  */
-@RequestMapping(path = "/demand")
+@RequestMapping(path = "/api/demand")
 @RestController
 public class DemandController {
     private final DemandService demandService;

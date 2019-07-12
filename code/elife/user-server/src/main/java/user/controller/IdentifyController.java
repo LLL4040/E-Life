@@ -6,7 +6,7 @@ import user.service.IdentifyService;
 /**
  * @author ztHou
  */
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/api/user")
 @RestController
 public class IdentifyController {
     private final IdentifyService identifyService;

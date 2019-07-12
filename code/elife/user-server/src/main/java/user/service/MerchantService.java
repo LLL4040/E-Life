@@ -50,4 +50,11 @@ public interface MerchantService {
      * @return whether delete successfully
      */
     JSONObject deleteMerchant(Long id);
+
+    /**
+     * get merchant by id
+     * @param id merchant id
+     * @return merchant
+     */
+    JSONObject getMerchant(Long id);
 }

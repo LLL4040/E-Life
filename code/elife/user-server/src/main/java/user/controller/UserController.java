@@ -7,7 +7,7 @@ import user.service.UserService;
 /**
  * @author ztHou
  */
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/api/user")
 @RestController
 public class UserController {
     private final UserService userService;

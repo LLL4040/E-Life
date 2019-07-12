@@ -11,7 +11,7 @@ import user.service.MerchantService;
 /**
  * @author ztHou
  */
-@RequestMapping(path = "/merchant")
+@RequestMapping(path = "/api/merchant")
 @RestController
 public class MerchantController {
     private final MerchantService merchantService;
@@ -46,5 +46,11 @@ public class MerchantController {
     @ResponseBody
     public JSONObject deleteMerchant(@RequestParam Long id){
         return merchantService.deleteMerchant(id);
+    }
+
+    @RequestMapping(path = "/getMerchantById")
+    @ResponseBody
+    public JSONObject getMerchant(@RequestParam Long id){
+        return merchantService.getMerchant(id);
     }
 }

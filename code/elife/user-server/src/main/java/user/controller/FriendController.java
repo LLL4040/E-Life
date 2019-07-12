@@ -8,7 +8,7 @@ import user.service.FriendService;
 /**
  * @author ztHou
  */
-@RequestMapping(path = "/friend")
+@RequestMapping(path = "/api/friend")
 @RestController
 public class FriendController {
     private final FriendService friendService;
