@@ -112,4 +112,20 @@ public class MerchantServiceImpl implements MerchantService{
             }
         }
     }
+
+    @Override
+    public JSONObject getMerchant(Long id){
+        JSONObject object = new JSONObject();
+        Merchant merchant = merchantDao.findById(id);
+        object.put("id", merchant.getId());
+        object.put("merchantPhone", merchant.getPhone());
+        object.put("detail", merchant.getDetail());
+        object.put("type", merchant.getType());
+        object.put("address", merchant.getAddress());
+        object.put("username", merchant.getUser().getUsername());
+        object.put("email", merchant.getUser().getEmail());
+        object.put("phone", merchant.getUser().getPhone());
+        object.put("communityId", merchant.getUser().getCommunityId());
+        return object;
+    }
 }
