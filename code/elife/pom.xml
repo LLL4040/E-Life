@@ -21,6 +21,8 @@
         <module>estateforum-server</module>
         <module>lifeservice-server</module>
         <module>gateway</module>
+        <module>package-server</module>
+        <module>activity-server</module>
     </modules>
 
     <properties>
