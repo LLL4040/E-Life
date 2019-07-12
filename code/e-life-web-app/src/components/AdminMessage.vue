@@ -1,0 +1,83 @@
+<template>
+  <div>
+    <div align="center">
+      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入用户名关键字搜索"/>
+    </div>
+    <div style="padding-top: 20px">
+      <el-card style="padding-left: 20px; padding-right: 20px;">
+        <div slot="header" class="clearfix">
+          <span>已发送通知</span>
+          <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
+        </div>
+        <el-table :data="message.filter(data => !search || data.user.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="通知内容">
+                  <span>{{ props.row.content }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column prop="time" label="时间" align="center"></el-table-column>
+          <el-table-column prop="user" label="接收人" align="center"></el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-card>
+    </div>
+    <el-dialog title="发送通知" :visible.sync="dialogFormVisible">
+      <el-form :model="newMessage">
+        <el-form-item label="接收人用户名">
+          <el-input v-model="newMessage.user"></el-input>
+        </el-form-item>
+        <el-form-item label="通知内容">
+          <el-input v-model="newMessage.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sendM()">发 送</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'AdminMessage',
+  data () {
+    return {
+      search: '',
+      dialogFormVisible: false,
+      message: [{
+        time: 'xxx',
+        manager: '996',
+        user: '233',
+        content: '快交钱啊啊啊'
+      }],
+      newMessage: {
+        manager: '',
+        user: '',
+        content: ''
+      }
+    }
+  },
+  mounted () {
+  },
+  methods: {
+    sendM () {
+      this.dialogFormVisible = false
+    },
+    handleDelete () {
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

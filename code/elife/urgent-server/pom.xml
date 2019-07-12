@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <name>urgent-server</name>
-    <artifactId>inform-server</artifactId>
+    <artifactId>urgent-server</artifactId>
 
     <dependencies>
 
