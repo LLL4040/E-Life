@@ -4,7 +4,7 @@
       <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入内容关键字搜索"/>
     </div>
     <el-row :gutter="10" style="padding-top: 20px">
-      <el-col :span="10">
+      <el-col :span="12">
       <el-card style="padding-left: 20px">
         <div slot="header" class="clearfix">
           <span>紧急通知</span>
@@ -29,7 +29,7 @@
         </el-table>
       </el-card>
       </el-col>
-      <el-col :span="14">
+      <el-col :span="12">
         <el-card style="padding-left: 20px">
           <div slot="header" class="clearfix">
             <span>最新资讯</span>
@@ -39,15 +39,19 @@
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
+                  <el-form-item label="封面">
+                    <img :src="props.row.photo" style="width: 80px; height: 80px">
+                  </el-form-item>
+                  <el-form-item label="时间">
+                    <span>{{ props.row.time }}</span>
+                  </el-form-item>
                   <el-form-item label="详情">
                     <span>{{ props.row.content }}</span>
                   </el-form-item>
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column prop="time" label="时间" align="center"></el-table-column>
             <el-table-column prop="title" label="标题" align="center"></el-table-column>
-            <el-table-column prop="photo" label="图片" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
@@ -104,7 +108,7 @@ export default {
       news: [{
         time: 'xxx',
         title: 'xx',
-        photo: 'xx',
+        photo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562870568907&di=f976f7d2d4659c7ba947beba11ab09d0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201505%2F19%2F20150519231117_wmYEU.thumb.700_0.jpeg',
         content: 'xxxx'
       }],
       newUrgent: {
