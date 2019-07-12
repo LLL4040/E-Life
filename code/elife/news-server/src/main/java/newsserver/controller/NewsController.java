@@ -2,7 +2,7 @@ package newsserver.controller;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import newsserver.service.NewsSevice;
+import newsserver.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class NewsController {
     @Autowired
-    private NewsSevice newsSevice;
+    private NewsService newsSevice;
 
     @PostMapping(path="/saveNews") // Map ONLY GET Requests
     @ResponseBody

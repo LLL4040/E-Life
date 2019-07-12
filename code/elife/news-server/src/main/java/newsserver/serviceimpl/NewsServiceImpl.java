@@ -5,7 +5,7 @@ import net.minidev.json.JSONObject;
 import newsserver.dao.NewsDao;
 import newsserver.entity.News;
 import newsserver.entity.NewsUsed;
-import newsserver.service.NewsSevice;
+import newsserver.service.NewsService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import static com.google.common.io.ByteStreams.toByteArray;
-
 @Service
 /**
  * newsService class
@@ -26,7 +24,7 @@ import static com.google.common.io.ByteStreams.toByteArray;
  * @Author wyx
  * @Date 2019.07.10
  */
-public class NewsServiceImpl implements NewsSevice {
+public class NewsServiceImpl implements NewsService {
 
     @Autowired
     private NewsDao newsDao;
