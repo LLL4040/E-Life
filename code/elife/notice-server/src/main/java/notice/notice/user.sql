@@ -9,11 +9,11 @@ INSERT INTO `user`(`username`,`password`,`phone`,`email`,`role`,`community_id`)v
 INSERT INTO `user`(`username`,`password`,`phone`,`email`,`role`,`community_id`)value ('哮天犬','123','1088778','104@qq.com',2,1);
 INSERT INTO `manager`(`username`,`password`,`phone`,`email`,`role`,`community_id`)value ('二郎神','123','1088778','104@qq.com',1,1);
 
-insert into `maintain`(id,time,status,content,maintainname,phone,managername,username,userphone)value (
-    12,'2019',0,'我家厕所堵住了',null,null,null,'哮天犬',1088778
+insert into `maintain`(time,status,content,maintainname,phone,managername,username,userphone)value (
+    '2019',0,'我家厕所堵住了',null,null,null,'哮天犬',1088778
     );
-insert into `maintain`(id,time,status,content,maintainname,phone,managername,username,userphone)value (
-    13,'2019',0,'我家门锁头坏了',null,null,null,'哪吒',1088778
+insert into `maintain`(time,status,content,maintainname,phone,managername,username,userphone)value (
+    '2019',0,'我家门锁头坏了',null,null,null,'哪吒',1088778
     );
 select count(*) from (select * from noticeUser where id=9 limit 1)as A;
 delete from noticeUser  where id=25;
