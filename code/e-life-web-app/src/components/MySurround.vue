@@ -1,12 +1,9 @@
 <template>
   <div>
-    <div align="center">
-      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>
-    </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="16">
         <el-card class="box-card">
-          <div></div>
+          <baidu-map class="bm-view" center="上海"></baidu-map>
         </el-card>
       </el-col>
       <el-col :span="8">
@@ -29,6 +26,9 @@
             </el-col>
           </el-row>
         </el-card>
+        <el-card class="box-card">
+          <el-input v-model="search" size="medium" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>
+        </el-card>
       </el-col>
     </el-row>
   </div>
@@ -41,10 +41,15 @@ export default {
     return {
       search: ''
     }
+  },
+  methods: {
   }
 }
 </script>
 
-<style scoped>
-
+<style>
+  .bm-view {
+    width: 100%;
+    height: 450px;
+  }
 </style>
