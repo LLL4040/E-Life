@@ -14,17 +14,18 @@
     </el-header>
     <el-container style="padding-top: 30px">
       <el-aside width="220px" style="background-color: rgb(238, 241, 246)">
-        <el-menu :default-openeds="[]" style="height:100vh;width:220px;float:left;overflow-y:auto">
+        <el-menu default-active="1" style="height:100vh;width:220px;float:left;overflow-y:auto">
           <div align="center">
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
-            <h6 class="text-center tm-text-primary mb-4">用户名</h6>
+            <div style="clear:both"></div>
+            <el-button class="text-center tm-text-primary mb-4" type="primary" plain size="mini" icon="el-icon-edit" @click="toPage(1)">{{ userInfo.username }}</el-button>
             <div style="clear:both"></div>
           </div>
-          <el-menu-item index="1">
+          <el-menu-item index="1" @click="toPage(2)">
             <i class="el-icon-shopping-bag-1"></i>
             <span slot="title" style="font-size: 16px">查看团购</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="2" @click="toPage(3)">
             <i class="el-icon-alarm-clock"></i>
             <span slot="title" style="font-size: 16px">查看需求</span>
           </el-menu-item>
@@ -40,12 +41,22 @@
 </template>
 
 <script>
-import page1 from './CommunityInformation.vue'
+import page1 from './MeInfo.vue'
+import page2 from './MeGroup.vue'
+import page3 from './MeDemand.vue'
+
 export default {
   name: 'Merchant',
   data () {
     return {
-      tabView: 'page1'
+      tabView: 'page2',
+      userInfo: {
+        community: '快乐小区',
+        username: '233',
+        id: '',
+        email: '233@233.com',
+        phone: '2333333333333'
+      }
     }
   },
   methods: {
@@ -54,11 +65,11 @@ export default {
     }
   },
   components: {
-    page1
+    page1,
+    page2,
+    page3
   },
   mounted () {
-    let start = window.location.href.lastIndexOf('/')
-    this.activeIndex = window.location.href.slice(start + 1)
   }
 }
 </script>

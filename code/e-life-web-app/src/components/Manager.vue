@@ -80,6 +80,10 @@
             </el-menu-item>
             <el-menu-item index="4-2" @click="toPage2(4-1, 13)">已处理</el-menu-item>
           </el-submenu>
+          <el-menu-item index="5" @click="toPage2(5, 14)">
+            <i class="el-icon-message"></i>
+            <span slot="title" style="font-size: 16px">管理邮包</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -125,6 +129,7 @@ import page10 from './AdminBillY.vue'
 import page11 from './AdminMessage.vue'
 import page12 from './AdminRepairW.vue'
 import page13 from './AdminRepairY.vue'
+import page14 from './AdminParcel.vue'
 
 export default {
   name: 'Manager',
@@ -175,7 +180,8 @@ export default {
     page10,
     page11,
     page12,
-    page13
+    page13,
+    page14
   },
   mounted () {
     // this.getNew()

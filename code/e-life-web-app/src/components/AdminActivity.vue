@@ -32,7 +32,7 @@
             <el-table-column label="标题" prop="title" align="center"></el-table-column>
             <el-table-column label="状态" align="center">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.status === '1'" type="danger" plain size="small">已开始</el-button>
+                <el-button v-if="scope.row.status === '1'" type="danger" plain size="small">已结束</el-button>
                 <el-button v-if="scope.row.status === '0'" type="success" plain size="small">报名中</el-button>
               </template>
             </el-table-column>
