@@ -90,6 +90,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public JSONObject registerMerchant(String username, String password, String phone, String code, String email, Long communityId) {
+        JSONObject result = new JSONObject();
+        result.put("register", 0);
+        String available = "available";
+        if (((int) usernameAvailable(username).get(available) != 1) || ((int) usernameAvailable(phone).get(available) != 1)) {
+            return result;
+        }
+        try {
+            User user = new User(username, password, phone, email, 1, communityId);
+            Boolean flag = identifyService.verifyIdentifyCode(phone, code);
+            if (!flag) {
+                /* 手机验证码错误 */
+                return result;
+            } else {
+                userDao.save(user);
+                result.put("register", 1);
+                return result;
+            }
+        } catch (Exception e) {
+            result.put("register", 0);
+        }
+        return result;
+    }
+
+    @Override
     public JSONObject registerManager(String username, String password, String phone, String code, String email, Long communityId) {
         JSONObject result = new JSONObject();
         result.put("register", 0);
