@@ -29,6 +29,11 @@ public interface PostCommentsRepository extends MongoRepository<PostComments,Lon
      * @param pid 贴子的id
      * @param location 发帖评论的楼层数*/
     void deleteByPidAndLocation(String pid,int location);
+    /**
+     * 该函数旨在返回特定的一条帖子的所有评论
+     * @param pageable 用于分页的参数
+     * @param pid 发帖人的id
+     * @return List<PostComments> 该函数返回一条帖子的所有评论*/
     @Query(value = "{" +
             "    pid:{$regex:?0},\n" +
             "}")

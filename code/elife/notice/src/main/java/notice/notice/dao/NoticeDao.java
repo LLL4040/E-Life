@@ -48,6 +48,9 @@ public interface NoticeDao {
      * @param username 用户名
      * @return 返回删除成功的信息*/
     String deleteByUsernameAndNoticeId(String username,int noticeId);
-
+    /**
+     * 这个函数根据communityId返回一个小区内所有的居民名字
+     * @param communityId 小区号
+     * @return 返回居民名字的列表*/
     List<String> findUsernameByCommunityId(int communityId);
 }

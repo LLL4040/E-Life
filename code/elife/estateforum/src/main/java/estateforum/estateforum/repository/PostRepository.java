@@ -19,7 +19,9 @@ public interface PostRepository extends MongoRepository <Post,Long>{
     List<Post> findByPosterName(String posterName);
     /**
      * 该方法返回指定小区用户发布的所有帖子
-     * @param communityId 小区的id*/
+     * @param communityId 小区的id
+     * @param pageable 用来分页的参数
+     * @return 返回帖子的列表*/
     List<Post>findAllByCommunityId(int communityId, Pageable pageable);
     /**
      *该方法返回特定id的的帖子

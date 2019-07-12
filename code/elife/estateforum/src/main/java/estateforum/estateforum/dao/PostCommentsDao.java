@@ -17,6 +17,8 @@ public interface PostCommentsDao {
     List<PostComments> findAllByPid(String Pid);
     /**
      * 该函数旨在返回特定的一条帖子的所有评论
+     * @param page 当前页数
+     * @param size 每页数据量
      * @param Pid 发帖人的id
      * @return List<PostComments> 该函数返回一条帖子的所有评论*/
     List<PostComments> findAllByPidPage(String Pid,int page,int size);
