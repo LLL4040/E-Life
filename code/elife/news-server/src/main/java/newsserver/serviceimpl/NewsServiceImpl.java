@@ -36,7 +36,7 @@ public class NewsServiceImpl implements NewsService {
             if (!photo.isEmpty()) {
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream bufferedOutputStream = new
-                        BufferedOutputStream(new FileOutputStream(new File("E:\\upload\\" + path)));
+                        BufferedOutputStream(new FileOutputStream(new File("./news-server/pic/" + path)));
                 bufferedOutputStream.write(bytes);
                 bufferedOutputStream.close();
             }
@@ -56,7 +56,7 @@ public class NewsServiceImpl implements NewsService {
         while(iter.hasNext()){
             News temp = iter.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("E:\\upload\\"+temp.getPhoto());
+            File file = new File("./news-server/pic/"+temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo=Base64.encodeBase64String(data);
             jsonObject.put("photo" , "data:image/jpg;base64,"+photo);
@@ -74,7 +74,7 @@ public class NewsServiceImpl implements NewsService {
             JSONObject jsonObject = new JSONObject();
         try {
             News temp = newsDao.findOne(id);
-            File file = new File("E:\\upload\\" + temp.getPhoto());
+            File file = new File("./news-server/pic/" + temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
@@ -124,7 +124,7 @@ public class NewsServiceImpl implements NewsService {
         while (hot.hasNext()) {
             News temp = hot.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("E:\\upload\\" + temp.getPhoto());
+            File file = new File("./news-server/pic/" + temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
@@ -138,7 +138,7 @@ public class NewsServiceImpl implements NewsService {
         while (cold.hasNext()) {
             NewsUsed temp = cold.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("E:\\upload\\" + temp.getPhoto());
+            File file = new File("./news-server/pic/" + temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
