@@ -11,9 +11,12 @@
     <modules>
         <module>eureka-server</module>
         <module>urgent-server</module>
+<<<<<<< HEAD
         <module>user-server</module>
         <module>auth-server</module>
         <module>service-hi</module>
+=======
+>>>>>>> d0c48ab33e1f1f17b01c17969e4f490ff56ae9c9
         <module>news-server</module>
         <module>group-server</module>
         <module>bargain-server</module>
