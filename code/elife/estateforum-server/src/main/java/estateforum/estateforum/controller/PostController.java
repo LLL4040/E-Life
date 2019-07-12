@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author 符永锐
  * @date 2019/07/04*/
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/post")
 @Controller
 public class PostController {
     @Autowired
