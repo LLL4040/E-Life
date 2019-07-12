@@ -53,7 +53,7 @@ public class ActivityServiceImpl implements ActivityService {
             if (!photo.isEmpty()) {
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream bufferedOutputStream = new
-                        BufferedOutputStream(new FileOutputStream(new File("./activity-server-server/pic/" + path)));
+                        BufferedOutputStream(new FileOutputStream(new File("./activity-server/pic/" + path)));
                 bufferedOutputStream.write(bytes);
                 bufferedOutputStream.close();
             }

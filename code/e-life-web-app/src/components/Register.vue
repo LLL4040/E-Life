@@ -201,6 +201,9 @@ export default {
     }
   },
   methods: {
+    loadCommunity () {
+
+    }
     preStep () {
       this.x--
     },

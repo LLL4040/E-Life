@@ -19,7 +19,7 @@ spring:
 
 # server monitor port
 server:
-  port: 9094
+  port: 9991
 
 # eureka server cluster
 eureka:
