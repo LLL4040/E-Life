@@ -1,11 +1,12 @@
-package activityserver.serviceimpl;
+package newsserver.serviceimpl;
 
-import activityserver.dao.ActivityDao;
-import activityserver.entity.Activity;
-import activityserver.entity.Participator;
-import activityserver.service.ActivityService;
+
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import newsserver.dao.ActivityDao;
+import newsserver.entity.Activity;
+import newsserver.entity.Participator;
+import newsserver.service.ActivityService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
