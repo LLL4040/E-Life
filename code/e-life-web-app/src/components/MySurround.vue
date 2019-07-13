@@ -3,7 +3,10 @@
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="16">
         <el-card class="box-card">
-          <baidu-map class="bm-view" center="上海"></baidu-map>
+          <baidu-map class="bm-view" center="上海" >
+            <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+            <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
+          </baidu-map>
         </el-card>
       </el-col>
       <el-col :span="8">
@@ -42,7 +45,14 @@ export default {
       search: ''
     }
   },
+  mounted () {
+
+  },
   methods: {
+    getLocation () {
+      let Bmap = window.VueBaiduMap
+      let geolocation = new Bmap.Geolocation()
+    }
   }
 }
 </script>

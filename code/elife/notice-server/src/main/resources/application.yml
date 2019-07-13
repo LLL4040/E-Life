@@ -4,7 +4,7 @@ spring:
     name: notice-server
   # Mysql jpa config
   datasource:
-    url: jdbc:Mysql://localhost:3306/e_life?
+    url: jdbc:Mysql://localhost:3306/e_life?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -22,7 +22,7 @@ spring:
 
 # server monitor port
 server:
-  port: 9096
+  port: 9996
 
 # eureka server cluster
 eureka:
