@@ -1,10 +1,11 @@
-package notice.notice.repository;
+package newsserver.repository;
 
-import notice.notice.entity.NoticeUser;
+
+import newsserver.entity.NoticeUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
