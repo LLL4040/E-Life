@@ -1,4 +1,4 @@
-package notice.notice.entity;
+package newsserver.entity;
 
 import javax.persistence.*;
 

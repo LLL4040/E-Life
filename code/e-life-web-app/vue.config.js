@@ -19,28 +19,10 @@ module.exports = {
       Popper: ['popper.js', 'default'] // 在jquery的配置下添加多这一行配置
     }])
   },
-  configureWebpack: (config) => {
-    if (process.env.NODE_ENV === 'production') {
-      // 为生产环境修改配置...
-      config.mode = 'production'
-    } else {
-      // 为开发环境修改配置...
-      config.mode = 'development'
+  configureWebpack: {
+    externals: {
+      "BMap": "BMap"
     }
-    Object.assign(config, {
-      // 开发生产共同配置
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, './src'),
-          '@c': path.resolve(__dirname, './src/components')
-          // 'jquery-1.9.1': path.resolve(__dirname, './src/assets/js/jquery-1.9.1.min.js'),
-          // 'slick': path.resolve(__dirname, './src/assets/slick/slick.min.js'),
-          // 'jquery.magnific-popup': path.resolve(__dirname, './src/assets/magnific-popup/jquery.magnific-popup.min.js'),
-          // 'jquery.singlePageNav': path.resolve(__dirname, './src/assets/js/jquery.singlePageNav.min.js'),
-          // 'bootstrap': path.resolve(__dirname, './src/assets/js/bootstrap.min.js')
-        }
-      }
-    })
   },
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: true,
@@ -69,17 +51,17 @@ module.exports = {
     port: 8081,
     https: false,
     open: false,
-    hotOnly: false
-    // proxy: {
-    //   '': {
-    //     target: 'http://0.0.0.0:8081/',
-    //     changeOrigin: true,
-    //     ws: true,
-    //     pathRewrite: {
-    //       '^/': ''
-    //     }
-    //   }
-    // }
+    hotOnly: false,
+    proxy: {
+      '': {
+        target: 'http://localhost:9010/',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/': ''
+        }
+      }
+    }
   },
   // 第三方插件配置
   pluginOptions: {

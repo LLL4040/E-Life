@@ -1,10 +1,11 @@
-package notice.notice.daoimpl;
+package newsserver.daoimpl;
 
-import notice.notice.entity.Notice;
-import notice.notice.entity.NoticeUser;
-import notice.notice.repository.NoticeRepository;
-import notice.notice.dao.NoticeDao;
-import notice.notice.repository.NoticeUserRepository;
+;
+import newsserver.dao.NoticeDao;
+import newsserver.entity.Notice;
+import newsserver.entity.NoticeUser;
+import newsserver.repository.NoticeRepository;
+import newsserver.repository.NoticeUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

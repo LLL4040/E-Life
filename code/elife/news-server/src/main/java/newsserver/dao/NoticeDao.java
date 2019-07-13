@@ -1,7 +1,9 @@
-package notice.notice.dao;
+package newsserver.dao;
 
-import notice.notice.entity.Notice;
-import notice.notice.entity.NoticeUser;
+
+
+import newsserver.entity.Notice;
+import newsserver.entity.NoticeUser;
 
 import java.util.List;
 

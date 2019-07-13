@@ -36,6 +36,20 @@ public class UserController {
         return userService.registerUser(username, password, phone, code, email, communityId);
     }
 
+    @PostMapping(path = "/registerManager")
+    @ResponseBody
+    public JSONObject registerManager(@RequestParam String username, @RequestParam String password, @RequestParam String phone,
+                               @RequestParam String code, @RequestParam String email, @RequestParam Long communityId) {
+        return userService.registerManager(username, password, phone, code, email, communityId);
+    }
+
+    @RequestMapping(path = "/changeManagerStatus")
+    @ResponseBody
+    public JSONObject changeManagerRole(@RequestParam String username,@RequestParam Integer role){
+        return userService.changeManagerRole(username, role);
+    }
+
+
     @PostMapping(path = "/login")
     @ResponseBody
     public JSONObject login(@RequestParam String username, @RequestParam String password, @RequestParam String id) {

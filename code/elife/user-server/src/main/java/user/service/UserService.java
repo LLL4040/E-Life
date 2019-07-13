@@ -139,10 +139,15 @@ public interface UserService {
      * change manager role
      *
      * @param username username of manager being changed
+     * @param role role
      * @return whether change role successfully 1:success, 0:fail
      */
     JSONObject changeManagerRole(String username, Integer role);
 
+    /**
+     * show communities
+     * @return communities
+     */
     JSONArray showCommunities();
 
 }
