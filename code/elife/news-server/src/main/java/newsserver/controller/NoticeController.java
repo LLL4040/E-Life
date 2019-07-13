@@ -1,9 +1,9 @@
-package notice.notice.controller;
+package newsserver.controller;
 
-import notice.notice.entity.Notice;
-import notice.notice.entity.NoticeUser;
-import notice.notice.repository.NoticeUserRepository;
-import notice.notice.service.NoticeService;
+
+import newsserver.entity.Notice;
+import newsserver.entity.NoticeUser;
+import newsserver.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

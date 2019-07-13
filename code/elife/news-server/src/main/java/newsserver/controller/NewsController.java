@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class NewsController {
     @Autowired
-    private NewsService newsSevice;
+    private NewsService newsService;
 
     @PostMapping(path="/saveNews") // Map ONLY GET Requests
     @ResponseBody
@@ -27,38 +27,38 @@ public class NewsController {
     boolean saveNews (@RequestParam String  content, @RequestParam String managerName,
                      @RequestParam String title, @RequestParam MultipartFile photo,
                       @RequestParam int communityId) throws IOException {
-        return newsSevice.save(content,managerName,title,photo,communityId);
+        return newsService.save(content,managerName,title,photo,communityId);
     }
     @PostMapping(path="/save") // Map ONLY GET Requests
     @ResponseBody
     public
     String save ( @RequestParam MultipartFile photo) throws IOException {
-        newsSevice.save("ss","1","hh",photo,1);
+        newsService.save("ss","1","hh",photo,1);
         return "success";
     }
     @RequestMapping(path = "/findNews")
     @ResponseBody
     public JSONArray findNew(int communityId) throws IOException {
-        return newsSevice.findNew(communityId);
+        return newsService.findNew(communityId);
     }
     @RequestMapping(path = "/deleteOne")
     @ResponseBody
     public boolean deleteOne(int id){
-        return newsSevice.deleteOne(id);
+        return newsService.deleteOne(id);
     }
     @RequestMapping(path = "/findOne")
     @ResponseBody
     public JSONObject findOne(int id) throws IOException {
-        return newsSevice.findOne(id);
+        return newsService.findOne(id);
     }
     @RequestMapping(path = "/moveTable")
     @ResponseBody
-    public void moveTable() throws IOException {
-         newsSevice.moveTable();
+    public boolean moveTable() throws IOException {
+         return newsService.moveTable();
     }
     @RequestMapping(path = "/findHistory")
     @ResponseBody
     public JSONArray findHistory(int communityId) throws IOException {
-        return newsSevice.findHistory(communityId);
+        return newsService.findHistory(communityId);
     }
 }

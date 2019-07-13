@@ -1,9 +1,10 @@
-package notice.notice.serviceimpl;
+package newsserver.serviceimpl;
 
-import notice.notice.dao.NoticeDao;
-import notice.notice.entity.Notice;
-import notice.notice.entity.NoticeUser;
-import notice.notice.service.NoticeService;
+
+import newsserver.dao.NoticeDao;
+import newsserver.entity.Notice;
+import newsserver.entity.NoticeUser;
+import newsserver.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package notice.notice.entity;
+package newsserver.entity;
 
 import java.io.Serializable;
 
