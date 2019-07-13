@@ -69,17 +69,17 @@ module.exports = {
     port: 8081,
     https: false,
     open: false,
-    hotOnly: false
-    // proxy: {
-    //   '': {
-    //     target: 'http://0.0.0.0:8081/',
-    //     changeOrigin: true,
-    //     ws: true,
-    //     pathRewrite: {
-    //       '^/': ''
-    //     }
-    //   }
-    // }
+    hotOnly: false,
+    proxy: {
+      '': {
+        target: 'http://localhost:9010/',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/': ''
+        }
+      }
+    }
   },
   // 第三方插件配置
   pluginOptions: {

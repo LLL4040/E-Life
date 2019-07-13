@@ -42,13 +42,15 @@
           </div>
           <el-form v-if="x === 0" ref="form" :model="form" label-width="60px" style="width: 70%; padding-left: 30%; padding-top: 5%">
             <el-form-item label="小区">
-              <el-select v-model="form.community" filterable placeholder="可输入关键词进行搜索">
-                <el-option
-                  v-for="item in communities"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
+              <el-select v-model="form.communityId" filterable placeholder="输入小区名称关键字搜索">
+              <el-option
+                v-for="item in communities"
+                :key="item.id"
+                :label="item.label"
+                :value="item.id">
+                <span style="float: left">{{ item.label }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+              </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="身份">
@@ -157,7 +159,7 @@ export default {
       x: 0,
       dialogFormVisible: false,
       form: {
-        community: '',
+        communityId: '',
         id: '',
         username: '',
         password: '',
@@ -181,7 +183,8 @@ export default {
         label: '管理员'
       }],
       communities: [{
-        value: 'xx小区',
+        id: '1',
+        value: '上海',
         label: 'xx小区'
       }],
       types: [{
@@ -200,14 +203,29 @@ export default {
       result: ''
     }
   },
+  mounted () {
+    this.loadCommunity()
+  },
   methods: {
     loadCommunity () {
-
-    }
+      this.$axios
+        .get('/user-server/api/user/communities')
+        .then(response => {
+          for (let com in response.data) {
+            let item = {
+              id: com['id'],
+              value: com['information'],
+              label: com['name']
+            }
+            this.communities.push(item)
+          }
+        })
+    },
     preStep () {
       this.x--
     },
     nextStep () {
+      console.log(this.form)
       if (this.x === 0) {
         if (this.form.community === '' || this.form.id === '') {
           this.$alert('表单必须填写完整才能进入下一步！')
