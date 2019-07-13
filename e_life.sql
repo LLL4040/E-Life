@@ -185,8 +185,8 @@ CREATE TABLE newsused
 CREATE TABLE activity
 ( 
   `id`          bigint AUTO_INCREMENT,
-  `stime`        timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-	`etime`        timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `stime`       varchar(50) NOT NULL,
+	`etime`        varchar(50) NOT NULL,
   `content`     varchar(1024) NOT NULL,
   `managername` varchar(50) NOT NULL,
   `title`       varchar(50) NOT NULL,

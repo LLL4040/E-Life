@@ -1,6 +1,6 @@
-package bargain.dao;
+package group.dao;
 
-import bargain.entity.Bargain;
+import group.entity.Bargain;
 
 import java.util.List;
 

@@ -1,9 +1,8 @@
-package bargain.controller;
+package group.controller;
 
-import bargain.service.BargainService;
+import group.service.BargainService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;

@@ -1,7 +1,7 @@
-package bargain.dao;
+package group.dao;
 
-import bargain.entity.Bargain;
-import bargain.repository.BargainRepository;
+import group.entity.Bargain;
+import group.repository.BargainRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author ztHou
  */
 @Repository
-public class BargainDaoImpl implements BargainDao{
+public class BargainDaoImpl implements BargainDao {
     private final BargainRepository bargainRepository;
 
     public BargainDaoImpl(BargainRepository bargainRepository) {

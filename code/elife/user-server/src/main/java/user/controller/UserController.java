@@ -1,5 +1,6 @@
 package user.controller;
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import user.service.UserService;
@@ -51,6 +52,12 @@ public class UserController {
     @ResponseBody
     public JSONObject findPassword(@RequestParam String phone, @RequestParam String code, @RequestParam String password, @RequestParam String id) {
         return ("0".equals(id)) ? userService.findPassword(phone, code, password) : userService.findPasswordManager(phone, code, password);
+    }
+
+    @RequestMapping(path = "/communities")
+    @ResponseBody
+    public JSONArray showCommunities(){
+        return userService.showCommunities();
     }
 
 
