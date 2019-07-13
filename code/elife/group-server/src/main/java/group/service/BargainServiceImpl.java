@@ -1,8 +1,9 @@
-package bargain.service;
+package group.service;
 
-import bargain.dao.BargainDao;
-import bargain.entity.Bargain;
-import bargain.entity.Merchant;
+import group.dao.BargainDao;
+import group.entity.Bargain;
+import group.entity.Merchant;
+import group.service.BargainService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author ztHou
  */
 @Service
-public class BargainServiceImpl implements BargainService{
+public class BargainServiceImpl implements BargainService {
     private final BargainDao bargainDao;
 
     public BargainServiceImpl(BargainDao bargainDao) {

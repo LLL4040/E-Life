@@ -1,4 +1,4 @@
-package bargain.entity;
+package group.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

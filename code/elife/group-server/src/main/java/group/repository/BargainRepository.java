@@ -1,6 +1,6 @@
-package bargain.repository;
+package group.repository;
 
-import bargain.entity.Bargain;
+import group.entity.Bargain;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

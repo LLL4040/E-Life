@@ -1,4 +1,4 @@
-package bargain.service;
+package group.service;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
