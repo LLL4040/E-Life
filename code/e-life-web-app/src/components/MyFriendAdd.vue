@@ -1,7 +1,8 @@
 <template>
   <div>
     <div align="center">
-      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入用户名关键字搜索"/>
+      <el-input v-model="search" size="medium" style="width: 300px" placeholder="输入用户名关键字搜索"/>
+      <el-button icon="el-icon-search" size="medium" type="primary" @click="loadUser()"></el-button>
     </div>
     <div style="padding-top: 20px;">
       <el-card style="padding-left: 20px">
@@ -36,25 +37,83 @@ export default {
   data () {
     return {
       search: '',
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
       dialogFormVisible: false,
       myApply: {
         myName: '',
         hisName: '',
         content: ''
       },
-      userData: [{
-        username: '233',
-        community: 'xxx'
-      }]
+      userData: []
     }
   },
+  mounted () {
+    this.loadData()
+  },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadUser () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.search)
+      let url = '/user-server/api/friend/friendSearchList'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userData = response.data
+      })
+    },
     handleAdd1 (row) {
       this.myApply.hisName = row.username
       this.dialogFormVisible = true
     },
     handleAdd2 () {
       this.dialogFormVisible = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.userInfo.username)
+      bodyFormData.set('friend', this.myApply.hisName)
+      bodyFormData.set('content', this.myApply.content)
+      let url = '/user-server/api/friend/sendFriendRequest'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.send === 1) {
+          this.$alert('添加成功！')
+        } else {
+          this.$alert('添加失败！')
+        }
+      })
     }
   }
 }

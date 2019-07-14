@@ -14,9 +14,10 @@ public interface DemandService {
      * @param content content
      * @param username username publish the demand
      * @param communityId communityId
+     * @param title title
      * @return whether add successfully
      */
-    JSONObject addDemand(String startTime, String endTime, String content, String username, Long communityId);
+    JSONObject addDemand(String startTime, String endTime, String content, String username, Long communityId, String title);
 
     /**
      * delete demand

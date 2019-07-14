@@ -21,7 +21,7 @@ module.exports = {
   },
   configureWebpack: {
     externals: {
-      "BMap": "BMap"
+      'BMap': 'BMap'
     }
   },
   // 生产环境是否生成 sourceMap 文件
@@ -47,21 +47,34 @@ module.exports = {
   // webpack-dev-server 相关配置
   devServer: {
     disableHostCheck: true,
-    host: '0.0.0.0',
-    port: 8081,
-    https: false,
-    open: false,
-    hotOnly: false,
     proxy: {
       '': {
         target: 'http://localhost:9010/',
         changeOrigin: true,
         ws: true,
+
         pathRewrite: {
           '^/': ''
         }
       }
     }
+  // devServer: {
+  //   disableHostCheck: true,
+  //   host: '0.0.0.0',
+  //   port: 8081,
+  //   https: false,
+  //   open: false,
+  //   hotOnly: false,
+  //   proxy: {
+  //     '': {
+  //       target: 'http://localhost:9010/',
+  //       changeOrigin: true,
+  //       ws: true,
+  //       pathRewrite: {
+  //         '^/': ''
+  //       }
+  //     }
+  //   }
   },
   // 第三方插件配置
   pluginOptions: {
