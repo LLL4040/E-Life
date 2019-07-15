@@ -5,6 +5,11 @@ spring:
 server:
   port: 9010
 
+zuul:
+  host:
+    connect-timeout-millis: 15000
+    socket-timeout-millis: 60000
+
 eureka:
   client:
     serviceUrl:
