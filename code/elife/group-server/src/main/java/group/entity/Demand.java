@@ -28,17 +28,29 @@ public class Demand implements Serializable {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "community_id")
     private Long communityId;
 
     public Demand(){}
 
-    public Demand(String username, String startTime, String endTime, String content, Long communityId){
+    public Demand(String username, String startTime, String endTime, String content, Long communityId, String title){
         this.username = username;
         this.startTime = startTime;
         this.endTime = endTime;
         this.content = content;
         this.communityId = communityId;
+        this.title = title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setCommunityId(Long communityId) {

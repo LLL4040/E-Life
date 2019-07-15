@@ -17,13 +17,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "/usernameAvailable")
+    @RequestMapping(path = "/usernameAvailable")
     @ResponseBody
     public JSONObject usernameAvailable(@RequestParam String username) {
         return userService.usernameAvailable(username);
     }
 
-    @GetMapping(path = "/phoneAvailable")
+    @RequestMapping(path = "/usernameAvailableManager")
+    @ResponseBody
+    public JSONObject usernameAvailableManager(@RequestParam String username) {
+        return userService.usernameAvailableManager(username);
+    }
+
+    @RequestMapping(path = "/phoneAvailable")
     @ResponseBody
     public JSONObject phoneAvailable(@RequestParam String phone) {
         return userService.phoneAvailable(phone);
@@ -53,25 +59,31 @@ public class UserController {
     @PostMapping(path = "/login")
     @ResponseBody
     public JSONObject login(@RequestParam String username, @RequestParam String password, @RequestParam String id) {
-        return ("0".equals(id)) ? userService.login(username, password) : userService.loginManager(username, password);
+        return ("1".equals(id)) ? userService.loginManager(username, password) : userService.login(username, password);
     }
 
     @PostMapping(path = "/loginPhone")
     @ResponseBody
     public JSONObject loginPhone(@RequestParam String phone, @RequestParam String code, @RequestParam String id) {
-        return ("0".equals(id)) ? userService.loginPhone(phone, code) : userService.loginPhoneManager(phone, code);
+        return ("1".equals(id)) ? userService.loginPhoneManager(phone, code) : userService.loginPhone(phone, code);
     }
 
     @PostMapping(path = "/findPassword")
     @ResponseBody
     public JSONObject findPassword(@RequestParam String phone, @RequestParam String code, @RequestParam String password, @RequestParam String id) {
-        return ("0".equals(id)) ? userService.findPassword(phone, code, password) : userService.findPasswordManager(phone, code, password);
+        return ("1".equals(id)) ? userService.findPasswordManager(phone, code, password) : userService.findPassword(phone, code, password);
     }
 
     @RequestMapping(path = "/communities")
     @ResponseBody
     public JSONArray showCommunities(){
         return userService.showCommunities();
+    }
+
+    @RequestMapping(path = "/getCommunityById")
+    @ResponseBody
+    public JSONObject getCommunityById(@RequestParam Long id){
+        return userService.getCommunityById(id);
     }
 
 

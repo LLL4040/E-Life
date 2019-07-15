@@ -23,8 +23,8 @@ public class DemandController {
     @RequestMapping(path = "/addDemand")
     @ResponseBody
     public JSONObject addDemand(@RequestParam String startTime, @RequestParam String endTime, @RequestParam String content,
-                                @RequestParam String username, @RequestParam Long communityId){
-        return demandService.addDemand(startTime, endTime, content, username, communityId);
+                                @RequestParam String username, @RequestParam Long communityId, @RequestParam String title){
+        return demandService.addDemand(startTime, endTime, content, username, communityId, title);
     }
 
     @RequestMapping(path = "/deleteDemand")

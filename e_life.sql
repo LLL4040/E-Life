@@ -308,6 +308,7 @@ CREATE TABLE maintain
 CREATE TABLE demand
 ( 
   `id`          bigint AUTO_INCREMENT,
+  `title` varchar(100) Not NULL,
   `starttime`   varchar(20) NOT NULL,
   `endtime`   varchar(20) NOT NULL,
   `content`     varchar(1024) NOT NULL,
@@ -322,6 +323,20 @@ CREATE TABLE demand
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE participate
+( 
+  `id`          bigint AUTO_INCREMENT,
+  `username`   varchar(50),
+  `demand`    bigint,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (`demand`)
+        REFERENCES demand (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
 
 /*==============================================================*/
 /* Table: discount                                                                                                                     */
@@ -330,6 +345,7 @@ CREATE TABLE demand
 CREATE TABLE discount
 ( 
   `id`          bigint AUTO_INCREMENT,
+  `title` varchar(100) Not NULL,
   `starttime`   varchar(20) NOT NULL,
   `endtime`     varchar(20) NOT NULL,
   `merchantid`  bigint NOT NULL,

@@ -15,13 +15,13 @@ public class IdentifyController {
         this.identifyService = identifyService;
     }
 
-    @GetMapping(path = "/sendIdentify")
+    @RequestMapping(path = "/sendIdentify")
     @ResponseBody
     public Boolean sendIdentify(@RequestParam String phone) {
         return identifyService.sendIdentifyCode(phone);
     }
 
-    @GetMapping(path = "/verifyIdentify")
+    @RequestMapping(path = "/verifyIdentify")
     @ResponseBody
     public Boolean verifyIdentify(@RequestParam String phone, @RequestParam String code) {
         return identifyService.verifyIdentifyCode(phone, code);

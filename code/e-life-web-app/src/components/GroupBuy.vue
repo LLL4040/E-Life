@@ -61,7 +61,8 @@
             <el-table-column prop="num" label="团内人数"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" plain @click="handleA(scope.row)">加入</el-button>
+                <el-button v-if="scope.row.username !== userInfo.username" size="mini" type="primary" plain @click="handleA(scope.row)">加入</el-button>
+                <el-button v-if="scope.row.username === userInfo.username" size="mini" type="danger" plain @click="handleD(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -90,9 +91,12 @@
     <el-dialog title="团购需求" :visible.sync="dialogFormVisible2">
       <el-form :model="commands">
         <el-form-item label="起始时间">
-          <el-date-picker v-model="time" type="datetimerange" :picker-options="pickerOptions"
+          <el-date-picker v-model="time" type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss"
             range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right">
           </el-date-picker>
+        </el-form-item>
+        <el-form-item label="开团标题">
+          <el-input v-model="commands.title" ></el-input>
         </el-form-item>
         <el-form-item label="开团内容">
           <el-input v-model="commands.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
@@ -100,7 +104,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible2 = false">发 布</el-button>
+        <el-button type="primary" @click="addDemand()">发 布</el-button>
       </div>
     </el-dialog>
   </div>
@@ -114,6 +118,13 @@ export default {
       search: '',
       dialogFormVisible1: false,
       dialogFormVisible2: false,
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
       time: [],
       group: [{
         mId: '1',
@@ -136,6 +147,7 @@ export default {
         username: '',
         start: '',
         end: '',
+        title: '',
         content: ''
       },
       form: {
@@ -176,11 +188,126 @@ export default {
     }
   },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadGroup () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/group-server/api/discount/findDiscountByCommunityId'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.group = response.data
+      })
+    },
+    loadDemand () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/group-server/api/demand/getAllDemand'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.demand = response.data
+      })
+    },
     show () {
+    },
+    addDemand () {
+      this.dialogFormVisible2 = false
+      this.commands.start = this.time[0]
+      this.commands.end = this.time[1]
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('username', this.userInfo.username)
+      bodyFormData.set('startTime', this.commands.start)
+      bodyFormData.set('endTime', this.commands.end)
+      bodyFormData.set('title', this.commands.title)
+      bodyFormData.set('content', this.commands.content)
+      let url = '/group-server/api/demand/addDemand'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.add === 1) {
+          this.$alert('添加成功！')
+          this.loadDemand()
+        } else {
+          this.$alert('添加失败！')
+        }
+      })
     },
     handleCheck (id) {
       this.dialogFormVisible1 = true
+    },
+    handleA (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      bodyFormData.set('username', this.userInfo.username)
+      let url = '/group-server/api/demand/participateDemand'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.participate === 1) {
+          this.$alert('加入成功！')
+          this.loadDemand()
+        } else {
+          this.$alert('加入失败！')
+        }
+      })
+    },
+    handleD (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      let url = '/group-server/api/demand/deleteDemand'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.delete === 1) {
+          this.$alert('删除成功！')
+          this.loadDemand()
+        } else {
+          this.$alert('删除失败！')
+        }
+      })
     }
+  },
+  mounted () {
+    this.loadData()
+    this.loadGroup()
+    this.loadDemand()
   }
 }
 </script>
