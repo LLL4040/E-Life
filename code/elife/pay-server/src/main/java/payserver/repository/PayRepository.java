@@ -39,7 +39,7 @@ public interface PayRepository extends JpaRepository<Pay, Integer> {
      * @param username
      * @return List
      */
-    @Query(value=" select * from pay where username=?1 and status=0",nativeQuery = true)
+    @Query(value=" select * from pay where username=?1 and (status=-1 or status=-2)",nativeQuery = true)
     List<Pay> findNew(String username);
 
     /**
@@ -57,7 +57,7 @@ public interface PayRepository extends JpaRepository<Pay, Integer> {
      * @param communityId
      * @return List
      */
-    @Query(value=" select * from pay where status=0 and community_id=?1",nativeQuery = true)
+    @Query(value=" select * from pay where (status=-1 or status=-2) and community_id=?1",nativeQuery = true)
     List<Pay> findUnPayManager(int communityId);
     /**
      * return history which not taken

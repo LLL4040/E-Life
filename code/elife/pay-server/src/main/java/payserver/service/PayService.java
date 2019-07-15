@@ -16,12 +16,13 @@ public interface PayService {
      * save pay without id and status is 0
      * @param time
      * @param bill
+     * @param status
      * @param managerName
      * @param username
      * @param communityId
      * @return
      */
-    boolean save(String time, BigDecimal bill, String managerName, String username, int communityId);
+    boolean save(String time, BigDecimal bill, int status, String managerName, String username, int communityId);
 
     /**
      * find List<pay> turn to JSON

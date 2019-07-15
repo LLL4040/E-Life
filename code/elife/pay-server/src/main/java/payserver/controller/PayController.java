@@ -19,10 +19,19 @@ public class PayController {
     @Autowired
     private PayService payService;
 
+    /**
+     * savePay status= -1 parkBill status =-2 managerBill
+     * @param time
+     * @param bill
+     * @param managerName
+     * @param username
+     * @param communityId
+     * @return
+     */
     @RequestMapping(path = "/savePay")
     @ResponseBody
-    public boolean savePay(String time, BigDecimal bill, String managerName, String username, int communityId ){
-        return payService.save(time,bill,managerName,username,communityId);
+    public boolean savePay(String time, BigDecimal bill,int status, String managerName, String username, int communityId ){
+        return payService.save(time,bill,status,managerName,username,communityId);
     }
     @RequestMapping(path = "/findNew")
     @ResponseBody
