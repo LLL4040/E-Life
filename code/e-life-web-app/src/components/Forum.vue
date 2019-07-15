@@ -6,8 +6,18 @@
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="18">
         <el-card class="box-card">
-          <div v-for="o in 4" :key="o" class="text item">
-            {{'列表内容 ' + o }}
+          <div v-for="o in postData.length-1" :key="o" class="text item">
+            {{'帖子题目: ' + postData[o].title + '  '}}
+            {{
+            '帖子时间 '+postData[o].postTime
+            }}
+            <br/>
+            {{
+               '发帖人 '+postData[o].posterName}}
+            <br/>
+            {{
+               '帖子内容 '+postData[o].postContent}}
+            <br/>
             <el-divider></el-divider>
           </div>
         </el-card>
@@ -49,7 +59,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">发 布</el-button>
+        <el-button type="primary" @click="addforum">发 布</el-button>
       </div>
     </el-dialog>
   </div>
@@ -60,13 +70,94 @@ export default {
   name: 'Forum',
   data () {
     return {
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
       search: '',
       dialogFormVisible: false,
       myPost: {
         username: '',
         title: '',
         content: ''
+      },
+      postData: []
+    }
+  },
+  mounted () {
+    this.loadData()
+    this.findPost()
+  },
+  methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
       }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    addforum () {
+      this.dialogFormVisible = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('title', this.myPost.title)
+      bodyFormData.set('postContent', this.myPost.content)
+      bodyFormData.set('posterName', this.userInfo.username)
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/estateforum-server/api/post/addPost'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.$alert('加入成功！')
+        } else {
+          this.$alert('加入失败！')
+        }
+      })
+    },
+    findPost () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', 1)
+      bodyFormData.set('size', 1000)
+      this.$axios({
+        method: 'post',
+        url: '/estateforum-server/api/post/findPost',
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        // for (var i = 0; i < response.data.length; i++) {
+        //   var objproject = {
+        //     'title': response.data[i].title, // 这个是赋值到一个数组对象里面去，开发的时候就是取到里面的值进行一个逻辑判断，要干嘛干嘛的。这个也加上他的下标
+        //     'poster': response.data[i].posterName,
+        //     'content': response.data[i].postContent,
+        //     'time': response.data[i].postTime,
+        //     'id': response.data[i].id
+        //   }
+        //   this.postData.push(objproject)
+        // }
+        console.log(response.data)
+        this.postData = response.data
+      })
     }
   }
 }
