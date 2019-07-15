@@ -56,4 +56,9 @@ public class NoticeServiceImpl implements NoticeService {
     public List<String> findUsernameByCommunityId(int communityId) {
         return noticeDao.findUsernameByCommunityId(communityId);
     }
+
+    @Override
+    public List<NoticeUser> findbyNoticeId(int noticeUser) {
+        return noticeDao.findbyNoticeId(noticeUser);
+    }
 }
