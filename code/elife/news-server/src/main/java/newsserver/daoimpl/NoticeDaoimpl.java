@@ -95,4 +95,9 @@ public class NoticeDaoimpl implements NoticeDao {
     public List<String> findUsernameByCommunityId(int communityId) {
         return noticeUserRepository.findUsernameByCommunityId(communityId);
     }
+
+    @Override
+    public List<NoticeUser> findbyNoticeId(int noticeId) {
+        return noticeUserRepository.findByNoticeId(noticeId);
+    }
 }

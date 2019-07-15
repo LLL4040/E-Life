@@ -59,4 +59,6 @@ public interface NoticeService {
      * @return 返回居民名字的列表*/
     List<String> findUsernameByCommunityId(int communityId);
 
+    List<NoticeUser> findbyNoticeId(int noticeUser);
+
 }

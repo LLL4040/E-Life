@@ -55,4 +55,6 @@ public interface NoticeDao {
      * @param communityId 小区号
      * @return 返回居民名字的列表*/
     List<String> findUsernameByCommunityId(int communityId);
+
+    List<NoticeUser> findbyNoticeId(int noticeId);
 }

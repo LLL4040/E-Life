@@ -1,6 +1,7 @@
 package newsserver.controller;
 
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import newsserver.entity.Notice;
 import newsserver.entity.NoticeUser;
@@ -60,9 +61,27 @@ public class NoticeController {
     }
     @RequestMapping(path = "/ManagerFindNotice")
     @ResponseBody
-    public List<Notice> managerFindNotice(@RequestParam String managerName,@RequestParam int pageNumber,@RequestParam int pageSize){
+    public JSONArray  managerFindNotice(@RequestParam String managerName, @RequestParam int pageNumber, @RequestParam int pageSize){
 
-        return noticeService.managerFindNotice(managerName,pageNumber,pageSize);
+        List<Notice> notices=noticeService.managerFindNotice(managerName,pageNumber,pageSize);
+        JSONArray result = new JSONArray();
+        for(Notice notice : notices){
+            JSONObject object = new JSONObject();
+            object.put("id", notice.getNoticeId());
+            object.put("time", notice.getNoticeTime());
+            object.put("content",notice.getNoticeContent());
+            object.put("managename",notice.getManagerName());
+            object.put("communityId",notice.getCommunityId());
+            List<NoticeUser> noticeUserList=noticeService.findbyNoticeId(notice.getNoticeId());
+            if(noticeUserList.size()>1){
+                object.put("receiver","全部");
+            }
+            else if(noticeUserList.size()>0){
+                object.put("receiver",noticeUserList.get(0).getUsername());
+            }
+            result.appendElement(object);
+        }
+        return result;
     }
     @RequestMapping(path = "/findMyNotice")
     @ResponseBody
