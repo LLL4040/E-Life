@@ -44,12 +44,12 @@ public class PostController {
         object.put("message","发表帖子成功");
         return object;
     }
-    @GetMapping(path = "/findPost")
+    @RequestMapping(path = "/findPost")
     @ResponseBody
     public List<Post> findPost(@RequestParam int communityId,@RequestParam int page,@RequestParam int size){
         return postService.findAllByCommunityId(communityId,page,size);
     }
-    @GetMapping(path = "/deletePost")
+    @RequestMapping(path = "/deletePost")
     @ResponseBody JSONObject deletePost(@RequestParam String id){
         postService.deletePost(id);
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
