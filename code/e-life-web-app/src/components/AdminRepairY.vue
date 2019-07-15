@@ -24,8 +24,8 @@
           <el-table-column prop="content" label="内容"></el-table-column>
           <el-table-column label="状态" prop="status" align="center">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.status === 1" type="success" plain size="small">已解决</el-button>
-              <el-button v-if="scope.row.status === 0" type="primary" plain size="small">处理中</el-button>
+              <el-button v-if="scope.row.status === 2" type="success" plain size="small">已解决</el-button>
+              <el-button v-if="scope.row.status === 1" type="primary" plain size="small">处理中</el-button>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
@@ -52,7 +52,9 @@ export default {
         phone: ''
       },
       search: '',
-      requestData: []
+      requestData: [],
+      pageNumber: 1,
+      pageSize: 100
     }
   },
   mounted () {

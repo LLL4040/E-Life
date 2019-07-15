@@ -8,11 +8,11 @@
         <el-table :data="requestData.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
           <el-table-column prop="time" label="时间"></el-table-column>
           <el-table-column prop="username" label="用户名"></el-table-column>
-          <el-table-column prop="phone" label="联系方式"></el-table-column>
+          <el-table-column prop="userPhone" label="联系方式"></el-table-column>
           <el-table-column prop="content" label="内容"></el-table-column>
           <el-table-column label="操作" width="150px" align="center">
-            <template>
-              <el-button size="mini" type="primary" plain @click="dialogFormVisible = true">处理</el-button>
+            <template slot-scope="scope">
+              <el-button size="mini" type="primary" plain @click="handleIt1(scope.row)">处理</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -55,7 +55,8 @@ export default {
         phone: ''
       },
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 10,
+      requestId: ''
     }
   },
   mounted () {
@@ -97,10 +98,34 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.requestData = response.data
+        console.log(this.requestData)
       })
+    },
+    handleIt1 (row) {
+      this.requestId = row.id
+      this.dialogFormVisible = true
     },
     handleIt () {
       this.dialogFormVisible = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.requestId)
+      bodyFormData.set('status', 1)
+      bodyFormData.set('maintainname', this.handleR.repairman)
+      bodyFormData.set('phone', this.handleR.phone)
+      bodyFormData.set('managername', this.userInfo.username)
+      let url = '/lifeservice-server/api/maintain/manageMaintain'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.manageMaintain === '1') {
+          this.loadRequest()
+        } else {
+          this.$alert('处理失败！')
+        }
+      })
     }
   }
 }

@@ -28,7 +28,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>我的请求&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <el-input v-model="search" size="medium" style="width: 400px" suffix-icon="el-icon-search" placeholder="输入0或±1筛选状态-(1:已解决、-1:未处理、0:处理中)"/>
+            <el-input v-model="search" size="medium" style="width: 400px" suffix-icon="el-icon-search" placeholder="输入012筛选状态-(2:已解决、0:未处理、1:处理中)"/>
             </span>
           </div>
           <el-table :data="maintain.filter(data => !search || data.status.toString() === search)" style="width: 100%">
@@ -36,9 +36,9 @@
             <el-table-column prop="content" label="内容"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.status === 1" type="success" plain size="small">已解决</el-button>
-                <el-button v-if="scope.row.status === 0" type="primary" plain size="small">处理中</el-button>
-                <el-button v-if="scope.row.status === -1" type="danger" plain size="small">未处理</el-button>
+                <el-button v-if="scope.row.status === 2" type="success" plain size="small">已解决</el-button>
+                <el-button v-if="scope.row.status === 1" type="primary" plain size="small">处理中</el-button>
+                <el-button v-if="scope.row.status === 0" type="danger" plain size="small">未处理</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -126,7 +126,7 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        alert('添加成功')
+        this.$alert('添加成功！')
         this.loadMain()
       })
     }

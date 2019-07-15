@@ -120,6 +120,25 @@ export default {
     },
     sendM () {
       this.dialogFormVisible = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('content', this.newMessage.content)
+      bodyFormData.set('managerName', this.userInfo.username)
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('username', this.newMessage.user)
+      bodyFormData.set('isMass', 0)
+      let url = '/news-server/api/notice/addNotice'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.addNotice === '1') {
+          this.loadMessage()
+        } else {
+          this.$alert('发送通知失败！')
+        }
+      })
     },
     handleDelete () {
     }
