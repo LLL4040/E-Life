@@ -45,7 +45,7 @@ public interface ParticipatorRepository extends JpaRepository<Participator, Inte
      */
     @Modifying
     @Transactional(rollbackFor = Exception.class)
-    @Query(value="delete from participator  where aid=?1 and status=0  ",nativeQuery = true)
+    @Query(value="delete from participator  where aid=?1 and status<>1  ",nativeQuery = true)
     void deleteAll(int activityId);
 
     /**

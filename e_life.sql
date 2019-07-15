@@ -228,7 +228,7 @@ CREATE TABLE noticeUser
 (
     `id`          bigint NOT NULL,
     `username`    varchar(50) NOT NULL,
-
+	`status`	  SMALLINT,
      FOREIGN KEY (`username`)
          REFERENCES user (`username`)
          ON DELETE CASCADE ON UPDATE CASCADE

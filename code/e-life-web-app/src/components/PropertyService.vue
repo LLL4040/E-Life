@@ -3,9 +3,9 @@
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="10" align="left">
         <el-card class="box-card">
-          上班时间：<br>
-          联系电话：<br>
-          办公室地址：
+          上班时间：周一至周五下午三点到五点<br>
+          联系电话：111-1111-1111<br>
+          办公室地址：xxxxxxxxxx
         </el-card>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
