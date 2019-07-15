@@ -94,7 +94,7 @@ public class NoticeController {
     public JSONObject deleteMyOneNotice(@RequestParam String username,@RequestParam int noticeId){
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         if(noticeService.deleteByUsernameAndNoticeId(username,noticeId).equals("删除我的该条物业信息成功")){
-            object.put("eleteMyOneNotice", "1");
+            object.put("deleteMyOneNotice", "1");
             object.put("message","删除我的该条物业信息成功");
             return object;
 
