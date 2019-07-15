@@ -24,8 +24,8 @@ public class DiscountController {
     @ResponseBody
     public JSONObject addDiscount(@RequestParam String startTime, @RequestParam String endTime, @RequestParam Long merchantId,
                                   @RequestParam Integer number, @RequestParam String content, @RequestParam Integer status,
-                                  @RequestParam Long communityId){
-        return discountService.addDiscount(startTime, endTime, merchantId, number, content, status, communityId);
+                                  @RequestParam Long communityId, @RequestParam String title){
+        return discountService.addDiscount(startTime, endTime, merchantId, number, content, status, communityId, title);
     }
 
     @RequestMapping(path = "/deleteDiscount")

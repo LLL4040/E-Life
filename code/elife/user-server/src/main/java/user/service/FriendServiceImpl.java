@@ -153,4 +153,18 @@ public class FriendServiceImpl implements FriendService {
         result.put("reject", 1);
         return result;
     }
+
+    @Override
+    public JSONObject deleteFriend(String username, String friend){
+        JSONObject object = new JSONObject();
+        object.put("delete", 0);
+        try{
+            friendDao.deleteByUsernameAndFriend(username, friend);
+            friendDao.deleteByUsernameAndFriend(friend, username);
+            object.put("delete", 1);
+            return object;
+        }catch (Exception e){
+            return object;
+        }
+    }
 }

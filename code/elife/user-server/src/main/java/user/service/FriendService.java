@@ -57,4 +57,12 @@ public interface FriendService {
      * @return whether reject successfully
      */
     JSONObject rejectRequest(Long id);
+
+    /**
+     * delete friend
+     * @param username username
+     * @param friend friend
+     * @return whether delete friend successfully
+     */
+    JSONObject deleteFriend(String username, String friend);
 }

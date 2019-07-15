@@ -150,4 +150,11 @@ public interface UserService {
      */
     JSONArray showCommunities();
 
+    /**
+     * get community by id
+     * @param id id
+     * @return community name
+     */
+    JSONObject getCommunityById(Long id);
+
 }

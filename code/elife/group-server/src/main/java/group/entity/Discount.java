@@ -31,6 +31,9 @@ public class Discount implements Serializable {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "status")
     private Integer status;
 
@@ -39,14 +42,23 @@ public class Discount implements Serializable {
 
     public Discount(){}
 
-    public Discount(String startTime, String endTime, Long merchantId, Integer number, String content, Integer status, Long communityId){
+    public Discount(String startTime, String endTime, Long merchantId, Integer number, String content, Integer status, Long communityId, String title){
         this.startTime = startTime;
         this.endTime = endTime;
         this.merchantId = merchantId;
         this.number = number;
         this.content = content;
         this.status = status;
+        this.title = title;
         this.communityId = communityId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Long getCommunityId() {

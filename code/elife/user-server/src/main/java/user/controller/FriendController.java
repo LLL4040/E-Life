@@ -68,4 +68,10 @@ public class FriendController {
         return friendService.rejectRequest(id);
     }
 
+    @RequestMapping(path = "/deleteFriend")
+    @ResponseBody
+    public JSONObject deleteFriend(@RequestParam String username, @RequestParam String friend){
+        return friendService.deleteFriend(username, friend);
+    }
+
 }

@@ -19,13 +19,12 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column label="用户名" prop="username" align="center"></el-table-column>
-            <el-table-column label="小区" prop="community" align="center"></el-table-column>
+            <el-table-column label="用户名" prop="request" align="center"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.status === '1'" type="success" plain size="small">已通过</el-button>
-                <el-button v-if="scope.row.status === '0'" type="primary" plain size="small">未处理</el-button>
-                <el-button v-if="scope.row.status === '-1'" type="danger" plain size="small">未通过</el-button>
+                <el-button v-if="scope.row.status === 1" type="success" plain size="small">已通过</el-button>
+                <el-button v-if="scope.row.status === 0" type="primary" plain size="small">未处理</el-button>
+                <el-button v-if="scope.row.status === -1" type="danger" plain size="small">未通过</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -46,8 +45,7 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column label="用户名" prop="username" align="center"></el-table-column>
-            <el-table-column label="小区" prop="community" align="center"></el-table-column>
+            <el-table-column label="用户名" prop="request" align="center"></el-table-column>
             <el-table-column label="操作" width="150px" align="center">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" plain @click="handleA(scope.row)">同意</el-button>
@@ -67,35 +65,105 @@ export default {
   data () {
     return {
       search: '',
-      my: [{
-        username: '233',
-        community: 'xxx',
-        content: 'hhh',
-        status: '0'
-      }, {
-        username: '233',
-        community: 'xxx',
-        content: 'hhh',
-        status: '1'
-      }, {
-        username: '233',
-        community: 'xxx',
-        content: 'hhh',
-        status: '-1'
-      }],
-      others: [{
-        username: '233',
-        community: 'xxx',
-        content: 'hhh'
-      }]
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
+      my: [],
+      others: []
     }
   },
   mounted () {
+    this.loadData()
+    this.loadMy()
+    this.loadOthers()
   },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadMy () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.userInfo.username)
+      let url = '/user-server/api/friend/requestList'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.my = response.data
+      })
+    },
+    loadOthers () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.userInfo.username)
+      let url = '/user-server/api/friend/responseList'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.others = response.data
+      })
+    },
     handleA (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      let url = '/user-server/api/friend/acceptRequest'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.accept === 1) {
+          this.$alert('接受成功！')
+          this.loadOthers()
+        } else {
+          this.$alert('接受失败！')
+        }
+      })
     },
     handleR (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      let url = '/user-server/api/friend/rejectRequest'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.reject === 1) {
+          this.$alert('拒绝成功！')
+          this.loadOthers()
+        } else {
+          this.$alert('拒绝失败！')
+        }
+      })
     }
   }
 }
