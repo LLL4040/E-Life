@@ -31,8 +31,8 @@ public class UserController {
 
     @RequestMapping(path = "/phoneAvailable")
     @ResponseBody
-    public JSONObject phoneAvailable(@RequestParam String phone) {
-        return userService.phoneAvailable(phone);
+    public JSONObject phoneAvailable(@RequestParam String phone, @RequestParam String id) {
+        return ("1".equals(id)) ? userService.phoneAvailableManager(phone) : userService.phoneAvailable(phone);
     }
 
     @PostMapping(path = "/register")
