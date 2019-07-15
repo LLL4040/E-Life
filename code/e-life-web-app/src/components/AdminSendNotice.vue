@@ -123,14 +123,14 @@ export default {
       },
       newNews: {
         title: '',
-        photo: '',
-        content: '',
-        manager: ''
+        content: ''
       }
     }
   },
   mounted () {
     this.loadData()
+    this.loadUrgent()
+    this.loadNews()
   },
   methods: {
     loadData () {
@@ -168,6 +168,20 @@ export default {
         console.log(response.data)
       })
     },
+    loadNews () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/News/findHistory'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.news = response.data
+        console.log(response.data)
+      })
+    },
     releaseU () {
       this.dialogFormVisible1 = false
       let bodyFormData = new FormData()
@@ -190,6 +204,26 @@ export default {
     },
     releaseN () {
       this.dialogFormVisible2 = false
+      let imagFile = this.$refs.file.files[0]
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('managerName', this.userInfo.username)
+      bodyFormData.set('content', this.newNews.content)
+      bodyFormData.set('title', this.newNews.title)
+      bodyFormData.append('photo', imagFile)
+      let url = '/news-server/api/News/saveNews'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.loadNews()
+        } else {
+          this.$alert('发布资讯失败！')
+        }
+      })
     },
     handleDelete () {
     },
