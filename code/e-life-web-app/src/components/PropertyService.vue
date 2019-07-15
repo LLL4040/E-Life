@@ -31,14 +31,14 @@
             <el-input v-model="search" size="medium" style="width: 400px" suffix-icon="el-icon-search" placeholder="输入0或±1筛选状态-(1:已解决、-1:未处理、0:处理中)"/>
             </span>
           </div>
-          <el-table :data="requestData.filter(data => !search || data.status.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="maintain.filter(data => !search || data.status.toString() === search)" style="width: 100%">
             <el-table-column prop="time" label="时间"></el-table-column>
             <el-table-column prop="content" label="内容"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.status === '1'" type="success" plain size="small">已解决</el-button>
-                <el-button v-if="scope.row.status === '0'" type="primary" plain size="small">处理中</el-button>
-                <el-button v-if="scope.row.status === '-1'" type="danger" plain size="small">未处理</el-button>
+                <el-button v-if="scope.row.status === 1" type="success" plain size="small">已解决</el-button>
+                <el-button v-if="scope.row.status === 0" type="primary" plain size="small">处理中</el-button>
+                <el-button v-if="scope.row.status === -1" type="danger" plain size="small">未处理</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -64,11 +64,71 @@ export default {
         phone: '',
         content: ''
       },
-      requestData: [{
-        time: '1',
-        content: '啊啊啊木得电活不下去啊快点修！！',
-        status: '-1'
-      }]
+      maintain: [],
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      }
+    }
+  },
+  mounted () {
+    this.loadData()
+    this.loadMain()
+  },
+  methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadMain () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.userInfo.username)
+      let url = '/lifeservice-server/api/maintain/userFindMaintain'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.maintain = response.data
+        console.log(response.data)
+      })
+    },
+    submit () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('content', this.form.content)
+      bodyFormData.set('username', this.userInfo.username)
+      bodyFormData.set('userphone', this.form.phone)
+      let url = '/lifeservice-server/api/maintain/addMaintain'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        alert('添加成功')
+        this.loadMain()
+      })
     }
   }
 }

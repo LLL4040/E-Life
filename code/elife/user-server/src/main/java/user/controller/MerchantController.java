@@ -35,6 +35,11 @@ public class MerchantController {
         return merchantService.findAllByType(type);
     }
 
+    @RequestMapping(path = "/findAll")
+    public JSONArray findAll(){
+        return merchantService.findAll();
+    }
+
     @RequestMapping(path = "/changeMerchant")
     @ResponseBody
     public JSONObject changeMerchant(@RequestParam Long id, @RequestParam String name, @RequestParam String merchantPhone,
@@ -52,5 +57,11 @@ public class MerchantController {
     @ResponseBody
     public JSONObject getMerchant(@RequestParam Long id){
         return merchantService.getMerchant(id);
+    }
+
+    @RequestMapping(path = "/getMerchantByUsername")
+    @ResponseBody
+    public JSONObject getMerchantByUsername(@RequestParam String username){
+        return merchantService.getMerchantByUsername(username);
     }
 }

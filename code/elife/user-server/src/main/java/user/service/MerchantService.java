@@ -45,6 +45,12 @@ public interface MerchantService {
     JSONArray findAllByType(String type);
 
     /**
+     * find all merchant
+     * @return all merchant
+     */
+    JSONArray findAll();
+
+    /**
      * delete merchant data
      * @param id id
      * @return whether delete successfully
@@ -57,4 +63,11 @@ public interface MerchantService {
      * @return merchant
      */
     JSONObject getMerchant(Long id);
+
+    /**
+     * get merchant by username
+     * @param username username
+     * @return merchant found
+     */
+    JSONObject getMerchantByUsername(String username);
 }

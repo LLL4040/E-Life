@@ -24,8 +24,8 @@
           <el-table-column prop="content" label="内容"></el-table-column>
           <el-table-column label="状态" prop="status" align="center">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.status === '1'" type="success" plain size="small">已解决</el-button>
-              <el-button v-if="scope.row.status === '0'" type="primary" plain size="small">处理中</el-button>
+              <el-button v-if="scope.row.status === 1" type="success" plain size="small">已解决</el-button>
+              <el-button v-if="scope.row.status === 0" type="primary" plain size="small">处理中</el-button>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
@@ -44,29 +44,59 @@ export default {
   name: 'AdminRepairY',
   data () {
     return {
-      search: '',
-      requestData: [{
-        time: '1',
-        username: '233',
-        phone: '1551',
-        content: '啊啊啊木得电活不下去啊快点修！！',
-        repairman: '电工小李',
-        rPhone: '12345',
-        status: '0'
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
       },
-      {
-        time: '2',
-        username: '233',
-        phone: '1551',
-        content: '啊啊啊木得电活不下去啊快点修！！',
-        repairman: '电工小李',
-        rPhone: '12345',
-        status: '1'
-      }]
+      search: '',
+      requestData: []
     }
   },
+  mounted () {
+    this.loadData()
+    this.loadRequest()
+  },
   methods: {
-    handleDelete () {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } }
+      }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadRequest () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('pageNumber', this.pageNumber)
+      bodyFormData.set('pageSize', this.pageSize)
+      let url = '/lifeservice-server/api/maintain/managerFindHaveMaintain'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } }
+      }
+      ).then(response => {
+        this.requestData = response.data
+      })
     }
   }
 }

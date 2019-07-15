@@ -17,6 +17,20 @@ public interface DiscountDao {
     Discount save(Discount discount);
 
     /**
+     * whether exists id
+     * @param id id
+     * @return whether exists id
+     */
+    Boolean existsById(Long id);
+
+    /**
+     * whether exists discount by merchant
+     * @param merchantId merchant id
+     * @return whether exists discount
+     */
+    Boolean existsByMerchantId(Long merchantId);
+
+    /**
      * find discount by id
      * @param id id
      * @return discount found
