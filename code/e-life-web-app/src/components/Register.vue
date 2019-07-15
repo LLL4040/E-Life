@@ -86,6 +86,7 @@
           <el-form v-if="x === 1 && this.form.id === '商家'" ref="form" :inline="true" :model="form" label-width="70px">
             <el-form-item label="用户名">
               <el-input v-model="form.username" style="width: 200px"></el-input>
+              <el-button type="primary" @click="checkName()" style="float:left">验证是否可用</el-button>
             </el-form-item>
             <el-form-item label="密码">
               <el-input v-model="form.password" show-password style="width: 200px"></el-input>
@@ -145,6 +146,10 @@
     </div>
     <el-dialog title="商店地址选择" :visible.sync="dialogFormVisible">
       <div slot="footer" class="dialog-footer">
+        <div id="all">
+          <input type="text" id="suggestId" name="address_detail" placeholder="地址" v-model="address_detail" class="input_style" >
+          <div id="allmap"></div>
+        </div>
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
@@ -153,11 +158,14 @@
 </template>
 
 <script>
+import BMap from 'BMap'
 export default {
   name: 'Register',
   data () {
     return {
       x: 0,
+      address_detail: '',
+      userlocation: { lng: '', lat: '' },
       dialogFormVisible: false,
       form: {
         id: '',
@@ -202,6 +210,57 @@ export default {
   },
   mounted () {
     this.loadCommunity()
+    this.$nextTick(function () {
+      let th = this
+      // 创建Map实例
+      let map = new BMap.Map('allmap')
+      // 初始化地图,设置中心点坐标，
+      let point = new BMap.Point(121.160724, 31.173277) // 创建点坐标，汉得公司的经纬度坐标
+      map.centerAndZoom(point, 15)
+      map.enableScrollWheelZoom()
+      let geolocation = new BMap.Geolocation()
+      geolocation.getCurrentPosition((r) => {
+        if (r.point) {
+          // let markers = new BMap.Marker(r.point)
+          map.panTo(r.point)
+          map.centerAndZoom(r.point, 16)
+        }
+      }, { enableHighAccuracy: true })
+      var ac = new BMap.Autocomplete( // 建立一个自动完成的对象
+        {
+          'input': 'suggestId',
+          'location': map
+        })
+      var myValue
+      ac.addEventListener('onconfirm', function (e) { // 鼠标点击下拉列表后的事件
+        var _value = e.item.value
+        myValue = _value.province + _value.city + _value.district + _value.street + _value.business
+        this.address_detail = myValue
+        setPlace()
+      })
+
+      function setPlace () {
+        map.clearOverlays() // 清除地图上所有覆盖物
+        function myFun () {
+          th.userlocation = local.getResults().getPoi(0).point // 获取第一个智能搜索的结果
+          map.centerAndZoom(th.userlocation, 18)
+          map.addOverlay(new BMap.Marker(th.userlocation)) // 添加标注
+        }
+
+        var local = new BMap.LocalSearch(map, { // 智能搜索
+          onSearchComplete: myFun
+        })
+        local.search(myValue)
+
+        // 测试输出坐标（指的是输入框最后确定地点的经纬度）
+        map.addEventListener('click', function (e) {
+          // 经度
+          console.log(th.userlocation.lng)
+          // 纬度
+          console.log(th.userlocation.lat)
+        })
+      }
+    })
   },
   methods: {
     loadCommunity () {
@@ -242,7 +301,7 @@ export default {
           return 0
         }
         if (this.form.id === '商家') {
-          if (this.form.name === '' || this.form.merchantPhone === '' || this.form.address === '' || this.form.type === '' || this.form.detail === '') {
+          if (this.form.name === '' || this.form.merchantPhone === '' || this.form.type === '' || this.form.detail === '') {
             this.$alert('表单必须填写完整才能进入下一步！')
             return 0
           }
@@ -297,6 +356,33 @@ export default {
               this.$alert('验证码错误！')
             }
           })
+      } else if (this.form.id === '商家') {
+        let bodyFormData = new FormData()
+        bodyFormData.set('username', this.form.username)
+        bodyFormData.set('password', this.form.password)
+        bodyFormData.set('email', this.form.email)
+        bodyFormData.set('name', this.form.name)
+        bodyFormData.set('merchantPhone', this.form.merchantPhone)
+        bodyFormData.set('type', this.form.type)
+        this.form.address = 'lng:' + this.userlocation.lng + ',' + 'lat:' + this.userlocation.lat
+        bodyFormData.set('address', this.form.address)
+        bodyFormData.set('detail', this.form.detail)
+        bodyFormData.set('phone', this.form.phone)
+        bodyFormData.set('code', this.form.code)
+        bodyFormData.set('communityId', this.form.communityId)
+        this.$axios({
+          method: 'post',
+          url: '/user-server/api/merchant/register',
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        )
+          .then(response => {
+            if (response.data.register === 1) {
+              this.x++
+            } else {
+              this.$alert('验证码错误！')
+            }
+          })
       }
     },
     getPass () {
@@ -305,6 +391,11 @@ export default {
       } else {
         let bodyFormData = new FormData()
         bodyFormData.set('phone', this.form.phone)
+        if (this.form.id === '管理员') {
+          bodyFormData.set('id', '1')
+        } else {
+          bodyFormData.set('id', '0')
+        }
         this.$axios({
           method: 'post',
           url: '/user-server/api/user/phoneAvailable',
@@ -374,6 +465,12 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  #allmap{
+     width: 300px;
+     height: 300px;
+     font-family: "微软雅黑";
+     border:1px solid green;
+   }
+  .tangram-suggestion-main {z-index: 9999999999;}
 </style>
