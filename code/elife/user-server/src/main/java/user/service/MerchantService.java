@@ -57,4 +57,11 @@ public interface MerchantService {
      * @return merchant
      */
     JSONObject getMerchant(Long id);
+
+    /**
+     * get merchant by username
+     * @param username username
+     * @return merchant found
+     */
+    JSONObject getMerchantByUsername(String username);
 }

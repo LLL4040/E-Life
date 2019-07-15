@@ -51,15 +51,61 @@ export default {
     return {
       tabView: 'page2',
       userInfo: {
-        community: '快乐小区',
-        username: '233',
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
+      merchantInfo: {
         id: '',
-        email: '233@233.com',
-        phone: '2333333333333'
+        name: '',
+        address: '',
+        detail: '',
+        type: '',
+        merchantPhone: ''
       }
     }
   },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+        bodyFormData.set('username', this.userInfo.username)
+        let url = '/user-server/api/merchant/getMerchantByUsername'
+        this.$axios({
+          method: 'post',
+          url: url,
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        ).then(response => {
+          this.merchantInfo = response.data
+          sessionStorage.setItem('id', this.merchantInfo.id)
+          sessionStorage.setItem('name', this.merchantInfo.name)
+          sessionStorage.setItem('address', this.merchantInfo.address)
+          sessionStorage.setItem('detail', this.merchantInfo.detail)
+          sessionStorage.setItem('type', this.merchantInfo.type)
+          sessionStorage.setItem('merchantPhone', this.merchantInfo.merchantPhone)
+          console.log(this.merchantInfo.id)
+        })
+      })
+    },
     toPage (index) {
       this.tabView = `page${index}`
     }
@@ -70,6 +116,7 @@ export default {
     page3
   },
   mounted () {
+    this.loadData()
   }
 }
 </script>

@@ -31,8 +31,11 @@
         <el-form-item label="商店描述">
           <el-input v-model="form.detail" type="textarea" :rows="3" style="width: 200px"></el-input>
         </el-form-item>
-        <el-form-item label="商店地址" style="padding-right: 130px">
+        <!--<el-form-item label="商店地址" style="padding-right: 130px">
           <el-button style="float: right; padding: 10px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">选择地址</el-button>
+        </el-form-item>-->
+        <el-form-item label="商店地址">
+          <el-input v-model="form.address" style="width: 200px" :disabled="true"></el-input>
         </el-form-item>
         <div style="clear:both"></div>
         <el-form-item style="padding-left: 400px;">
@@ -74,6 +77,46 @@ export default {
         value: '生活服务',
         label: '生活服务'
       }]
+    }
+  },
+  mounted () {
+    this.loadData()
+  },
+  methods: {
+    loadData () {
+      this.form.username = sessionStorage.getItem('username')
+      if (this.form.username === '' || this.form.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.form.id = sessionStorage.getItem('id')
+      this.form.email = sessionStorage.getItem('email')
+      this.form.phone = sessionStorage.getItem('phone')
+      this.form.community = sessionStorage.getItem('community')
+      this.form.shop = sessionStorage.getItem('name')
+      this.form.merchantPhone = sessionStorage.getItem('merchantPhone')
+      this.form.type = sessionStorage.getItem('type')
+      this.form.detail = sessionStorage.getItem('detail')
+      this.form.address = sessionStorage.getItem('address')
+    },
+    save () {
+      let bodyFormData = this.form
+      let url = '/user-server/api/merchant/changeMerchant'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.change === 1) {
+          this.$alert('修改成功!')
+          sessionStorage.setItem('name', this.form.name)
+          sessionStorage.setItem('detail', this.form.detail)
+          sessionStorage.setItem('type', this.form.type)
+          sessionStorage.setItem('merchantPhone', this.form.merchantPhone)
+        } else {
+          this.$alert('修改失败！')
+        }
+      })
     }
   }
 }

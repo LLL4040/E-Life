@@ -53,4 +53,10 @@ public class MerchantController {
     public JSONObject getMerchant(@RequestParam Long id){
         return merchantService.getMerchant(id);
     }
+
+    @RequestMapping(path = "/getMerchantByUsername")
+    @ResponseBody
+    public JSONObject getMerchantByUsername(@RequestParam String username){
+        return merchantService.getMerchantByUsername(username);
+    }
 }

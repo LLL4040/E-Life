@@ -18,6 +18,13 @@ public interface DiscountRepository extends JpaRepository<Discount, String> {
     Discount findById(Long id);
 
     /**
+     * whether exists id
+     * @param id id
+     * @return whether exists id
+     */
+    Boolean existsById(Long id);
+
+    /**
      * find all discount where end time after current time
      * @param current current time
      * @param communityId communityId
@@ -31,6 +38,13 @@ public interface DiscountRepository extends JpaRepository<Discount, String> {
      * @return discount
      */
     List<Discount> findByMerchantId(Long merchantId);
+
+    /**
+     * whether exists discount by merchant
+     * @param merchantId merchant id
+     * @return whether exists discount
+     */
+    Boolean existsByMerchantId(Long merchantId);
 
     /**
      * delete all discount where end time before setTime
