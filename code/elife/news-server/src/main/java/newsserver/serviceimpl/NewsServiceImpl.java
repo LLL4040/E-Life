@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -61,7 +62,8 @@ public class NewsServiceImpl implements NewsService {
             String photo=Base64.encodeBase64String(data);
             jsonObject.put("photo" , "data:image/jpg;base64,"+photo);
             jsonObject.put("id",temp.getId());
-            jsonObject.put("time",temp.getTime());
+            String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
+            jsonObject.put("time", dateStr);
             jsonObject.put("title",temp.getTitle());
             jsonObject.put("content",temp.getContent());
             jsonObject.put("managerName",temp.getManagerName());
@@ -79,7 +81,8 @@ public class NewsServiceImpl implements NewsService {
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
             jsonObject.put("id", temp.getId());
-            jsonObject.put("time", temp.getTime());
+            String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
+            jsonObject.put("time", dateStr);
             jsonObject.put("title",temp.getTitle());
             jsonObject.put("content", temp.getContent());
             jsonObject.put("managerName", temp.getManagerName());
@@ -129,7 +132,8 @@ public class NewsServiceImpl implements NewsService {
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
             jsonObject.put("id", temp.getId());
-            jsonObject.put("time", temp.getTime());
+            String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
+            jsonObject.put("time", dateStr);
             jsonObject.put("title",temp.getTitle());
             jsonObject.put("content", temp.getContent());
             jsonObject.put("managerName", temp.getManagerName());
@@ -143,7 +147,8 @@ public class NewsServiceImpl implements NewsService {
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
             jsonObject.put("id", temp.getId());
-            jsonObject.put("time", temp.getTime());
+            String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
+            jsonObject.put("time", dateStr);
             jsonObject.put("title",temp.getTitle());
             jsonObject.put("content", temp.getContent());
             jsonObject.put("managerName", temp.getManagerName());

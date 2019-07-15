@@ -83,7 +83,7 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data === '删除我的该条物业信息成功') {
+        if (response.data.deleteMyOneNotice === '1') {
           this.loadMessage()
         } else {
           this.$alert('删除失败！')

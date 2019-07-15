@@ -2,9 +2,17 @@
   <div>
     <div align="center" style="width: 800px; padding-left: 200px">
       <el-carousel indicator-position="outside" :interval="4000" height="300px">
-        <el-carousel-item v-for="item in 3" :key="item">
+        <el-carousel-item>
           <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
-          <h4 style="position: relative; bottom: 150px; left: 10px">暂时没有紧急通知哦</h4>
+          <p style="position: relative; bottom: 150px; left: 10px">{{ notice }}</p>
+        </el-carousel-item>
+        <el-carousel-item v-if="news.length > 0">
+          <el-image style="width: 500px; height: 300px" :src="require('../../public/img/news.jpg')"></el-image>
+          <p style="position: relative; bottom: 150px; left: 10px">{{ news[0].title }}</p>
+        </el-carousel-item>
+        <el-carousel-item v-if="activity.length > 0">
+          <el-image style="width: 500px; height: 300px" :src="require('../../public/img/activity.jpg')"></el-image>
+          <p style="position: relative; bottom: 150px; left: 10px">{{ activity[0].title }}</p>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -13,6 +21,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>最新资讯</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="loadActivityMore()">more >></el-button>
           </div>
           <el-table :data="news" style="width: 100%">
             <el-table-column type="expand">
@@ -36,6 +45,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>活动安排</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="loadNewsMore()">more >></el-button>
           </div>
           <el-table :data="activity" style="width: 100%">
             <el-table-column type="expand">
@@ -45,10 +55,10 @@
                     <img :src="props.row.photo" style="width: 80px; height: 80px">
                   </el-form-item>
                   <el-form-item label="开始时间">
-                    <span>{{ props.row.start }}</span>
+                    <span>{{ props.row.startTime }}</span>
                   </el-form-item>
                   <el-form-item label="结束时间">
-                    <span>{{ props.row.end }}</span>
+                    <span>{{ props.row.endTime }}</span>
                   </el-form-item>
                   <el-form-item label="详情">
                     <span>{{ props.row.content }}</span>
@@ -59,13 +69,13 @@
             <el-table-column label="标题" prop="title" align="center"></el-table-column>
             <el-table-column label="状态" align="center">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.status === '1'" type="danger" plain size="small">已结束</el-button>
-                <el-button v-if="scope.row.status === '0'" type="success" plain size="small">报名中</el-button>
+                <el-button v-if="scope.row.status === 1" type="danger" plain size="small">已结束</el-button>
+                <el-button v-if="scope.row.status === 0" type="success" plain size="small">报名中</el-button>
               </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.status === '0'" size="mini" type="primary" plain @click="dialogFormVisible = true">申请加入</el-button>
+                <el-button v-if="scope.row.status === 0" size="mini" type="primary" plain @click="handleA(scope.row)">申请加入</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -80,7 +90,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleA()">提 交</el-button>
+        <el-button type="primary" @click="handleApply()">提 交</el-button>
       </div>
     </el-dialog>
   </div>
@@ -99,43 +109,45 @@ export default {
         phone: ''
       },
       dialogFormVisible: false,
-      notice: [],
-      news: [{
-        time: 'xxx',
-        title: 'xx',
-        photo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562870568907&di=f976f7d2d4659c7ba947beba11ab09d0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201505%2F19%2F20150519231117_wmYEU.thumb.700_0.jpeg',
-        content: 'xxxx'
-      }],
-      activity: [{
-        start: '2019-07-09',
-        end: '2019-07-09',
-        title: '一起晒太阳',
-        photo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1562861072&di=a372079e04ab3835e2a86d4c75cf976e&src=http://b-ssl.duitang.com/uploads/item/201706/24/20170624232309_YzWdr.jpeg',
-        content: '23333',
-        status: '1'
-      },
-      {
-        start: '2019-07-12',
-        end: '2019-07-20',
-        title: '一起摘橘子',
-        photo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1562861123&di=b646c70c0d224f44aad7bdb55e620e45&src=http://img5.duitang.com/uploads/item/201608/19/20160819110610_APQUY.thumb.700_0.jpeg',
-        content: '23333',
-        status: '0'
-      }],
-      apply: [{
-        title: '',
-        username: '',
+      notice: '',
+      news: [],
+      activity: [],
+      apply: {
+        id: '',
         content: ''
-      }]
+      }
     }
   },
   mounted () {
     this.loadData()
     this.loadUrgent()
+    this.loadNews()
+    this.loadActivity()
   },
   methods: {
-    handleA () {
+    handleA (row) {
+      this.apply.id = row.id
+      this.dialogFormVisible = true
+    },
+    handleApply () {
       this.dialogFormVisible = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('aid', this.apply.id)
+      bodyFormData.set('content', this.apply.content)
+      bodyFormData.set('username', this.userInfo.username)
+      let url = '/news-server/api/Activity/saveParticipator'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.$alert('加入成功！')
+        } else {
+          this.$alert('加入失败！')
+        }
+      })
     },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
@@ -168,7 +180,63 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.notice = response.data
+        this.notice = response.data.content
+        console.log(response.data)
+      })
+    },
+    loadNews () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/News/findNews'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.news = response.data
+        console.log(response.data)
+      })
+    },
+    loadNewsMore () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/News/findHistory'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.news = response.data
+        console.log(response.data)
+      })
+    },
+    loadActivity () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/Activity/findNewActivity'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.activity = response.data
+        console.log(response.data)
+      })
+    },
+    loadActivityMore () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/Activity/findAllActivity'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.activity = response.data
         console.log(response.data)
       })
     }

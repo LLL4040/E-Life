@@ -23,7 +23,7 @@
           <el-table-column prop="time" label="时间" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
+              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDeleteU(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -54,7 +54,7 @@
             <el-table-column prop="title" label="标题" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
+                <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDeleteN(scope.row)"></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -108,29 +108,21 @@ export default {
       search: '',
       dialogFormVisible1: false,
       dialogFormVisible2: false,
-      urgent: [{
-        time: 'xxx',
-        content: 'xxxx'
-      }],
-      news: [{
-        time: 'xxx',
-        title: 'xx',
-        photo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562870568907&di=f976f7d2d4659c7ba947beba11ab09d0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201505%2F19%2F20150519231117_wmYEU.thumb.700_0.jpeg',
-        content: 'xxxx'
-      }],
+      urgent: [],
+      news: [],
       newUrgent: {
         content: ''
       },
       newNews: {
         title: '',
-        photo: '',
-        content: '',
-        manager: ''
+        content: ''
       }
     }
   },
   mounted () {
     this.loadData()
+    this.loadUrgent()
+    this.loadNews()
   },
   methods: {
     loadData () {
@@ -168,6 +160,20 @@ export default {
         console.log(response.data)
       })
     },
+    loadNews () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/News/findHistory'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.news = response.data
+        console.log(response.data)
+      })
+    },
     releaseU () {
       this.dialogFormVisible1 = false
       let bodyFormData = new FormData()
@@ -190,8 +196,60 @@ export default {
     },
     releaseN () {
       this.dialogFormVisible2 = false
+      let imagFile = this.$refs.file.files[0]
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('managerName', this.userInfo.username)
+      bodyFormData.set('content', this.newNews.content)
+      bodyFormData.set('title', this.newNews.title)
+      bodyFormData.append('photo', imagFile)
+      let url = '/news-server/api/News/saveNews'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.loadNews()
+        } else {
+          this.$alert('发布资讯失败！')
+        }
+      })
     },
-    handleDelete () {
+    handleDeleteU (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      let url = '/news-server/api/Urgent/deleteUrgent'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.loadNews()
+        } else {
+          this.$alert('删除紧急通知失败！')
+        }
+      })
+    },
+    handleDeleteN (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      let url = '/news-server/api/News/deleteOne'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.loadNews()
+        } else {
+          this.$alert('删除资讯失败！')
+        }
+      })
     },
     upF () {
       let element = document.getElementById('file')

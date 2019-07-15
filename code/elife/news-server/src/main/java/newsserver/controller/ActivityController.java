@@ -31,7 +31,6 @@ public class ActivityController {
      * @param content
      * @param managerName
      * @param title
-     * @param status
      * @param photo
      * @param communityId
      * @return true or false
@@ -40,8 +39,8 @@ public class ActivityController {
     @PostMapping(path="/saveActivity") // Map ONLY GET Requests
     @ResponseBody
     public boolean saveActivity(String startTime, String endTime, String content,
-                                String managerName, String title, int status, MultipartFile photo, int communityId) throws IOException {
-        return activityService.saveActivity(startTime,endTime,content,managerName,title,status,photo,communityId);
+                                String managerName, String title, MultipartFile photo, int communityId) throws IOException {
+        return activityService.saveActivity(startTime,endTime,content,managerName,title,0,photo,communityId);
     }
 
     /**
@@ -94,14 +93,13 @@ public class ActivityController {
      * save participant
      * @param aid
      * @param content
-     * @param status
      * @param username
      * @return boolean
      */
     @RequestMapping(path = "/saveParticipator")
     @ResponseBody
-    public boolean saveParticipator(int aid,String content,int status,String username){
-        return activityService.saveParticipator(aid,content,status,username);
+    public boolean saveParticipator(int aid,String content,String username){
+        return activityService.saveParticipator(aid,content,0,username);
     }
 
     /**
