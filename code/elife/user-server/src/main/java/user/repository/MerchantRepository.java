@@ -19,6 +19,13 @@ public interface MerchantRepository extends JpaRepository<Merchant, String> {
     Merchant findById(Long id);
 
     /**
+     * find merchant by username
+     * @param username username
+     * @return merchant
+     */
+    Merchant findByUser_Username(String username);
+
+    /**
      * whether exists id
      * @param id id
      * @return whether exists id

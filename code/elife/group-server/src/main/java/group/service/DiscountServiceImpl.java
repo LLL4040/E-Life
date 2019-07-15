@@ -52,21 +52,28 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public JSONArray findDiscountByMerchantId(Long merchantId){
         JSONArray jsonArray = new JSONArray();
-        List<Discount> discountList = discountDao.findByMerchantId(merchantId);
-        for(Discount discount : discountList){
-            JSONObject object = new JSONObject();
-            object.put("id", discount.getId());
-            object.put("start", discount.getStartTime());
-            object.put("end", discount.getEndTime());
-            object.put("mId", discount.getMerchantId());
-            object.put("num", discount.getNumber());
-            object.put("title", discount.getTitle());
-            object.put("content", discount.getContent());
-            object.put("status", discount.getStatus());
-            object.put("communityId", discount.getCommunityId());
-            jsonArray.appendElement(object);
+        if(!discountDao.existsByMerchantId(merchantId)){
+            return jsonArray;
         }
-        return jsonArray;
+        try{
+            List<Discount> discountList = discountDao.findByMerchantId(merchantId);
+            for(Discount discount : discountList){
+                JSONObject object = new JSONObject();
+                object.put("id", discount.getId());
+                object.put("start", discount.getStartTime());
+                object.put("end", discount.getEndTime());
+                object.put("mId", discount.getMerchantId());
+                object.put("num", discount.getNumber());
+                object.put("title", discount.getTitle());
+                object.put("content", discount.getContent());
+                object.put("status", discount.getStatus());
+                object.put("communityId", discount.getCommunityId());
+                jsonArray.appendElement(object);
+            }
+            return jsonArray;
+        }catch (Exception e){
+            return jsonArray;
+        }
     }
 
     @Override
