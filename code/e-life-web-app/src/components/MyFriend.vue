@@ -34,12 +34,7 @@ export default {
         email: '',
         phone: ''
       },
-      userData: [{
-        friend: '233',
-        phone: '120',
-        email: '121',
-        community: 'xxx'
-      }]
+      userData: []
     }
   },
   mounted () {

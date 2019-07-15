@@ -10,13 +10,12 @@
           <el-table-column prop="managerName" label="代签人" align="center"></el-table-column>
           <el-table-column label="状态" align="center">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.status === 1" type="success" plain size="small">已取</el-button>
               <el-button v-if="scope.row.status === 0" type="primary" plain size="small">待取</el-button>
             </template>
           </el-table-column>
           <el-table-column label="点击确认领取" align="center">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.status === 0" size="medium" type="danger" plain icon="el-icon-check" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
+              <el-button v-if="scope.row.status === 0" size="medium" type="danger" plain icon="el-icon-check" circle @click="handleA(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -83,6 +82,23 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.messages = response.data
+      })
+    },
+    handleA (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      let url = '/package-server/api/Package/takeOut'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.loadP()
+        } else {
+          this.$alert('确认领取失败！')
+        }
       })
     }
   }

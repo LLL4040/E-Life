@@ -71,7 +71,9 @@ export default {
         manager: '',
         user: '',
         content: ''
-      }
+      },
+      pageNumber: 1,
+      pageSize: 10
     }
   },
   mounted () {
@@ -103,8 +105,8 @@ export default {
     loadMessage () {
       let bodyFormData = new FormData()
       bodyFormData.set('managerName', this.userInfo.username)
-      bodyFormData.set('pageNumber', 1)
-      bodyFormData.set('pageSize', 1)
+      bodyFormData.set('pageNumber', this.pageNumber)
+      bodyFormData.set('pageSize', this.pageSize)
       let url = '/news-server/api/notice/ManagerFindNotice'
       this.$axios({
         method: 'post',

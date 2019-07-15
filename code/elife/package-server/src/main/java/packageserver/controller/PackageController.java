@@ -34,7 +34,7 @@ public class PackageController {
     }
     @RequestMapping(path = "/takeOut")
     @ResponseBody
-    public boolean takOne(int id){
+    public boolean takeOne(int id){
         return packageService.takeOut(id);
     }
     @RequestMapping(path = "/findOne")
