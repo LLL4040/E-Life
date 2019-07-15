@@ -17,7 +17,8 @@ public class NoticeUser {
     @Id
     @Column(name = "username")
     private String username;
-
+    @Column(name = "status")
+    private int status;
 
     public NoticeUser(){
 
@@ -25,6 +26,7 @@ public class NoticeUser {
     public NoticeUser(int noticeId,String username){
         this.id=noticeId;
         this.username=username;
+        this.status=1;
     }
     public void setUsername(String username) {
         this.username=username;
@@ -34,11 +36,19 @@ public class NoticeUser {
         this.id=noticeId;
     }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public String getUsername() {
         return this.username;
     }
 
     public int getNoticeId() {
         return this.id;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

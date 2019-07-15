@@ -76,8 +76,9 @@ public class NoticeDaoimpl implements NoticeDao {
         List<NoticeUser> noticeUsers=noticeUserRepository.findAllByUsername(username);
         int length = noticeUsers.size();
         for (int i=0;i<length;i++){
-            noticeUserRepository.delete(noticeUsers.get(i));
-
+            NoticeUser nu=noticeUsers.get(i);
+            nu.setStatus(0);
+            noticeUserRepository.save(nu);
         }
         return "删除我的所有物业信息成功";
     }
@@ -85,7 +86,8 @@ public class NoticeDaoimpl implements NoticeDao {
     public String deleteByUsernameAndNoticeId(String username,int noticeId){
 
         NoticeUser nu=noticeUserRepository.findByUsernameAndNoticeId(username,noticeId);
-        noticeUserRepository.delete(nu);
+        nu.setStatus(0);
+        noticeUserRepository.save(nu);
         return "删除我的该条物业信息成功";
     }
 
