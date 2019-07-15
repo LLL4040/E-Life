@@ -2,6 +2,7 @@ package estateforum.estateforum.controller;
 
 import estateforum.estateforum.entity.PostComments;
 import estateforum.estateforum.service.PostCommentsService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +32,12 @@ public class PostCommentsController {
     }
     @PostMapping(path = "/addComments")
     @ResponseBody
-    public String addComments(@RequestParam String pid,@RequestParam  String commenterName,@RequestParam String postComment){
+    public JSONObject addComments(@RequestParam String pid, @RequestParam  String commenterName, @RequestParam String postComment){
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         if(postComment.equals("")||pid.equals("")||commenterName.equals("")){
-            return "评论内容不能为空";
+            object.put("addComments", "0");
+            object.put("message","评论内容不能为空");
+            return object;
         }
         List<PostComments> p1=postCommentsService.findAllByPid(pid);
         int location = p1.size()+2;
@@ -41,12 +45,17 @@ public class PostCommentsController {
         String commentsTime = df.format(new Date());
         PostComments postComments = new PostComments(pid,commenterName,commentsTime,postComment,location);
         postCommentsService.saveComments(postComments);
-        return "发表评论成功";
+        object.put("addComments", "1");
+        object.put("message","发表评论成功");
+        return object;
     }
     @GetMapping(path = "/deleteComments")
     @ResponseBody
-    public String deleteComments(@RequestParam String pid,@RequestParam int location){
+    public JSONObject deleteComments(@RequestParam String pid,@RequestParam int location){
         postCommentsService.deleteComments(pid,location);
-        return "删除评论成功";
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
+        object.put("deleteComments", "0");
+        object.put("message","删除评论成功");
+        return object;
     }
 }
