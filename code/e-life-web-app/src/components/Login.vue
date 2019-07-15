@@ -39,10 +39,11 @@
               <el-input v-model="form1.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-              <el-input v-model="form1.password"></el-input>
+              <el-input v-model="form1.password" show-password></el-input>
             </el-form-item>
             <el-form-item label="身份">
-              <el-radio v-model="form1.id" label="0">小区居民或商家</el-radio>
+              <el-radio v-model="form1.id" label="0">居民</el-radio>
+              <el-radio v-model="form1.id" label="2">商家</el-radio>
               <el-radio v-model="form1.id" label="1">管理员</el-radio>
             </el-form-item>
             <el-form-item>
@@ -60,7 +61,8 @@
               <el-input v-model="form2.pass"></el-input>
             </el-form-item>
             <el-form-item label="身份">
-              <el-radio v-model="form2.id" label="0">居民或商家</el-radio>
+              <el-radio v-model="form1.id" label="0">居民</el-radio>
+              <el-radio v-model="form1.id" label="2">商家</el-radio>
               <el-radio v-model="form2.id" label="1">管理员</el-radio>
             </el-form-item>
             <el-form-item>
@@ -80,7 +82,8 @@
               <el-input v-model="form3.newPassword"></el-input>
             </el-form-item>
             <el-form-item label="身份">
-              <el-radio v-model="form3.id" label="0">居民或商家</el-radio>
+              <el-radio v-model="form1.id" label="0">居民</el-radio>
+              <el-radio v-model="form1.id" label="2">商家</el-radio>
               <el-radio v-model="form3.id" label="1">管理员</el-radio>
             </el-form-item>
             <el-form-item>
@@ -123,11 +126,38 @@ export default {
       this.flag = x
     },
     login1 () {
-      let url = ''
-      this.$axios
-        .post(url, this.form1)
+      if (this.form1.username === '' || this.form1.password === '') {
+        this.$alert('请输入完整信息！')
+        return 0
+      }
+      let url = '/user-server/api/user/login'
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.form1.username)
+      bodyFormData.set('password', this.form1.password)
+      bodyFormData.set('id', this.form1.id)
+      const self = this
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      )
         .then(response => {
-          this.$alert(response.data)
+          if (response.data.login === 1) {
+            sessionStorage.setItem('username', response.data.username)
+            sessionStorage.setItem('communityId', response.data.communityId)
+            sessionStorage.setItem('phone', response.data.phone)
+            sessionStorage.setItem('email', response.data.email)
+            if (this.form1.id === '0') {
+              self.$router.push({ name: 'User' })
+            } else if (this.form1.id === '1') {
+              self.$router.push({ name: 'Manager' })
+            } else if (this.form1.id === '2') {
+              self.$router.push({ name: 'Merchant' })
+            }
+          } else {
+            this.$alert('登录失败！')
+          }
         })
     },
     login2 () {

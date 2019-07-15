@@ -151,6 +151,9 @@ public class UserServiceImpl implements UserService {
                 return result;
             } else {
                 result.put("username", user.getUsername());
+                result.put("communityId", user.getCommunityId());
+                result.put("phone", user.getPhone());
+                result.put("email", user.getEmail());
                 result.put("login", 1);
                 return result;
             }
@@ -169,6 +172,9 @@ public class UserServiceImpl implements UserService {
                 return result;
             } else {
                 result.put("username", user.getUsername());
+                result.put("communityId", user.getCommunityId());
+                result.put("phone", user.getPhone());
+                result.put("email", user.getEmail());
                 result.put("login", 1);
                 return result;
             }
@@ -208,8 +214,11 @@ public class UserServiceImpl implements UserService {
             if (!manager.getPassword().equals(password)) {
                 return result;
             } else {
-                result.put("username", manager.getUsername());
                 result.put("login", 1);
+                result.put("username", manager.getUsername());
+                result.put("communityId", manager.getCommunityId());
+                result.put("phone", manager.getPhone());
+                result.put("email", manager.getEmail());
                 return result;
             }
         }
@@ -226,8 +235,11 @@ public class UserServiceImpl implements UserService {
             if (!identifyService.verifyIdentifyCode(phone, code)) {
                 return result;
             } else {
-                result.put("username", manager.getUsername());
                 result.put("login", 1);
+                result.put("username", manager.getUsername());
+                result.put("communityId", manager.getCommunityId());
+                result.put("phone", manager.getPhone());
+                result.put("email", manager.getEmail());
                 return result;
             }
         }
@@ -288,6 +300,13 @@ public class UserServiceImpl implements UserService {
             jsonArray.appendElement(object);
         }
         return jsonArray;
+    }
+
+    @Override
+    public JSONObject getCommunityById(Long id){
+        JSONObject object = new JSONObject();
+        object.put("community", communityRepository.findById(id).getCommunityName());
+        return object;
     }
 
 }

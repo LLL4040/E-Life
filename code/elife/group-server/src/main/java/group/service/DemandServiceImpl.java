@@ -26,11 +26,11 @@ public class DemandServiceImpl implements DemandService{
     }
 
     @Override
-    public JSONObject addDemand(String startTime, String endTime, String content, String username, Long communityId){
+    public JSONObject addDemand(String startTime, String endTime, String content, String username, Long communityId, String title){
         JSONObject result = new JSONObject();
         result.put("add", 0);
         try{
-            Demand demand = new Demand(username, startTime, endTime, content, communityId);
+            Demand demand = new Demand(username, startTime, endTime, content, communityId, title);
             Long demandId = demandDao.save(demand).getId();
             Participate participate = new Participate(username, demandId);
             participateDao.save(participate);
@@ -63,12 +63,13 @@ public class DemandServiceImpl implements DemandService{
         for(Demand demand: demandList){
             JSONObject object = new JSONObject();
             object.put("id", demand.getId());
-            object.put("startTime", demand.getStartTime());
-            object.put("endTime", demand.getEndTime());
+            object.put("start", demand.getStartTime());
+            object.put("end", demand.getEndTime());
+            object.put("title", demand.getTitle());
             object.put("content", demand.getContent());
             object.put("username", demand.getUsername());
             object.put("communityId", demand.getCommunityId());
-            object.put("total", participateDao.countDistinctByDemand(demand.getId()));
+            object.put("num", participateDao.countDistinctByDemand(demand.getId()));
             jsonArray.appendElement(object);
         }
         return jsonArray;

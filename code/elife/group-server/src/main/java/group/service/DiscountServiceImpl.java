@@ -23,11 +23,11 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public JSONObject addDiscount(String startTime, String endTime, Long merchantId, Integer number, String content, Integer status, Long communityId){
+    public JSONObject addDiscount(String startTime, String endTime, Long merchantId, Integer number, String content, Integer status, Long communityId, String title){
         JSONObject result = new JSONObject();
         result.put("add", 0);
         try{
-            Discount discount = new Discount(startTime, endTime, merchantId, number, content, status, communityId);
+            Discount discount = new Discount(startTime, endTime, merchantId, number, content, status, communityId, title);
             discountDao.save(discount);
             result.put("add", 1);
             return result;
@@ -56,10 +56,11 @@ public class DiscountServiceImpl implements DiscountService {
         for(Discount discount : discountList){
             JSONObject object = new JSONObject();
             object.put("id", discount.getId());
-            object.put("startTime", discount.getStartTime());
-            object.put("endTime", discount.getEndTime());
-            object.put("merchantId", discount.getMerchantId());
-            object.put("number", discount.getNumber());
+            object.put("start", discount.getStartTime());
+            object.put("end", discount.getEndTime());
+            object.put("mId", discount.getMerchantId());
+            object.put("num", discount.getNumber());
+            object.put("title", discount.getTitle());
             object.put("content", discount.getContent());
             object.put("status", discount.getStatus());
             object.put("communityId", discount.getCommunityId());
@@ -77,13 +78,14 @@ public class DiscountServiceImpl implements DiscountService {
         for(Discount discount : discountList){
             JSONObject object = new JSONObject();
             object.put("id", discount.getId());
-            object.put("number", discount.getNumber());
+            object.put("num", discount.getNumber());
             object.put("content", discount.getContent());
             object.put("status", discount.getStatus());
-            object.put("startTime", discount.getStartTime());
-            object.put("endTime", discount.getEndTime());
-            object.put("merchantId", discount.getMerchantId());
+            object.put("start", discount.getStartTime());
+            object.put("end", discount.getEndTime());
+            object.put("mId", discount.getMerchantId());
             object.put("communityId", discount.getCommunityId());
+            object.put("title", discount.getTitle());
             jsonArray.appendElement(object);
         }
         return jsonArray;

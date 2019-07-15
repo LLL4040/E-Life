@@ -69,7 +69,8 @@
           </el-form>
           <el-form v-if="x === 1 && this.form.id !== '商家'" ref="form" :model="form" label-width="60px" style="padding-left: 20%; width: 77%">
             <el-form-item label="用户名">
-              <el-input v-model="form.username"></el-input>
+              <el-input v-model="form.username" style="float:left; width: 60%"></el-input>
+              <el-button type="primary" @click="checkName()" style="float:left">验证是否可用</el-button>
             </el-form-item>
             <el-form-item label="密码">
               <el-input v-model="form.password" show-password></el-input>
@@ -93,10 +94,10 @@
               <el-input v-model="form.email" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="商店名称">
-              <el-input v-model="form.shop" style="width: 200px"></el-input>
+              <el-input v-model="form.name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="商店电话">
-              <el-input v-model="form.phone" style="width: 200px"></el-input>
+              <el-input v-model="form.merchantPhone" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="商店类型">
               <el-select v-model="form.type" placeholder="请选择" style="width: 200px">
@@ -104,7 +105,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="商店描述">
-              <el-input v-model="form.description" type="textarea" :rows="2" style="width: 200px"></el-input>
+              <el-input v-model="form.detail" type="textarea" :rows="2" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="商店地址" style="padding-right: 130px">
               <el-button style="float: right; padding: 10px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">选择地址</el-button>
@@ -117,11 +118,11 @@
           </el-form>
           <el-form v-if="x === 2" ref="form" :model="form" label-width="60px" style="padding-left: 20%; width: 70%; padding-top: 5%">
             <el-form-item label="手机号">
-              <el-input v-model="form.number" style="float:left; width: 64%"></el-input>
+              <el-input v-model="form.phone" style="float:left; width: 64%"></el-input>
               <el-button type="primary" @click="getPass()" style="float:left">获取验证码</el-button>
             </el-form-item>
             <el-form-item label="验证码" >
-              <el-input v-model="form.pass"></el-input>
+              <el-input v-model="form.code"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="success" @click="preStep()">上一步</el-button>
@@ -159,18 +160,18 @@ export default {
       x: 0,
       dialogFormVisible: false,
       form: {
-        communityId: '',
         id: '',
         username: '',
         password: '',
-        email: '',
-        number: '',
-        pass: '',
-        shop: '',
         phone: '',
+        code: '',
+        email: '',
+        communityId: '',
+        name: '',
+        merchantPhone: '',
         address: '',
         type: '',
-        description: ''
+        detail: ''
       },
       options: [{
         value: '居民',
@@ -182,11 +183,7 @@ export default {
         value: '管理员',
         label: '管理员'
       }],
-      communities: [{
-        id: '1',
-        value: '上海',
-        label: 'xx小区'
-      }],
+      communities: [],
       types: [{
         value: '周边餐饮',
         label: '周边餐饮'
@@ -200,7 +197,7 @@ export default {
         value: '生活服务',
         label: '生活服务'
       }],
-      result: ''
+      result: -1
     }
   },
   mounted () {
@@ -211,11 +208,11 @@ export default {
       this.$axios
         .get('/user-server/api/user/communities')
         .then(response => {
-          for (let com in response.data) {
+          for (let i = 0; i < response.data.length; i++) {
             let item = {
-              id: com['id'],
-              value: com['information'],
-              label: com['name']
+              id: response.data[i].id,
+              value: response.data[i].information,
+              label: response.data[i].name
             }
             this.communities.push(item)
           }
@@ -225,9 +222,8 @@ export default {
       this.x--
     },
     nextStep () {
-      console.log(this.form)
       if (this.x === 0) {
-        if (this.form.community === '' || this.form.id === '') {
+        if (this.form.communityId === '' || this.form.id === '') {
           this.$alert('表单必须填写完整才能进入下一步！')
           return 0
         }
@@ -237,8 +233,16 @@ export default {
           this.$alert('表单必须填写完整才能进入下一步！')
           return 0
         }
+        if (this.result !== 0 && this.result !== 1) {
+          this.$alert('请验证用户名是否可用！')
+          return 0
+        }
+        if (this.result === 0) {
+          this.$alert('请更换用户名！')
+          return 0
+        }
         if (this.form.id === '商家') {
-          if (this.form.shop === '' || this.form.phone === '' || this.form.address === '' || this.form.type === '' || this.form.description === '') {
+          if (this.form.name === '' || this.form.merchantPhone === '' || this.form.address === '' || this.form.type === '' || this.form.detail === '') {
             this.$alert('表单必须填写完整才能进入下一步！')
             return 0
           }
@@ -247,20 +251,124 @@ export default {
       this.x++
     },
     submit () {
-      if (this.form.number === '' || this.form.pass === '') {
+      if (this.form.phone === '' || this.form.code === '') {
         this.$alert('表单必须填写完整才能提交！')
         return 0
       }
-      // let url = ''
-      // this.$axios
-      //   .post(url, this.form)
-      //   .then(response => {
-      //     this.$alert(response.data)
-      //   })
-      this.x++
+      if (this.form.id === '居民') {
+        let bodyFormData = new FormData()
+        bodyFormData.set('phone', this.form.phone)
+        bodyFormData.set('code', this.form.code)
+        bodyFormData.set('username', this.form.username)
+        bodyFormData.set('communityId', this.form.communityId)
+        bodyFormData.set('password', this.form.password)
+        bodyFormData.set('email', this.form.email)
+        this.$axios({
+          method: 'post',
+          url: '/user-server/api/user/register',
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        )
+          .then(response => {
+            if (response.data.register === 1) {
+              this.x++
+            } else {
+              this.$alert('验证码错误！')
+            }
+          })
+      } else if (this.form.id === '管理员') {
+        let bodyFormData = new FormData()
+        bodyFormData.set('phone', this.form.phone)
+        bodyFormData.set('code', this.form.code)
+        bodyFormData.set('username', this.form.username)
+        bodyFormData.set('communityId', this.form.communityId)
+        bodyFormData.set('password', this.form.password)
+        bodyFormData.set('email', this.form.email)
+        this.$axios({
+          method: 'post',
+          url: '/user-server/api/user/registerManager',
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        )
+          .then(response => {
+            if (response.data.register === 1) {
+              this.x++
+            } else {
+              this.$alert('验证码错误！')
+            }
+          })
+      }
     },
     getPass () {
+      if (this.form.phone === '') {
+        this.$alert('请输入手机号！')
+      } else {
+        let bodyFormData = new FormData()
+        bodyFormData.set('phone', this.form.phone)
+        this.$axios({
+          method: 'post',
+          url: '/user-server/api/user/phoneAvailable',
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        ).then(response => {
+          if (response.data.available === 1) {
+            this.$axios({
+              method: 'post',
+              url: '/user-server/api/user/sendIdentify',
+              data: bodyFormData,
+              config: { headers: { 'Content-type': 'multipart/form-data' } } }
+            ).then(response => {
+              if (response.data === true) {
+                this.$alert('验证码已发送！')
+              } else {
+                this.$alert('验证码发送失败！')
+              }
+            })
+          } else {
+            this.$alert('手机号不可用，请更换手机号！')
+          }
+        })
+      }
       console.log('获取验证码！')
+    },
+    checkName () {
+      if (this.form.username === '') {
+        this.$alert('请输入用户名！')
+      } else if (this.form.id === '居民' || this.form.id === '商家') {
+        let bodyFormData = new FormData()
+        bodyFormData.set('username', this.form.username)
+        this.$axios({
+          method: 'post',
+          url: '/user-server/api/user/usernameAvailable',
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        ).then(response => {
+          if (response.data.available === 1) {
+            this.$alert('用户名可用！')
+            this.result = 1
+          } else {
+            this.$alert('用户名重复，请更换用户名！')
+            this.result = 0
+          }
+        })
+      } else if (this.form.id === '管理员') {
+        let bodyFormData = new FormData()
+        bodyFormData.set('username', this.form.username)
+        this.$axios({
+          method: 'post',
+          url: '/user-server/api/user/usernameAvailableManager',
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        ).then(response => {
+          if (response.data.available === 1) {
+            this.$alert('用户名可用！')
+            this.result = 1
+          } else {
+            this.$alert('用户名重复，请更换用户名！')
+            this.result = 0
+          }
+        })
+      }
     }
   }
 }

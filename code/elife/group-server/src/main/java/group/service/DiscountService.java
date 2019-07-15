@@ -18,7 +18,7 @@ public interface DiscountService {
      * @param communityId communityId of merchant
      * @return whether add discount information successfully
      */
-    JSONObject addDiscount(String startTime, String endTime, Long merchantId, Integer number, String content, Integer status, Long communityId);
+    JSONObject addDiscount(String startTime, String endTime, Long merchantId, Integer number, String content, Integer status, Long communityId, String title);
 
     /**
      * delete discount by id

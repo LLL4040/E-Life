@@ -45,8 +45,9 @@ public class BargainServiceImpl implements BargainService {
         List<Bargain> bargainList = bargainDao.findAll();
         for(Bargain bargain : bargainList){
             JSONObject object = new JSONObject();
-            object.put("startTime", bargain.getStartTime());
-            object.put("endTime", bargain.getEndTime());
+            object.put("id", bargain.getId());
+            object.put("start", bargain.getStartTime());
+            object.put("end", bargain.getEndTime());
             object.put("title", bargain.getTitle());
             object.put("merchantId", bargain.getMerchant().getId());
             object.put("address", bargain.getMerchant().getAddress());

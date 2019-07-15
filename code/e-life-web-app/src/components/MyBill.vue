@@ -57,13 +57,41 @@ export default {
         time: '1',
         amount: '1',
         status: '0'
-      }]
+      }],
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      }
     }
   },
   mounted () {
-
+    this.loadData()
   },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    }
   }
 }
 </script>
