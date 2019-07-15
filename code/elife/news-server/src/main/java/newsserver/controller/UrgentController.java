@@ -23,8 +23,8 @@ public class UrgentController {
     private UrgentService urgentService;
 
     @RequestMapping("/saveUrgent")
-    public boolean saveUrgent(String managerName, String content, int status, int communityId){
-        return urgentService.save(managerName, content, status, communityId);
+    public boolean saveUrgent(String managerName, String content, int communityId){
+        return urgentService.save(managerName, content, 0, communityId);
     }
 
     @RequestMapping("/getUrgent")
