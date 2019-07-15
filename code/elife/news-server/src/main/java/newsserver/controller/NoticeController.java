@@ -1,6 +1,7 @@
 package newsserver.controller;
 
 
+import net.minidev.json.JSONObject;
 import newsserver.entity.Notice;
 import newsserver.entity.NoticeUser;
 import newsserver.service.NoticeService;
@@ -28,9 +29,12 @@ public class NoticeController {
 
     @RequestMapping(path = "/addNotice")
     @ResponseBody
-    public String addNotice(@RequestParam String content,@RequestParam String managerName,@RequestParam int communityId, @RequestParam String username,@RequestParam int isMass){
+    public JSONObject addNotice(@RequestParam String content, @RequestParam String managerName, @RequestParam int communityId, @RequestParam String username, @RequestParam int isMass){
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         if("".equals(content)||"".equals(managerName)||communityId==0){
-            return "信息不能为空";
+            object.put("addNotice", "0");
+            object.put("message","信息不能为空");
+            return object;
         }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String noticeTime = df.format(new Date());
@@ -50,7 +54,9 @@ public class NoticeController {
                  noticeService.saveNoticeUser(noticeUser1);
              }
          }
-        return "发布物业通知成功";
+        object.put("addNotice", "1");
+        object.put("message","发布物业通知成功");
+        return object;
     }
     @RequestMapping(path = "/ManagerFindNotice")
     @ResponseBody
@@ -68,28 +74,46 @@ public class NoticeController {
      * 管理员功能，删除数据库中一条物业信息，包括notice表中和noticeUser表中*/
     @RequestMapping(path = "/deleteOneNotice")
     @ResponseBody
-    public String deleteOneNotice(@RequestParam int noticeId){
+    public JSONObject deleteOneNotice(@RequestParam int noticeId){
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         if(noticeService.deleteByNotcieId(noticeId).equals("删除这一条物业信息成功")){
-            return "删除这一条物业信息成功";
+            object.put("deleteOneNotice", "1");
+            object.put("message","删除这一条物业信息成功");
+            return object;
+
         }
-        return "删除这一条物业信息失败";
+        object.put("deleteOneNotice", "0");
+        object.put("message","删除这一条物业信息失败");
+        return object;
+
     }
     /**
      * 用户功能，删除我的通知列表中的某一条通知*/
     @RequestMapping(path = "/deleteMyOneNotice")
     @ResponseBody
-    public String deleteMyOneNotice(@RequestParam String username,@RequestParam int noticeId){
+    public JSONObject deleteMyOneNotice(@RequestParam String username,@RequestParam int noticeId){
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         if(noticeService.deleteByUsernameAndNoticeId(username,noticeId).equals("删除我的该条物业信息成功")){
-            return "删除我的该条物业信息成功";
+            object.put("deleteMyOneNotice", "1");
+            object.put("message","删除我的该条物业信息成功");
+            return object;
+
         }
-        return "删除我的该条物业信息失败";
+        object.put("deleteMyOneNotice", "0");
+        object.put("message","删除我的该条物业信息失败");
+        return object;
+
     }
     /**
      * 用户功能，删除我的通知列表中的所有条通知*/
     @RequestMapping(path = "/deleteMyNotice")
     @ResponseBody
-    public String deleteMyNotice(@RequestParam String username){
+    public JSONObject deleteMyNotice(@RequestParam String username){
         noticeService.deleteAllByUsername(username);
-        return "删除我的所有通知成功";
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
+        object.put("deleteMyNotice", "1");
+        object.put("message","删除我的所有通知成功");
+        return object;
+
     }
 }

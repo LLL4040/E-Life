@@ -2,9 +2,17 @@
   <div>
     <div align="center" style="width: 800px; padding-left: 200px">
       <el-carousel indicator-position="outside" :interval="4000" height="300px">
-        <el-carousel-item v-for="item in 3" :key="item">
+        <el-carousel-item>
           <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
-          <h4 style="position: relative; bottom: 150px; left: 10px">暂时没有紧急通知哦</h4>
+          <p style="position: relative; bottom: 150px; left: 10px">{{ notice }}</p>
+        </el-carousel-item>
+        <el-carousel-item v-if="news.length > 0">
+          <el-image style="width: 500px; height: 300px" :src="news[0].photo"></el-image>
+          <p style="position: relative; bottom: 150px; left: 10px">{{ news[0].title }}</p>
+        </el-carousel-item>
+        <el-carousel-item>
+          <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
+          <p style="position: relative; bottom: 150px; left: 10px">{{ notice }}</p>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -13,6 +21,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>最新资讯</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="loadNewsMore()">more >></el-button>
           </div>
           <el-table :data="news" style="width: 100%">
             <el-table-column type="expand">
@@ -91,8 +100,15 @@ export default {
   name: 'CommunityInformation',
   data () {
     return {
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
       dialogFormVisible: false,
-      notice: [],
+      notice: '',
       news: [{
         time: 'xxx',
         title: 'xx',
@@ -123,10 +139,76 @@ export default {
     }
   },
   mounted () {
+    this.loadData()
+    this.loadUrgent()
+    this.loadNews()
   },
   methods: {
     handleA () {
       this.dialogFormVisible = false
+    },
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadUrgent () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/Urgent/getNewUrgent'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.notice = response.data.content
+        console.log(response.data)
+      })
+    },
+    loadNews () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/News/findNews'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.news = response.data
+        console.log(response.data)
+      })
+    },
+    loadNewsMore () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/News/findHistory'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.news = response.data
+        console.log(response.data)
+      })
     }
   }
 }

@@ -2,6 +2,7 @@ package lifeservice.lifeservice.controller;
 
 import lifeservice.lifeservice.entity.Maintain;
 import lifeservice.lifeservice.service.MaintainService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +26,12 @@ public class MaintainController {
 
     @RequestMapping(path = "/addMaintain")
     @ResponseBody
-    public String addMaintain(@RequestParam String content, @RequestParam String username,@RequestParam String userphone){
+    public JSONObject addMaintain(@RequestParam String content, @RequestParam String username, @RequestParam String userphone){
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         if("".equals(content)||"".equals(username)||"".equals(userphone)){
-            return "信息不能为空";
+            object.put("addMaintain", "0");
+            object.put("message","信息不能为空");
+            return object;
         }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String maintainTime = df.format(new Date());
@@ -35,9 +39,13 @@ public class MaintainController {
         long saveReult=maintainService.saveMaintian(maintain);
         System.out.println(saveReult);
         if(saveReult!=0){
-            return "增加物业维修请求成功";
+            object.put("addMaintain", "1");
+            object.put("message","增加物业维修请求成功");
+            return object;
         }else {
-            return "增加物业维护请求失败";
+            object.put("addMaintain", "0");
+            object.put("message","增加物业维护请求失败");
+            return object;
         }
 
     }
@@ -67,20 +75,31 @@ public class MaintainController {
         }
     }
     @RequestMapping(path = "/manageMaintain")
-    @ResponseBody String manageMaintain(@RequestParam long id,@RequestParam int status,@RequestParam String maintainname,@RequestParam String phone,@RequestParam String managername){
+    @ResponseBody JSONObject manageMaintain(@RequestParam long id,@RequestParam int status,@RequestParam String maintainname,@RequestParam String phone,@RequestParam String managername){
         String managerResult= maintainService.managerMaintain(id,status,maintainname,phone,managername);
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         if(managerResult.equals("完成管理物业维修")){
-            return "完成管理物业维修";
+            object.put("manageMaintain", "1");
+            object.put("message","完成管理物业维修");
+            return object;
+
         }
-        return "管理物业维修失败";
+        object.put("manageMaintain", "0");
+        object.put("message","管理物业维修失败");
+        return object;
     }
     @RequestMapping(path = "/editMaintain")
-    @ResponseBody String editMaintain(@RequestParam long id,@RequestParam int status){
+    @ResponseBody JSONObject editMaintain(@RequestParam long id,@RequestParam int status){
         String editResult=maintainService.userEditMaintain(id, status);
+        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         if(editResult.equals("修改物业维修状态成功")){
-            return "修改物业维修状态成功";
+            object.put("manageMaintain", "1");
+            object.put("message","修改物业维修状态成功");
+            return object;
         }
-        return "修改物业维修状态失败";
+        object.put("manageMaintain", "0");
+        object.put("message","修改物业维修状态失败");
+        return object;
     }
     @RequestMapping(path = "/countMaintain")
     @ResponseBody

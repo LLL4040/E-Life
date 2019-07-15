@@ -58,6 +58,7 @@ export default {
         amount: '1',
         status: '0'
       }],
+      bill: [],
       userInfo: {
         community: '',
         communityId: 0,
@@ -69,6 +70,7 @@ export default {
   },
   mounted () {
     this.loadData()
+    this.loadBill()
   },
   methods: {
     loadData () {
@@ -90,6 +92,20 @@ export default {
       ).then(response => {
         this.userInfo.community = response.data.community
         sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadBill () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.userInfo.communityId)
+      let url = '/pay-server/api/Pay/findHistory'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.bill = response.data
+        console.log(response.data)
       })
     }
   }
