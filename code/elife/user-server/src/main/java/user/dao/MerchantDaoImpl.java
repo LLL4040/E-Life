@@ -29,6 +29,11 @@ public class MerchantDaoImpl implements MerchantDao {
     }
 
     @Override
+    public List<Merchant> findAll(){
+        return merchantRepository.findAll();
+    }
+
+    @Override
     public Merchant findByUsername(String username){
         return merchantRepository.findByUser_Username(username);
     }

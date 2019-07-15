@@ -3,12 +3,11 @@
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="16">
         <el-card class="box-card">
-          <baidu-map class="bm-view" center="上海" >
+          <!--<baidu-map class="bm-view" center="上海" >
             <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
             <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :auto-location="location" v-model="location" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
           </baidu-map>
-          <p>{{location}}</p>
-          <p>{{center}}</p>
+          <p>{{center}}</p>-->
           <div id="map"></div>
         </el-card>
       </el-col>
@@ -41,7 +40,7 @@
 </template>
 
 <script>
-// import BMap from 'BMap'
+import BMap from 'BMap'
 
 export default {
   name: 'MySurround',
@@ -49,13 +48,45 @@ export default {
     return {
       search: '',
       center: { lng: 116.40387397, lat: 39.91488908 },
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
+      merchantList: [],
       location: null
     }
   },
   mounted () {
+    this.loadData()
+    this.loadMerchant()
     this.createMap()
   },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      this.userInfo.community = sessionStorage.getItem('community')
+    },
+    loadMerchant () {
+      let bodyFormData = new FormData()
+      let url = '/user-server/api/merchant/findAll'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.merchantList = response.data
+      })
+    },
     createMap () {
       /* eslint-disable */
       // 创建Map实例
@@ -82,8 +113,25 @@ export default {
           let markers = new BMap.Marker(r.point)
           map.panTo(r.point)
           map.centerAndZoom(r.point, 16)
+          let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
+          console.log(location)
+          let marker = new BMap.Marker(location)
+          map.addOverlay(marker)
+          // marker.addEventListener("click",function () {
+          //   this.$alert("you")
+          //   console.log("0001");
+          //   //map.openInfoWindow(infoWindows,points);//参数：窗口、点  根据点击的点出现对应的窗口
+          // });
         }
       }, {enableHighAccuracy: true})
+      // let i = 0
+      // for(; i < this.merchantList.length; i++){
+      //   let location = {"lng": this.merchantList[i].split(',')[0].split(':')[1], "lat": this.merchantList[i].split(',')[1].split(':')[1]}
+      //   map.addOverlay(new BMap.Marker(location))
+      // }
+      // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
+      // console.log(location)
+      // map.addOverlay(new BMap.Marker(location))
     }
   }
 }
