@@ -40,7 +40,12 @@ public class PayDaoImpl implements PayDao {
     @Override
     public void changeStatus(int id) {
         Pay temp = packageRepository.getOne(id);
-        temp.setStatus(1);
+        if(temp.getStatus()==-1) {
+            temp.setStatus(1);
+        }
+        else{
+            temp.setStatus(2);
+        }
         packageRepository.save(temp);
     }
     @Override

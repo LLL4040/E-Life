@@ -42,9 +42,9 @@ public class PayServiceImpl implements PayService {
         return jsonArray;
     }
     @Override
-    public boolean save(String time, BigDecimal bill, String managerName, String username, int communityId) {
+    public boolean save(String time, BigDecimal bill,int status ,String managerName, String username, int communityId) {
 
-            payDao.save(time, 0,bill,managerName, username, communityId);
+            payDao.save(time, status,bill,managerName, username, communityId);
             return true;
 
     }
