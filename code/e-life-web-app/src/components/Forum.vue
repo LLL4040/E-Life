@@ -6,17 +6,14 @@
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="18">
         <el-card class="box-card">
-          <div v-for="o in postData.length-1" :key="o" class="text item">
-            {{'帖子题目: ' + postData[o].title + '  '}}
-            {{
-            '帖子时间 '+postData[o].postTime
-            }}
+          <div v-for="o in postData" :key="o" class="text item">
+            {{ '帖子时间 '+o.postTime}}
             <br/>
-            {{
-               '发帖人 '+postData[o].posterName}}
+            {{ '帖子题目: ' + o.title + '  ' }}
             <br/>
-            {{
-               '帖子内容 '+postData[o].postContent}}
+            {{ '发帖人 '+o.posterName }}
+            <br/>
+            {{ '帖子内容 '+o.postContent }}
             <br/>
             <el-divider></el-divider>
           </div>

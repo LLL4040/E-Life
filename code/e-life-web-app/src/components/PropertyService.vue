@@ -31,7 +31,7 @@
             <el-input v-model="search" size="medium" style="width: 400px" suffix-icon="el-icon-search" placeholder="输入012筛选状态-(2:已解决、0:未处理、1:处理中)"/>
             </span>
           </div>
-          <el-table :data="maintain.filter(data => !search || data.status.toString() === search)" style="width: 100%">
+          <el-table :data="maintain" style="width: 100%">
             <el-table-column prop="time" label="时间"></el-table-column>
             <el-table-column prop="content" label="内容"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">

@@ -14,14 +14,14 @@
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="通知内容">
-                  <span>{{ props.row.noticeContent }}</span>
+                  <span>{{ props.row.content }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column prop="noticeTime" label="时间" align="center"></el-table-column>
-          <el-table-column prop="managerName" label="发送人" align="center"></el-table-column>
-          <el-table-column prop="username" label="接收人" align="center"></el-table-column>
+          <el-table-column prop="time" label="时间" align="center"></el-table-column>
+          <el-table-column prop="managename" label="发送人" align="center"></el-table-column>
+          <el-table-column prop="receiver" label="接收人" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
