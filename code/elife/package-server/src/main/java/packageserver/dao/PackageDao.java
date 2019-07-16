@@ -58,18 +58,20 @@ public interface PackageDao {
     /**
      * find history table
      * @param username
+     * @param page
      * @return list<Package>all history list</Package>
      */
 
-    List<Package> findHistory(String username);
+    List<Package> findHistory(String username,int page);
 
     /**
      * find no take package table
      * @param communityId
+     * @param page
      * @return list<Package>all history list</Package>
      */
 
-    List<Package> findHistoryManager(int  communityId);
+    List<Package> findHistoryManager(int  communityId,int page);
 
 
 }

@@ -61,6 +61,6 @@ public class NewsServiceTest {
         //E盘upload目录下必须有guigui.jpg
         News news =new News(55555,"hello","1","test",0,"guigui.jpg",1);
         newsRepository.save(news);
-        Assert.assertNotNull(newsSevice.findHistory(1));
+        Assert.assertNotNull(newsSevice.findHistory(1,1));
     }
 }

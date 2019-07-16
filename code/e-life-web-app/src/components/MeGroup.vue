@@ -81,7 +81,34 @@ export default {
       },
       dialogFormVisible: false,
       group: [],
-      time: []
+      time: [],
+      pickerOptions: {
+        shortcuts: [{
+          text: '未来一周',
+          onClick (picker) {
+            const start = new Date()
+            const end = new Date()
+            end.setTime(end.getTime() + 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '未来一个月',
+          onClick (picker) {
+            const start = new Date()
+            const end = new Date()
+            end.setTime(end.getTime() + 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '未来三个月',
+          onClick (picker) {
+            const start = new Date()
+            const end = new Date()
+            end.setTime(end.getTime() + 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      }
     }
   },
   methods: {
@@ -115,6 +142,7 @@ export default {
       })
     },
     addDiscount () {
+      this.dialogFormVisible = false
       let bodyFormData = new FormData()
       bodyFormData.set('startTime', this.time[0])
       bodyFormData.set('endTime', this.time[1])

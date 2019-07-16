@@ -51,8 +51,8 @@ public class ActivityController {
      */
     @RequestMapping(path = "/findAllActivity")
     @ResponseBody
-    public JSONArray findAllActivity(int communityId) throws IOException {
-        return activityService.findAllActivity(communityId);
+    public JSONArray findAllActivity(int communityId,int page) throws IOException {
+        return activityService.findAllActivity(communityId,page);
     }
 
     /**
@@ -109,8 +109,8 @@ public class ActivityController {
      */
     @RequestMapping(path = "/findAllParticipator")
     @ResponseBody
-    public JSONArray findAllParticipator(int aid){
-        return activityService.findAllParticipator(aid);
+    public JSONArray findAllParticipator(int aid,int page){
+        return activityService.findAllParticipator(aid,page);
     }
 
     /**

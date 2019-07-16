@@ -34,7 +34,7 @@ public interface ActivityDao {
      * @param communityId
      * @return List<Activity>all activity</>
      */
-    List<Activity> findAllActivity(int communityId);
+    List<Activity> findAllActivity(int communityId,int page);
 
     /**
      * find new five activity list to user look
@@ -70,7 +70,7 @@ public interface ActivityDao {
      * @param aid
      * @return List participator all
      */
-    List<Participator> findAllParticipator(int aid);
+    List<Participator> findAllParticipator(int aid,int page);
 
     /**
      * change Participator status to disagree it

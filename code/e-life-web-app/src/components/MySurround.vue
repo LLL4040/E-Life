@@ -117,6 +117,7 @@ export default {
       map.addOverlay(markers)
 
       //定位
+
       // let geolocation = new BMap.Geolocation()
       // geolocation.getCurrentPosition((r) =>{
       //   if(r.point){
@@ -130,21 +131,33 @@ export default {
       //     console.log(location)
       //     let marker = new BMap.Marker(location)
       //     map.addOverlay(marker)
-          // marker.addEventListener("click",function () {
-          //   this.$alert("you")
-          //   console.log("0001");
-          //   //map.openInfoWindow(infoWindows,points);//参数：窗口、点  根据点击的点出现对应的窗口
-          // });
-      //   }
-      // }, {enableHighAccuracy: true})
-      // let i = 0
-      // for(; i < this.merchantList.length; i++){
-      //   let location = {"lng": this.merchantList[i].split(',')[0].split(':')[1], "lat": this.merchantList[i].split(',')[1].split(':')[1]}
-      //   map.addOverlay(new BMap.Marker(location))
-      // }
-      // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
-      // console.log(location)
-      // map.addOverlay(new BMap.Marker(location))
+    //   let geolocation = new BMap.Geolocation()
+    //   geolocation.getCurrentPosition((r) =>{
+    //     if(r.point){
+    //       this.center.lng = r.longitude
+    //       this.center.lat = r.latitude
+    //       let markers = new BMap.Marker(r.point)
+    //       map.panTo(r.point)
+    //       map.centerAndZoom(r.point, 16)
+    //       // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
+    //       // console.log(location)
+    //       // let marker = new BMap.Marker(location)
+    //       // map.addOverlay(marker)
+    //       // marker.addEventListener("click",function () {
+    //       //   this.$alert("you")
+    //       //   console.log("0001");
+    //       //   //map.openInfoWindow(infoWindows,points);//参数：窗口、点  根据点击的点出现对应的窗口
+    //       // });
+    //   //   }
+    //   // }, {enableHighAccuracy: true})
+    //   // let i = 0
+    //   // for(; i < this.merchantList.length; i++){
+    //   //   let location = {"lng": this.merchantList[i].split(',')[0].split(':')[1], "lat": this.merchantList[i].split(',')[1].split(':')[1]}
+    //   //   map.addOverlay(new BMap.Marker(location))
+    //   // }
+    //   // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
+    //   // console.log(location)
+    //   // map.addOverlay(new BMap.Marker(location))
     }
   }
 }

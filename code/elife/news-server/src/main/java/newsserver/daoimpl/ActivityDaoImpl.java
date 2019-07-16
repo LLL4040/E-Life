@@ -31,8 +31,8 @@ public class ActivityDaoImpl implements ActivityDao {
     }
 
     @Override
-    public List<Activity> findAllActivity(int communityId){
-        return activityRepository.findAllActivity(communityId);
+    public List<Activity> findAllActivity(int communityId, int page){
+        return activityRepository.findAllActivity(communityId,10*(page-1),10*page-1);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class ActivityDaoImpl implements ActivityDao {
     }
 
     @Override
-    public List<Participator> findAllParticipator(int aid){
-        return participatorRepository.findAllParticipator(aid);
+    public List<Participator> findAllParticipator(int aid,int page){
+        return participatorRepository.findAllParticipator(aid,10*(page-1),10*page-1);
     }
 
     @Override

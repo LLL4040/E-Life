@@ -12,7 +12,7 @@
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === 1" type="success" plain size="small">已缴费</el-button>
-                <el-button v-if="scope.row.status === -1" type="danger" plain size="small">未缴费</el-button>
+                <el-button v-if="scope.row.status === -1" type="danger" plain size="small" @click="submit(scope.row)">未缴费</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -92,6 +92,22 @@ export default {
       ).then(response => {
         this.bill = response.data
         console.log(response.data)
+      })
+    },
+    submit (item) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('pid', item.id)
+      bodyFormData.set('username', this.userInfo.username)
+      bodyFormData.set('bill', this.item.bill)
+      let url = '/pay-server/api/Pay/saveOrders'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        alert('添加成功')
+        this.loadMain()
       })
     }
   }

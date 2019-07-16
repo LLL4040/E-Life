@@ -1,10 +1,13 @@
 package payserver.controller;
 
+import com.alipay.api.AlipayApiException;
 import net.minidev.json.JSONArray;
 import payserver.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 
 @RequestMapping(path="/api/Pay")
@@ -55,18 +58,28 @@ public class PayController {
     }
     @RequestMapping(path = "/findHistory")
     @ResponseBody
-    public JSONArray findHistory(String username){
-        return payService.findHistory(username);
+    public JSONArray findHistory(String username, int page){
+        return payService.findHistory(username,page);
     }
     @RequestMapping(path = "/findUnPayHistory")
     @ResponseBody
-    public JSONArray findUnPayHistoryManager(int communityId){
-        return payService.findUnPayHistoryManager(communityId);
+    public JSONArray findUnPayHistoryManager(int communityId, int page){
+        return payService.findUnPayHistoryManager(communityId,page);
     }
     @RequestMapping(path = "/findPayHistory")
     @ResponseBody
-    public JSONArray findPayHistoryManager(int communityId){
-        return payService.findPayHistoryManager(communityId);
+    public JSONArray findPayHistoryManager(int communityId, int page){
+        return payService.findPayHistoryManager(communityId,page);
+    }
+
+    @RequestMapping("ali")
+    public void ali(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
+        payService.ali(response,request);
+    }
+
+    @RequestMapping("saveOrders")
+    public void saveOrders(String username,int pid,BigDecimal bill) throws IOException, AlipayApiException {
+        payService.saveOrders(pid,username,bill);
     }
 
 }
