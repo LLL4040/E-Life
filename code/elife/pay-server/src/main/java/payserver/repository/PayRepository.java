@@ -46,27 +46,33 @@ public interface PayRepository extends JpaRepository<Pay, Integer> {
      * return history from  table
      *
      * @param username
+     * @param left
+     * @param right
      * @return List
      */
-    @Query(value=" select * from pay where username=?1",nativeQuery = true)
-    List<Pay> findHistory(String username);
+    @Query(value=" select * from pay where username=?1 order by id desc limit ?2,?3",nativeQuery = true)
+    List<Pay> findHistory(String username,int left,int right);
 
     /**
      * return history which not taken
      *
      * @param communityId
+     * @param left
+     * @param right
      * @return List
      */
-    @Query(value=" select * from pay where (status=-1 or status=-2) and community_id=?1",nativeQuery = true)
-    List<Pay> findUnPayManager(int communityId);
+    @Query(value=" select * from pay where (status=-1 or status=-2) and community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
+    List<Pay> findUnPayManager(int communityId,int left,int right);
     /**
      * return history which not taken
      *
      * @param communityId
+     * @param left
+     * @param right
      * @return List
      */
-    @Query(value=" select * from pay where status=1 and community_id=?1",nativeQuery = true)
-    List<Pay> findPayHistoryManager(int communityId);
+    @Query(value=" select * from pay where status=1 and community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
+    List<Pay> findPayHistoryManager(int communityId,int left,int right);
 
 }
 

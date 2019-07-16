@@ -54,17 +54,17 @@ public class PayDaoImpl implements PayDao {
     }
 
     @Override
-    public List<Pay> findHistory(String username){
-        return packageRepository.findHistory(username);
+    public List<Pay> findHistory(String username,int page){
+        return packageRepository.findHistory(username,10*(page-1),10*page-1);
     }
 
     @Override
-    public List<Pay> findUnPayHistoryManager(int communityId){
-        return packageRepository.findUnPayManager(communityId);
+    public List<Pay> findUnPayHistoryManager(int communityId,int page){
+        return packageRepository.findUnPayManager(communityId,10*(page-1),10*page-1);
     }
 
     @Override
-    public List<Pay> findPayHistoryManager(int communityId){
-        return packageRepository.findPayHistoryManager(communityId);
+    public List<Pay> findPayHistoryManager(int communityId,int page){
+        return packageRepository.findPayHistoryManager(communityId,10*(page-1),10*page-1);
     }
    }

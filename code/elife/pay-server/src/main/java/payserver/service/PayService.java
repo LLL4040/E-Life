@@ -58,21 +58,24 @@ public interface PayService {
     /**
      * move hot data to cold table
      * @param  username
+     * @param page
      * @return boolean
      */
-    JSONArray findHistory(String username);
+    JSONArray findHistory(String username, int page);
 
     /**
      * manager find those pay not pay
      * @param communityId
+     * @param page
      * @return JSONArray
      */
-    JSONArray findUnPayHistoryManager(int communityId);
+    JSONArray findUnPayHistoryManager(int communityId, int page);
 
     /**
      * manager find those pay  payed
      * @param communityId
+     * @param page
      * @return JSONArray
      */
-    JSONArray findPayHistoryManager(int communityId);
+    JSONArray findPayHistoryManager(int communityId, int page);
 }

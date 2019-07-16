@@ -100,7 +100,7 @@ public class UrgentServiceImpl implements UrgentService {
         }
     }
     @Override
-    public JSONArray findHistory(int communityId){
+    public JSONArray findHistory(int communityId,int page){
         try {
             List<Urgent> hotList = urgentDao.findHistoryHot(communityId);
             List<UrgentUsed> coldList = urgentDao.findHistory(communityId);
@@ -109,27 +109,42 @@ public class UrgentServiceImpl implements UrgentService {
             Iterator<UrgentUsed> coldIter = coldList.iterator();
             Urgent hot = new Urgent();
             UrgentUsed cold = new UrgentUsed();
+            int left = 10*(page-1);
+            int right = 10*page;
+            int i=0;
             while (hotIter.hasNext()) {
-                JSONObject jsonObject = new JSONObject();
-                hot = hotIter.next();
-                jsonObject.put("id", hot.getId());
-                jsonObject.put("content", hot.getContent());
-                String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(hot.getTime());
-                jsonObject.put("time", dateStr);
-                jsonObject.put("managerName", hot.getManagerName());
-                jsonArray.add(jsonObject);
-                System.out.println(jsonObject);
+                if(i>=left && i<right) {
+                    JSONObject jsonObject = new JSONObject();
+                    hot = hotIter.next();
+                    jsonObject.put("id", hot.getId());
+                    jsonObject.put("content", hot.getContent());
+                    String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(hot.getTime());
+                    jsonObject.put("time", dateStr);
+                    jsonObject.put("managerName", hot.getManagerName());
+                    jsonArray.add(jsonObject);
+                    System.out.println(jsonObject);
+                }
+                else {
+                    hotIter.next();
+                }
+                i++;
             }
             while (coldIter.hasNext()) {
-                JSONObject jsonObject = new JSONObject();
-                cold = coldIter.next();
-                jsonObject.put("id", cold.getId());
-                jsonObject.put("content", cold.getContent());
-                String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(cold.getTime());
-                jsonObject.put("time", dateStr);
-                jsonObject.put("managerName", cold.getManagerName());
-                jsonArray.add(jsonObject);
-                System.out.println(jsonObject);
+                if(i>=left && i<right) {
+                    JSONObject jsonObject = new JSONObject();
+                    cold = coldIter.next();
+                    jsonObject.put("id", cold.getId());
+                    jsonObject.put("content", cold.getContent());
+                    String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(cold.getTime());
+                    jsonObject.put("time", dateStr);
+                    jsonObject.put("managerName", cold.getManagerName());
+                    jsonArray.add(jsonObject);
+                    System.out.println(jsonObject);
+                }
+                else {
+                    coldIter.next();
+                }
+                i++;
             }
             System.out.println(jsonArray);
             return jsonArray;

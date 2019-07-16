@@ -31,9 +31,10 @@ public interface ActivityService {
     /**
      * find All Activity to user
      * @param communityId
+     * @param page
      * @return JSONArray Activity
      */
-    JSONArray findAllActivity(int communityId) throws IOException;
+    JSONArray findAllActivity(int communityId,int page) throws IOException;
 
     /**
      * find five Activity to user
@@ -69,9 +70,10 @@ public interface ActivityService {
     /**
      * findAllParticipator
      * @param aid
+     * @param page
      * @return JSONArray
      */
-    JSONArray findAllParticipator(int aid);
+    JSONArray findAllParticipator(int aid,int page);
 
     /**
      * change Participator status to disagree apply

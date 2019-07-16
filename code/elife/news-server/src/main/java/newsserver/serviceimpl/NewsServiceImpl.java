@@ -118,41 +118,56 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public JSONArray findHistory(int communityId) throws IOException {
+    public JSONArray findHistory(int communityId,int page) throws IOException {
         List<News> hotTable = newsDao.findHistoryHot(communityId);
         List<NewsUsed> coldTable = newsDao.findHistory(communityId);
         JSONArray jsonArray = new JSONArray();
         Iterator<News> hot = hotTable.iterator();
         Iterator<NewsUsed> cold = coldTable.iterator();
+        int left = 5*(page-1);
+        int right = 5*page;
+        int i=0;
         while (hot.hasNext()) {
-            News temp = hot.next();
-            JSONObject jsonObject = new JSONObject();
-            File file = new File("./news-server/pic/" + temp.getPhoto());
-            byte[] data = Files.readAllBytes(file.toPath());
-            String photo = Base64.encodeBase64String(data);
-            jsonObject.put("photo", "data:image/jpg;base64," + photo);
-            jsonObject.put("id", temp.getId());
-            String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
-            jsonObject.put("time", dateStr);
-            jsonObject.put("title",temp.getTitle());
-            jsonObject.put("content", temp.getContent());
-            jsonObject.put("managerName", temp.getManagerName());
-            jsonArray.add(jsonObject);
+            if(i>=left && i<right) {
+                News temp = hot.next();
+                JSONObject jsonObject = new JSONObject();
+                File file = new File("./news-server/pic/" + temp.getPhoto());
+                byte[] data = Files.readAllBytes(file.toPath());
+                String photo = Base64.encodeBase64String(data);
+                jsonObject.put("photo", "data:image/jpg;base64," + photo);
+                jsonObject.put("id", temp.getId());
+                String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
+                jsonObject.put("time", dateStr);
+                jsonObject.put("title", temp.getTitle());
+                jsonObject.put("content", temp.getContent());
+                jsonObject.put("managerName", temp.getManagerName());
+                jsonArray.add(jsonObject);
+            }
+            else {
+                hot.next();
+            }
+            i++;
         }
         while (cold.hasNext()) {
-            NewsUsed temp = cold.next();
-            JSONObject jsonObject = new JSONObject();
-            File file = new File("./news-server/pic/" + temp.getPhoto());
-            byte[] data = Files.readAllBytes(file.toPath());
-            String photo = Base64.encodeBase64String(data);
-            jsonObject.put("photo", "data:image/jpg;base64," + photo);
-            jsonObject.put("id", temp.getId());
-            String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
-            jsonObject.put("time", dateStr);
-            jsonObject.put("title",temp.getTitle());
-            jsonObject.put("content", temp.getContent());
-            jsonObject.put("managerName", temp.getManagerName());
-            jsonArray.add(jsonObject);
+            if(i>=left && i<right) {
+                NewsUsed temp = cold.next();
+                JSONObject jsonObject = new JSONObject();
+                File file = new File("./news-server/pic/" + temp.getPhoto());
+                byte[] data = Files.readAllBytes(file.toPath());
+                String photo = Base64.encodeBase64String(data);
+                jsonObject.put("photo", "data:image/jpg;base64," + photo);
+                jsonObject.put("id", temp.getId());
+                String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
+                jsonObject.put("time", dateStr);
+                jsonObject.put("title", temp.getTitle());
+                jsonObject.put("content", temp.getContent());
+                jsonObject.put("managerName", temp.getManagerName());
+                jsonArray.add(jsonObject);
+            }
+            else {
+                cold.next();
+            }
+            i++;
 
         }
         return jsonArray;

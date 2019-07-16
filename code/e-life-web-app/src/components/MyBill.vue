@@ -15,7 +15,7 @@
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === '1'" type="success" plain size="small">已缴费</el-button>
-                <el-button v-if="scope.row.status === '0'" type="danger" plain size="small">未缴费</el-button>
+                <el-button v-if="scope.row.status === '0'" type="danger" plain size="small" @click="submit()">未缴费</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -106,6 +106,22 @@ export default {
       ).then(response => {
         this.bill = response.data
         console.log(response.data)
+      })
+    },
+    submit () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('content', this.form.content)
+      bodyFormData.set('username', this.userInfo.username)
+      bodyFormData.set('userphone', this.form.phone)
+      let url = '/lifeservice-server/api/maintain/addMaintain'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        alert('添加成功')
+        this.loadMain()
       })
     }
   }

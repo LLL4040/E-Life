@@ -55,18 +55,18 @@ public class PayController {
     }
     @RequestMapping(path = "/findHistory")
     @ResponseBody
-    public JSONArray findHistory(String username){
-        return payService.findHistory(username);
+    public JSONArray findHistory(String username, int page){
+        return payService.findHistory(username,page);
     }
     @RequestMapping(path = "/findUnPayHistory")
     @ResponseBody
-    public JSONArray findUnPayHistoryManager(int communityId){
-        return payService.findUnPayHistoryManager(communityId);
+    public JSONArray findUnPayHistoryManager(int communityId, int page){
+        return payService.findUnPayHistoryManager(communityId,page);
     }
     @RequestMapping(path = "/findPayHistory")
     @ResponseBody
-    public JSONArray findPayHistoryManager(int communityId){
-        return payService.findPayHistoryManager(communityId);
+    public JSONArray findPayHistoryManager(int communityId, int page){
+        return payService.findPayHistoryManager(communityId,page);
     }
 
 }

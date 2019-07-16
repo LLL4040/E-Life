@@ -44,12 +44,12 @@ public class PackageController {
     }
     @RequestMapping(path = "/findHistory")
     @ResponseBody
-    public JSONArray findHistory(String username){
-        return packageService.findHistory(username);
+    public JSONArray findHistory(String username,int page){
+        return packageService.findHistory(username,page);
     }
     @RequestMapping(path = "/findHistoryManager")
     @ResponseBody
-    public JSONArray findHistoryManager(int communityId){
-        return packageService.findHistoryManager(communityId);
+    public JSONArray findHistoryManager(int communityId,int page){
+        return packageService.findHistoryManager(communityId,page);
     }
 }

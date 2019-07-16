@@ -61,26 +61,29 @@ public interface PayDao {
     /**
      * find history table
      * @param username
+     * @param page
      * @return list<Pay>all history list</Pay>
      */
 
-    List<Pay> findHistory(String username);
+    List<Pay> findHistory(String username,int page);
 
     /**
      * find no take package table
      * @param communityId
+     * @param page
      * @return list<Pay>all UnPay history list</Pay>
      */
 
-    List<Pay> findUnPayHistoryManager(int  communityId);
+    List<Pay> findUnPayHistoryManager(int  communityId,int page);
 
     /**
      * find no take package table
      * @param communityId
+     * @param page
      * @return list<Pay>all history Pay list</Pay>
      */
 
-    List<Pay> findPayHistoryManager(int  communityId);
+    List<Pay> findPayHistoryManager(int  communityId,int page);
 
 
 }
