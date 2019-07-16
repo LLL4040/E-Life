@@ -1,7 +1,11 @@
 package payserver.service;
 
+import com.alipay.api.AlipayApiException;
 import net.minidev.json.JSONArray;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 
 
@@ -74,4 +78,22 @@ public interface PayService {
      * @return JSONArray
      */
     JSONArray findPayHistoryManager(int communityId);
+
+    /**
+     * use aliPay interface
+     * @param response
+     * @param request
+     * @throws AlipayApiException
+     * @throws IOException
+     */
+    void ali(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
+
+    /**
+     * saveOrders username to make orderId
+     * @param pid
+     * @param username
+     * @param bill
+     * @return
+     */
+    boolean saveOrders(int pid,String username,BigDecimal bill);
 }
