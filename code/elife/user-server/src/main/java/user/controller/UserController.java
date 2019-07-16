@@ -59,7 +59,7 @@ public class UserController {
     @PostMapping(path = "/login")
     @ResponseBody
     public JSONObject login(@RequestParam String username, @RequestParam String password, @RequestParam String id) {
-        return ("1".equals(id)) ? userService.loginManager(username, password) : userService.login(username, password);
+        return ("1".equals(id)) ? userService.loginManager(username, password) : userService.login(username, password, id);
     }
 
     @PostMapping(path = "/loginPhone")

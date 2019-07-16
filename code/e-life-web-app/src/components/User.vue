@@ -197,6 +197,7 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.userInfo.community = response.data.community
+        sessionStorage.setItem('communityAddress', response.data.address)
         sessionStorage.setItem('community', this.userInfo.community)
       })
     },
