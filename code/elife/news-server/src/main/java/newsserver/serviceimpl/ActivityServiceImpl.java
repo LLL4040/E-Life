@@ -67,8 +67,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public JSONArray findAllActivity(int communityId) throws IOException {
-        List<Activity> list = activityDao.findAllActivity(communityId);
+    public JSONArray findAllActivity(int communityId,int page) throws IOException {
+        List<Activity> list = activityDao.findAllActivity(communityId,page);
         return listToJsonArray(list);
     }
 
@@ -118,9 +118,9 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public JSONArray findAllParticipator(int aid){
+    public JSONArray findAllParticipator(int aid,int page){
         JSONArray jsonArray = new JSONArray();
-        List<Participator> list = activityDao.findAllParticipator(aid);
+        List<Participator> list = activityDao.findAllParticipator(aid,page);
         Iterator<Participator> iter = list.iterator();
         while (iter.hasNext()){
             JSONObject jsonObject = new JSONObject();

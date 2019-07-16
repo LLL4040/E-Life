@@ -42,8 +42,8 @@ public interface ActivityRepository extends JpaRepository<Activity, Integer> {
      */
     @Modifying
     @Transactional(rollbackFor = Exception.class)
-    @Query(value="select * from activity b where b.community_id=?1",nativeQuery = true)
-    List<Activity> findAllActivity(int communityId);
+    @Query(value="select * from activity b where b.community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
+    List<Activity> findAllActivity(int communityId,int left,int right);
 
     /**
      * find activity limit 5

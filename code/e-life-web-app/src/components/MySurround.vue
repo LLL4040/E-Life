@@ -113,10 +113,10 @@ export default {
           let markers = new BMap.Marker(r.point)
           map.panTo(r.point)
           map.centerAndZoom(r.point, 16)
-          let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
-          console.log(location)
-          let marker = new BMap.Marker(location)
-          map.addOverlay(marker)
+          // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
+          // console.log(location)
+          // let marker = new BMap.Marker(location)
+          // map.addOverlay(marker)
           // marker.addEventListener("click",function () {
           //   this.$alert("you")
           //   console.log("0001");

@@ -54,14 +54,16 @@ public interface PackageService {
     /**
      * move hot data to cold table
      * @param  username
+     * @param page
      * @return boolean
      */
-    JSONArray findHistory(String username);
+    JSONArray findHistory(String username,int page);
 
     /**
      * manager find those package not taken
      * @param communityId
+     * @param page
      * @return JSONArray
      */
-    JSONArray findHistoryManager(int communityId);
+    JSONArray findHistoryManager(int communityId,int page);
 }

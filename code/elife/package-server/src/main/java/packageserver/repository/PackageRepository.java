@@ -44,19 +44,23 @@ public interface PackageRepository extends JpaRepository<Package, Integer> {
      * return history from  table
      *
      * @param username
+     * @param right
+     * @param left
      * @return List
      */
-    @Query(value=" select * from package where username=?1",nativeQuery = true)
-    List<Package> findHistory(String username);
+    @Query(value=" select * from package where username=?1 order by id desc limit ?2,?3",nativeQuery = true)
+    List<Package> findHistory(String username,int left,int right);
 
     /**
      * return history which not taken
      *
      * @param communityId
+     * @param right
+     * @param left
      * @return List
      */
-    @Query(value=" select * from package where status=0 and community_id=?1",nativeQuery = true)
-    List<Package> findHistoryManager(int communityId);
+    @Query(value=" select * from package where status=0 and community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
+    List<Package> findHistoryManager(int communityId,int left,int right);
 
 }
 

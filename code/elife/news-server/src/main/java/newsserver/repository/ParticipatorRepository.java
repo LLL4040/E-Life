@@ -35,8 +35,8 @@ public interface ParticipatorRepository extends JpaRepository<Participator, Inte
      */
     @Modifying
     @Transactional(rollbackFor = Exception.class)
-    @Query(value="select * from participator b where b.aid=?1 ",nativeQuery = true)
-    List<Participator> findAllParticipator(int activityId);
+    @Query(value="select * from participator b where b.aid=?1 order by id desc limit ?2,?3",nativeQuery = true)
+    List<Participator> findAllParticipator(int activityId,int left, int rignt);
 
     /**
      * delete all the nulluse participator

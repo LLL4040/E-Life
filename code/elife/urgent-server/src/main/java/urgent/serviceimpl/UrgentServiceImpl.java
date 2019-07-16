@@ -11,6 +11,7 @@ import urgent.service.UrgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 
@@ -73,11 +74,12 @@ public class UrgentServiceImpl implements UrgentService {
             object.put("managerName", urgentNew.getManagerName());
             object.put("content", urgentNew.getContent());
             object.put("status", urgentNew.getStatus());
-            object.put("time", urgentNew.getTime());
+            String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(urgentNew.getTime());
+            object.put("time", dateStr);
             object.put("communityId", urgentNew.getCommunityId());
             return object;
         }
-        catch (javax.persistence.EntityNotFoundException e){
+        catch (Exception e){
             JSONObject object = new JSONObject();
             object.put("error","The Id Can Not Be Found");
             return object;

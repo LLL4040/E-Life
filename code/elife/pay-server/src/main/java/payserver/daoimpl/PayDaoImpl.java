@@ -1,13 +1,17 @@
 package payserver.daoimpl;
 
+
 import payserver.dao.PayDao;
+import payserver.entity.Orders;
 import payserver.entity.Pay;
+import payserver.repository.OrderRepository;
 import payserver.repository.PayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -20,6 +24,8 @@ import java.util.List;
 public class PayDaoImpl implements PayDao {
     @Autowired
     private PayRepository packageRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
 
     @Override
@@ -54,17 +60,24 @@ public class PayDaoImpl implements PayDao {
     }
 
     @Override
-    public List<Pay> findHistory(String username){
-        return packageRepository.findHistory(username);
+    public List<Pay> findHistory(String username,int page){
+        return packageRepository.findHistory(username,10*(page-1),10*page-1);
     }
 
     @Override
-    public List<Pay> findUnPayHistoryManager(int communityId){
-        return packageRepository.findUnPayManager(communityId);
+    public List<Pay> findUnPayHistoryManager(int communityId,int page){
+        return packageRepository.findUnPayManager(communityId,10*(page-1),10*page-1);
     }
 
     @Override
-    public List<Pay> findPayHistoryManager(int communityId){
-        return packageRepository.findPayHistoryManager(communityId);
+    public List<Pay> findPayHistoryManager(int communityId,int page){
+        return packageRepository.findPayHistoryManager(communityId,10*(page-1),10*page-1);
+    }
+
+    @Override
+    public void saveOrders(String id, int pid, Date createTime,BigDecimal bill,int status){
+        Date current = new Date();
+        Orders order = new Orders(id,pid,current,bill,status);
+        orderRepository.save(order);
     }
    }

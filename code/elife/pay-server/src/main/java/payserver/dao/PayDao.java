@@ -7,6 +7,7 @@ package payserver.dao;
 import payserver.entity.Pay;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,26 +62,39 @@ public interface PayDao {
     /**
      * find history table
      * @param username
+     * @param page
      * @return list<Pay>all history list</Pay>
      */
 
-    List<Pay> findHistory(String username);
+    List<Pay> findHistory(String username,int page);
 
     /**
      * find no take package table
      * @param communityId
+     * @param page
      * @return list<Pay>all UnPay history list</Pay>
      */
 
-    List<Pay> findUnPayHistoryManager(int  communityId);
+    List<Pay> findUnPayHistoryManager(int  communityId,int page);
 
     /**
      * find no take package table
      * @param communityId
+     * @param page
      * @return list<Pay>all history Pay list</Pay>
      */
 
-    List<Pay> findPayHistoryManager(int  communityId);
+    List<Pay> findPayHistoryManager(int  communityId,int page);
+
+    /**
+     * save otders
+     * @param id
+     * @param pid
+     * @param createTime
+     * @param bill
+     * @param status
+     */
+    void saveOrders(String id, int pid, Date createTime,BigDecimal bill, int status);
 
 
 }
