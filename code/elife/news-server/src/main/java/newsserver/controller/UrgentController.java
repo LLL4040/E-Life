@@ -47,8 +47,8 @@ public class UrgentController {
     }
 
     @RequestMapping("/findHistory")
-    public JSONArray findHistory(int communityId){
-        return urgentService.findHistory(communityId);
+    public JSONArray findHistory(int communityId,int page){
+        return urgentService.findHistory(communityId,page);
     }
 
 }

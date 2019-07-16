@@ -86,14 +86,14 @@ public class PayServiceImpl implements PackageService {
     }
 
     @Override
-    public JSONArray findHistory(String username) {
-        List<Package> list = packageDao.findHistory(username);
+    public JSONArray findHistory(String username,int page) {
+        List<Package> list = packageDao.findHistory(username,page);
         return listToJsonArray(list);
     }
 
     @Override
-    public JSONArray findHistoryManager(int communityId){
-        List<Package> list = packageDao.findHistoryManager(communityId);
+    public JSONArray findHistoryManager(int communityId,int page){
+        List<Package> list = packageDao.findHistoryManager(communityId,page);
         return listToJsonArray(list);
     }
 }

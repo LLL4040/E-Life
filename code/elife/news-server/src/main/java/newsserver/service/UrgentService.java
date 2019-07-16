@@ -54,7 +54,8 @@ public interface UrgentService {
      * find history table from teo table
      *
      * @param communityId
+     * @param page
      * @return
      */
-    JSONArray findHistory(int communityId);
+    JSONArray findHistory(int communityId,int page);
 }
