@@ -1,21 +1,20 @@
 <template>
   <div>
-    <div align="center">
-      <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入0或1筛选状态-(1:已缴费、0:未缴费)"/>
-    </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>停车费账单</span>
           </div>
-          <el-table :data="parkBill.filter(data => !search || data.status === search)" style="width: 100%">
+          <el-table :data="bill.filter(data => (data.status === -1 || data.status === 1))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
-            <el-table-column label="金额" prop="amount" align="center"></el-table-column>
+            <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === '1'" type="success" plain size="small">已缴费</el-button>
                 <el-button v-if="scope.row.status === '0'" type="danger" plain size="small" @click="submit()">未缴费</el-button>
+                <el-button v-if="scope.row.status === 1" type="success" plain size="small">已缴费</el-button>
+                <el-button v-if="scope.row.status === -1" type="danger" plain size="small">未缴费</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -26,13 +25,13 @@
           <div slot="header" class="clearfix">
             <span>物业费账单</span>
           </div>
-          <el-table :data="propertyBill.filter(data => !search || data.status === search)" style="width: 100%">
+          <el-table :data="bill.filter(data => (data.status === -2 || data.status === 2))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
-            <el-table-column label="金额" prop="amount" align="center"></el-table-column>
+            <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.status === '1'" type="success" plain size="small">已缴费</el-button>
-                <el-button v-if="scope.row.status === '0'" type="danger" plain size="small">未缴费</el-button>
+                <el-button v-if="scope.row.status === 2" type="success" plain size="small">已缴费</el-button>
+                <el-button v-if="scope.row.status === -2" type="danger" plain size="small">未缴费</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -47,17 +46,6 @@ export default {
   name: 'MyBill',
   data () {
     return {
-      search: '',
-      parkBill: [{
-        time: '1',
-        amount: '1',
-        status: '1'
-      }],
-      propertyBill: [{
-        time: '1',
-        amount: '1',
-        status: '0'
-      }],
       bill: [],
       userInfo: {
         community: '',
@@ -96,7 +84,7 @@ export default {
     },
     loadBill () {
       let bodyFormData = new FormData()
-      bodyFormData.set('username', this.userInfo.communityId)
+      bodyFormData.set('username', this.userInfo.username)
       let url = '/pay-server/api/Pay/findHistory'
       this.$axios({
         method: 'post',

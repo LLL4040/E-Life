@@ -90,6 +90,24 @@ public class MerchantServiceImpl implements MerchantService{
     }
 
     @Override
+    public JSONArray findAll(){
+        JSONArray jsonArray = new JSONArray();
+        List<Merchant> merchantList = merchantDao.findAll();
+        for(Merchant merchant : merchantList){
+            JSONObject object = new JSONObject();
+            object.put("address", merchant.getAddress());
+            object.put("type", merchant.getType());
+            object.put("detail", merchant.getDetail());
+            object.put("name", merchant.getName());
+            object.put("phone", merchant.getPhone());
+            object.put("username", merchant.getUser().getUsername());
+            object.put("id", merchant.getId());
+            jsonArray.appendElement(object);
+        }
+        return jsonArray;
+    }
+
+    @Override
     public JSONObject deleteMerchant(Long id){
         JSONObject result = new JSONObject();
         String delete = "delete";
@@ -122,10 +140,24 @@ public class MerchantServiceImpl implements MerchantService{
         object.put("detail", merchant.getDetail());
         object.put("type", merchant.getType());
         object.put("address", merchant.getAddress());
+        object.put("name", merchant.getName());
         object.put("username", merchant.getUser().getUsername());
         object.put("email", merchant.getUser().getEmail());
         object.put("phone", merchant.getUser().getPhone());
         object.put("communityId", merchant.getUser().getCommunityId());
+        return object;
+    }
+
+    @Override
+    public JSONObject getMerchantByUsername(String username){
+        JSONObject object = new JSONObject();
+        Merchant merchant = merchantDao.findByUsername(username);
+        object.put("id", merchant.getId());
+        object.put("name", merchant.getName());
+        object.put("merchantPhone", merchant.getPhone());
+        object.put("detail", merchant.getDetail());
+        object.put("type", merchant.getType());
+        object.put("address", merchant.getAddress());
         return object;
     }
 }

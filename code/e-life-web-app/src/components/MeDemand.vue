@@ -31,6 +31,19 @@ export default {
   data () {
     return {
       search: '',
+      form: {
+        id: '',
+        username: '',
+        email: '',
+        phone: '',
+        community: '',
+        communityId: '',
+        shop: '',
+        merchantPhone: '',
+        type: '',
+        detail: '',
+        address: ''
+      },
       demand: [{
         id: '1',
         start: 'xxx',
@@ -42,6 +55,39 @@ export default {
     }
   },
   methods: {
+    loadData () {
+      this.form.username = sessionStorage.getItem('username')
+      if (this.form.username === '' || this.form.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.form.id = sessionStorage.getItem('id')
+      this.form.email = sessionStorage.getItem('email')
+      this.form.phone = sessionStorage.getItem('phone')
+      this.form.community = sessionStorage.getItem('community')
+      this.form.communityId = sessionStorage.getItem('communityId')
+      this.form.shop = sessionStorage.getItem('name')
+      this.form.merchantPhone = sessionStorage.getItem('merchantPhone')
+      this.form.type = sessionStorage.getItem('type')
+      this.form.detail = sessionStorage.getItem('detail')
+      this.form.address = sessionStorage.getItem('address')
+    },
+    loadDemand () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.form.communityId)
+      let url = '/group-server/api/demand/getAllDemand'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.demand = response.data
+      })
+    }
+  },
+  mounted () {
+    this.loadData()
+    this.loadDemand()
   }
 }
 </script>

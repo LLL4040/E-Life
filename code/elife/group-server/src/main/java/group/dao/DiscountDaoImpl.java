@@ -24,6 +24,16 @@ public class DiscountDaoImpl implements DiscountDao{
     }
 
     @Override
+    public Boolean existsById(Long id){
+        return discountRepository.existsById(id);
+    }
+
+    @Override
+    public Boolean existsByMerchantId(Long merchantId){
+        return discountRepository.existsByMerchantId(merchantId);
+    }
+
+    @Override
     public Discount findById(Long id){
         return discountRepository.findById(id);
     }

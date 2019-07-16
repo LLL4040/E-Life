@@ -137,17 +137,56 @@ export default {
     return {
       tabView: 'page1',
       openList: ['1'],
-      newRepair: 10,
+      newRepair: 0,
       dialogFormVisible: false,
       userInfo: {
-        community: '快乐小区',
-        username: '233',
-        email: '233@233.com',
-        phone: '2333333333333'
-      }
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
+      pageNumber: 1,
+      pageSize: 100
     }
   },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadRequest () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('pageNumber', this.pageNumber)
+      bodyFormData.set('pageSize', this.pageSize)
+      let url = '/lifeservice-server/api/maintain/managerFindUnMaintain'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.newRepair = response.data.length
+      })
+    },
     toPage1 (id) {
       this.openList[0] = '1'
       this.tabView = `page${id}`
@@ -155,13 +194,6 @@ export default {
     toPage2 (id1, id2) {
       this.openList[0] = id1
       this.tabView = `page${id2}`
-    },
-    getNew () {
-      this.$axios
-        .get('')
-        .then(response => {
-          this.newRepaire = response.data
-        })
     },
     handleModify () {
       this.dialogFormVisible = false
@@ -184,7 +216,8 @@ export default {
     page14
   },
   mounted () {
-    // this.getNew()
+    this.loadData()
+    this.loadRequest()
   }
 }
 </script>

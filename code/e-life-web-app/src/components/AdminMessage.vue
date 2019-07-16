@@ -20,7 +20,8 @@
             </template>
           </el-table-column>
           <el-table-column prop="time" label="时间" align="center"></el-table-column>
-          <el-table-column prop="user" label="接收人" align="center"></el-table-column>
+          <el-table-column prop="managename" label="发送人" align="center"></el-table-column>
+          <el-table-column prop="receiver" label="接收人" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
@@ -51,6 +52,13 @@ export default {
   name: 'AdminMessage',
   data () {
     return {
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
       search: '',
       dialogFormVisible: false,
       message: [{
@@ -63,14 +71,74 @@ export default {
         manager: '',
         user: '',
         content: ''
-      }
+      },
+      pageNumber: 1,
+      pageSize: 10
     }
   },
   mounted () {
+    this.loadData()
+    this.loadMessage()
   },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadMessage () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('managerName', this.userInfo.username)
+      bodyFormData.set('pageNumber', this.pageNumber)
+      bodyFormData.set('pageSize', this.pageSize)
+      let url = '/news-server/api/notice/ManagerFindNotice'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.message = response.data
+        console.log(this.message)
+      })
+    },
     sendM () {
       this.dialogFormVisible = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('content', this.newMessage.content)
+      bodyFormData.set('managerName', this.userInfo.username)
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('username', this.newMessage.user)
+      bodyFormData.set('isMass', 0)
+      let url = '/news-server/api/notice/addNotice'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.addNotice === '1') {
+          this.loadMessage()
+        } else {
+          this.$alert('发送通知失败！')
+        }
+      })
     },
     handleDelete () {
     }

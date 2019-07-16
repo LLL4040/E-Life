@@ -23,6 +23,19 @@ public interface MerchantDao {
     Merchant findById(Long id);
 
     /**
+     * find all merchant
+     * @return all merchant
+     */
+    List<Merchant> findAll();
+
+    /**
+     * find merchant by username
+     * @param username username
+     * @return merchant
+     */
+    Merchant findByUsername(String username);
+
+    /**
      * find all merchant of the chosen type
      * @param type type
      * @return merchant list

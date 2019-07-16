@@ -10,9 +10,9 @@
             <span>停车费账单</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible1 = true"></el-button>
           </div>
-          <el-table :data="parkBill.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="bill.filter(data => (data.status === -1 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
-            <el-table-column label="金额" prop="amount" align="center"></el-table-column>
+            <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
           </el-table>
         </el-card>
@@ -23,9 +23,9 @@
             <span>物业费账单</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible2 = true"></el-button>
           </div>
-          <el-table :data="propertyBill.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="bill.filter(data => (data.status === -2 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
-            <el-table-column label="金额" prop="amount" align="center"></el-table-column>
+            <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
           </el-table>
         </el-card>
@@ -34,7 +34,7 @@
     <el-dialog title="添加停车费账单" :visible.sync="dialogFormVisible1">
       <el-form :model="newT">
         <el-form-item label="截止时间">
-          <el-date-picker v-model="newT.time" type="datetime" placeholder="选择日期时间"></el-date-picker>
+          <el-date-picker v-model="newT.time" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
         </el-form-item>
         <el-form-item label="用户名">
           <el-input v-model="newT.username"></el-input>
@@ -45,13 +45,13 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible1 = false">取 消</el-button>
-        <el-button type="primary" @click="releaseA()">发 布</el-button>
+        <el-button type="primary" @click="releaseT()">发 布</el-button>
       </div>
     </el-dialog>
     <el-dialog title="添加物业费账单" :visible.sync="dialogFormVisible2">
       <el-form :model="newW">
         <el-form-item label="截止时间">
-          <el-date-picker v-model="newW.time" type="datetime" placeholder="选择日期时间"></el-date-picker>
+          <el-date-picker v-model="newW.time" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
         </el-form-item>
         <el-form-item label="用户名">
           <el-input v-model="newW.username"></el-input>
@@ -62,7 +62,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-        <el-button type="primary" @click="releaseA()">发 布</el-button>
+        <el-button type="primary" @click="releaseW()">发 布</el-button>
       </div>
     </el-dialog>
   </div>
@@ -73,19 +73,17 @@ export default {
   name: 'AdminBillW',
   data () {
     return {
+      userInfo: {
+        community: '',
+        communityId: 0,
+        username: '',
+        email: '',
+        phone: ''
+      },
       search: '',
       dialogFormVisible1: false,
       dialogFormVisible2: false,
-      parkBill: [{
-        time: '1',
-        amount: '1',
-        username: '233'
-      }],
-      propertyBill: [{
-        time: '1',
-        amount: '1',
-        username: '233'
-      }],
+      bill: [],
       newT: {
         time: '',
         amount: '',
@@ -99,9 +97,91 @@ export default {
     }
   },
   mounted () {
-
+    this.loadData()
+    this.loadBill()
   },
   methods: {
+    loadData () {
+      this.userInfo.username = sessionStorage.getItem('username')
+      if (this.userInfo.username === '' || this.userInfo.username === null) {
+        this.$router.push({ name: 'Login' })
+      }
+      this.userInfo.phone = sessionStorage.getItem('phone')
+      this.userInfo.communityId = sessionStorage.getItem('communityId')
+      this.userInfo.email = sessionStorage.getItem('email')
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.userInfo.communityId)
+      let url = '/user-server/api/user/getCommunityById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.userInfo.community = response.data.community
+        sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadBill () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/pay-server/api/Pay/findUnPayHistory'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.bill = response.data
+        console.log(response.data)
+      })
+    },
+    releaseT () {
+      this.dialogFormVisible1 = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('managerName', this.userInfo.username)
+      bodyFormData.set('username', this.newT.username)
+      bodyFormData.set('time', this.newT.time)
+      bodyFormData.set('bill', this.newT.amount)
+      bodyFormData.set('status', -1)
+      let url = '/pay-server/api/Pay/savePay'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.loadBill()
+        } else {
+          this.$alert('添加账单失败！')
+        }
+      })
+    },
+    releaseW () {
+      this.dialogFormVisible2 = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('managerName', this.userInfo.username)
+      bodyFormData.set('username', this.newW.username)
+      bodyFormData.set('time', this.newW.time)
+      bodyFormData.set('bill', this.newW.amount)
+      bodyFormData.set('status', -2)
+      let url = '/pay-server/api/Pay/savePay'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.loadBill()
+        } else {
+          this.$alert('添加账单失败！')
+        }
+      })
+    }
   }
 }
 </script>

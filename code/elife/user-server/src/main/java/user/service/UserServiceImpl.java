@@ -211,7 +211,7 @@ public class UserServiceImpl implements UserService {
             return result;
         } else {
             Manager manager = managerDao.findByUsername(username);
-            if (!manager.getPassword().equals(password)) {
+            if (!manager.getPassword().equals(password) || manager.getRole() == 0) {
                 return result;
             } else {
                 result.put("login", 1);
