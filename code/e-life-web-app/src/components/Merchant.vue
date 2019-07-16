@@ -12,7 +12,7 @@
         </nav>
       </section>
     </el-header>
-    <el-container style="padding-top: 30px">
+    <el-container style="padding-top: 20px">
       <el-aside width="220px" style="background-color: rgb(238, 241, 246)">
         <el-menu default-active="1" style="height:100vh;width:220px;float:left;overflow-y:auto">
           <div align="center">

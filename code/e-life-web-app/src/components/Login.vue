@@ -15,13 +15,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <router-link router-link :to="{name:'Login'}" class="nav-link tm-nav-link">登录</router-link>
+              <router-link router-link :to="{name:'Login'}" class="nav-link tm-nav-link" style="font-size: 20px;">登录</router-link>
             </li>
             <li class="nav-item">
-              <router-link router-link :to="{name:'Register'}" class="nav-link tm-nav-link">注册</router-link>
+              <router-link router-link :to="{name:'Register'}" class="nav-link tm-nav-link" style="font-size: 20px;">注册</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link tm-nav-link" href="/#contact">联系我们</a>
+              <a class="nav-link tm-nav-link" href="/#contact" style="font-size: 20px;">联系我们</a>
             </li>
           </ul>
         </div>
@@ -32,7 +32,7 @@
         <el-card class="box-card" style="width: 55%">
           <div slot="header" class="clearfix" style="margin-bottom: -20px">
             <i class="fas fa-2x fa-user-circle text-center tm-icon" style="float:left"></i>
-            <h3 class="text-center tm-text-primary mb-4" style="float:left">&nbsp;&nbsp;用户登录</h3>
+            <h3 class="text-center tm-text-primary mb-4" style="padding-top: 10px; float:left; font-size: 20px;">&nbsp;&nbsp;用户登录</h3>
           </div>
           <el-form v-if="flag === 0" ref="form1" :model="form1" label-width="60px">
             <el-form-item label="用户名">

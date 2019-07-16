@@ -15,20 +15,20 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage1(1)">小区资讯</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(1)" style="font-size: 20px;">小区资讯</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage1(2)">小区团购</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(2)" style="font-size: 20px;">小区团购</a>
                 </li>
                 <li class="nav-item">
                   <el-dropdown @command="toPage1">
-                    <span class="nav-link tm-nav-link" style="font-size: 1.25rem">
+                    <span class="nav-link tm-nav-link" style="font-size: 20px;">
                       <i class="el-icon-arrow-down el-icon--right"></i>小区服务
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="4">超市送货</el-dropdown-item>
-                      <el-dropdown-item command="5">电脑维修</el-dropdown-item>
-                      <el-dropdown-item command="6">物业维修</el-dropdown-item>
+                      <el-dropdown-item command="4" style="font-size: 14px;">超市送货</el-dropdown-item>
+                      <el-dropdown-item command="5" style="font-size: 14px;">电脑维修</el-dropdown-item>
+                      <el-dropdown-item command="6" style="font-size: 14px;">物业维修</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </li>
@@ -41,7 +41,7 @@
         </nav>
       </section>
     </el-header>
-    <el-container style="padding-top: 30px">
+    <el-container style="padding-top: 20px">
       <el-aside width="220px" style="background-color: rgb(238, 241, 246)">
         <el-menu :default-openeds="openList" style="height:100vh;width:220px;float:left;overflow-y:auto">
           <div align="center">

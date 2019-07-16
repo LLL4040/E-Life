@@ -75,7 +75,7 @@ a:focus {
 
 .tm-navbar.scroll {
   background-color: white;
-  border-bottom: 0 solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .navbar-brand {
