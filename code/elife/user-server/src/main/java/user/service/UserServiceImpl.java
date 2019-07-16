@@ -140,16 +140,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JSONObject login(String username, String password) {
+    public JSONObject login(String username, String password, String id) {
         JSONObject result = new JSONObject();
         result.put("login", 0);
         if (!userDao.existByUsername(username)) {
             return result;
         } else {
+            Integer role = "0".equals(id) ? 0 : 1;
             User user = userDao.findByUsername(username);
-            if (!user.getPassword().equals(password)) {
+            if (!user.getPassword().equals(password) || !user.getRole().equals(role)) {
                 return result;
             } else {
+                result.put("role", user.getRole());
                 result.put("username", user.getUsername());
                 result.put("communityId", user.getCommunityId());
                 result.put("phone", user.getPhone());
@@ -305,7 +307,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public JSONObject getCommunityById(Long id){
         JSONObject object = new JSONObject();
-        object.put("community", communityRepository.findById(id).getCommunityName());
+        Community community = communityRepository.findById(id);
+        object.put("community", community.getCommunityName());
+        object.put("communityInfo", community.getCommunityInfo());
+        object.put("address", community.getAddress());
         return object;
     }
 
