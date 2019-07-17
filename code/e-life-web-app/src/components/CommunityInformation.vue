@@ -25,7 +25,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>最新资讯</span>
-            <el-button style="float: right; padding: 3px 0" type="text" @click="loadActivityMore()">more >></el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="loadNewsMore()">more >></el-button>
           </div>
           <el-table :data="news" style="width: 100%">
             <el-table-column type="expand">
@@ -49,7 +49,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>活动安排</span>
-            <el-button style="float: right; padding: 3px 0" type="text" @click="loadNewsMore()">more >></el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="loadActivityMore()">more >></el-button>
           </div>
           <el-table :data="activity" style="width: 100%">
             <el-table-column type="expand">
@@ -105,6 +105,7 @@ export default {
   name: 'CommunityInformation',
   data () {
     return {
+      page: 1,
       userInfo: {
         community: '',
         communityId: 0,
@@ -205,6 +206,8 @@ export default {
     loadNewsMore () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.append('page', this.page)
+      console.log(this.userInfo.community)
       let url = '/news-server/api/News/findHistory'
       this.$axios({
         method: 'post',

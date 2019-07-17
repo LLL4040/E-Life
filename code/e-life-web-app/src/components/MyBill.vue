@@ -159,11 +159,10 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        console.log(response.data)
-        // const div = document.createElement('div')
-        // div.innerHTML = response.data // html code
-        // document.body.appendChild(div)
-        // document.forms[0].submit()
+        const div = document.createElement('div')
+        div.innerHTML = response.data // html code
+        document.body.appendChild(div)
+        document.forms[1].submit()
       })
     }
   }
