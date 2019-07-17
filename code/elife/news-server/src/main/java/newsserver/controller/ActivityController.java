@@ -2,6 +2,7 @@ package newsserver.controller;
 
 
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import newsserver.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -123,5 +124,11 @@ public class ActivityController {
     @ResponseBody
     public boolean disagreeParticipator(int pid,int status){
         return activityService.disagreeParticipator(pid,status);
+    }
+
+    @RequestMapping(path = "/photo")
+    @ResponseBody
+    public JSONObject getBigPhoto(String path){
+        return activityService.getBigPhoto( path);
     }
 }
