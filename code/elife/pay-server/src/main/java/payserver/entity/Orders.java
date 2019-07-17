@@ -21,6 +21,8 @@ public class Orders implements Serializable {
     @Id
     @Column(name = "id")
     private String id;
+    @Column(name = "username")
+    private String username;
     @Column(name = "pid")
     private int payId;
     @Column(name = "create_time")
@@ -37,6 +39,14 @@ public class Orders implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void setCreateTime(Date createTime) {
@@ -80,8 +90,9 @@ public class Orders implements Serializable {
     }
 
 
-    public Orders(String id, int pid,Date createTime ,BigDecimal bill, int status){
+    public Orders(String id, String usernmae, int pid,Date createTime ,BigDecimal bill, int status){
         this.id = id;
+        this.username = usernmae;
         this.payId = pid;
         this.bill = bill;
         this.createTime = createTime;

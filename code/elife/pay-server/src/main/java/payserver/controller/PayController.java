@@ -39,6 +39,7 @@ public class PayController {
     @RequestMapping(path = "/findNew")
     @ResponseBody
     public JSONArray findNew(String username){
+        System.out.println(1);
         return payService.findNew(username);
     }
     @RequestMapping(path = "/deleteOne")
@@ -72,14 +73,31 @@ public class PayController {
         return payService.findPayHistoryManager(communityId,page);
     }
 
-    @RequestMapping("ali")
-    public void ali(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
-        payService.ali(response,request);
+    @RequestMapping("/ali")
+    public void ali(HttpServletResponse response, HttpServletRequest request
+            , String id,String bill,String time) throws IOException, AlipayApiException {
+        payService.ali(response,request,id,bill,time);
+    }
+   /* @RequestMapping("/return")
+    public void returnUrl(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
+        System.out.println(12345);
+        payService.returnUrl(response,request);
+    }*/
+    @RequestMapping("/notify")
+    public void notifyUrl(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
+        System.out.println(12345);
+        payService.notifyUrl(response,request);
     }
 
-    @RequestMapping("saveOrders")
-    public void saveOrders(String username,int pid,BigDecimal bill) throws IOException, AlipayApiException {
+    @RequestMapping("/saveOrders")
+    @ResponseBody
+    public void saveOrders(String username,int pid,BigDecimal bill) {
         payService.saveOrders(pid,username,bill);
     }
 
+    @RequestMapping("/getOrders")
+    @ResponseBody
+    public JSONArray getOrders(String username) {
+        return payService.getOrders(username);
+    }
 }

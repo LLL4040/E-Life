@@ -30,17 +30,17 @@ public class AlipayConfig {
     /** 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
      *
      */
-    public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsx0bBnbgJHgwDQhwASiJugrwgr4ScatbXcA+CwVMRvAq7zd04WTgAvbc6UqSbzZWb+JrdO5+WjeIsDAPMH6dwgXU15/uJLXPHmPaL4Ty64MgsXu+/ADdsWqsxCNPUUsRCpMLXurdWDrdFDtEKe3nPtre1CvJqSFwU8bEuwKi+kPQmu0eHLnkpsqs+g9G4mteVAotn130NjbTusJNkXO6sGETcnK3V6hoOIpnJi2p/TIrknCLn8JtGBbV+0OyEpejD0sDUrRXULrvEsJmfX/zFQbO9X5EUER0wOGeevTFK8e7/iICRE6zVi0FgUdIy+xIvk4NYpTyV6ap2vRAIf2Y7wIDAQAB";
+    public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1e8cRf79Hf9bbFT+VkwR+6cQn0XEn1UB6FiarsjaTCJBQlkTAqXfdeUngpuoM8RYWIcX9oVAXogF9EIODosM7NsAjIHDfwYzoLHGineplGUcyMNyVReVwxmP04rP/Alldy0cybkhWvI94otRn4KZtTqk9RO1wg3fIPn65P/31UDXHbBNZrzxQuMbz+pX6S4zysY7tVovHz+iA2rjZgNWLCCNnTvMhlKCoDk5zB6rccWWPmOf5ZmHNLjU7Vj5/kM5MHqeO04GvfpvD9rgkz9y6bzoRWFnaLqfHVUgRfBpFvJVQ7sKkfCQSvxd40ZXNiEqaIHomXjbGkPzgOYIV+MsowIDAQAB";
 
     /** 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
      *
      */
-    public static String notify_url = "http://localhost:8080/alipay.trade.page.pay-JAVA-UTF-8/notify_url.jsp";
+    public static String notify_url = "  http://elife.natapp1.cc/pay-server/api/Pay/notify";
 
     /** 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
      *
      */
-    public static String return_url = "http://localhost:8080/alipay.trade.page.pay-JAVA-UTF-8/return_url.jsp";
+    public static String return_url = " http://localhost:8080/user";
 
     /** 签名方式
      *
