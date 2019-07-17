@@ -1,5 +1,6 @@
 package newsserver.serviceimpl;
 
+import net.coobird.thumbnailator.Thumbnails;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import newsserver.dao.NewsDao;
@@ -41,6 +42,10 @@ public class NewsServiceImpl implements NewsService {
                 bufferedOutputStream.write(bytes);
                 bufferedOutputStream.close();
             }
+            Thumbnails.of("./news-server/pic/"+path)
+                    .size(80,80)
+                    .keepAspectRatio(false)
+                    .toFile("./news-server/cpic/"+path);
             newsDao.save(content, managerName, title, 0, path, communityId);
             return true;
         }
@@ -57,12 +62,13 @@ public class NewsServiceImpl implements NewsService {
         while(iter.hasNext()){
             News temp = iter.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("./news-server/pic/"+temp.getPhoto());
+            File file = new File("./news-server/cpic/"+temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo=Base64.encodeBase64String(data);
             jsonObject.put("photo" , "data:image/jpg;base64,"+photo);
             jsonObject.put("id",temp.getId());
             String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
+            jsonObject.put("path", temp.getPhoto());
             jsonObject.put("time", dateStr);
             jsonObject.put("title",temp.getTitle());
             jsonObject.put("content",temp.getContent());
@@ -76,12 +82,13 @@ public class NewsServiceImpl implements NewsService {
             JSONObject jsonObject = new JSONObject();
         try {
             News temp = newsDao.findOne(id);
-            File file = new File("./news-server/pic/" + temp.getPhoto());
+            File file = new File("./news-server/cpic/" + temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo = Base64.encodeBase64String(data);
             jsonObject.put("photo", "data:image/jpg;base64," + photo);
             jsonObject.put("id", temp.getId());
             String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
+            jsonObject.put("path", temp.getPhoto());
             jsonObject.put("time", dateStr);
             jsonObject.put("title",temp.getTitle());
             jsonObject.put("content", temp.getContent());
@@ -131,11 +138,12 @@ public class NewsServiceImpl implements NewsService {
             if(i>=left && i<right) {
                 News temp = hot.next();
                 JSONObject jsonObject = new JSONObject();
-                File file = new File("./news-server/pic/" + temp.getPhoto());
+                File file = new File("./news-server/cpic/" + temp.getPhoto());
                 byte[] data = Files.readAllBytes(file.toPath());
                 String photo = Base64.encodeBase64String(data);
                 jsonObject.put("photo", "data:image/jpg;base64," + photo);
                 jsonObject.put("id", temp.getId());
+                jsonObject.put("path", temp.getPhoto());
                 String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
                 jsonObject.put("time", dateStr);
                 jsonObject.put("title", temp.getTitle());
@@ -152,11 +160,12 @@ public class NewsServiceImpl implements NewsService {
             if(i>=left && i<right) {
                 NewsUsed temp = cold.next();
                 JSONObject jsonObject = new JSONObject();
-                File file = new File("./news-server/pic/" + temp.getPhoto());
+                File file = new File("./news-server/cpic/" + temp.getPhoto());
                 byte[] data = Files.readAllBytes(file.toPath());
                 String photo = Base64.encodeBase64String(data);
                 jsonObject.put("photo", "data:image/jpg;base64," + photo);
                 jsonObject.put("id", temp.getId());
+                jsonObject.put("path", temp.getPhoto());
                 String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(temp.getTime());
                 jsonObject.put("time", dateStr);
                 jsonObject.put("title", temp.getTitle());
@@ -171,5 +180,21 @@ public class NewsServiceImpl implements NewsService {
 
         }
         return jsonArray;
+    }
+
+    @Override
+    public JSONObject getBigPhoto(String path){
+        JSONObject jsonObject = new JSONObject();
+        try{
+            File file = new File("./news-server/pic/" + path);
+            byte[] data = Files.readAllBytes(file.toPath());
+            String photo = Base64.encodeBase64String(data);
+            jsonObject.put("photo", "data:image/jpg;base64," + photo);
+            return jsonObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonObject.put("error","notfound");
+            return jsonObject;
+        }
     }
 }

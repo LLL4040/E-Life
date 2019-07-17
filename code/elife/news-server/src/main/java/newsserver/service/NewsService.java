@@ -69,4 +69,11 @@ public interface NewsService {
      * @throws IOException
      */
     JSONArray findHistory(int communityId,int page) throws IOException;
+
+    /**
+     * get real photo
+     * @param path
+     * @return JSONObject
+     */
+    JSONObject getBigPhoto(String path);
 }
