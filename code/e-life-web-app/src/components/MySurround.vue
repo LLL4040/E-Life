@@ -3,11 +3,6 @@
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="16">
         <el-card class="box-card">
-          <!--<baidu-map class="bm-view" center="上海" >
-            <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-            <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :auto-location="location" v-model="location" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
-          </baidu-map>
-          <p>{{center}}</p>-->
           <div id="map"></div>
         </el-card>
       </el-col>
@@ -18,21 +13,22 @@
           </div>
           <el-row :gutter="10">
             <el-col :span="8">
-              <el-tag>超市购物</el-tag>
+              <el-tag color="blue">超市购物</el-tag>
             </el-col>
             <el-col :span="8">
-              <el-tag type="success">休闲娱乐</el-tag>
+              <el-tag color="green">休闲娱乐</el-tag>
             </el-col>
             <el-col :span="8">
-              <el-tag type="warning">周边餐饮</el-tag>
+              <el-tag color="saddleBrown">周边餐饮</el-tag>
             </el-col>
             <el-col :span="8">
-              <el-tag type="danger">生活服务</el-tag>
+              <el-tag color="purple">生活服务</el-tag>
             </el-col>
           </el-row>
         </el-card>
         <el-card class="box-card">
-          <el-input v-model="search" size="medium" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>
+          <el-input v-model="search" size="mini" style="width: 235px" placeholder="输入关键字搜索"/>
+          <el-button icon="el-icon-search" size="mini" type="primary" @click="search()"></el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -61,8 +57,6 @@ export default {
   },
   mounted () {
     this.loadData()
-    this.loadMerchant()
-    this.createMap()
   },
   methods: {
     loadData () {
@@ -74,6 +68,7 @@ export default {
       this.userInfo.communityId = sessionStorage.getItem('communityId')
       this.userInfo.email = sessionStorage.getItem('email')
       this.userInfo.community = sessionStorage.getItem('community')
+      this.loadMerchant()
     },
     loadMerchant () {
       let bodyFormData = new FormData()
@@ -85,6 +80,7 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.merchantList = response.data
+        this.createMap()
       })
     },
     createMap () {
@@ -92,46 +88,65 @@ export default {
       // 创建Map实例
       let map = new BMap.Map("map")
       // 初始化地图,设置中心点坐标和地图级别
+      let address = sessionStorage.getItem('communityAddress')
+      let location = {"lng": address.split(',')[0].split(':')[1], "lat": address.split(',')[1].split(':')[1]}
+      this.center = location
       let point = new BMap.Point(this.center.lng, this.center.lat)
-      map.centerAndZoom(point, 11)
+      map.centerAndZoom(point, 16)
       //添加地图类型控件
       map.addControl(new BMap.MapTypeControl({
         mapTypes:[BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
       }))
       // 设置地图显示的城市 此项是必须设置的
-      map.setCurrentCity("北京")
+      map.setCurrentCity("上海")
       //开启鼠标滚轮缩放
       map.enableScrollWheelZoom(true)
       map.enableDoubleClickZoom(true)
 
-      //定位
-      let geolocation = new BMap.Geolocation()
-      geolocation.getCurrentPosition((r) =>{
-        if(r.point){
-          this.center.lng = r.longitude
-          this.center.lat = r.latitude
-          let markers = new BMap.Marker(r.point)
-          map.panTo(r.point)
-          map.centerAndZoom(r.point, 16)
-          // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
-          // console.log(location)
-          // let marker = new BMap.Marker(location)
-          // map.addOverlay(marker)
-          // marker.addEventListener("click",function () {
-          //   this.$alert("you")
-          //   console.log("0001");
-          //   //map.openInfoWindow(infoWindows,points);//参数：窗口、点  根据点击的点出现对应的窗口
-          // });
+      //let icons = require('../../static/brown.png')
+      let markers = new BMap.Marker(point)
+
+      let infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>详细信息</p>");  //弹出窗口
+      map.panTo(location)
+      map.centerAndZoom(location, 16)
+      map.addOverlay(markers)
+      markers.addEventListener("click", function(){
+        this.openInfoWindow(infoWindow);
+      })
+      this.$alert(this.merchantList.length)
+      let i = 0
+      for (; i < this.merchantList.length; i++){
+        let point = new BMap.Point(this.merchantList[i].address.split(',')[0].split(':')[1], this.merchantList[i].address.split(',')[1].split(':')[1])
+        this.$alert(point)
+        let icons
+        switch (this.merchantList[i].type)
+        {
+          case '周边餐饮': icons = require('../../static/brown.png')
+            break
+          case '超市购物': icons = require('../../static/blue.png')
+            break
+          case '休闲娱乐': icons = require('../../static/green.png')
+            break
+          case '生活服务': icons = require('../../static/purple.png')
+            break
+          // default: icons = require('../../static/black.png')
         }
-      }, {enableHighAccuracy: true})
-      // let i = 0
-      // for(; i < this.merchantList.length; i++){
-      //   let location = {"lng": this.merchantList[i].split(',')[0].split(':')[1], "lat": this.merchantList[i].split(',')[1].split(':')[1]}
-      //   map.addOverlay(new BMap.Marker(location))
-      // }
-      // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
-      // console.log(location)
-      // map.addOverlay(new BMap.Marker(location))
+        let info = "<p style='font-size:14px;'>" + this.merchantList[i].name + "</p>"
+           + "<p style='font-size:14px;'>" + this.merchantList[i].detail + "</p>"
+        let infoWindow = new BMap.InfoWindow(info)
+        let icon = new BMap.Icon(icons, new BMap.Size(18, 35),{
+          anchor: new BMap.Size(9, 34)
+        })
+        mark(point, icon, infoWindow)
+      }
+      function mark (point, icon, infoWindow) {
+        let marker = new BMap.Marker(point)
+        map.addOverlay(marker)
+        marker.setIcon(icon)
+        marker.addEventListener("click", function(){
+          this.openInfoWindow(infoWindow);
+        })
+      }
     }
   }
 }

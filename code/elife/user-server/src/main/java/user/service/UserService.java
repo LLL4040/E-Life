@@ -84,9 +84,10 @@ public interface UserService {
      *
      * @param username username
      * @param password password
+     * @param id id
      * @return whether login successfully 1:success, 0:fail
      */
-    JSONObject login(String username, String password);
+    JSONObject login(String username, String password, String id);
 
     /**
      * login with phone number and identify code

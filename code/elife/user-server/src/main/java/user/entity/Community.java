@@ -34,9 +34,13 @@ public class Community implements Serializable {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "address")
+    private String address;
+
     public Community(){}
 
-    public Community(String communityName, String communityInfo, String manager, String password, String phone, String email){
+    public Community(String communityName, String communityInfo, String manager, String password, String phone, String email, String address){
+        this.address = address;
         this.communityName = communityName;
         this.communityInfo = communityInfo;
         this.manager = manager;
@@ -101,6 +105,14 @@ public class Community implements Serializable {
         this.phone = phone;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
@@ -119,6 +131,7 @@ public class Community implements Serializable {
     public int hashCode() {
         return super.hashCode();
     }
+
 
 }
 

@@ -10,6 +10,7 @@ CREATE TABLE community (
     `id` BIGINT AUTO_INCREMENT,
     `communityname` VARCHAR(50) NOT NULL,
     `communityinfo` VARCHAR(1024) NOT NULL,
+    `address` VARCHAR(50) NOT NULL,
     `manager` VARCHAR(50) NOT NULL,
     `password` VARCHAR(50) NOT NULL,
     `phone` VARCHAR(20) NOT NULL,
