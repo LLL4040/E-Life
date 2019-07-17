@@ -6,12 +6,13 @@
           <div slot="header" class="clearfix">
             <span>停车费账单</span>
           </div>
-          <el-table :data="bill.filter(data => (data.status === -1 || data.status === 1))" style="width: 100%">
+          <el-table :data="bill.filter(data => (data.status === -1 || data.status === 1 || data.status === -11))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
             <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === 1" type="success" plain size="small">已缴费</el-button>
+                <el-button v-if="scope.row.status === -11" type="warning" plain size="small">支付中</el-button>
                 <el-button v-if="scope.row.status === -1" type="danger" plain size="small" @click="submit(scope.row)">未缴费</el-button>
               </template>
             </el-table-column>
@@ -23,13 +24,14 @@
           <div slot="header" class="clearfix">
             <span>物业费账单</span>
           </div>
-          <el-table :data="bill.filter(data => (data.status === -2 || data.status === 2))" style="width: 100%">
+          <el-table :data="bill.filter(data => (data.status === -2 || data.status === 2 || data.status === -12))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
             <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === 2" type="success" plain size="small">已缴费</el-button>
-                <el-button v-if="scope.row.status === -2" type="danger" plain size="small">未缴费</el-button>
+                <el-button v-if="scope.row.status === -12" type="warning" plain size="small" @click="toPay()">支付中</el-button>
+                <el-button v-if="scope.row.status === -2" type="danger" plain size="small" @click="submit(scope.row)">未缴费</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -40,23 +42,30 @@
 </template>
 
 <script>
+import page1 from './CommunityInformation.vue'
 export default {
   name: 'MyBill',
   data () {
     return {
+      tabView: 'page1',
       bill: [],
+      openList: ['1'],
       userInfo: {
         community: '',
         communityId: 0,
         username: '',
         email: '',
         phone: ''
-      }
+      },
+      v: 'page15'
     }
   },
   mounted () {
     this.loadData()
     this.loadBill()
+  },
+  components: {
+    page1
   },
   methods: {
     loadData () {
@@ -83,6 +92,8 @@ export default {
     loadBill () {
       let bodyFormData = new FormData()
       bodyFormData.set('username', this.userInfo.username)
+      var tempPage = 1
+      bodyFormData.set('page', tempPage)
       let url = '/pay-server/api/Pay/findHistory'
       this.$axios({
         method: 'post',
@@ -98,7 +109,7 @@ export default {
       let bodyFormData = new FormData()
       bodyFormData.set('pid', item.id)
       bodyFormData.set('username', this.userInfo.username)
-      bodyFormData.set('bill', this.item.bill)
+      bodyFormData.set('bill', item.bill)
       let url = '/pay-server/api/Pay/saveOrders'
       this.$axios({
         method: 'post',
@@ -107,8 +118,11 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         alert('添加成功')
-        this.loadMain()
+        this.loadBill()
       })
+    },
+    toPay () {
+      this.$router.push({ path: './user', query: { id: this.v } })
     }
   }
 }

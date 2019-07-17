@@ -87,10 +87,37 @@ public interface PayService {
      * use aliPay interface
      * @param response
      * @param request
+     * @param bill
+     * @param id
+     * @param time
      * @throws AlipayApiException
      * @throws IOException
      */
-    void ali(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
+    void ali(HttpServletResponse response, HttpServletRequest request
+    ,String id,String bill,String time) throws AlipayApiException, IOException;
+
+/*
+    */
+/**
+     * aliBaBa return url
+     * @param response
+     * @param request
+     * @throws AlipayApiException
+     * @throws IOException
+     *//*
+
+    void returnUrl(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
+*/
+
+    /**
+     * aliBaBa notify url
+     * @param response
+     * @param request
+     * @throws AlipayApiException
+     * @throws IOException
+     */
+    void notifyUrl(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
+
 
     /**
      * saveOrders username to make orderId
@@ -100,4 +127,12 @@ public interface PayService {
      * @return
      */
     boolean saveOrders(int pid,String username,BigDecimal bill);
+
+    /**
+     * get Orders by username
+     * @param username
+     * @param pid
+     * @return JSONArray
+     */
+    JSONArray getOrders(String username, int pid);
 }

@@ -62,7 +62,7 @@
               <span style="font-size: 16px">我的账单</span>
             </template>
             <el-menu-item index="2-1" @click="toPage2(2, 8)">查询</el-menu-item>
-            <el-menu-item index="2-2">缴纳</el-menu-item>
+            <el-menu-item index="2-2" @click="toPage2(2, 15)">缴纳</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
@@ -138,6 +138,7 @@ import page11 from './MyFriendApply.vue'
 import page12 from './MyParcel.vue'
 import page13 from './MySending.vue'
 import page14 from './MySurround.vue'
+import page15 from './MyPay.vue'
 
 export default {
   name: 'User',
@@ -255,13 +256,20 @@ export default {
     page11,
     page12,
     page13,
-    page14
+    page14,
+    page15
   },
   mounted () {
     this.loadData()
     this.loadM()
     this.loadF()
     this.loadP()
+  },
+  watch: {
+    '$route': function () {
+      console.log(this.$route.params.id.toString())
+      this.tabView = this.$route.params.id.toString()
+    }
   }
 }
 </script>

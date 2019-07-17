@@ -4,6 +4,7 @@ package payserver.dao;
 
 
 
+import payserver.entity.Orders;
 import payserver.entity.Pay;
 
 import java.math.BigDecimal;
@@ -89,12 +90,32 @@ public interface PayDao {
     /**
      * save otders
      * @param id
+     * @param username
      * @param pid
      * @param createTime
      * @param bill
      * @param status
      */
-    void saveOrders(String id, int pid, Date createTime,BigDecimal bill, int status);
+    void saveOrders(String id,String username, int pid, Date createTime,BigDecimal bill, int status);
 
+    /**
+     * save orders orders
+     * @param orders
+     */
+    void SaveOrders(Orders orders);
 
+    /**
+     * get orders with username
+     * @param username
+     * @param pid
+     * @return Orders List
+     */
+    List<Orders> getOrders(String username, int pid);
+
+    /**
+     * find order one by id
+     * @param oid
+     * @return order
+     */
+    Orders getOrder(String oid);
 }
