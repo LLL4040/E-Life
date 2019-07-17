@@ -1,21 +1,77 @@
 import 'package:flutter/material.dart';
-import 'User.dart';
+import 'news.dart';
+import 'bottom_navigation_widget.dart';
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Login()
-    );
+    return MaterialApp(home: new Login());
+
   }
 }
 
-
 class Login extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
+    void _toNews(){
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(builder: (context) => new BottomNavigationWidget()
+          ), (route) => route == null);
+    }
+    Widget loginSection = Container(
+      width: 320.0,
+      child: new Card(
+        color: Colors.blue,
+        elevation: 16.0,
+        child: new FlatButton(
+            child: new Padding(
+              padding: new EdgeInsets.all(10.0),
+              child: new Text(
+                '登录',
+                style: new TextStyle(
+                    color: Colors.white, fontSize: 16.0),
+              ),
+            ),
+            onPressed:_toNews),
+      ),
+    );
+    Widget quickLogibSession = new Container(
+      width: 320.0,
+      child: new Card(
+        color: Colors.white,
+        elevation: 16.0,
+        child: new FlatButton(
+          child: new Padding(
+            padding: new EdgeInsets.all(10.0),
+            child: new Text(
+              '手机号快捷登录',
+              style: new TextStyle(
+                  color: Colors.black, fontSize: 16.0),
+            ),
+          ),
+        ),
+      ),
+    );
+    Widget forgetSession = new Container(
+      width: 320.0,
+      child: new Card(
+        color: Colors.white,
+        elevation: 16.0,
+        child: new FlatButton(
+            child: new Padding(
+              padding: new EdgeInsets.all(10.0),
+              child: new Text(
+                '忘记密码',
+                style:
+                new TextStyle(color: Colors.black, fontSize: 16.0),
+              ),
+            )),
+      ),
+    );
     return new MaterialApp(
         title: '小区登录',
         home: new Scaffold(
@@ -69,61 +125,12 @@ class Login extends StatelessWidget {
                         ))
                       ]),
                 ),
-                new Container(
-                  width: 340.0,
-                  child: new Card(
-                    color: Colors.blue,
-                    elevation: 16.0,
-                    child: new FlatButton(
-                        child: new Padding(
-                          padding: new EdgeInsets.all(10.0),
-                          child: new Text(
-                            '登录',
-                            style: new TextStyle(
-                                color: Colors.white, fontSize: 16.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          //跳转到新的 页面我们需要调用 navigator.push方法 这个和eactNative的方式相同
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => new SecondPage()));
-                        }),
-                  ),
-                ),
-                new Container(
-                  width: 340.0,
-                  child: new Card(
-                    color: Colors.white,
-                    elevation: 16.0,
-                    child: new FlatButton(
-                      child: new Padding(
-                        padding: new EdgeInsets.all(10.0),
-                        child: new Text(
-                          '手机号快捷登录',
-                          style: new TextStyle(
-                              color: Colors.black, fontSize: 16.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                new Container(
-                  width: 340.0,
-                  child: new Card(
-                    color: Colors.white,
-                    elevation: 16.0,
-                    child: new FlatButton(
-                        child: new Padding(
-                      padding: new EdgeInsets.all(10.0),
-                      child: new Text(
-                        '忘记密码',
-                        style:
-                            new TextStyle(color: Colors.black, fontSize: 16.0),
-                      ),
-                    )),
-                  ),
+                loginSection,
+                quickLogibSession,
+                forgetSession,
+                new Padding(
+                  padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 40.0),
+
                 ),
               ],
             ),
@@ -131,5 +138,3 @@ class Login extends StatelessWidget {
         ));
   }
 }
-
-
