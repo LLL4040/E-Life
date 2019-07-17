@@ -6,8 +6,8 @@
           <!--<baidu-map class="bm-view" center="上海" >
             <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
             <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :auto-location="location" v-model="location" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
-          </baidu-map>
-          <p>{{center}}</p>-->
+          </baidu-map>-->
+          <p>{{center}}</p>
           <div id="map"></div>
         </el-card>
       </el-col>
@@ -92,46 +92,72 @@ export default {
       // 创建Map实例
       let map = new BMap.Map("map")
       // 初始化地图,设置中心点坐标和地图级别
+      let address = sessionStorage.getItem('communityAddress')
+      let location = {"lng": address.split(',')[0].split(':')[1], "lat": address.split(',')[1].split(':')[1]}
+      this.center = location
       let point = new BMap.Point(this.center.lng, this.center.lat)
-      map.centerAndZoom(point, 11)
+      map.centerAndZoom(point, 16)
       //添加地图类型控件
       map.addControl(new BMap.MapTypeControl({
         mapTypes:[BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
       }))
       // 设置地图显示的城市 此项是必须设置的
-      map.setCurrentCity("北京")
+      map.setCurrentCity("上海")
       //开启鼠标滚轮缩放
       map.enableScrollWheelZoom(true)
       map.enableDoubleClickZoom(true)
 
+      //let icons = require('../../static/pin.png')
+      let icons = '../../static/pin.png'
+      let markers = new BMap.Marker(location)
+      let icon = new BMap.Icon(icons, new BMap.Size(15, 15))
+      markers.setIcon(icon)
+      map.panTo(location)
+      map.centerAndZoom(location, 16)
+      map.addOverlay(markers)
+
       //定位
-      let geolocation = new BMap.Geolocation()
-      geolocation.getCurrentPosition((r) =>{
-        if(r.point){
-          this.center.lng = r.longitude
-          this.center.lat = r.latitude
-          let markers = new BMap.Marker(r.point)
-          map.panTo(r.point)
-          map.centerAndZoom(r.point, 16)
-          // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
-          // console.log(location)
-          // let marker = new BMap.Marker(location)
-          // map.addOverlay(marker)
-          // marker.addEventListener("click",function () {
-          //   this.$alert("you")
-          //   console.log("0001");
-          //   //map.openInfoWindow(infoWindows,points);//参数：窗口、点  根据点击的点出现对应的窗口
-          // });
-        }
-      }, {enableHighAccuracy: true})
-      // let i = 0
-      // for(; i < this.merchantList.length; i++){
-      //   let location = {"lng": this.merchantList[i].split(',')[0].split(':')[1], "lat": this.merchantList[i].split(',')[1].split(':')[1]}
-      //   map.addOverlay(new BMap.Marker(location))
-      // }
-      // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
-      // console.log(location)
-      // map.addOverlay(new BMap.Marker(location))
+
+      // let geolocation = new BMap.Geolocation()
+      // geolocation.getCurrentPosition((r) =>{
+      //   if(r.point){
+      //     this.center.lng = r.longitude
+      //     this.center.lat = r.latitude
+      //     let markers = new BMap.Marker(r.point)
+      //     console.log(r.point)
+      //     map.panTo(r.point)
+      //     map.centerAndZoom(r.point, 16)
+      //     let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
+      //     console.log(location)
+      //     let marker = new BMap.Marker(location)
+      //     map.addOverlay(marker)
+    //   let geolocation = new BMap.Geolocation()
+    //   geolocation.getCurrentPosition((r) =>{
+    //     if(r.point){
+    //       this.center.lng = r.longitude
+    //       this.center.lat = r.latitude
+    //       let markers = new BMap.Marker(r.point)
+    //       map.panTo(r.point)
+    //       map.centerAndZoom(r.point, 16)
+    //       // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
+    //       // console.log(location)
+    //       // let marker = new BMap.Marker(location)
+    //       // map.addOverlay(marker)
+    //       // marker.addEventListener("click",function () {
+    //       //   this.$alert("you")
+    //       //   console.log("0001");
+    //       //   //map.openInfoWindow(infoWindows,points);//参数：窗口、点  根据点击的点出现对应的窗口
+    //       // });
+    //   //   }
+    //   // }, {enableHighAccuracy: true})
+    //   // let i = 0
+    //   // for(; i < this.merchantList.length; i++){
+    //   //   let location = {"lng": this.merchantList[i].split(',')[0].split(':')[1], "lat": this.merchantList[i].split(',')[1].split(':')[1]}
+    //   //   map.addOverlay(new BMap.Marker(location))
+    //   // }
+    //   // let location = {"lng": this.merchantList[0].address.split(',')[0].split(':')[1], "lat": this.merchantList[0].address.split(',')[1].split(':')[1]}
+    //   // console.log(location)
+    //   // map.addOverlay(new BMap.Marker(location))
     }
   }
 }

@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import user.entity.Community;
 
+import javax.transaction.Transactional;
+
 /**
  * @author ztHou
  */
@@ -15,4 +17,11 @@ public interface CommunityRepository extends JpaRepository<Community, String> {
      * @return community found
      */
     Community findById(Long id);
+
+    /**
+     * delete community by id
+     * @param id id
+     */
+    @Transactional(rollbackOn = Exception.class)
+    void deleteById(Long id);
 }
