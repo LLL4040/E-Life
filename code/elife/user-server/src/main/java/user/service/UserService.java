@@ -94,9 +94,10 @@ public interface UserService {
      *
      * @param phone phone number
      * @param code  identify code
+     * @param id id
      * @return whether login successfully 1:success, 0:fail
      */
-    JSONObject loginPhone(String phone, String code);
+    JSONObject loginPhone(String phone, String code, String id);
 
     /**
      * login with username and password

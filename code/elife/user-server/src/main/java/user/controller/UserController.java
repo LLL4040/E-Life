@@ -65,7 +65,7 @@ public class UserController {
     @PostMapping(path = "/loginPhone")
     @ResponseBody
     public JSONObject loginPhone(@RequestParam String phone, @RequestParam String code, @RequestParam String id) {
-        return ("1".equals(id)) ? userService.loginPhoneManager(phone, code) : userService.loginPhone(phone, code);
+        return ("1".equals(id)) ? userService.loginPhoneManager(phone, code) : userService.loginPhone(phone, code, id);
     }
 
     @PostMapping(path = "/findPassword")

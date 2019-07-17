@@ -61,8 +61,8 @@
               <el-input v-model="form2.pass"></el-input>
             </el-form-item>
             <el-form-item label="身份">
-              <el-radio v-model="form1.id" label="0">居民</el-radio>
-              <el-radio v-model="form1.id" label="2">商家</el-radio>
+              <el-radio v-model="form2.id" label="0">居民</el-radio>
+              <el-radio v-model="form2.id" label="2">商家</el-radio>
               <el-radio v-model="form2.id" label="1">管理员</el-radio>
             </el-form-item>
             <el-form-item>
@@ -82,13 +82,13 @@
               <el-input v-model="form3.newPassword"></el-input>
             </el-form-item>
             <el-form-item label="身份">
-              <el-radio v-model="form1.id" label="0">居民</el-radio>
-              <el-radio v-model="form1.id" label="2">商家</el-radio>
+              <el-radio v-model="form3.id" label="0">居民</el-radio>
+              <el-radio v-model="form3.id" label="2">商家</el-radio>
               <el-radio v-model="form3.id" label="1">管理员</el-radio>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="getBack()">登录</el-button>
-              <el-button @click="change(0)">用户名密码登录</el-button>
+              <el-button type="primary" @click="getBack()">找回密码</el-button>
+              <el-button @click="change(0)">返回登录</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -161,22 +161,101 @@ export default {
         })
     },
     login2 () {
-      let url = ''
-      this.$axios
-        .post(url, this.form2)
+      if (this.form2.number === '' || this.form2.pass === '') {
+        this.$alert('请输入完整信息！')
+        return 0
+      }
+      let url = '/user-server/api/user/loginPhone'
+      let bodyFormData = new FormData()
+      bodyFormData.set('phone', this.form2.number)
+      bodyFormData.set('code', this.form2.pass)
+      bodyFormData.set('id', this.form2.id)
+      const self = this
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      )
         .then(response => {
-          this.$alert(response.data)
+          if (response.data.login === 1) {
+            sessionStorage.setItem('username', response.data.username)
+            sessionStorage.setItem('communityId', response.data.communityId)
+            sessionStorage.setItem('phone', response.data.phone)
+            sessionStorage.setItem('email', response.data.email)
+            if (this.form2.id === '0') {
+              self.$router.push({ name: 'User' })
+            } else if (this.form2.id === '1') {
+              self.$router.push({ name: 'Manager' })
+            } else if (this.form2.id === '2') {
+              self.$router.push({ name: 'Merchant' })
+            }
+          } else {
+            this.$alert('登录失败！')
+          }
         })
     },
     getPass () {
+      if (this.form2.number === '' && this.form3.number === '') {
+        this.$alert('请输入手机号！')
+      } else {
+        let bodyFormData = new FormData()
+        let form = (this.form2.number === '') ? this.form3 : this.form2
+        this.$alert(form)
+        bodyFormData.set('phone', form.number)
+        bodyFormData.set('id', form.id)
+        console.log(bodyFormData)
+        this.$axios({
+          method: 'post',
+          url: '/user-server/api/user/phoneAvailable',
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        ).then(response => {
+          if (response.data.available === 0) {
+            this.$axios({
+              method: 'post',
+              url: '/user-server/api/user/sendIdentify',
+              data: bodyFormData,
+              config: { headers: { 'Content-type': 'multipart/form-data' } } }
+            ).then(response => {
+              if (response.data === true) {
+                this.$alert('验证码已发送！')
+              } else {
+                this.$alert('验证码发送失败！')
+              }
+            })
+          } else {
+            this.$alert(response.data)
+            this.$alert('请输入正确的手机号！')
+          }
+        })
+      }
       console.log('获取验证码！')
     },
     getBack () {
-      let url = ''
-      this.$axios
-        .post(url, this.form3)
+      if (this.form3.number === '' || this.form3.pass === '' || this.form3.newPassword === '') {
+        this.$alert('请输入完整信息！')
+        return 0
+      }
+      let url = '/user-server/api/user/findPassword'
+      let bodyFormData = new FormData()
+      bodyFormData.set('phone', this.form3.number)
+      bodyFormData.set('code', this.form3.pass)
+      bodyFormData.set('id', this.form3.id)
+      bodyFormData.set('password', this.form3.newPassword)
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      )
         .then(response => {
-          this.$alert(response.data)
+          if (response.data.findPassword === 1) {
+            this.$alert('找回密码成功！')
+            this.$router.go(0)
+          } else {
+            this.$alert('找回密码失败！')
+          }
         })
     }
   }
