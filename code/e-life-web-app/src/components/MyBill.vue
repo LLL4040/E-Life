@@ -12,7 +12,7 @@
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === 1" type="success" plain size="small">已缴费</el-button>
-                <el-button v-if="scope.row.status === -11" type="warning" plain size="small">支付中</el-button>
+                <el-button v-if="scope.row.status === -11" type="warning" plain size="small" @click="toPay(scope.row)">支付中</el-button>
                 <el-button v-if="scope.row.status === -1" type="danger" plain size="small" @click="submit(scope.row)">未缴费</el-button>
               </template>
             </el-table-column>
@@ -30,7 +30,7 @@
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === 2" type="success" plain size="small">已缴费</el-button>
-                <el-button v-if="scope.row.status === -12" type="warning" plain size="small" @click="toPay()">支付中</el-button>
+                <el-button v-if="scope.row.status === -12" type="warning" plain size="small" @click="toPay(scope.row)">支付中</el-button>
                 <el-button v-if="scope.row.status === -2" type="danger" plain size="small" @click="submit(scope.row)">未缴费</el-button>
               </template>
             </el-table-column>
@@ -38,18 +38,35 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-dialog title="订单详情" :visible.sync="dialogFormVisible">
+      <el-form :model="userInfo">
+        <el-form-item label="小区">
+          <el-input v-model="userInfo.community" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="用户名">
+          <el-input v-model="userInfo.username" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="userInfo.email"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号">
+          <el-input v-model="userInfo.phone" :disabled="true"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleModify()">提 交</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import page1 from './CommunityInformation.vue'
 export default {
   name: 'MyBill',
   data () {
     return {
-      tabView: 'page1',
       bill: [],
-      openList: ['1'],
       userInfo: {
         community: '',
         communityId: 0,
@@ -57,15 +74,12 @@ export default {
         email: '',
         phone: ''
       },
-      v: 'page15'
+      dialogFormVisible: false
     }
   },
   mounted () {
     this.loadData()
     this.loadBill()
-  },
-  components: {
-    page1
   },
   methods: {
     loadData () {
@@ -92,8 +106,7 @@ export default {
     loadBill () {
       let bodyFormData = new FormData()
       bodyFormData.set('username', this.userInfo.username)
-      var tempPage = 1
-      bodyFormData.set('page', tempPage)
+      bodyFormData.set('page', 1)
       let url = '/pay-server/api/Pay/findHistory'
       this.$axios({
         method: 'post',
@@ -121,8 +134,7 @@ export default {
         this.loadBill()
       })
     },
-    toPay () {
-      this.$router.push({ path: './user', query: { id: this.v } })
+    toPay (row) {
     }
   }
 }

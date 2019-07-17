@@ -169,15 +169,6 @@ export default {
       this.openList[0] = id1
       this.tabView = `page${id2}`
     },
-    getNew () {
-      this.$axios
-        .get('')
-        .then(response => {
-          this.newMessage = response.data('message')
-          this.newFriend = response.data('friend')
-          this.newParcel = response.data('parcel')
-        })
-    },
     handleModify () {
       this.dialogFormVisible = false
     },
@@ -265,12 +256,6 @@ export default {
     this.loadM()
     this.loadF()
     this.loadP()
-  },
-  watch: {
-    '$route': function () {
-      console.log(this.$route.params.id.toString())
-      this.tabView = this.$route.params.id.toString()
-    }
   }
 }
 </script>
