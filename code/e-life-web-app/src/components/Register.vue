@@ -67,20 +67,20 @@
               <el-button type="primary" @click="nextStep()">下一步</el-button>
             </el-form-item>
           </el-form>
-          <el-form v-if="x === 1 && this.form.id !== '商家'" ref="form" :model="form" label-width="60px" style="padding-left: 20%; width: 77%">
-            <el-form-item label="用户名">
+          <el-form v-if="x === 1 && this.form.id !== '商家'" :model="form" :rules="rules" ref="form" label-width="60px"  class="demo-ruleForm" style="padding-left: 20%; width: 77%">
+            <el-form-item label="用户名" prop="username" >
               <el-input v-model="form.username" style="float:left; width: 60%"></el-input>
               <el-button type="primary" @click="checkName()" style="float:left">验证是否可用</el-button>
             </el-form-item>
-            <el-form-item label="密码">
+            <el-form-item label="密码" prop="password" >
               <el-input v-model="form.password" show-password></el-input>
             </el-form-item>
-            <el-form-item label="邮箱">
+            <el-form-item label="邮箱" prop="email" >
               <el-input v-model="form.email"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="success" @click="preStep()">上一步</el-button>
-              <el-button type="primary" @click="nextStep()">下一步</el-button>
+              <el-button type="primary" @click="nextStepAndValid(form)">下一步</el-button>
             </el-form-item>
           </el-form>
           <el-form v-if="x === 1 && this.form.id === '商家'" ref="form" :inline="true" :model="form" label-width="70px">
@@ -186,15 +186,15 @@ export default {
         callback()
       }
     }
-    let validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.form.password) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
+    // let validatePass2 = (rule, value, callback) => {
+    //   if (value === '') {
+    //     callback(new Error('请再次输入密码'))
+    //   } else if (value !== this.form.password) {
+    //     callback(new Error('两次输入密码不一致!'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       x: 0,
       address_detail: '',
@@ -248,15 +248,53 @@ export default {
           { validator: validatePass, trigger: 'blur' },
           { required: true }
         ],
-        checkPass: [
-          { validator: validatePass2, trigger: 'blur' },
-          { required: true }
-        ],
+        // checkPass: [
+        //   { validator: validatePass2, trigger: 'blur' },
+        //   { required: true }
+        // ],
         email: [
           { validator: checkEmail, trigger: 'blur' },
           { required: true },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ]
+      },
+      formRules: {
+        /* eslint-disable */
+        name:
+          [{required: true,message: '请输入用户名',trigger: 'blur'},
+            {min: 5,max: 30,message: '长度在 5 到 30 个字符'},
+            //{pattern: /^[\u4E00-\u9FA5]+$/, message: '用户名只能为中文'}],
+            //{ pattern:/^[a-zA-Z]w{1,4}$/, message: '以字母开头，长度在2-5之间， 只能包含字符、数字和下划线'}],
+          ],
+        password:
+          [{required: true,message: '请输入密码',trigger: 'blur'},
+            { min: 5,max: 25,message: '长度在 5 到 25 个字符'},
+            {pattern: /^(\w){5,25}$/, message: '只能输入5-25个字母、数字、下划线'}],
+        phone:
+          [{ required: true,message: '请输入手机号码',trigger: 'blur'},
+            {validator:function(rule,value,callback){
+              if(/^1[34578]\d{9}$/.test(value) == false){
+                callback(new Error("请输入正确的手机号"));
+              }else{
+                callback();
+              }
+            }, trigger: 'blur'}],
+        email:
+          [{required: true, message: '请输入邮箱号', trigger: 'blur'},
+            {validator:function(rule,value,callback){
+              if (value === '') {
+                callback(new Error('请正确填写邮箱'));
+              } else {
+                if (value !== '') {
+                  var reg=/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                  if(!reg.test(value)){
+                    callback(new Error('请输入有效的邮箱'));
+                  }
+                }else{
+                  callback();
+                }
+              }
+            }, trigger: 'blur'}],
       }
     }
   },
@@ -316,6 +354,16 @@ export default {
     })
   },
   methods: {
+    nextStepAndValid (form) {
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          this.x++
+        } else {
+          alert('表单信息不正确，请重新填写！');
+          return false;
+        }
+      });
+    },
     loadCommunity () {
       this.$axios
         .get('/user-server/api/user/communities')
