@@ -162,6 +162,39 @@ import BMap from 'BMap'
 export default {
   name: 'Register',
   data () {
+    let checkName = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入用户名'))
+      } else {
+        callback()
+      }
+    }
+    let checkEmail = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入邮箱地址'))
+      } else {
+        callback()
+      }
+    }
+    let validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.form.checkPass !== '') {
+          this.$refs.form.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+    let validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       x: 0,
       address_detail: '',
@@ -205,10 +238,30 @@ export default {
         value: '生活服务',
         label: '生活服务'
       }],
-      result: -1
+      result: -1,
+      rules: {
+        username: [
+          { validator: checkName, trigger: 'blur' },
+          { required: true }
+        ],
+        password: [
+          { validator: validatePass, trigger: 'blur' },
+          { required: true }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' },
+          { required: true }
+        ],
+        email: [
+          { validator: checkEmail, trigger: 'blur' },
+          { required: true },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+        ]
+      }
     }
   },
   mounted () {
+    /* eslint-disable */
     this.loadCommunity()
     this.$nextTick(function () {
       let th = this
