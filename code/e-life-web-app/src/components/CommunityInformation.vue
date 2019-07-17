@@ -32,7 +32,9 @@
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
                   <el-form-item label="封面">
-                    <img :src="props.row.photo" style="width: 80px; height: 80px" onclick="show(props.row)">
+                    <button @click="show(props.row)" type="button" style="background-color: transparent; border: 0;">
+                      <img :src="props.row.photo" style="width: 80px; height: 80px">
+                    </button>
                   </el-form-item>
                   <el-form-item label="详情">
                     <span>{{ props.row.content }}</span>
@@ -97,9 +99,9 @@
         <el-button type="primary" @click="handleApply()">提 交</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="dialogFormVisible2">
-      <div slot="footer" class="dialog-footer">
-          <img :src="photo" style="">
+    <el-dialog title="查看大图" :visible.sync="dialogFormVisible2">
+      <div>
+          <img :src="photo" width="100%">
       </div>
     </el-dialog>
   </div>
@@ -127,8 +129,7 @@ export default {
         id: '',
         content: ''
       },
-      photo: '',
-      page: 1
+      photo: ''
     }
   },
   mounted () {
@@ -255,7 +256,7 @@ export default {
       })
     },
     show (row) {
-      console.log(row.path)
+      this.dialogFormVisible2 = true
       let bodyFormData = new FormData()
       bodyFormData.set('path', row.path)
       let url = '/news-server/api/News/photo'
@@ -266,7 +267,6 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.photo = response.data.photo
-        this.dialogFormVisible2 = true
       })
     }
   }
