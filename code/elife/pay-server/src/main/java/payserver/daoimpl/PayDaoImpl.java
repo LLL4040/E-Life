@@ -45,17 +45,27 @@ public class PayDaoImpl implements PayDao {
 
     @Override
     public void changeStatus(int id) {
+        int waitCar = -11;
+        int waitMan = -12;
+        int noMan = -2;
         Pay temp = packageRepository.getOne(id);
         if(temp.getStatus()==-1) {
+            temp.setStatus(-11);
+        }
+        else if(temp.getStatus()==noMan){
+            temp.setStatus(-12);
+        }
+        else if(temp.getStatus()==waitCar){
             temp.setStatus(1);
         }
-        else{
+        else if(temp.getStatus()==waitMan){
             temp.setStatus(2);
         }
         packageRepository.save(temp);
     }
     @Override
     public List<Pay> findNew(String username){
+        System.out.println(4);
         return packageRepository.findNew(username);
     }
 
@@ -75,9 +85,23 @@ public class PayDaoImpl implements PayDao {
     }
 
     @Override
-    public void saveOrders(String id, int pid, Date createTime,BigDecimal bill,int status){
+    public void saveOrders(String id,String username, int pid, Date createTime,BigDecimal bill,int status){
         Date current = new Date();
-        Orders order = new Orders(id,pid,current,bill,status);
+        Orders order = new Orders(id,username,pid,current,bill,status);
         orderRepository.save(order);
     }
-   }
+
+    @Override
+    public void SaveOrders(Orders orders){
+        orderRepository.save(orders);
+    }
+    @Override
+    public List<Orders> getOrders(String username){
+        return orderRepository.getOrders(username);
+    }
+
+    @Override
+    public Orders getOrder(String uid){
+        return orderRepository.getOne(uid);
+    }
+}

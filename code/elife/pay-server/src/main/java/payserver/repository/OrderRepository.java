@@ -1,13 +1,8 @@
 package payserver.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 import payserver.entity.Orders;
-import payserver.entity.Pay;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -19,6 +14,13 @@ import java.util.List;
  */
 public interface OrderRepository extends JpaRepository<Orders, String> {
 
-
+    /**
+     * find newest Pay  by username
+     *
+     * @param username
+     * @return List
+     */
+    @Query(value=" select * from orders where username=?1 and status=0",nativeQuery = true)
+    List<Orders> getOrders(String username);
 }
 
