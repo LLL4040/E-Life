@@ -107,9 +107,10 @@ public interface PayDao {
     /**
      * get orders with username
      * @param username
+     * @param pid
      * @return Orders List
      */
-    List<Orders> getOrders(String username);
+    List<Orders> getOrders(String username, int pid);
 
     /**
      * find order one by id
