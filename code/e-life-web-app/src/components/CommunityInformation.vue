@@ -2,7 +2,11 @@
   <div>
     <div align="center" style="width: 800px; padding-left: 200px">
       <el-carousel indicator-position="outside" :interval="4000" height="300px">
-        <el-carousel-item>
+        <el-carousel-item  v-if="notice.length === 0">
+          <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
+          <p style="position: relative; bottom: 150px; left: 10px">目前没有紧急通知哦</p>
+        </el-carousel-item>
+        <el-carousel-item  v-if="notice.length > 0">
           <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
           <p style="position: relative; bottom: 150px; left: 10px">{{ notice }}</p>
         </el-carousel-item>

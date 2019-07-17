@@ -12,7 +12,7 @@
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === 1" type="success" plain size="small">已缴费</el-button>
-                <el-button v-if="scope.row.status === -11" type="warning" plain size="small">支付中</el-button>
+                <el-button v-if="scope.row.status === -11" type="warning" plain size="small" @click="toPay(scope.row)">支付中</el-button>
                 <el-button v-if="scope.row.status === -1" type="danger" plain size="small" @click="submit(scope.row)">未缴费</el-button>
               </template>
             </el-table-column>
@@ -30,7 +30,7 @@
             <el-table-column label="状态" prop="status" align="center">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.status === 2" type="success" plain size="small">已缴费</el-button>
-                <el-button v-if="scope.row.status === -12" type="warning" plain size="small" @click="toPay()">支付中</el-button>
+                <el-button v-if="scope.row.status === -12" type="warning" plain size="small" @click="toPay(scope.row)">支付中</el-button>
                 <el-button v-if="scope.row.status === -2" type="danger" plain size="small" @click="submit(scope.row)">未缴费</el-button>
               </template>
             </el-table-column>
@@ -38,18 +38,32 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-dialog title="订单详情" :visible.sync="dialogFormVisible">
+      <el-form :model="order">
+        <el-form-item label="订单号">
+          <el-input v-model="order.id" type="text"></el-input>
+        </el-form-item>
+        <el-form-item label="时间">
+          <el-input v-model="order.time" type="text"></el-input>
+        </el-form-item>
+        <el-form-item label="金额">
+          <el-input v-model="order.bill" type="text"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button id="pay" type="primary" el-icon="el-icon-share" @click="handlePay()">支 付</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import page1 from './CommunityInformation.vue'
 export default {
   name: 'MyBill',
   data () {
     return {
-      tabView: 'page1',
       bill: [],
-      openList: ['1'],
       userInfo: {
         community: '',
         communityId: 0,
@@ -57,15 +71,13 @@ export default {
         email: '',
         phone: ''
       },
-      v: 'page15'
+      dialogFormVisible: false,
+      order: {}
     }
   },
   mounted () {
     this.loadData()
     this.loadBill()
-  },
-  components: {
-    page1
   },
   methods: {
     loadData () {
@@ -92,8 +104,7 @@ export default {
     loadBill () {
       let bodyFormData = new FormData()
       bodyFormData.set('username', this.userInfo.username)
-      var tempPage = 1
-      bodyFormData.set('page', tempPage)
+      bodyFormData.set('page', 1)
       let url = '/pay-server/api/Pay/findHistory'
       this.$axios({
         method: 'post',
@@ -117,12 +128,43 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        alert('添加成功')
         this.loadBill()
+        this.toPay(item)
       })
     },
-    toPay () {
-      this.$router.push({ path: './user', query: { id: this.v } })
+    toPay (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('pid', row.id)
+      bodyFormData.set('username', this.userInfo.username)
+      let url = '/pay-server/api/Pay/getOrders'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.order = response.data[0]
+        this.dialogFormVisible = true
+      })
+    },
+    handlePay () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', this.order.id)
+      bodyFormData.set('bill', this.order.bill)
+      bodyFormData.set('time', this.order.time)
+      let url = '/pay-server/api/Pay/ali'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        console.log(response.data)
+        // const div = document.createElement('div')
+        // div.innerHTML = response.data // html code
+        // document.body.appendChild(div)
+        // document.forms[0].submit()
+      })
     }
   }
 }
