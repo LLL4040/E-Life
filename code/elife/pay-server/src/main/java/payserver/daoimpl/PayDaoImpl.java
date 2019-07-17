@@ -96,8 +96,8 @@ public class PayDaoImpl implements PayDao {
         orderRepository.save(orders);
     }
     @Override
-    public List<Orders> getOrders(String username){
-        return orderRepository.getOrders(username);
+    public List<Orders> getOrders(String username, int pid){
+        return orderRepository.getOrders(username, pid);
     }
 
     @Override

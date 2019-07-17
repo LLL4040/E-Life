@@ -163,8 +163,8 @@ public class PayServiceImpl implements PayService {
         }
     }
     @Override
-    public JSONArray getOrders(String username){
-        List<Orders> list = payDao.getOrders(username);
+    public JSONArray getOrders(String username,int pid){
+        List<Orders> list = payDao.getOrders(username,pid);
         JSONArray jsonArray =new JSONArray();
         Iterator<Orders> iter = list.iterator();
         while(iter.hasNext()){

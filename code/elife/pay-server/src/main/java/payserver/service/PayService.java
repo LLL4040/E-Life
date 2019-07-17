@@ -131,7 +131,8 @@ public interface PayService {
     /**
      * get Orders by username
      * @param username
+     * @param pid
      * @return JSONArray
      */
-    JSONArray getOrders(String username);
+    JSONArray getOrders(String username, int pid);
 }

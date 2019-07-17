@@ -18,9 +18,10 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
      * find newest Pay  by username
      *
      * @param username
+     * @param pid
      * @return List
      */
-    @Query(value=" select * from orders where username=?1 and status=0",nativeQuery = true)
-    List<Orders> getOrders(String username);
+    @Query(value=" select * from orders where username=?1 and pid=?2 and status=0",nativeQuery = true)
+    List<Orders> getOrders(String username,int pid);
 }
 

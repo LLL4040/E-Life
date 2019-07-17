@@ -97,7 +97,7 @@ public class PayController {
 
     @RequestMapping("/getOrders")
     @ResponseBody
-    public JSONArray getOrders(String username) {
-        return payService.getOrders(username);
+    public JSONArray getOrders(String username, int pid) {
+        return payService.getOrders(username,pid);
     }
 }
