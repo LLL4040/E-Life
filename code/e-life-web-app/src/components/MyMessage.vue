@@ -29,12 +29,7 @@ export default {
         email: '',
         phone: ''
       },
-      messages: [{
-        noticeId: '',
-        noticeTime: '',
-        managerName: '',
-        noticeContent: ''
-      }]
+      messages: []
     }
   },
   methods: {

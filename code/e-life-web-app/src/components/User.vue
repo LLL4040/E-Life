@@ -1,6 +1,6 @@
 <template>
   <el-container style="border: 0 solid #eee">
-    <el-header style="padding-left: 0">
+    <el-header style="padding-left: 0;">
       <section class="text-white tm-font-big tm-parallax">
         <nav class="navbar navbar-expand-md tm-navbar scroll" id="tmNav">
           <div class="container">
@@ -15,25 +15,25 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage1(1)">小区资讯</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(1)" style="font-size: 20px;">小区资讯</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage1(2)">小区团购</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(2)" style="font-size: 20px;">小区团购</a>
                 </li>
                 <li class="nav-item">
                   <el-dropdown @command="toPage1">
-                    <span class="nav-link tm-nav-link" style="font-size: 1.25rem">
-                      <i class="el-icon-arrow-down el-icon--right"></i>小区服务
+                    <span class="nav-link tm-nav-link" style="font-size: 20px;">
+                      <i class="el-icon-arrow-down el-icon--right" ></i>小区服务
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="4">超市送货</el-dropdown-item>
-                      <el-dropdown-item command="5">电脑维修</el-dropdown-item>
-                      <el-dropdown-item command="6">物业维修</el-dropdown-item>
+                      <el-dropdown-item command="4" style="font-size: 14px;">超市送货</el-dropdown-item>
+                      <el-dropdown-item command="5" style="font-size: 14px;">电脑维修</el-dropdown-item>
+                      <el-dropdown-item command="6" style="font-size: 14px;">物业维修</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage1(3)">小区论坛</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(3)" style="font-size: 20px;">小区论坛</a>
                 </li>
               </ul>
             </div>
@@ -41,12 +41,13 @@
         </nav>
       </section>
     </el-header>
-    <el-container style="padding-top: 30px">
+    <el-container style="padding-top: 20px;">
       <el-aside width="220px" style="background-color: rgb(238, 241, 246)">
         <el-menu :default-openeds="openList" style="height:100vh;width:220px;float:left;overflow-y:auto">
           <div align="center">
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
             <div style="clear:both"></div>
+            <el-button class="text-center tm-text-primary mb-4" type="success" plain size="mini" icon="el-icon-info">居民</el-button>
             <el-button class="text-center tm-text-primary mb-4" type="primary" plain size="mini" icon="el-icon-edit" @click="dialogFormVisible = true">{{ userInfo.username }}</el-button>
             <div style="clear:both"></div>
           </div>
@@ -66,7 +67,7 @@
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <i class="el-icon-message"></i>
+              <i class="el-icon-user"></i>
               <span style="font-size: 16px">我的好友
                 <el-badge v-if="newFriend !== 0" class="mark" :value=newFriend :max="99" style="background-color: transparent" />
               </span>
@@ -168,15 +169,6 @@ export default {
       this.openList[0] = id1
       this.tabView = `page${id2}`
     },
-    getNew () {
-      this.$axios
-        .get('')
-        .then(response => {
-          this.newMessage = response.data('message')
-          this.newFriend = response.data('friend')
-          this.newParcel = response.data('parcel')
-        })
-    },
     handleModify () {
       this.dialogFormVisible = false
     },
@@ -264,12 +256,6 @@ export default {
     this.loadM()
     this.loadF()
     this.loadP()
-  },
-  watch: {
-    '$route': function () {
-      console.log(this.$route.params.id.toString())
-      this.tabView = this.$route.params.id.toString()
-    }
   }
 }
 </script>

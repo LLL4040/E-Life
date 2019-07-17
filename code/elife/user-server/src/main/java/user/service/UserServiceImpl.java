@@ -163,13 +163,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JSONObject loginPhone(String phone, String code) {
+    public JSONObject loginPhone(String phone, String code, String id) {
         JSONObject result = new JSONObject();
         result.put("login", 0);
         if (!userDao.existsByPhone(phone)) {
             return result;
         } else {
             User user = userDao.findByPhone(phone);
+            Integer role = "0".equals(id) ? 0 : 1;
+            if(!user.getRole().equals(role)){
+                return result;
+            }
             if (!identifyService.verifyIdentifyCode(phone, code)) {
                 return result;
             } else {

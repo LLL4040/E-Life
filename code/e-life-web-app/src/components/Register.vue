@@ -15,13 +15,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <router-link router-link :to="{name:'Login'}" class="nav-link tm-nav-link">登录</router-link>
+              <router-link router-link :to="{name:'Login'}" class="nav-link tm-nav-link" style="font-size: 20px;">登录</router-link>
             </li>
             <li class="nav-item">
-              <router-link router-link :to="{name:'Register'}" class="nav-link tm-nav-link">注册</router-link>
+              <router-link router-link :to="{name:'Register'}" class="nav-link tm-nav-link" style="font-size: 20px;">注册</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link tm-nav-link" href="/#contact">联系我们</a>
+              <a class="nav-link tm-nav-link" href="/#contact" style="font-size: 20px;">联系我们</a>
             </li>
           </ul>
         </div>
@@ -38,7 +38,7 @@
           </el-steps>
           <div slot="header" class="clearfix" style="margin-bottom: -20px">
             <i class="fas fa-2x fa-user-circle text-center tm-icon" style="float:left"></i>
-            <h3 class="text-center tm-text-primary mb-4" style="float:left">&nbsp;&nbsp;用户注册</h3>
+            <h3 class="text-center tm-text-primary mb-4" style="padding-top: 10px; float:left; font-size: 20px;">&nbsp;&nbsp;用户注册</h3>
           </div>
           <el-form v-if="x === 0" ref="form" :model="form" label-width="60px" style="width: 70%; padding-left: 30%; padding-top: 5%">
             <el-form-item label="小区">
@@ -85,20 +85,20 @@
           </el-form>
           <el-form v-if="x === 1 && this.form.id === '商家'" ref="form" :inline="true" :model="form" label-width="70px">
             <el-form-item label="用户名">
-              <el-input v-model="form.username" style="width: 200px"></el-input>
-              <el-button type="primary" @click="checkName()" style="float:left">验证是否可用</el-button>
+              <el-input v-model="form.username" style="float:left; width: 200px"></el-input>
+              <el-button type="primary" @click="checkName()" style="float:left; width: 120px">验证是否可用</el-button>
             </el-form-item>
             <el-form-item label="密码">
               <el-input v-model="form.password" show-password style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="邮箱">
-              <el-input v-model="form.email" style="width: 200px"></el-input>
+              <el-input v-model="form.email" style="width: 320px"></el-input>
             </el-form-item>
             <el-form-item label="商店名称">
               <el-input v-model="form.name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="商店电话">
-              <el-input v-model="form.merchantPhone" style="width: 200px"></el-input>
+              <el-input v-model="form.merchantPhone" style="width: 320px"></el-input>
             </el-form-item>
             <el-form-item label="商店类型">
               <el-select v-model="form.type" placeholder="请选择" style="width: 200px">
@@ -106,7 +106,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="商店描述">
-              <el-input v-model="form.detail" type="textarea" :rows="2" style="width: 200px"></el-input>
+              <el-input v-model="form.detail" type="textarea" :rows="2" style="width: 320px"></el-input>
             </el-form-item>
             <el-form-item label="商店地址" style="padding-right: 130px">
               <el-button style="float: right; padding: 10px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">选择地址</el-button>
@@ -145,13 +145,15 @@
       </div>
     </div>
     <el-dialog title="商店地址选择" :visible.sync="dialogFormVisible">
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="margin-top: -60px; margin-left: 60px;">
         <div id="all">
-          <input type="text" id="suggestId" name="address_detail" placeholder="地址" v-model="address_detail" class="input_style" >
+          <input type="text" id="suggestId" name="address_detail" placeholder="地址" v-model="address_detail" class="input_style" style="font-size: 14px; width: 260px; margin-right: 400px; margin-bottom: 20px;">
           <div id="allmap"></div>
         </div>
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <div style="margin-top: 5px; margin-right: 220px;">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div>
       </div>
     </el-dialog>
   </section>
@@ -162,6 +164,39 @@ import BMap from 'BMap'
 export default {
   name: 'Register',
   data () {
+    let checkName = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入用户名'))
+      } else {
+        callback()
+      }
+    }
+    let checkEmail = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入邮箱地址'))
+      } else {
+        callback()
+      }
+    }
+    let validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.form.checkPass !== '') {
+          this.$refs.form.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+    let validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       x: 0,
       address_detail: '',
@@ -205,10 +240,30 @@ export default {
         value: '生活服务',
         label: '生活服务'
       }],
-      result: -1
+      result: -1,
+      rules: {
+        username: [
+          { validator: checkName, trigger: 'blur' },
+          { required: true }
+        ],
+        password: [
+          { validator: validatePass, trigger: 'blur' },
+          { required: true }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' },
+          { required: true }
+        ],
+        email: [
+          { validator: checkEmail, trigger: 'blur' },
+          { required: true },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+        ]
+      }
     }
   },
   mounted () {
+    /* eslint-disable */
     this.loadCommunity()
     this.$nextTick(function () {
       let th = this
@@ -467,10 +522,11 @@ export default {
 
 <style>
   #allmap{
-     width: 300px;
-     height: 300px;
-     font-family: "微软雅黑";
-     border:1px solid green;
-   }
+    width: 460px;
+    height: 300px;
+    font-family: 宋体;
+    font-size: 12px;
+    border:1px solid green;
+  }
   .tangram-suggestion-main {z-index: 9999999999;}
 </style>

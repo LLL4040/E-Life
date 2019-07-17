@@ -260,6 +260,26 @@ CREATE TABLE pay
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 /*==============================================================*/
+/* Table: orders                                                                                                                         */
+/*==============================================================*/
+
+CREATE TABLE `orders` (
+  `id` varchar(20) NOT NULL,
+  `username` varchar(50) NOT NULL,
+	`pid` BIGINT,
+  `status` varchar(20) DEFAULT NULL COMMENT '订单状态\r\n            10：待付款\r\n            20：已付款',
+  `bill` DECIMAL(8,2) DEFAULT NULL COMMENT '实际支付金额',
+  `create_time` datetime DEFAULT NULL COMMENT '订单创建时间',
+  `paid_time` datetime DEFAULT NULL COMMENT '支付时间',
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`pid`)
+        REFERENCES pay (`id`),
+FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
+
+/*==============================================================*/
 /* Table: package                                                                                                                    */
 /*==============================================================*/
 
