@@ -18,6 +18,7 @@
           <div align="center">
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
             <div style="clear:both"></div>
+            <el-button class="text-center tm-text-primary mb-4" type="success" plain size="mini" icon="el-icon-info">商家</el-button>
             <el-button class="text-center tm-text-primary mb-4" type="primary" plain size="mini" icon="el-icon-edit" @click="toPage(1)">{{ userInfo.username }}</el-button>
             <div style="clear:both"></div>
           </div>
