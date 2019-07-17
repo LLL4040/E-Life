@@ -32,7 +32,7 @@
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
                   <el-form-item label="封面">
-                    <img :src="props.row.photo" style="width: 80px; height: 80px">
+                    <img :src="props.row.photo" style="width: 80px; height: 80px" onclick="show(props.row)">
                   </el-form-item>
                   <el-form-item label="详情">
                     <span>{{ props.row.content }}</span>
@@ -97,6 +97,11 @@
         <el-button type="primary" @click="handleApply()">提 交</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisible2">
+      <div slot="footer" class="dialog-footer">
+          <img :src="photo" style="">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -113,13 +118,16 @@ export default {
         phone: ''
       },
       dialogFormVisible: false,
+      dialogFormVisible2: false,
       notice: '',
       news: [],
       activity: [],
       apply: {
         id: '',
         content: ''
-      }
+      },
+      photo: '',
+      page: 1
     }
   },
   mounted () {
@@ -205,6 +213,7 @@ export default {
     loadNewsMore () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.page)
       let url = '/news-server/api/News/findHistory'
       this.$axios({
         method: 'post',
@@ -242,6 +251,21 @@ export default {
       ).then(response => {
         this.activity = response.data
         console.log(response.data)
+      })
+    },
+    show (row) {
+      console.log(row.path)
+      let bodyFormData = new FormData()
+      bodyFormData.set('path', row.path)
+      let url = '/news-server/api/News/photo'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.photo = response.data.photo
+        this.dialogFormVisible2 = true
       })
     }
   }
