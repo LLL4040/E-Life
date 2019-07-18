@@ -26,11 +26,11 @@ public class ServiceTest {
     private PostCommentsService postCommentsService;
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String postTime = df.format(new Date());
-    private Post post= new Post("赏月","有小伙伴一起赏月的吗",postTime,"二郎神",1);
+    private Post post= new Post("赏月","有小伙伴一起赏月的吗",postTime,"二郎神",1,null);
 
     @Test
     public void PostTest() throws Exception{
-        String p1 = postService.save(post);
+        String p1 = postService.save("赏月","有小伙伴一起赏月的吗","二郎神",1,null);
 
         Post postResult1 = postService.findPost(p1);
 
@@ -45,7 +45,7 @@ public class ServiceTest {
     @Test
     public void PostCommentsTest() throws Exception{
 
-        String pid = postService.save(post);
+        String pid = postService.save("赏月","有小伙伴一起赏月的吗","二郎神",1,null);
 
         String postCommentsTime = df.format(new Date());
         List<PostComments> p1=postCommentsService.findAllByPid(pid);
