@@ -40,9 +40,13 @@ public class Discount implements Serializable {
     @Column(name = "community_id")
     private Long communityId;
 
+    @Column(name = "photo")
+    private String photo;
+
     public Discount(){}
 
-    public Discount(String startTime, String endTime, Long merchantId, Integer number, String content, Integer status, Long communityId, String title){
+    public Discount(String startTime, String endTime, Long merchantId, Integer number, String content,
+                    Integer status, Long communityId, String title, String photo){
         this.startTime = startTime;
         this.endTime = endTime;
         this.merchantId = merchantId;
@@ -51,6 +55,7 @@ public class Discount implements Serializable {
         this.status = status;
         this.title = title;
         this.communityId = communityId;
+        this.photo = photo;
     }
 
     public String getTitle() {
@@ -123,6 +128,14 @@ public class Discount implements Serializable {
 
     public void setMerchantId(Long merchantId) {
         this.merchantId = merchantId;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     @Override
