@@ -2,7 +2,7 @@
   <div>
     <div align="center">
       <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入内容关键字筛选"/>
-      <el-button style="float: right; padding: 3px 0" type="text" @click="dialogFormVisible = true">添加团购</el-button>
+      <el-button style="float: left;" size="medium" type="primary" round @click="dialogFormVisible = true">添加团购</el-button>
     </div>
     <div style="padding-top: 20px;">
       <el-card class="box-card">

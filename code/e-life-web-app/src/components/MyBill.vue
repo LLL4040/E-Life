@@ -52,7 +52,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button id="pay" type="primary" el-icon="el-icon-share" @click="handlePay()">支 付</el-button>
+        <el-button id="pay" type="primary" icon="el-icon-share" @click="handlePay()">支 付</el-button>
       </div>
     </el-dialog>
   </div>
@@ -159,11 +159,10 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        console.log(response.data)
-        // const div = document.createElement('div')
-        // div.innerHTML = response.data // html code
-        // document.body.appendChild(div)
-        // document.forms[0].submit()
+        const div = document.createElement('div')
+        div.innerHTML = response.data // html code
+        document.body.appendChild(div)
+        document.forms[1].submit()
       })
     }
   }

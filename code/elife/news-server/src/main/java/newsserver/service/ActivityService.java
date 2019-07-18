@@ -1,6 +1,7 @@
 package newsserver.service;
 
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -82,4 +83,11 @@ public interface ActivityService {
      * @return
      */
     boolean disagreeParticipator(int pid,int status);
+
+    /**
+     * get real photo
+     * @param path
+     * @return JSONObject
+     */
+    JSONObject getBigPhoto(String path);
 }

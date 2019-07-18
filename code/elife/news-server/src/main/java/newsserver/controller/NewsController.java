@@ -59,6 +59,7 @@ public class NewsController {
     @RequestMapping(path = "/findHistory")
     @ResponseBody
     public JSONArray findHistory(int communityId,int page) throws IOException {
+        System.out.println(10000);
         return newsService.findHistory(communityId,page);
     }
     @RequestMapping(path = "/photo")

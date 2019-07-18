@@ -67,69 +67,75 @@
               <el-button type="primary" @click="nextStep()">下一步</el-button>
             </el-form-item>
           </el-form>
-          <el-form v-if="x === 1 && this.form.id !== '商家'" :model="form" :rules="rules" ref="form" label-width="60px"  class="demo-ruleForm" style="padding-left: 20%; width: 77%">
-            <el-form-item label="用户名" prop="username" >
-              <el-input v-model="form.username" style="float:left; width: 60%"></el-input>
-              <el-button type="primary" @click="checkName()" style="float:left">验证是否可用</el-button>
-            </el-form-item>
-            <el-form-item label="密码" prop="password" >
-              <el-input v-model="form.password" show-password></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱" prop="email" >
-              <el-input v-model="form.email"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="success" @click="preStep()">上一步</el-button>
-              <el-button type="primary" @click="nextStepAndValid(form)">下一步</el-button>
-            </el-form-item>
-          </el-form>
-          <el-form v-if="x === 1 && this.form.id === '商家'" ref="form" :inline="true" :model="form" label-width="70px">
-            <el-form-item label="用户名">
-              <el-input v-model="form.username" style="float:left; width: 200px"></el-input>
-              <el-button type="primary" @click="checkName()" style="float:left; width: 120px">验证是否可用</el-button>
-            </el-form-item>
-            <el-form-item label="密码">
-              <el-input v-model="form.password" show-password style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱">
-              <el-input v-model="form.email" style="width: 320px"></el-input>
-            </el-form-item>
-            <el-form-item label="商店名称">
-              <el-input v-model="form.name" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="商店电话">
-              <el-input v-model="form.merchantPhone" style="width: 320px"></el-input>
-            </el-form-item>
-            <el-form-item label="商店类型">
-              <el-select v-model="form.type" placeholder="请选择" style="width: 200px">
-                <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="商店描述">
-              <el-input v-model="form.detail" type="textarea" :rows="2" style="width: 320px"></el-input>
-            </el-form-item>
-            <el-form-item label="商店地址" style="padding-right: 130px">
-              <el-button style="float: right; padding: 10px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">选择地址</el-button>
-            </el-form-item>
-            <div style="clear:both"></div>
-            <el-form-item>
-              <el-button type="success" @click="preStep()">上一步</el-button>
-              <el-button type="primary" @click="nextStep()">下一步</el-button>
-            </el-form-item>
-          </el-form>
-          <el-form v-if="x === 2" ref="form" :model="form" label-width="60px" style="padding-left: 20%; width: 70%; padding-top: 5%">
-            <el-form-item label="手机号">
-              <el-input v-model="form.phone" style="float:left; width: 64%"></el-input>
-              <el-button type="primary" @click="getPass()" style="float:left">获取验证码</el-button>
-            </el-form-item>
-            <el-form-item label="验证码" >
-              <el-input v-model="form.code"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="success" @click="preStep()">上一步</el-button>
-              <el-button type="primary" @click="submit()">提交</el-button>
-            </el-form-item>
-          </el-form>
+          <div v-if="x === 1 && this.form.id !== '商家'" style="padding-top: 20px; padding-left: 20%; width: 77%">
+            <el-form  :model="form" :rules="rules" ref="form" label-width="70px"  class="demo-ruleForm" >
+              <el-form-item label="用户名" prop="username" >
+                <el-input v-model="form.username" style="float:left; width: 65%"></el-input>
+                <el-button type="primary" @click="checkName()" style="float:left">验证是否可用</el-button>
+              </el-form-item>
+              <el-form-item label="密码" prop="password" >
+                <el-input v-model="form.password" show-password></el-input>
+              </el-form-item>
+              <el-form-item label="邮箱" prop="email" >
+                <el-input v-model="form.email"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="success" @click="preStep()">上一步</el-button>
+                <el-button type="primary" @click="nextStep()">下一步</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div v-if="x === 1 && this.form.id === '商家'">
+            <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="70px">
+              <el-form-item label="用户名" prop="username">
+                <el-input v-model="form.username" style="float:left; width: 200px"></el-input>
+                <el-button type="primary" @click="checkName()" style="float:left; width: 120px">验证是否可用</el-button>
+              </el-form-item>
+              <el-form-item label="密码" prop="password">
+                <el-input v-model="form.password" show-password style="width: 200px"></el-input>
+              </el-form-item>
+              <el-form-item label="邮箱" prop="email">
+                <el-input v-model="form.email" style="width: 320px"></el-input>
+              </el-form-item>
+              <el-form-item label="商店名称">
+                <el-input v-model="form.name" style="width: 200px"></el-input>
+              </el-form-item>
+              <el-form-item label="商店电话">
+                <el-input v-model="form.merchantPhone" style="width: 320px"></el-input>
+              </el-form-item>
+              <el-form-item label="商店类型">
+                <el-select v-model="form.type" placeholder="请选择" style="width: 200px">
+                  <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="商店描述">
+                <el-input v-model="form.detail" type="textarea" :rows="2" style="width: 320px"></el-input>
+              </el-form-item>
+              <el-form-item label="商店地址" style="padding-right: 130px">
+                <el-button style="float: right; padding: 10px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">选择地址</el-button>
+              </el-form-item>
+              <div style="clear:both"></div>
+              <el-form-item>
+                <el-button type="success" @click="preStep()">上一步</el-button>
+                <el-button type="primary" @click="nextStep()">下一步</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div v-if="x === 2" style="padding-left: 20%; width: 70%; padding-top: 5%">
+            <el-form ref="form" :rules="rules" :model="form" label-width="70px" class="demo-ruleForm" >
+              <el-form-item label="手机号" prop="phone">
+                <el-input v-model="form.phone" style="float:left; width: 63%"></el-input>
+                <el-button type="primary" @click="getPass()" style="float:left">获取验证码</el-button>
+              </el-form-item>
+              <el-form-item label="验证码" prop="code">
+                <el-input v-model="form.code"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="success" @click="preStep()">上一步</el-button>
+                <el-button type="primary" @click="submit()">提交</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
           <el-form v-if="x === 3 && form.id === '管理员'" label-width="60px">
             <el-form-item>
               <p>提交成功！等待审核，请等待邮箱提醒。</p>
@@ -164,39 +170,6 @@ import BMap from 'BMap'
 export default {
   name: 'Register',
   data () {
-    let checkName = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('请输入用户名'))
-      } else {
-        callback()
-      }
-    }
-    let checkEmail = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('请输入邮箱地址'))
-      } else {
-        callback()
-      }
-    }
-    let validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.form.checkPass !== '') {
-          this.$refs.form.validateField('checkPass')
-        }
-        callback()
-      }
-    }
-    // let validatePass2 = (rule, value, callback) => {
-    //   if (value === '') {
-    //     callback(new Error('请再次输入密码'))
-    //   } else if (value !== this.form.password) {
-    //     callback(new Error('两次输入密码不一致!'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
     return {
       x: 0,
       address_detail: '',
@@ -242,61 +215,45 @@ export default {
       }],
       result: -1,
       rules: {
-        username: [
-          { validator: checkName, trigger: 'blur' },
-          { required: true }
-        ],
-        password: [
-          { validator: validatePass, trigger: 'blur' },
-          { required: true }
-        ],
-        // checkPass: [
-        //   { validator: validatePass2, trigger: 'blur' },
-        //   { required: true }
-        // ],
-        email: [
-          { validator: checkEmail, trigger: 'blur' },
-          { required: true },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-        ]
-      },
-      formRules: {
-        /* eslint-disable */
-        name:
-          [{required: true,message: '请输入用户名',trigger: 'blur'},
-            {min: 5,max: 30,message: '长度在 5 到 30 个字符'},
-            //{pattern: /^[\u4E00-\u9FA5]+$/, message: '用户名只能为中文'}],
-            //{ pattern:/^[a-zA-Z]w{1,4}$/, message: '以字母开头，长度在2-5之间， 只能包含字符、数字和下划线'}],
+        username:
+          [{ required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 5, max: 20, message: '长度在 5 到 20 个字符' }
+            // {pattern: /^[\u4E00-\u9FA5]+$/, message: '用户名只能为中文'}],
+            // { pattern:/^[a-zA-Z]w{1,4}$/, message: '以字母开头，长度在2-5之间， 只能包含字符、数字和下划线'}],
           ],
         password:
-          [{required: true,message: '请输入密码',trigger: 'blur'},
-            { min: 5,max: 25,message: '长度在 5 到 25 个字符'},
-            {pattern: /^(\w){5,25}$/, message: '只能输入5-25个字母、数字、下划线'}],
-        phone:
-          [{ required: true,message: '请输入手机号码',trigger: 'blur'},
-            {validator:function(rule,value,callback){
-              if(/^1[34578]\d{9}$/.test(value) == false){
-                callback(new Error("请输入正确的手机号"));
-              }else{
-                callback();
-              }
-            }, trigger: 'blur'}],
+          [{ required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 5, max: 25, message: '长度在 5 到 25 个字符' },
+            { pattern: /^(\w){5,25}$/, message: '只能输入5-25个字母、数字、下划线' }],
         email:
-          [{required: true, message: '请输入邮箱号', trigger: 'blur'},
-            {validator:function(rule,value,callback){
+          [{ required: true, message: '请输入邮箱号', trigger: 'blur' },
+            { validator: function (rule, value, callback) {
               if (value === '') {
-                callback(new Error('请正确填写邮箱'));
+                callback(new Error('请正确填写邮箱'))
               } else {
                 if (value !== '') {
-                  var reg=/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-                  if(!reg.test(value)){
-                    callback(new Error('请输入有效的邮箱'));
+                  let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+                  if (!reg.test(value)) {
+                    callback(new Error('请输入有效的邮箱'))
                   }
-                }else{
-                  callback();
+                } else {
+                  callback()
                 }
               }
-            }, trigger: 'blur'}],
+            },
+            trigger: 'blur' }],
+        phone:
+          [{ required: true, message: '请输入手机号码', trigger: 'blur' },
+            { validator: function (rule, value, callback) {
+              if (/^1[34578]\d{9}$/.test(value) === false) {
+                callback(new Error('请输入正确的手机号'))
+              } else {
+                callback()
+              }
+            },
+            trigger: 'blur' }],
+        code:
+          [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       }
     }
   },
@@ -356,16 +313,6 @@ export default {
     })
   },
   methods: {
-    nextStepAndValid (form) {
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          this.x++
-        } else {
-          alert('表单信息不正确，请重新填写！');
-          return false;
-        }
-      });
-    },
     loadCommunity () {
       this.$axios
         .get('/user-server/api/user/communities')
