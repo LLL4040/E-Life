@@ -39,8 +39,14 @@ public class PostCommentsController {
             object.put("message","评论内容不能为空");
             return object;
         }
-        List<PostComments> p1=postCommentsService.findAllByPid(pid);
-        int location = p1.size()+2;
+        List<PostComments> l1=postCommentsService.findAllByPid(pid);
+        int location =2;
+        for(int i =0;i<l1.size();i++){
+            int tmp=l1.get(i).getLocation();
+            if(tmp>=location){
+                location=tmp+1;
+            }
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String commentsTime = df.format(new Date());
         PostComments postComments = new PostComments(pid,commenterName,commentsTime,postComment,location);
@@ -54,7 +60,7 @@ public class PostCommentsController {
     public JSONObject deleteComments(@RequestParam String pid,@RequestParam int location){
         postCommentsService.deleteComments(pid,location);
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
-        object.put("deleteComments", "0");
+        object.put("deleteComments", "1");
         object.put("message","删除评论成功");
         return object;
     }

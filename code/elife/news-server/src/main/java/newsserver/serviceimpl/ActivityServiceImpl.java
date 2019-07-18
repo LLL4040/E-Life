@@ -35,6 +35,7 @@ public class ActivityServiceImpl implements ActivityService {
             byte[] data = Files.readAllBytes(file.toPath());
             String photo= Base64.encodeBase64String(data);
             jsonObject.put("photo" , "data:image/jpg;base64,"+photo);
+            jsonObject.put("path", temp.getPhoto());
             jsonObject.put("id",temp.getId());
             jsonObject.put("status",temp.getStatus());
             jsonObject.put("title",temp.getTitle());
@@ -142,6 +143,22 @@ public class ActivityServiceImpl implements ActivityService {
         }
         catch (Exception e){
             return false;
+        }
+    }
+
+    @Override
+    public JSONObject getBigPhoto(String path){
+        JSONObject jsonObject = new JSONObject();
+        try{
+            File file = new File("./news-server/pic/" + path);
+            byte[] data = Files.readAllBytes(file.toPath());
+            String photo = Base64.encodeBase64String(data);
+            jsonObject.put("photo", "data:image/jpg;base64," + photo);
+            return jsonObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonObject.put("error","notfound");
+            return jsonObject;
         }
     }
 }

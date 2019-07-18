@@ -2,19 +2,19 @@
   <div>
     <div align="center" style="width: 800px; padding-left: 200px">
       <el-carousel indicator-position="outside" :interval="4000" height="300px">
-        <el-carousel-item  v-if="notice.length === 0">
+        <el-carousel-item  v-if="typeof notice === 'undefined' || notice.length === 0">
           <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
           <p style="position: relative; bottom: 150px; left: 10px">目前没有紧急通知哦</p>
         </el-carousel-item>
-        <el-carousel-item  v-if="notice.length > 0">
+        <el-carousel-item  v-if="typeof notice !== 'undefined' && notice.length > 0">
           <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
           <p style="position: relative; bottom: 150px; left: 10px">{{ notice }}</p>
         </el-carousel-item>
-        <el-carousel-item v-if="news.length > 0">
+        <el-carousel-item v-if="typeof news !== 'undefined' && news.length > 0">
           <el-image style="width: 500px; height: 300px" :src="require('../../public/img/news.jpg')"></el-image>
           <p style="position: relative; bottom: 150px; left: 10px">{{ news[0].title }}</p>
         </el-carousel-item>
-        <el-carousel-item v-if="activity.length > 0">
+        <el-carousel-item v-if="typeof activity !== 'undefined' && activity.length > 0">
           <el-image style="width: 500px; height: 300px" :src="require('../../public/img/activity.jpg')"></el-image>
           <p style="position: relative; bottom: 150px; left: 10px">{{ activity[0].title }}</p>
         </el-carousel-item>
@@ -25,14 +25,16 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>最新资讯</span>
-            <el-button style="float: right; padding: 3px 0" type="text" @click="loadActivityMore()">more >></el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="loadNewsMore()">more >></el-button>
           </div>
           <el-table :data="news" style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
                   <el-form-item label="封面">
-                    <img :src="props.row.photo" style="width: 80px; height: 80px">
+                    <button @click="show(props.row)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                      <img :src="props.row.photo" style="width: 100%; height: 100%">
+                    </button>
                   </el-form-item>
                   <el-form-item label="详情">
                     <span>{{ props.row.content }}</span>
@@ -49,7 +51,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>活动安排</span>
-            <el-button style="float: right; padding: 3px 0" type="text" @click="loadNewsMore()">more >></el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="loadActivityMore()">more >></el-button>
           </div>
           <el-table :data="activity" style="width: 100%">
             <el-table-column type="expand">
@@ -97,6 +99,11 @@
         <el-button type="primary" @click="handleApply()">提 交</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisible2">
+      <div>
+          <img :src="photo" width="100%">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -105,6 +112,7 @@ export default {
   name: 'CommunityInformation',
   data () {
     return {
+      page: 1,
       userInfo: {
         community: '',
         communityId: 0,
@@ -113,13 +121,15 @@ export default {
         phone: ''
       },
       dialogFormVisible: false,
+      dialogFormVisible2: false,
       notice: '',
       news: [],
       activity: [],
       apply: {
         id: '',
         content: ''
-      }
+      },
+      photo: ''
     }
   },
   mounted () {
@@ -205,6 +215,7 @@ export default {
     loadNewsMore () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.append('page', this.page)
       let url = '/news-server/api/News/findHistory'
       this.$axios({
         method: 'post',
@@ -242,6 +253,20 @@ export default {
       ).then(response => {
         this.activity = response.data
         console.log(response.data)
+      })
+    },
+    show (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('path', row.path)
+      let url = '/news-server/api/News/photo'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.photo = response.data.photo
+        this.dialogFormVisible2 = true
       })
     }
   }

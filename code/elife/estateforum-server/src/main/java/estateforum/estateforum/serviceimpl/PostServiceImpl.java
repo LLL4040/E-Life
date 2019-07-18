@@ -3,13 +3,24 @@ package estateforum.estateforum.serviceimpl;
 import estateforum.estateforum.entity.Post;
 import estateforum.estateforum.dao.PostDao;
 import estateforum.estateforum.service.PostService;
+import net.coobird.thumbnailator.Thumbnails;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * postComments class
@@ -24,13 +35,61 @@ public class PostServiceImpl implements PostService {
     private PostDao postDao;
 
     @Override
-    public String  save(Post post) {
+    public String  save(String title, String postContent, String posterName, int communityId, List<MultipartFile> photo) throws IOException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String postTime = df.format(new Date());
+        String path="";
+        for (int i=0;i<photo.size();i++){
+            MultipartFile tmp=photo.get(i);
+            path += UUID.randomUUID() + tmp.getOriginalFilename()+"/";
+            if (!photo.isEmpty()) {
+                byte[] bytes = tmp.getBytes();
+                BufferedOutputStream bufferedOutputStream = new
+                        BufferedOutputStream(new FileOutputStream(new File("./estateforum-server/pic/" + tmp)));
+                bufferedOutputStream.write(bytes);
+                bufferedOutputStream.close();
+            }
+            Thumbnails.of("./estateforum-server/pic/"+tmp)
+                    .size(80,80)
+                    .keepAspectRatio(false)
+                    .toFile("./estateforum-server/cpic/"+tmp);
+        }
+
+
+        Post post=new Post(title,postContent,postTime,posterName,communityId,path);
         return postDao.save(post);
     }
 
     @Override
-    public List<Post> findAllByCommunityId(int communityId,int page,int size) {
-        return postDao.findAllByCommunityId(communityId,page,size);
+    public JSONArray findAllByCommunityId(int communityId, int page, int size) throws IOException {
+        List<Post> postList = postDao.findAllByCommunityId(communityId,page,size);
+        JSONArray jsonArray =new JSONArray();
+        Iterator<Post> iter = postList.iterator();
+        while(iter.hasNext()){
+            Post temp = iter.next();
+            JSONObject jsonObject = new JSONObject();
+            String[]paths = temp.getPath().split("/");
+            int length = paths.length;
+            List<String> photos=new ArrayList<>();
+            for (int i=0;i<length;i++){
+                File file = new File("./estateforum-server/pic/"+paths[i]);
+                byte[] data = Files.readAllBytes(file.toPath());
+                String photo="data:iamge/jpg;base64"+ Base64.encodeBase64String(data);
+                photos.add(photo);
+            }
+
+            jsonObject.put("photo" , photos);
+            jsonObject.put("title",temp.getTitle());
+
+            jsonObject.put("posterName", temp.getPosterName());
+            jsonObject.put("postContent", temp.getPostContent());
+
+            jsonObject.put("postTime",temp.getPostTime());
+            jsonObject.put("id",temp.getId());
+            jsonObject.put("communityId",temp.getCommunityId());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
     }
     @Override
     public Post findPost(String id){

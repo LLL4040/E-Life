@@ -57,14 +57,10 @@
               <el-badge v-if="newMessage !== 0" class="mark" :value=newMessage :max="99" style="background-color: transparent" />
             </span>
           </el-menu-item>
-          <el-submenu index="2">
-            <template slot="title" style="font-size: 16px">
-              <i class="el-icon-bank-card"></i>
-              <span style="font-size: 16px">我的账单</span>
-            </template>
-            <el-menu-item index="2-1" @click="toPage2(2, 8)">查询</el-menu-item>
-            <el-menu-item index="2-2" @click="toPage2(2, 15)">缴纳</el-menu-item>
-          </el-submenu>
+          <el-menu-item index="2" @click="toPage2(2, 8)">
+            <i class="el-icon-bank-card"></i>
+            <span slot="title" style="font-size: 16px">我的账单</span>
+          </el-menu-item>
           <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-user"></i>
@@ -139,7 +135,6 @@ import page11 from './MyFriendApply.vue'
 import page12 from './MyParcel.vue'
 import page13 from './MySending.vue'
 import page14 from './MySurround.vue'
-import page15 from './MyPay.vue'
 
 export default {
   name: 'User',
@@ -248,8 +243,7 @@ export default {
     page11,
     page12,
     page13,
-    page14,
-    page15
+    page14
   },
   mounted () {
     this.loadData()
