@@ -1,6 +1,7 @@
 package newsserver.serviceimpl;
 
 
+import net.coobird.thumbnailator.Thumbnails;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import newsserver.dao.ActivityDao;
@@ -31,7 +32,7 @@ public class ActivityServiceImpl implements ActivityService {
         while(iter.hasNext()){
             Activity temp = iter.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("./activity-server/pic/"+temp.getPhoto());
+            File file = new File("./news-server/cpic/"+temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo= Base64.encodeBase64String(data);
             jsonObject.put("photo" , "data:image/jpg;base64,"+photo);
@@ -55,10 +56,14 @@ public class ActivityServiceImpl implements ActivityService {
             if (!photo.isEmpty()) {
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream bufferedOutputStream = new
-                        BufferedOutputStream(new FileOutputStream(new File("./activity-server/pic/" + path)));
+                        BufferedOutputStream(new FileOutputStream(new File("./news-server/pic/" + path)));
                 bufferedOutputStream.write(bytes);
                 bufferedOutputStream.close();
             }
+            Thumbnails.of("./news-server/pic/"+path)
+                    .size(80,80)
+                    .keepAspectRatio(false)
+                    .toFile("./news-server/cpic/"+path);
            activityDao.saveActivity(startTime,endTime,content,managerName,title,status,path,communityId);
             return true;
         }

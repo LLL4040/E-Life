@@ -18,8 +18,9 @@
           <div align="center">
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
             <div style="clear:both"></div>
-            <el-button class="text-center tm-text-primary mb-4" type="success" plain size="mini" icon="el-icon-info">商家</el-button>
-            <el-button class="text-center tm-text-primary mb-4" type="primary" plain size="mini" icon="el-icon-edit" @click="toPage(1)">{{ userInfo.username }}</el-button>
+            <el-button type="success" plain size="mini" icon="el-icon-info">商家</el-button>
+            <div style="clear:both"></div>
+            <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="toPage(1)">{{ userInfo.username }}</el-button>
             <div style="clear:both"></div>
           </div>
           <el-menu-item index="1" @click="toPage(2)">
@@ -30,6 +31,19 @@
             <i class="el-icon-alarm-clock"></i>
             <span slot="title" style="font-size: 16px">查看需求</span>
           </el-menu-item>
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-user"></i>
+              <span style="font-size: 16px">我的好友
+                <el-badge v-if="newFriend !== 0" class="mark" :value=newFriend :max="99" style="background-color: transparent" />
+              </span>
+            </template>
+            <el-menu-item index="3-1" @click="toPage2(3, 9)">好友列表</el-menu-item>
+            <el-menu-item index="3-2" @click="toPage2(3, 10)">添加好友</el-menu-item>
+            <el-menu-item index="3-3" @click="toPage2(3, 11)">申请列表
+              <el-badge v-if="newFriend !== 0" class="mark" :value=newFriend :max="99" style="background-color: transparent" />
+            </el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <el-main>
@@ -45,12 +59,16 @@
 import page1 from './MeInfo.vue'
 import page2 from './MeGroup.vue'
 import page3 from './MeDemand.vue'
+import page9 from './MyFriend.vue'
+import page10 from './MyFriendAdd.vue'
+import page11 from './MyFriendApply.vue'
 
 export default {
   name: 'Merchant',
   data () {
     return {
       tabView: 'page2',
+      openList: ['1'],
       userInfo: {
         community: '',
         communityId: 0,
@@ -65,7 +83,9 @@ export default {
         detail: '',
         type: '',
         merchantPhone: ''
-      }
+      },
+      dialogFormVisible: false,
+      newFriend: 0
     }
   },
   methods: {
@@ -109,15 +129,36 @@ export default {
     },
     toPage (index) {
       this.tabView = `page${index}`
+    },
+    toPage2 (id1, id2) {
+      this.openList[0] = id1
+      this.tabView = `page${id2}`
+    },
+    loadF () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.userInfo.username)
+      let url = '/user-server/api/friend/requestNumber'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.newFriend = response.data.number
+      })
     }
   },
   components: {
     page1,
     page2,
-    page3
+    page3,
+    page9,
+    page10,
+    page11
   },
   mounted () {
     this.loadData()
+    this.loadF()
   }
 }
 </script>
