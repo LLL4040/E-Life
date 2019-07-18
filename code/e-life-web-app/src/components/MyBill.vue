@@ -52,7 +52,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button id="pay" type="primary" el-icon="el-icon-share" @click="handlePay()">支 付</el-button>
+        <el-button id="pay" type="primary" icon="el-icon-share" @click="handlePay()">支 付</el-button>
       </div>
     </el-dialog>
   </div>

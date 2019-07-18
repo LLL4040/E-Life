@@ -196,7 +196,6 @@ export default {
       ).then(response => {
         this.notice = response.data.content
         console.log(response.data)
-        this.$forceUpdate()
       })
     },
     loadNews () {
@@ -211,7 +210,6 @@ export default {
       ).then(response => {
         this.news = response.data
         console.log(response.data)
-        this.$forceUpdate()
       })
     },
     loadNewsMore () {
@@ -227,7 +225,6 @@ export default {
       ).then(response => {
         this.news = response.data
         console.log(response.data)
-        this.$forceUpdate()
       })
     },
     loadActivity () {
@@ -242,7 +239,6 @@ export default {
       ).then(response => {
         this.activity = response.data
         console.log(response.data)
-        this.$forceUpdate()
       })
     },
     loadActivityMore () {
@@ -257,7 +253,6 @@ export default {
       ).then(response => {
         this.activity = response.data
         console.log(response.data)
-        this.$forceUpdate()
       })
     },
     show (row) {
@@ -271,7 +266,6 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.photo = response.data.photo
-        this.$forceUpdate()
         this.dialogFormVisible2 = true
       })
     }

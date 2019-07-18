@@ -11,18 +11,18 @@
           <div slot="header" class="clearfix">
             <span>商品分类</span>
           </div>
-          <el-row :gutter="10">
+          <el-row :gutter="25">
             <el-col :span="8">
-              <el-tag color="blue">超市购物</el-tag>
+              <el-tag color="blue" effect="dark" style="border: 0">超市购物</el-tag>
             </el-col>
             <el-col :span="8">
-              <el-tag color="green">休闲娱乐</el-tag>
+              <el-tag color="green" effect="dark" style="border: 0">休闲娱乐</el-tag>
             </el-col>
             <el-col :span="8">
-              <el-tag color="saddleBrown">周边餐饮</el-tag>
+              <el-tag color="saddleBrown" effect="dark" style="border: 0">周边餐饮</el-tag>
             </el-col>
             <el-col :span="8">
-              <el-tag color="purple">生活服务</el-tag>
+              <el-tag color="purple" effect="dark" style="border: 0">生活服务</el-tag>
             </el-col>
           </el-row>
         </el-card>
@@ -113,11 +113,9 @@ export default {
       markers.addEventListener("click", function(){
         this.openInfoWindow(infoWindow);
       })
-      this.$alert(this.merchantList.length)
       let i = 0
       for (; i < this.merchantList.length; i++){
         let point = new BMap.Point(this.merchantList[i].address.split(',')[0].split(':')[1], this.merchantList[i].address.split(',')[1].split(':')[1])
-        this.$alert(point)
         let icons
         switch (this.merchantList[i].type)
         {
