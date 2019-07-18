@@ -1,7 +1,10 @@
 package estateforum.estateforum.service;
 
 import estateforum.estateforum.entity.Post;
+import net.minidev.json.JSONArray;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,16 +16,20 @@ import java.util.List;
 public interface PostService {
     /**
      * 此函数存一条帖子
-     * @param post 帖子
+     * @param title 帖子
+     * @param postContent
+     * @param posterName
+     * @param communityId
+     * @param photo
      * @return 返回成功储存的id号*/
-    String save(Post post);
+    String save(String title, String postContent, String posterName, int communityId, List<MultipartFile> photo)throws IOException;
     /**
      * 此函数以列表形式返回所有帖子
      * @return 以列表形式返回的所有帖子
      * @param communityId 小区id
      * @param page 当前页数
      * @param size 大小*/
-    List<Post> findAllByCommunityId(int communityId,int page,int size);
+    JSONArray findAllByCommunityId(int communityId, int page, int size)throws IOException;
     /**
      *该方法返回特定id的的帖子
      * @param  id 指定的帖子id
