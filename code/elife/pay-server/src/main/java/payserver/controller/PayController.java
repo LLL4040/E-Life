@@ -78,6 +78,7 @@ public class PayController {
             , String id,String bill,String time) throws IOException, AlipayApiException {
         payService.ali(response,request,id,bill,time);
     }
+
    /* @RequestMapping("/return")
     public void returnUrl(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
         System.out.println(12345);

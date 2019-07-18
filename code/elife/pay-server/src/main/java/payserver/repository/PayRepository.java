@@ -8,6 +8,7 @@ import payserver.entity.Pay;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -73,6 +74,16 @@ public interface PayRepository extends JpaRepository<Pay, Integer> {
      */
     @Query(value=" select * from pay where (status=1 or status=2) and community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
     List<Pay> findPayHistoryManager(int communityId,int left,int right);
+
+
+
+    /**
+     * get zfb Account
+     * @param communityId
+     * @return map zfb account
+     */
+    @Query(value=" select account from community where  id=?1 ",nativeQuery = true)
+    Map<String,String> findAccount(int communityId);
 
 }
 

@@ -96,15 +96,14 @@ public interface PayService {
     void ali(HttpServletResponse response, HttpServletRequest request
     ,String id,String bill,String time) throws AlipayApiException, IOException;
 
-/*
-    */
 /**
      * aliBaBa return url
      * @param response
      * @param request
      * @throws AlipayApiException
      * @throws IOException
-     *//*
+     */
+/*
 
     void returnUrl(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
 */
