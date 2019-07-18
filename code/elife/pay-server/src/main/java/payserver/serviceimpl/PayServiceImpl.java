@@ -4,7 +4,9 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,6 +151,7 @@ public class PayServiceImpl implements PayService {
         //以下写自己的订单代码
     }
 
+
     @Override
     public boolean saveOrders(int pid,String username,BigDecimal bill){
         try{
@@ -273,6 +276,7 @@ public class PayServiceImpl implements PayService {
             Orders orders = payDao.getOrder(out_trade_no);
             int payId = orders.getPayId();
             Pay pay = payDao.findOne(payId);
+            BigDecimal money = pay.getBill();
             if(trade_status.equals("TRADE_FINISHED")){
                 //判断该笔订单是否在商户网站中已经做过处理
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
@@ -285,6 +289,7 @@ public class PayServiceImpl implements PayService {
                     orders.setStatus(1);
                     payDao.SaveOrders(orders);
                     payDao.changeStatus(payId);
+                    payDao.transfer( response, request,pay.getCommunityId(),money,trade_no);
                     out.println("success");
                 }
             }else if (trade_status.equals("TRADE_SUCCESS")){
@@ -299,6 +304,7 @@ public class PayServiceImpl implements PayService {
                     orders.setStatus(1);
                     payDao.SaveOrders(orders);
                     payDao.changeStatus(payId);
+                    payDao.transfer( response, request,pay.getCommunityId(),money,trade_no);
                     out.println("success");
                 }
 
