@@ -24,13 +24,13 @@ public class PostCommentsController {
     @Autowired
     PostCommentsService postCommentsService;
 
-    @GetMapping(path = "/findComments")
+    @RequestMapping(path = "/findComments")
     @ResponseBody
     public List<PostComments> findComment(@RequestParam String pid,@RequestParam int page,@RequestParam int size){
 
         return postCommentsService.findAllByPidPage(pid,page,size);
     }
-    @PostMapping(path = "/addComments")
+    @RequestMapping(path = "/addComments")
     @ResponseBody
     public JSONObject addComments(@RequestParam String pid, @RequestParam  String commenterName, @RequestParam String postComment){
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
@@ -49,7 +49,7 @@ public class PostCommentsController {
         object.put("message","发表评论成功");
         return object;
     }
-    @GetMapping(path = "/deleteComments")
+    @RequestMapping(path = "/deleteComments")
     @ResponseBody
     public JSONObject deleteComments(@RequestParam String pid,@RequestParam int location){
         postCommentsService.deleteComments(pid,location);
