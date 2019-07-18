@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Arrays;
+import java.util.List;
 
 @Entity
 /**
@@ -25,17 +26,26 @@ public class Post {
     private String postContent;
     private String postTime;
     private int communityId;
+    private String path;
 
 
-    public Post(String title,String postContent,String postTime,String posterName,int communityId){
+    public Post(String title,String postContent,String postTime,String posterName,int communityId,String path){
         this.title=title;
         this.postContent=postContent;
         this.postTime=postTime;
         this.posterName=posterName;
 
         this.communityId=communityId;
+        this.path =path;
 
+    }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String pathList) {
+        this.path = pathList;
     }
 
     public void setCommunityId(int communityId) {
