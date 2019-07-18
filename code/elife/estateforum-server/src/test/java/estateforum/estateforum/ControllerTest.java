@@ -28,7 +28,7 @@ public class ControllerTest {
     }
     @Test
     public void addPost() throws Exception {
-        mvc.perform(get("/api/addPost").param("title","赏月").param("postContent","有小伙伴一起赏月的吗").param("posterName","二郎神").param("communityId","12"))
+        mvc.perform(get("/api/addPost").param("title","赏月").param("postContent","有小伙伴一起赏月的吗").param("posterName","二郎神").param("communityId","12").param("photo",null))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
