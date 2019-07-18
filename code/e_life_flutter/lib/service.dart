@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class maintain extends StatelessWidget {
+class service extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,10 +9,10 @@ class maintain extends StatelessWidget {
           new IconButton(icon: new Icon(Icons.account_circle), onPressed: null),
 
         ],
-        title: Text('维修'),
+        title: Text('团购'),
       ),
       body: Center(
-        child: Text('物业维修'),
+        child: Text('小区团购'),
       ),
     );
   }
