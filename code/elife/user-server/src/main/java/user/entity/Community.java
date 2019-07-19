@@ -37,9 +37,13 @@ public class Community implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "account")
+    private String account;
+
     public Community(){}
 
-    public Community(String communityName, String communityInfo, String manager, String password, String phone, String email, String address){
+    public Community(String communityName, String communityInfo, String manager, String password,
+                     String phone, String email, String address, String account){
         this.address = address;
         this.communityName = communityName;
         this.communityInfo = communityInfo;
@@ -47,6 +51,7 @@ public class Community implements Serializable {
         this.password = password;
         this.phone = phone;
         this.email = email;
+        this.account = account;
     }
 
     public Long getId() {
@@ -111,6 +116,14 @@ public class Community implements Serializable {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     @Override

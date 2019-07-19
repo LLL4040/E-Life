@@ -38,4 +38,6 @@ public class PostDaoImpl implements PostDao {
     public Post findPost(String id){
        return postRepository.getById(id);
     }
+
+
 }
