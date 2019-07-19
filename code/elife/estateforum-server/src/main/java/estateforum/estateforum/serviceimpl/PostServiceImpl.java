@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String postTime = df.format(new Date());
         String path="";
-        if(!photo.isEmpty()) {
+        if(photo.size() > 0) {
             for (int i = 0; i < photo.size(); i++) {
                 MultipartFile tmp = photo.get(i);
                 path = path + UUID.randomUUID() + tmp.getOriginalFilename() + "/";

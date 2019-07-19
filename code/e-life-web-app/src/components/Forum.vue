@@ -135,7 +135,7 @@ export default {
   name: 'Forum',
   data () {
     return {
-      formData: '',
+      formData: [],
       userInfo: {
         community: '',
         communityId: 0,
@@ -159,11 +159,12 @@ export default {
       commentPage: 1,
       commentSize: 5,
       commentData: [],
-      imgList: []
+      imgList: [],
+      pageNum: 1,
+      pageSize: 1
     }
   },
   mounted () {
-    this.formData = new FormData()
     this.loadData()
     this.findPost()
   },
@@ -191,27 +192,26 @@ export default {
     },
     addForum () {
       this.dialogFormVisible = false
-      console.log(this.formData)
-      // let bodyFormData = new FormData()
-      // bodyFormData.set('title', this.myPost.title)
-      // bodyFormData.set('postContent', this.myPost.content)
-      // bodyFormData.set('posterName', this.userInfo.username)
-      // bodyFormData.set('communityId', this.userInfo.communityId)
-      // bodyFormData.append('photo', this.formData)
-      // let url = '/estateforum-server/api/post/addPost'
-      // this.$axios({
-      //   method: 'post',
-      //   url: url,
-      //   data: bodyFormData,
-      //   config: { headers: { 'Content-type': 'multipart/form-data' } } }
-      // ).then(response => {
-      //   if (response.data.post) {
-      //     this.$alert('发布帖子成功！')
-      //     this.findPost()
-      //   } else {
-      //     this.$alert('发布帖子失败！')
-      //   }
-      // })
+      let bodyFormData = new FormData()
+      bodyFormData.set('title', this.myPost.title)
+      bodyFormData.set('postContent', this.myPost.content)
+      bodyFormData.set('posterName', this.userInfo.username)
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.append('photo', this.formData)
+      let url = '/estateforum-server/api/post/addPost'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.post) {
+          this.$alert('发布帖子成功！')
+          this.findPost()
+        } else {
+          this.$alert('发布帖子失败！')
+        }
+      })
     },
     findPost () {
       let bodyFormData = new FormData()
@@ -225,7 +225,8 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.postData = []
-        for (let i = 0; i < response.data.length; i++) {
+        this.pageSize = response.data[0].pageNum
+        for (let i = 1; i < response.data.length; i++) {
           let objproject = {
             'photo': response.data[i].photo,
             'title': response.data[i].title, // 这个是赋值到一个数组对象里面去，开发的时候就是取到里面的值进行一个逻辑判断，要干嘛干嘛的。这个也加上他的下标
@@ -324,11 +325,9 @@ export default {
       document.getElementById('files').click()
     },
     handleFilesUpload (el) { // 一定要在这选择一次时，append一次
-      this.filesArr = this.$refs.files.files[0]
-      console.log(this.filesArr)
+      this.filesArr = this.$refs.files.files
       for (let i = 0; i < this.filesArr.length; i++) {
-        this.formData.append('file', this.filesArr[i])
-        console.log(this.formData)
+        this.formData.push(this.filesArr[i])
       }
       if (!el.target.files[0].size) return
       this.fileList(el.target.files)
