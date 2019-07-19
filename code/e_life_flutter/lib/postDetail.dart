@@ -9,10 +9,10 @@ class User extends StatelessWidget {
           new IconButton(icon: new Icon(Icons.account_circle), onPressed: null),
 
         ],
-        title: Text('个人中心'),
+        title: Text('帖子详情'),
       ),
       body: Center(
-        child: Text('个人中心'),
+        child: Text('帖子'),
       ),
     );
   }

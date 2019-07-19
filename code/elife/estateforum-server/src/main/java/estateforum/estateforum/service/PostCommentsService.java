@@ -1,6 +1,7 @@
 package estateforum.estateforum.service;
 
 import estateforum.estateforum.entity.PostComments;
+import net.minidev.json.JSONArray;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface PostCommentsService {
      * @param page 当前页数
      * @param size 每页帖子数
      * @return List<PostComments> 该函数返回一条帖子的所有评论*/
-    List<PostComments> findAllByPidPage(String pid,int page,int size);
+     JSONArray findAllByPidPage(String pid, int page, int size);
     /**
      * 该函数旨在返回特定的一条帖子的所有评论
      * @param pid 帖子的id
