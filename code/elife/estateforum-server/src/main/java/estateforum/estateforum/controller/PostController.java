@@ -32,7 +32,9 @@ public class PostController {
     @ResponseBody
     public JSONObject addPost(@RequestParam String title, @RequestParam String postContent, @RequestParam String posterName, @RequestParam int communityId, @RequestParam List<MultipartFile> photo)throws IOException {
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
-        if(posterName.equals("")||postContent.equals("")||title.equals("")){
+
+        if(posterName.equals("")||postContent.equals("")||title.equals("")||photo.isEmpty()){
+
             object.put("post", "0");
             object.put("message","信息不能为空");
             return object;
@@ -43,6 +45,7 @@ public class PostController {
         object.put("message","发表帖子成功");
         return object;
     }
+
     @RequestMapping(path = "/findPost")
     @ResponseBody
     public JSONArray findPost(@RequestParam int communityId, @RequestParam int page, @RequestParam int size)throws IOException{

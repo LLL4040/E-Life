@@ -39,4 +39,10 @@ public class BargainController {
     public JSONArray getAllBargain(){
         return bargainService.getAllBargain();
     }
+
+    @RequestMapping(path = "/getBargainByMerchantId")
+    @ResponseBody
+    public JSONArray getBargainByMerchantId(@RequestParam Long id){
+        return bargainService.getBargainByMerchantId(id);
+    }
 }

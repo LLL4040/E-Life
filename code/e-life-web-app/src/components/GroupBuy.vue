@@ -19,6 +19,11 @@
                   <el-form-item label="截止时间">
                     <span>{{ props.row.end }}</span>
                   </el-form-item>
+                  <el-form-item label="封面">
+                    <button @click="showPhoto(props.row)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                      <img :src="props.row.photo" style="width: 100%; height: 100%">
+                    </button>
+                  </el-form-item>
                   <el-form-item label="详情">
                     <span>{{ props.row.content }}</span>
                   </el-form-item>
@@ -72,7 +77,7 @@
     <el-dialog title="商家信息" :visible.sync="dialogFormVisible1">
       <el-form ref="form" :model="form" label-width="70px">
         <el-form-item label="商店名称">
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.shop }}</span>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.name }}</span>
         </el-form-item>
         <el-form-item label="商店电话">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.merchantPhone }}</span>
@@ -107,6 +112,11 @@
         <el-button type="primary" @click="addDemand()">发 布</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisible3">
+      <div>
+        <img :src="photo" width="100%">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -116,8 +126,10 @@ export default {
   data () {
     return {
       search: '',
+      photo: '',
       dialogFormVisible1: false,
       dialogFormVisible2: false,
+      dialogFormVisible3: false,
       userInfo: {
         community: '',
         communityId: 0,
@@ -126,23 +138,8 @@ export default {
         phone: ''
       },
       time: [],
-      group: [{
-        mId: '1',
-        id: '1',
-        start: 'xxx',
-        end: 'xxx',
-        num: '100',
-        title: '奶茶第二杯半价！速来！',
-        content: '提醒奶茶小助手，快来和我一起成为一天八杯奶茶的小可爱吧~'
-      }],
-      demand: [{
-        id: '1',
-        start: 'xxx',
-        end: 'xxx',
-        num: '100',
-        title: '奶茶第二杯半价！速来！',
-        content: '提醒奶茶小助手，快来和我一起成为一天八杯奶茶的小可爱吧~'
-      }],
+      group: [],
+      demand: [],
       commands: {
         username: '',
         start: '',
@@ -264,7 +261,19 @@ export default {
       })
     },
     handleCheck (id) {
-      this.dialogFormVisible1 = true
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', id)
+      bodyFormData.set('username', this.userInfo.username)
+      let url = '/user-server/api/merchant/getMerchantById'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.form = response.data
+        this.dialogFormVisible1 = true
+      })
     },
     handleA (row) {
       let bodyFormData = new FormData()
@@ -301,6 +310,20 @@ export default {
         } else {
           this.$alert('删除失败！')
         }
+      })
+    },
+    showPhoto (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('path', row.path)
+      let url = '/group-server/api/discount/photo'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.photo = response.data.photo
+        this.dialogFormVisible3 = true
       })
     }
   },

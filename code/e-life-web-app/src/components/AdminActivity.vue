@@ -86,9 +86,9 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="封面">
-          <button class="upload-button" id="upImg" type="button" @click="upF()"></button>
-          <input type='file' accept="image/*" id="file" ref="file" style="display: none"/>
-        </el-form-item>
+        <button class="upload-button" id="upImg" type="button" @click="upF()"></button>
+        <input type='file' accept="image/*" id="file" ref="file" style="display: none"/>
+      </el-form-item>
         <el-form-item label="详情">
           <el-input v-model="newA.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
         </el-form-item>

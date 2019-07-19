@@ -44,6 +44,10 @@
               <el-badge v-if="newFriend !== 0" class="mark" :value=newFriend :max="99" style="background-color: transparent" />
             </el-menu-item>
           </el-submenu>
+          <el-menu-item index="4" @click="toPage(4)">
+            <i class="el-icon-alarm-clock"></i>
+            <span slot="title" style="font-size: 16px">优惠商品</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -62,6 +66,7 @@ import page3 from './MeDemand.vue'
 import page9 from './MyFriend.vue'
 import page10 from './MyFriendAdd.vue'
 import page11 from './MyFriendApply.vue'
+import page4 from './MeBargain.vue'
 
 export default {
   name: 'Merchant',
@@ -154,7 +159,8 @@ export default {
     page3,
     page9,
     page10,
-    page11
+    page11,
+    page4
   },
   mounted () {
     this.loadData()

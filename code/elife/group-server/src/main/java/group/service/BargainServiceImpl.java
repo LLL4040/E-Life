@@ -73,4 +73,26 @@ public class BargainServiceImpl implements BargainService {
             return result;
         }
     }
+
+    @Override
+    public JSONArray getBargainByMerchantId(Long id){
+        JSONArray jsonArray = new JSONArray();
+        List<Bargain> bargainList = bargainDao.findAllByMerchant_Id(id);
+        for(Bargain bargain : bargainList){
+            JSONObject object = new JSONObject();
+            object.put("id", bargain.getId());
+            object.put("start", bargain.getStartTime());
+            object.put("end", bargain.getEndTime());
+            object.put("goods", bargain.getGoods());
+            object.put("content", bargain.getContent());
+            object.put("merchantId", bargain.getMerchant().getId());
+            object.put("status", bargain.getStatus());
+            object.put("phone", bargain.getMerchant().getPhone());
+            object.put("title", bargain.getTitle());
+            object.put("address", bargain.getMerchant().getAddress());
+            object.put("name", bargain.getMerchant().getName());
+            jsonArray.appendElement(object);
+        }
+        return jsonArray;
+    }
 }

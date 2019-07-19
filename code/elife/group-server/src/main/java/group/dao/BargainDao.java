@@ -41,5 +41,10 @@ public interface BargainDao {
      */
     List<Bargain> findAllByGoodsContaining(String goods);
 
-
+    /**
+     * find all bargains by merchant id
+     * @param id id
+     * @return bargains
+     */
+    List<Bargain> findAllByMerchant_Id(Long id);
 }
