@@ -37,22 +37,23 @@ public class PostServiceImpl implements PostService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String postTime = df.format(new Date());
         String path="";
-        for (int i=0;i<photo.size();i++){
-            MultipartFile tmp=photo.get(i);
-            path += UUID.randomUUID() + tmp.getOriginalFilename()+"/";
-            if (!photo.isEmpty()) {
-                byte[] bytes = tmp.getBytes();
-                BufferedOutputStream bufferedOutputStream = new
-                        BufferedOutputStream(new FileOutputStream(new File("./estateforum-server/pic/" + tmp)));
-                bufferedOutputStream.write(bytes);
-                bufferedOutputStream.close();
+        if(!photo.isEmpty()) {
+            for (int i = 0; i < photo.size(); i++) {
+                MultipartFile tmp = photo.get(i);
+                path = path + UUID.randomUUID() + tmp.getOriginalFilename() + "/";
+                if (!tmp.isEmpty()) {
+                    byte[] bytes = tmp.getBytes();
+                    BufferedOutputStream bufferedOutputStream = new
+                            BufferedOutputStream(new FileOutputStream(new File("./estateforum-server/pic/" + tmp)));
+                    bufferedOutputStream.write(bytes);
+                    bufferedOutputStream.close();
+                }
+                Thumbnails.of("./estateforum-server/pic/" + tmp)
+                        .size(80, 80)
+                        .keepAspectRatio(false)
+                        .toFile("./estateforum-server/cpic/" + tmp);
             }
-            Thumbnails.of("./estateforum-server/pic/"+tmp)
-                    .size(80,80)
-                    .keepAspectRatio(false)
-                    .toFile("./estateforum-server/cpic/"+tmp);
         }
-
 
         Post post=new Post(title,postContent,postTime,posterName,communityId,path);
         return postDao.save(post);
@@ -61,22 +62,36 @@ public class PostServiceImpl implements PostService {
     @Override
     public JSONArray findAllByCommunityId(int communityId, int page, int size) throws IOException {
         List<Post> postList = postDao.findAllByCommunityId(communityId,page,size);
+        JSONObject jsonObject1 = new JSONObject();
+        int count = postDao.findAllByCommunityId(communityId,1,1000000000).size();
+        int pageNum = count/size;
+        if (count%size!=0){
+            pageNum=pageNum+1;
+        }
+        jsonObject1.put("pageNum",pageNum);
         JSONArray jsonArray =new JSONArray();
+        jsonArray.add(jsonObject1);
         Iterator<Post> iter = postList.iterator();
         while(iter.hasNext()){
             Post temp = iter.next();
             JSONObject jsonObject = new JSONObject();
-            String[]paths = temp.getPath().split("/");
-            int length = paths.length;
-            List<String> photos=new ArrayList<>();
-            for (int i=0;i<length;i++){
-                File file = new File("./estateforum-server/pic/"+paths[i]);
-                byte[] data = Files.readAllBytes(file.toPath());
-                String photo="data:iamge/jpg;base64"+ Base64.encodeBase64String(data);
-                photos.add(photo);
+            if(temp.getPath().equals("")){
+                jsonObject.put("photo" , null);
+            }else {
+                String[]paths = temp.getPath().split("/");
+                int length = paths.length;
+                List<String> photos=new ArrayList<>();
+                for (int i=0;i<length;i++){
+                    File file = new File("./estateforum-server/pic/"+paths[i]);
+                    byte[] data = Files.readAllBytes(file.toPath());
+                    String photo="data:iamge/jpg;base64"+ Base64.encodeBase64String(data);
+                    photos.add(photo);
+                }
+                jsonObject.put("photo" , photos);
             }
 
-            jsonObject.put("photo" , photos);
+
+
             jsonObject.put("title",temp.getTitle());
 
             jsonObject.put("posterName", temp.getPosterName());
@@ -87,6 +102,8 @@ public class PostServiceImpl implements PostService {
             jsonObject.put("communityId",temp.getCommunityId());
             jsonArray.add(jsonObject);
         }
+
+
         return jsonArray;
     }
     @Override
