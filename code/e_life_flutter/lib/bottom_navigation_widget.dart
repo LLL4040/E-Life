@@ -1,8 +1,8 @@
-import 'package:e_life_flutter/maintain.dart';
+import 'package:e_life_flutter/message.dart';
 import 'package:flutter/material.dart';
-import 'forum.dart';
-import 'groupBuy.dart';
-import 'news.dart';
+import 'mycenter.dart';
+import 'service.dart';
+import 'mainpage.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
   @override
@@ -10,12 +10,12 @@ class BottomNavigationWidget extends StatefulWidget {
 }
 
 class _BottomNavigationWidget extends State<BottomNavigationWidget> {
-  final _BottomNavigationColor = Colors.blue; //组件内部私有变量
+  final _BottomNavigationColor = Colors.black54; //组件内部私有变量
   int _currentIndex = 0;
   List<Widget> list = List();
   @override
   void initState() {
-    list..add(newsPage())..add(GroupBuy())..add(maintain())..add(forum());
+    list..add(mainpage())..add(service())..add(message())..add(mycenter());
     super.initState(); //无名无参需要调用
   }
 
@@ -29,26 +29,19 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
             BottomNavigationBarItem(
                 //导航栏子按钮
                 icon: Icon(
-                  Icons.mail,
+
+                  Icons.domain,
                   color: _BottomNavigationColor,
                 ),
                 title: Text(
-                  '资讯',
-                  style: TextStyle(color: _BottomNavigationColor),
-                )),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.shopping_cart,
-                  color: _BottomNavigationColor,
-                ),
-                title: Text(
-                  '团购',
+                  '主页',
                   style: TextStyle(color: _BottomNavigationColor),
                 )),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.insert_invitation,
                   color: _BottomNavigationColor,
+
                 ),
                 title: Text(
                   '服务',
@@ -56,11 +49,20 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
                 )),
             BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.message,
+                  Icons.mail,
                   color: _BottomNavigationColor,
                 ),
                 title: Text(
-                  '论坛',
+                  '消息',
+                  style: TextStyle(color: _BottomNavigationColor),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.account_circle,
+                  color: _BottomNavigationColor,
+                ),
+                title: Text(
+                  '我的',
                   style: TextStyle(color: _BottomNavigationColor),
                 )),
           ],

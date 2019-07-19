@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class forum extends StatelessWidget {
+class mycenter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,10 +9,10 @@ class forum extends StatelessWidget {
           new IconButton(icon: new Icon(Icons.account_circle), onPressed: null),
 
         ],
-        title: Text('论坛'),
+        title: Text('个人中心'),
       ),
       body: Center(
-        child: Text('小区论坛'),
+        child: Text('个人中心'),
       ),
     );
   }
