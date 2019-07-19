@@ -47,12 +47,16 @@ public class PostServiceImpl implements PostService {
                             BufferedOutputStream(new FileOutputStream(new File("./estateforum-server/pic/" + tmp)));
                     bufferedOutputStream.write(bytes);
                     bufferedOutputStream.close();
+                    Thumbnails.of("./estateforum-server/pic/" + tmp)
+                            .size(80, 80)
+                            .keepAspectRatio(false)
+                            .toFile("./estateforum-server/cpic/" + tmp);
                 }
-                Thumbnails.of("./estateforum-server/pic/" + tmp)
-                        .size(80, 80)
-                        .keepAspectRatio(false)
-                        .toFile("./estateforum-server/cpic/" + tmp);
+
             }
+        }
+        else {
+            path = "";
         }
 
         Post post=new Post(title,postContent,postTime,posterName,communityId,path);

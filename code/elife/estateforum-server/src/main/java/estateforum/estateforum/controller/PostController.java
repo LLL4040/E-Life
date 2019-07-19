@@ -33,11 +33,16 @@ public class PostController {
     public JSONObject addPost(@RequestParam String title, @RequestParam String postContent, @RequestParam String posterName, @RequestParam int communityId, @RequestParam List<MultipartFile> photo)throws IOException {
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
 
-        if(posterName.equals("")||postContent.equals("")||title.equals("")){
+        if(posterName.equals("")||postContent.equals("")||title.equals("")||photo.isEmpty()){
             object.put("post", "0");
             object.put("message","信息不能为空");
             return object;
 
+        }
+        if (photo.isEmpty()){
+            System.out.println("这是空的");
+        }else {
+            System.out.println("这不是空的");
         }
 
         postService.save(title,postContent,posterName,communityId,photo);
