@@ -201,6 +201,12 @@ export default {
       }],
       communities: [],
       types: [{
+        value: '超市送货',
+        label: '超市送货'
+      }, {
+        value: '电脑维修',
+        label: '电脑维修'
+      }, {
         value: '周边餐饮',
         label: '周边餐饮'
       }, {

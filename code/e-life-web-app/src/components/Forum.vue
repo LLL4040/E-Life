@@ -1,9 +1,8 @@
 <template>
   <div>
-    <div align="center">
-      <el-button v-if="!dialogFormVisibleMain" icon="el-icon-back" type="primary" @click="goBack()">返回</el-button>
-      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>
-    </div>
+<!--    <div align="center">-->
+<!--      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>-->
+<!--    </div>-->
     <el-row :gutter="10" style="padding-top: 20px" v-if="dialogFormVisibleMain">
       <el-col :span="18">
         <div>
@@ -54,7 +53,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="24" style="padding-top: 20px" v-if="!dialogFormVisibleMain">
+    <el-row :gutter="10" style="padding-top: 20px" v-if="!dialogFormVisibleMain">
       <el-col :span="24">
         <el-col :span="20" style="float: left">
           <div v-for="o in commentData" :key="o" class="text item">
@@ -70,10 +69,10 @@
             </el-card>
           </div>
         </el-col>
-        <el-col :span="4" style="float: right">
+        <el-col :span="4" >
           <el-card :span="4">
-            <el-button icon="el-icon-back" @click="goBack()">返回</el-button>
-            <el-button @click="dialogFormVisibleDetail = true" type="primary">评论</el-button>
+            <el-button icon="el-icon-back" type="success" size="mini" @click="goBack()" style="margin: 0 0 0 20px">返回</el-button>
+            <el-button icon="el-icon-edit-outline" type="primary" size="mini" @click="dialogFormVisibleDetail = true" style="margin: 0 0 0 20px">评论</el-button>
           </el-card>
         </el-col>
       </el-col>
@@ -135,7 +134,7 @@ export default {
   name: 'Forum',
   data () {
     return {
-      formData: [],
+      formData: null,
       userInfo: {
         community: '',
         communityId: 0,
@@ -167,6 +166,7 @@ export default {
   mounted () {
     this.loadData()
     this.findPost()
+    this.formData = new FormData()
   },
   methods: {
     loadData () {
@@ -192,17 +192,17 @@ export default {
     },
     addForum () {
       this.dialogFormVisible = false
-      let bodyFormData = new FormData()
-      bodyFormData.set('title', this.myPost.title)
-      bodyFormData.set('postContent', this.myPost.content)
-      bodyFormData.set('posterName', this.userInfo.username)
-      bodyFormData.set('communityId', this.userInfo.communityId)
-      bodyFormData.append('photo', this.formData)
+      this.formData.set('title', this.myPost.title)
+      this.formData.set('postContent', this.myPost.content)
+      this.formData.set('posterName', this.userInfo.username)
+      this.formData.set('communityId', this.userInfo.communityId)
+      console.log(this.formData)
+      console.log(this.formData.get('photo'))
       let url = '/estateforum-server/api/post/addPost'
       this.$axios({
         method: 'post',
         url: url,
-        data: bodyFormData,
+        data: this.formData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         if (response.data.post) {
@@ -237,7 +237,6 @@ export default {
           }
           this.postData.push(objproject)
         }
-        console.log(response.data)
         // this.postData = response.data
       })
     },
@@ -256,15 +255,19 @@ export default {
       bodyFormData.set('pid', object.id)
       bodyFormData.set('page', 1)
       bodyFormData.set('size', this.commentSize)
-      console.log(bodyFormData)
       this.$axios({
         method: 'post',
         url: '/estateforum-server/api/postComments/findComments',
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } }
       }).then(response => {
+        if (response.data[0].pageNum === 0) {
+          this.pageSize = 1
+        } else {
+          this.pageSize = response.data[0].pageNum
+        }
         console.log(response.data)
-        for (let i = 0; i < response.data.length; i++) {
+        for (let i = 1; i < response.data.length; i++) {
           this.commentData.push(response.data[i])
         }
         this.dialogFormVisibleMain = false
@@ -308,8 +311,13 @@ export default {
               data: bodyFormData,
               config: { headers: { 'Content-type': 'multipart/form-data' } }
             }).then(response => {
+              if (response.data[0].pageNum === 0) {
+                this.pageSize = 1
+              } else {
+                this.pageSize = response.data[0].pageNum
+              }
               console.log(response.data)
-              for (let i = 0; i < response.data.length; i++) {
+              for (let i = 1; i < response.data.length; i++) {
                 this.commentData.push(response.data[i])
               }
             })
@@ -327,7 +335,7 @@ export default {
     handleFilesUpload (el) { // 一定要在这选择一次时，append一次
       this.filesArr = this.$refs.files.files
       for (let i = 0; i < this.filesArr.length; i++) {
-        this.formData.push(this.filesArr[i])
+        this.formData.append('photo', this.filesArr[i])
       }
       if (!el.target.files[0].size) return
       this.fileList(el.target.files)

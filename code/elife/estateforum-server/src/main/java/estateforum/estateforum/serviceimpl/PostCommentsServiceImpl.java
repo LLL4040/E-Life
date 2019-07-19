@@ -53,7 +53,7 @@ public class PostCommentsServiceImpl implements PostCommentsService {
             jsonObject.put("commenterName", temp.getCommenterName());
             jsonObject.put("commentsTime", temp.getCommentsTime());
 
-            jsonObject.put("postTime",temp.getCommentsTime());
+            jsonObject.put("location",temp.getLocation());
             jsonObject.put("postComment",temp.getpostComment());
 
             jsonArray.add(jsonObject);

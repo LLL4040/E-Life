@@ -40,6 +40,7 @@ public class PostServiceImpl implements PostService {
         if(photo.size() > 0) {
             for (int i = 0; i < photo.size(); i++) {
                 MultipartFile tmp = photo.get(i);
+                System.out.println(tmp.getOriginalFilename());
                 path = path + UUID.randomUUID() + tmp.getOriginalFilename() + "/";
                 if (!tmp.isEmpty()) {
                     byte[] bytes = tmp.getBytes();

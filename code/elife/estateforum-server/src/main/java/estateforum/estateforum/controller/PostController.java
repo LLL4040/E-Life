@@ -32,14 +32,12 @@ public class PostController {
     @ResponseBody
     public JSONObject addPost(@RequestParam String title, @RequestParam String postContent, @RequestParam String posterName, @RequestParam int communityId, @RequestParam List<MultipartFile> photo)throws IOException {
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
-
         if(posterName.equals("")||postContent.equals("")||title.equals("")){
             object.put("post", "0");
             object.put("message","信息不能为空");
             return object;
 
         }
-
         postService.save(title,postContent,posterName,communityId,photo);
         object.put("post", "1");
         object.put("message","发表帖子成功");
