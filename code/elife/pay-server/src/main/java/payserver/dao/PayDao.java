@@ -138,11 +138,24 @@ public interface PayDao {
      */
     void transfer(HttpServletResponse response, HttpServletRequest request, int communityId, BigDecimal money,String trade_no) throws IOException, AlipayApiException;
 
-/**
- * aliBaBa return url
- * @param response
- * @param request
- * @throws AlipayApiException
- * @throws IOException
- */
+    /**
+     * get pagenum
+     * @param username
+     * @return
+     */
+    int getPageNum(String username);
+
+    /**
+     * get pay manager
+     * @param communityId
+     * @return
+     */
+    int getPageNumManager(int communityId);
+
+    /**
+     * get page unpay manager
+     * @param communityId
+     * @return
+     */
+    int getPageNumUnpayManager(int communityId);
 }

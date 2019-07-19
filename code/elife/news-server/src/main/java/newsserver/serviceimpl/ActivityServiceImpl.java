@@ -70,7 +70,11 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public JSONArray findAllActivity(int communityId,int page) throws IOException {
         List<Activity> list = activityDao.findAllActivity(communityId,page);
-        return listToJsonArray(list);
+        JSONArray jsonArray = listToJsonArray(list);
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",activityDao.findPageActivity(communityId));
+        jsonArray.add(pageNum);
+        return jsonArray;
     }
 
     @Override
@@ -132,6 +136,9 @@ public class ActivityServiceImpl implements ActivityService {
             jsonObject.put("status",participator.getStatus());
             jsonArray.add(jsonObject);
         }
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",activityDao.findPageParticipator(aid));
+        jsonArray.add(pageNum);
         return jsonArray;
     }
 

@@ -116,8 +116,44 @@ public class PayDaoImpl implements PayDao {
         return orderRepository.getOne(uid);
     }
 
+    @Override
+    public int getPageNum(String username){
+        List<Pay> temp = payRepository.findPageNum(username);
+        int pageNum=temp.size();
+        if(pageNum%10!=0){
+            pageNum=pageNum/10+1;
+        }
+        else {
+            pageNum=pageNum/10;
+        }
+        return pageNum;
+    }
 
+    @Override
+    public int getPageNumManager(int communityId){
+        List<Pay> temp = payRepository.findPageNumManager(communityId);
+        int pageNum=temp.size();
+        if(pageNum%10!=0){
+            pageNum=pageNum/10+1;
+        }
+        else {
+            pageNum=pageNum/10;
+        }
+        return pageNum;
+    }
 
+    @Override
+    public int getPageNumUnpayManager(int communityId){
+        List<Pay> temp = payRepository.findPageNumUnpayManager(communityId);
+        int pageNum=temp.size();
+        if(pageNum%10!=0){
+            pageNum=pageNum/10+1;
+        }
+        else {
+            pageNum=pageNum/10;
+        }
+        return pageNum;
+    }
 
     @Override
     public void transfer(HttpServletResponse response, HttpServletRequest request, int communityId, BigDecimal money,String trade_no) throws IOException, AlipayApiException {

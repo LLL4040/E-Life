@@ -62,5 +62,16 @@ public interface PackageRepository extends JpaRepository<Package, Integer> {
     @Query(value=" select * from package where status=0 and community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
     List<Package> findHistoryManager(int communityId,int left,int right);
 
+
+
+    @Query(value="select * from package  where username=?1",nativeQuery = true)
+    List<Package> findPageNum(String username);
+
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value="select * from package b where community_id=?1 and status=0",nativeQuery = true)
+    List<Package> findPageNumManager(int communityId);
+
+
 }
 

@@ -131,8 +131,9 @@ public class NewsServiceImpl implements NewsService {
         JSONArray jsonArray = new JSONArray();
         Iterator<News> hot = hotTable.iterator();
         Iterator<NewsUsed> cold = coldTable.iterator();
-        int left = 5*(page-1);
-        int right = 5*page;
+        int row = 5;
+        int left = row*(page-1);
+        int right = row*page;
         int i=0;
         while (hot.hasNext()) {
             if(i>=left && i<right) {
@@ -179,6 +180,13 @@ public class NewsServiceImpl implements NewsService {
             i++;
 
         }
+        JSONObject allPage = new JSONObject();
+        int pageNum = (hotTable.size()+coldTable.size())/row;
+        if(pageNum % row != 0){
+            pageNum++;
+        }
+        allPage.put("pageNum",pageNum);
+        jsonArray.add(allPage);
         return jsonArray;
     }
 
