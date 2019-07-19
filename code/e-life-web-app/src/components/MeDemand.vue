@@ -44,14 +44,7 @@ export default {
         detail: '',
         address: ''
       },
-      demand: [{
-        id: '1',
-        start: 'xxx',
-        end: 'xxx',
-        num: '100',
-        title: '奶茶第二杯半价！速来！',
-        content: '提醒奶茶小助手，快来和我一起成为一天八杯奶茶的小可爱吧~'
-      }]
+      demand: []
     }
   },
   methods: {
