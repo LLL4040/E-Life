@@ -324,7 +324,7 @@ export default {
       document.getElementById('files').click()
     },
     handleFilesUpload (el) { // 一定要在这选择一次时，append一次
-      this.filesArr = this.$refs.files.files
+      this.filesArr = this.$refs.files.files[0]
       console.log(this.filesArr)
       for (let i = 0; i < this.filesArr.length; i++) {
         this.formData.append('file', this.filesArr[i])

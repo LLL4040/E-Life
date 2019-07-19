@@ -30,4 +30,6 @@ public interface PostDao {
      *该方法删除特定pid的的帖子
      * @param  id 指定的帖子id*/
     void deletePost(String id);
+
+
 }

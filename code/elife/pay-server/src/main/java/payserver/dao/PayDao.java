@@ -4,9 +4,13 @@ package payserver.dao;
 
 
 
+import com.alipay.api.AlipayApiException;
 import payserver.entity.Orders;
 import payserver.entity.Pay;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -118,4 +122,27 @@ public interface PayDao {
      * @return order
      */
     Orders getOrder(String oid);
+
+
+
+
+    /**
+     * transfer money
+     * @param response
+     * @param request
+     * @param communityId
+     * @param money
+     * @param trade_no
+     * @throws IOException
+     * @throws AlipayApiException
+     */
+    void transfer(HttpServletResponse response, HttpServletRequest request, int communityId, BigDecimal money,String trade_no) throws IOException, AlipayApiException;
+
+/**
+ * aliBaBa return url
+ * @param response
+ * @param request
+ * @throws AlipayApiException
+ * @throws IOException
+ */
 }

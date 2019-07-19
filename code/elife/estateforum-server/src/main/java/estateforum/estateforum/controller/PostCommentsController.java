@@ -2,6 +2,7 @@ package estateforum.estateforum.controller;
 
 import estateforum.estateforum.entity.PostComments;
 import estateforum.estateforum.service.PostCommentsService;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ public class PostCommentsController {
 
     @RequestMapping(path = "/findComments")
     @ResponseBody
-    public List<PostComments> findComment(@RequestParam String pid,@RequestParam int page,@RequestParam int size){
+    public JSONArray findComment(@RequestParam String pid, @RequestParam int page, @RequestParam int size){
 
         return postCommentsService.findAllByPidPage(pid,page,size);
     }

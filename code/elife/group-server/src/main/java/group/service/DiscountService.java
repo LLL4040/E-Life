@@ -2,6 +2,7 @@ package group.service;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author ztHou
@@ -17,9 +18,11 @@ public interface DiscountService {
      * @param status status
      * @param communityId communityId of merchant
      * @param title title
+     * @param photo photo
      * @return whether add discount information successfully
      */
-    JSONObject addDiscount(String startTime, String endTime, Long merchantId, Integer number, String content, Integer status, Long communityId, String title);
+    JSONObject addDiscount(String startTime, String endTime, Long merchantId, Integer number,
+                           String content, Integer status, Long communityId, String title, MultipartFile photo);
 
     /**
      * delete discount by id
@@ -41,4 +44,11 @@ public interface DiscountService {
      * @return discount list
      */
     JSONArray findDiscountByCommunityId(Long communityId);
+
+    /**
+     * get big photo though path
+     * @param path path
+     * @return big photo
+     */
+    JSONObject getBigPhoto(String path);
 }
