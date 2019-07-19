@@ -39,6 +39,15 @@ public interface ParticipatorRepository extends JpaRepository<Participator, Inte
     List<Participator> findAllParticipator(int activityId,int left, int rignt);
 
     /**
+     * find page
+     * @param activityId
+     * @return
+     */
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value="select * from participator b where b.aid=?1",nativeQuery = true)
+    List<Participator> findPageNum(int activityId);
+    /**
      * delete all the nulluse participator
      * @param activityId
      * @return

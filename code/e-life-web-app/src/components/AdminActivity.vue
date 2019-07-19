@@ -15,7 +15,9 @@
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
                   <el-form-item label="封面">
-                    <img :src="props.row.photo" style="width: 80px; height: 80px">
+                    <button @click="show(props.row)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                      <img :src="props.row.photo" style="width: 100%; height: 100%">
+                    </button>
                   </el-form-item>
                   <el-form-item label="开始时间">
                     <span>{{ props.row.startTime }}</span>
@@ -96,6 +98,11 @@
         <el-button type="primary" @click="releaseA()">发 布</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisible2">
+      <div>
+        <img :src="photo" width="100%">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -113,11 +120,9 @@ export default {
       },
       search: '',
       dialogFormVisible: false,
-      activity: [{
-        id: 0,
-        title: '',
-        content: ''
-      }],
+      dialogFormVisible2: false,
+      photo: '',
+      activity: [],
       apply: [],
       applyId: '',
       time: [],
@@ -125,6 +130,8 @@ export default {
         title: '',
         content: ''
       },
+      page1: 1,
+      page2: 1,
       pickerOptions: {
         shortcuts: [{
           text: '未来一周',
@@ -183,6 +190,7 @@ export default {
     loadActivity () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.page1)
       let url = '/news-server/api/Activity/findAllActivity'
       this.$axios({
         method: 'post',
@@ -197,6 +205,7 @@ export default {
       this.applyId = row
       let bodyFormData = new FormData()
       bodyFormData.set('aid', row.id)
+      bodyFormData.set('page', this.page2)
       let url = '/news-server/api/Activity/findAllParticipator'
       this.$axios({
         method: 'post',
@@ -277,7 +286,7 @@ export default {
     },
     handleDelete (row) {
       let bodyFormData = new FormData()
-      bodyFormData.set('id', row.id)
+      bodyFormData.set('aid', row.id)
       let url = '/news-server/api/Activity/deleteActivity'
       this.$axios({
         method: 'post',
@@ -290,6 +299,20 @@ export default {
         } else {
           this.$alert('删除活动失败！')
         }
+      })
+    },
+    show (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('path', row.path)
+      let url = '/news-server/api/Activity/photo'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.photo = response.data.photo
+        this.dialogFormVisible2 = true
       })
     }
   }

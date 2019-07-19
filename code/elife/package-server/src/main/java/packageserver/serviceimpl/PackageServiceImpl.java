@@ -20,7 +20,7 @@ import java.util.List;
  * @Author wyx
  * @Date 2019.07.12
  */
-public class PayServiceImpl implements PackageService {
+public class PackageServiceImpl implements PackageService {
 
     @Autowired
     private PackageDao packageDao;
@@ -88,12 +88,20 @@ public class PayServiceImpl implements PackageService {
     @Override
     public JSONArray findHistory(String username,int page) {
         List<Package> list = packageDao.findHistory(username,page);
-        return listToJsonArray(list);
+        JSONArray jsonArray = listToJsonArray(list);
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",packageDao.findPageNum(username));
+        jsonArray.add(pageNum);
+        return jsonArray;
     }
 
     @Override
     public JSONArray findHistoryManager(int communityId,int page){
         List<Package> list = packageDao.findHistoryManager(communityId,page);
-        return listToJsonArray(list);
+        JSONArray jsonArray = listToJsonArray(list);
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",packageDao.findPageNumManager(communityId));
+        jsonArray.add(pageNum);
+        return jsonArray;
     }
 }

@@ -73,5 +73,19 @@ public interface PackageDao {
 
     List<Package> findHistoryManager(int  communityId,int page);
 
+    /**
+     * find page all
+     * @param username
+     * @return
+     */
+    int findPageNum(String username);
+
+    /**
+     * find page manager
+     * @param communityId
+     * @return
+     */
+    int findPageNumManager(int communityId);
+
 
 }

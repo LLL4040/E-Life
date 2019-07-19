@@ -58,7 +58,9 @@
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
                   <el-form-item label="封面">
-                    <img :src="props.row.photo" style="width: 80px; height: 80px">
+                    <button @click="show2(props.row)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                      <img :src="props.row.photo" style="width: 100%; height: 100%">
+                    </button>
                   </el-form-item>
                   <el-form-item label="开始时间">
                     <span>{{ props.row.startTime }}</span>
@@ -259,6 +261,20 @@ export default {
       let bodyFormData = new FormData()
       bodyFormData.set('path', row.path)
       let url = '/news-server/api/News/photo'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.photo = response.data.photo
+        this.dialogFormVisible2 = true
+      })
+    },
+    show2 (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('path', row.path)
+      let url = '/news-server/api/Activity/photo'
       this.$axios({
         method: 'post',
         url: url,

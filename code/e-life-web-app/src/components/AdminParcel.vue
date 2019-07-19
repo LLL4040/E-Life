@@ -53,11 +53,7 @@ export default {
       },
       search: '',
       dialogFormVisible: false,
-      messages: [{
-        time: 'yyyy-mm-dd',
-        manager: '门口王大爷',
-        status: '0'
-      }],
+      messages: [],
       sendM: {
         time: '',
         manager: '',

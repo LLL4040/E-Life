@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String postTime = df.format(new Date());
         String path="";
-        if(!photo.isEmpty()) {
+        if(photo.size() > 0) {
             for (int i = 0; i < photo.size(); i++) {
                 MultipartFile tmp = photo.get(i);
                 path = path + UUID.randomUUID() + tmp.getOriginalFilename() + "/";
@@ -89,9 +89,6 @@ public class PostServiceImpl implements PostService {
                 }
                 jsonObject.put("photo" , photos);
             }
-
-
-
             jsonObject.put("title",temp.getTitle());
 
             jsonObject.put("posterName", temp.getPosterName());
@@ -106,6 +103,7 @@ public class PostServiceImpl implements PostService {
 
         return jsonArray;
     }
+
     @Override
     public Post findPost(String id){
         return postDao.findPost(id);
@@ -113,6 +111,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(String pid){
           postDao.deletePost(pid);
-    };
+    }
 
 }

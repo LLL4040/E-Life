@@ -40,7 +40,9 @@
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
                   <el-form-item label="封面">
-                    <img :src="props.row.photo" style="width: 80px; height: 80px">
+                    <button @click="show(props.row)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                      <img :src="props.row.photo" style="width: 100%; height: 100%">
+                    </button>
                   </el-form-item>
                   <el-form-item label="时间">
                     <span>{{ props.row.time }}</span>
@@ -90,6 +92,11 @@
         <el-button type="primary" @click="releaseN()">发 布</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisible3">
+      <div>
+        <img :src="photo" width="100%">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -108,6 +115,7 @@ export default {
       search: '',
       dialogFormVisible1: false,
       dialogFormVisible2: false,
+      dialogFormVisible3: false,
       urgent: [],
       news: [],
       newUrgent: {
@@ -116,7 +124,9 @@ export default {
       newNews: {
         title: '',
         content: ''
-      }
+      },
+      pageNum1: 1,
+      pageNum2: 1
     }
   },
   mounted () {
@@ -149,6 +159,7 @@ export default {
     loadUrgent () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.pageNum1)
       let url = '/news-server/api/Urgent/findHistory'
       this.$axios({
         method: 'post',
@@ -163,6 +174,7 @@ export default {
     loadNews () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.pageNum2)
       let url = '/news-server/api/News/findHistory'
       this.$axios({
         method: 'post',
@@ -257,6 +269,20 @@ export default {
         document.getElementById('upImg').className = 'upload-button2'
       })
       element.click()
+    },
+    show (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('path', row.path)
+      let url = '/news-server/api/News/photo'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        this.photo = response.data.photo
+        this.dialogFormVisible3 = true
+      })
     }
   }
 }

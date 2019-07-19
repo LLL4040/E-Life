@@ -102,19 +102,31 @@ public class PayServiceImpl implements PayService {
     @Override
     public JSONArray findHistory(String username, int page) {
         List<Pay> list = payDao.findHistory(username,page);
-        return listToJsonArray(list);
+        JSONArray jsonArray = listToJsonArray(list);
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",payDao.getPageNum(username));
+        jsonArray.add(pageNum);
+        return jsonArray;
     }
 
     @Override
     public JSONArray findUnPayHistoryManager(int communityId, int page){
         List<Pay> list = payDao.findUnPayHistoryManager(communityId,page);
-        return listToJsonArray(list);
+        JSONArray jsonArray = listToJsonArray(list);
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",payDao.getPageNumManager(communityId));
+        jsonArray.add(pageNum);
+        return jsonArray;
     }
 
     @Override
     public JSONArray findPayHistoryManager(int communityId, int page){
         List<Pay> list = payDao.findPayHistoryManager(communityId, page);
-        return listToJsonArray(list);
+        JSONArray jsonArray = listToJsonArray(list);
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",payDao.getPageNumUnpayManager(communityId));
+        jsonArray.add(pageNum);
+        return jsonArray;
     }
 
     @Override

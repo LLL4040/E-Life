@@ -109,8 +109,9 @@ public class UrgentServiceImpl implements UrgentService {
             Iterator<UrgentUsed> coldIter = coldList.iterator();
             Urgent hot = new Urgent();
             UrgentUsed cold = new UrgentUsed();
-            int left = 10*(page-1);
-            int right = 10*page;
+            int row = 10;
+            int left = row*(page-1);
+            int right = row*page;
             int i=0;
             while (hotIter.hasNext()) {
                 if(i>=left && i<right) {
@@ -146,6 +147,13 @@ public class UrgentServiceImpl implements UrgentService {
                 }
                 i++;
             }
+            JSONObject allPage = new JSONObject();
+            int pageNum = (hotList.size()+coldList.size())/10;
+            if(pageNum % row != 0){
+                pageNum++;
+            }
+            allPage.put("pageNum",pageNum);
+            jsonArray.add(allPage);
             System.out.println(jsonArray);
             return jsonArray;
         }

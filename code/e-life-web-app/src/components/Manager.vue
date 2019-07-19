@@ -33,7 +33,7 @@
                   </el-dropdown>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage1(3)">小区论坛</a>
+                  <a class="nav-link tm-nav-link" @click="toPage1(3)" style="font-size: 20px;">小区论坛</a>
                 </li>
               </ul>
             </div>
@@ -47,8 +47,9 @@
           <div align="center">
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
             <div style="clear:both"></div>
-            <el-button class="text-center tm-text-primary mb-4" type="success" plain size="mini" icon="el-icon-info">管理员</el-button>
-            <el-button class="text-center tm-text-primary mb-4" type="primary" plain size="mini" icon="el-icon-edit" @click="dialogFormVisible = true">{{ userInfo.username }}</el-button>
+            <el-button type="success" plain size="mini" icon="el-icon-info">管理员</el-button>
+            <div style="clear:both"></div>
+            <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="dialogFormVisible = true">{{ userInfo.username }}</el-button>
             <div style="clear:both"></div>
           </div>
           <el-menu-item index="1" @click="toPage2(1, 7)">

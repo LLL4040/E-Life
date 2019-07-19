@@ -1,33 +1,32 @@
 <template>
   <div>
-<!--    <div align="center">-->
-<!--      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>-->
-<!--    </div>-->
+    <div align="center">
+      <el-button v-if="!dialogFormVisibleMain" icon="el-icon-back" type="primary" @click="goBack()">返回</el-button>
+      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>
+    </div>
     <el-row :gutter="10" style="padding-top: 20px" v-if="dialogFormVisibleMain">
       <el-col :span="18">
-<!--        <el-card class="box-card" >-->
-          <div v-for="o in postData" :key="o" class="text item">
-<!--            {{ '帖子时间 '+o.postTime}}-->
-<!--            <br/>-->
-<!--            {{ '帖子题目: ' + o.title + '  ' }}-->
-<!--            <br/>-->
-<!--            {{ '发帖人 '+o.posterName }}-->
-<!--            <br/>-->
-<!--            {{ '帖子内容 '+o.postContent }}-->
-<!--            <br/>-->
-<!--            <el-divider></el-divider>-->
-<!--            <el-link type="primary" href="/user">主要链接</el-link>-->
+        <div>
+          <div v-if="postData.length === 0">
             <el-card style="margin-bottom: 8px">
-              <el-button style="float: left; padding: 3px 0; font-size: 16px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
-              <p style="float:right; font-size: 12px;">{{o.posterName}}</p>
-              <br>
-              <p style="float: left; padding: 3px 0; font-size: 15px;">{{o.postContent.slice(0,20)}}</p>
-              <p style="float: left; padding-bottom: 1px; font-size: 17px;">{{((o.postContent.length > 20) ? "...": "")}}</p>
-              <br>
-              <p style="float:right; font-size: 12px;">{{o.postTime}}</p>
+              <p>这里空空的，什么帖子都没有- -|||</p>
             </el-card>
           </div>
-<!--        </el-card>-->
+          <div v-for="o in postData" :key="o" class="text item">
+            <el-card style="margin-bottom: 8px">
+              <el-button style="float: left; padding: 3px 0; font-size: 16px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
+              <p style="float:right; font-size: 12px;">{{o.poster}}</p>
+              <br>
+              <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,20)}}</p>
+              <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
+              <div v-for="x in o.photo" :key="x">
+                <img :src="x" style="width: 33%"/>
+              </div>
+              <br>
+              <p style="float:right; font-size: 12px;">{{o.time}}</p>
+            </el-card>
+          </div>
+        </div>
       </el-col>
       <el-col :span="6">
         <el-card class="box-card">
@@ -61,10 +60,10 @@
           <div v-for="o in commentData" :key="o" class="text item">
             <el-card style="margin-bottom: 0">
               <el-col :span="4" style="float: left" >
-                <p style="float: bottom; font-size: 15px">{{o.commenterName}}</p>
+                <p style="float: bottom; font-size: 16px">{{o.commenterName}}</p>
               </el-col>
               <el-col :span="20" style="float: left">
-                <p style="float:left; font-size: 15px;">{{o.postComment}}</p>
+                <p style="float:left; font-size: 16px;">{{o.postComment}}</p>
                 <br>
                 <p style="float: right; font-size: 12px;">{{o.location + '楼，发布于' + o.commentsTime}}</p>
               </el-col>
@@ -73,8 +72,8 @@
         </el-col>
         <el-col :span="4" style="float: right">
           <el-card :span="4">
-            <el-button style="alignment: center" @click="goBack()">返回</el-button>
-            <el-button style="alignment: center" @click="dialogFormVisibleDetail = true" type="primary">评论</el-button>
+            <el-button icon="el-icon-back" @click="goBack()">返回</el-button>
+            <el-button @click="dialogFormVisibleDetail = true" type="primary">评论</el-button>
           </el-card>
         </el-col>
       </el-col>
@@ -87,10 +86,34 @@
         <el-form-item label="内容">
           <el-input v-model="myPost.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
         </el-form-item>
+        <el-form-item label="添加图片">
+          <div class="upload">
+            <div class="upload_warp_left" @click="fileClick()">
+              <el-button type="primary" plain>添加图片</el-button>
+            </div>
+            <div class="upload_warp_text">
+              已选中{{imgList.length}}张图片
+            </div>
+            <div class="upload_warp" style="border: 1px solid white;">
+              <div class="upload_warp_img" v-show="imgList.length!=0" >
+                <div class="upload_warp_img_div" v-for="(item,index) of imgList" :key="index">
+                  <div class="upload_warp_img_div_top" >
+                    <div class="upload_warp_img_div_text" >
+                      {{item.file.name}}
+                    </div>
+                    <img src="../../public/img/del.png" class="upload_warp_img_div_del" @click="fileDel(index)">
+                  </div>
+                  <img :src="item.file.src">
+                </div>
+              </div>
+            </div>
+            <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload($event)" style="display: none"/>
+          </div>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addforum">发 布</el-button>
+        <el-button type="primary" @click="addForum()">发 布</el-button>
       </div>
     </el-dialog>
     <el-dialog title="发帖详情" :visible.sync="dialogFormVisibleDetail">
@@ -112,6 +135,7 @@ export default {
   name: 'Forum',
   data () {
     return {
+      formData: [],
       userInfo: {
         community: '',
         communityId: 0,
@@ -134,7 +158,10 @@ export default {
       postData: [],
       commentPage: 1,
       commentSize: 5,
-      commentData: []
+      commentData: [],
+      imgList: [],
+      pageNum: 1,
+      pageSize: 1
     }
   },
   mounted () {
@@ -163,13 +190,14 @@ export default {
         sessionStorage.setItem('community', this.userInfo.community)
       })
     },
-    addforum () {
+    addForum () {
       this.dialogFormVisible = false
       let bodyFormData = new FormData()
       bodyFormData.set('title', this.myPost.title)
       bodyFormData.set('postContent', this.myPost.content)
       bodyFormData.set('posterName', this.userInfo.username)
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.append('photo', this.formData)
       let url = '/estateforum-server/api/post/addPost'
       this.$axios({
         method: 'post',
@@ -177,11 +205,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data) {
-          this.$alert('加入成功！')
+        if (response.data.post) {
+          this.$alert('发布帖子成功！')
           this.findPost()
         } else {
-          this.$alert('加入失败！')
+          this.$alert('发布帖子失败！')
         }
       })
     },
@@ -196,27 +224,30 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        // for (var i = 0; i < response.data.length; i++) {
-        //   var objproject = {
-        //     'title': response.data[i].title, // 这个是赋值到一个数组对象里面去，开发的时候就是取到里面的值进行一个逻辑判断，要干嘛干嘛的。这个也加上他的下标
-        //     'poster': response.data[i].posterName,
-        //     'content': response.data[i].postContent,
-        //     'time': response.data[i].postTime,
-        //     'id': response.data[i].id
-        //   }
-        //   this.postData.push(objproject)
-        // }
+        this.postData = []
+        this.pageSize = response.data[0].pageNum
+        for (let i = 1; i < response.data.length; i++) {
+          let objproject = {
+            'photo': response.data[i].photo,
+            'title': response.data[i].title, // 这个是赋值到一个数组对象里面去，开发的时候就是取到里面的值进行一个逻辑判断，要干嘛干嘛的。这个也加上他的下标
+            'poster': response.data[i].posterName,
+            'content': response.data[i].postContent,
+            'time': response.data[i].postTime,
+            'id': response.data[i].id
+          }
+          this.postData.push(objproject)
+        }
         console.log(response.data)
-        this.postData = response.data
+        // this.postData = response.data
       })
     },
     toDetail (object) {
       this.commentData = []
       let data = {
-        'commenterName': object.posterName,
+        'commenterName': object.poster,
         'pid': object.id,
-        'commentsTime': object.postTime,
-        'postComment': object.postContent,
+        'commentsTime': object.time,
+        'postComment': object.content,
         'location': 1
       }
       this.commentData.push(data)
@@ -289,11 +320,134 @@ export default {
       } else {
         this.$alert('评论失败！')
       }
+    },
+    fileClick () { // 点击选择图片按钮
+      document.getElementById('files').click()
+    },
+    handleFilesUpload (el) { // 一定要在这选择一次时，append一次
+      this.filesArr = this.$refs.files.files
+      for (let i = 0; i < this.filesArr.length; i++) {
+        this.formData.push(this.filesArr[i])
+      }
+      if (!el.target.files[0].size) return
+      this.fileList(el.target.files)
+    },
+    fileList (files) {
+      for (let i = 0; i < files.length; i++) {
+        this.fileAdd(files[i])
+      }
+    },
+    fileAdd (file) {
+      this.size = this.size + file.size// 总大小
+      let reader = new FileReader()
+      reader.vue = this
+      reader.readAsDataURL(file)
+      reader.onload = function () {
+        file.src = this.result
+        this.vue.imgList.push({ file })
+      }
+    },
+    fileDel (index) { // 删除已选择的图片
+      this.size = this.size - this.imgList[index].file.size// 总大小
+      this.imgList.splice(index, 1)
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
+  .upload_warp_img_div_del {
+    position: absolute;
+    top: 6px;
+    width: 16px;
+    right: 4px;
+  }
 
+  .upload_warp_img_div_top {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.4);
+    line-height: 30px;
+    text-align: left;
+    color: #fff;
+    font-size: 12px;
+    text-indent: 4px;
+  }
+
+  .upload_warp_img_div_text {
+    white-space: nowrap;
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .upload_warp_img_div img {
+    max-width: 115px;
+    max-height: 110px;
+    vertical-align: middle;
+  }
+
+  .upload_warp_img_div {
+    position: relative;
+    height: 120px;
+    width: 120px;
+    border: 1px solid #ccc;
+    margin: 0px 5px 5px 0px;
+    float: left;
+    line-height: 120px;
+    display: table-cell;
+    text-align: center;
+    background-color: #eee;
+    cursor: pointer;
+  }
+
+  .upload_warp_img {
+
+    padding: 0 0 0 0;
+    overflow: hidden
+  }
+
+  .upload_warp_text {
+    text-align: left;
+    margin-bottom: 5px;
+    padding-top: 5px;
+    text-indent: 14px;
+    border-top: 1px solid #ccc;
+    font-size: 14px;
+  }
+
+  .upload_warp_right {
+    float: left;
+    width: 57%;
+    margin-left: 2%;
+    height: 100%;
+    border: 1px dashed #999;
+    border-radius: 4px;
+    line-height: 130px;
+    color: #999;
+  }
+
+  .upload_warp_left button {
+    margin: 5px 5px 0px 5px;
+    cursor:pointer;
+  }
+
+  .upload_warp_left {
+    float: left;
+  }
+
+  .upload_warp {
+    margin: 5px;
+  }
+
+  .upload {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    background-color: #fff;
+
+    box-shadow: 0px 1px 0px #ccc;
+    border-radius: 4px;
+  }
 </style>

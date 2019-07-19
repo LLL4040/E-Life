@@ -9,6 +9,7 @@ import newsserver.repository.ParticipatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.event.ListDataEvent;
 import java.util.List;
 
 @Repository
@@ -85,5 +86,31 @@ public class ActivityDaoImpl implements ActivityDao {
             return false;
         }
 
+    }
+
+    @Override
+    public int findPageActivity(int communityId){
+        List<Activity> temp = activityRepository.findPageNum(communityId);
+        int pageNum=temp.size();
+        if(pageNum%10!=0){
+            pageNum=pageNum/10+1;
+        }
+        else {
+            pageNum=pageNum/10;
+        }
+        return pageNum;
+    }
+
+    @Override
+    public int findPageParticipator(int aid){
+        List<Participator> temp = participatorRepository.findPageNum(aid);
+        int pageNum=temp.size();
+        if(pageNum%10!=0){
+            pageNum=pageNum/10+1;
+        }
+        else {
+            pageNum=pageNum/10;
+        }
+        return pageNum;
     }
 }
