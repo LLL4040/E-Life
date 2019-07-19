@@ -37,4 +37,11 @@ public interface BargainRepository extends JpaRepository<Bargain, String> {
      * @return bargain
      */
     List<Bargain> findAllByGoodsContaining(String goods);
+
+    /**
+     * find all bargains by merchant id
+     * @param id id
+     * @return bargains
+     */
+    List<Bargain> findAllByMerchant_Id(Long id);
 }

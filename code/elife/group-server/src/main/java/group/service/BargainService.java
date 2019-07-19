@@ -34,4 +34,11 @@ public interface BargainService {
      * @return all bargain
      */
     JSONArray getAllBargain();
+
+    /**
+     * get all bargain by merchant id
+     * @param id merchant id
+     * @return bargains
+     */
+    JSONArray getBargainByMerchantId(Long id);
 }

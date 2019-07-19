@@ -41,4 +41,9 @@ public class BargainDaoImpl implements BargainDao {
     public List<Bargain> findAllByGoodsContaining(String goods){
         return bargainRepository.findAllByGoodsContaining(goods);
     }
+
+    @Override
+    public List<Bargain> findAllByMerchant_Id(Long id){
+        return bargainRepository.findAllByMerchant_Id(id);
+    }
 }

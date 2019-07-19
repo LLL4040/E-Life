@@ -2,19 +2,14 @@
   <div>
     <div align="center">
       <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入内容关键字筛选"/>
-      <el-button style="float: left;" size="medium" type="primary" round @click="dialogFormVisible = true">添加团购</el-button>
+      <el-button style="float: left;" size="medium" type="primary" round @click="dialogFormVisible = true">添加优惠</el-button>
     </div>
     <div style="padding-top: 20px;">
       <el-card class="box-card">
-        <el-table :data="group.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+        <el-table :data="bargains.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="封面">
-                  <button @click="showPhoto(props.row)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
-                    <img :src="props.row.photo" style="width: 100%; height: 100%">
-                  </button>
-                </el-form-item>
                 <el-form-item label="详情">
                   <span>{{ props.row.content }}</span>
                 </el-form-item>
@@ -23,8 +18,8 @@
           </el-table-column>
           <el-table-column prop="start" label="开始时间"></el-table-column>
           <el-table-column prop="end" label="截止时间"></el-table-column>
-          <el-table-column prop="num" label="人数上限"></el-table-column>
           <el-table-column prop="title" label="标题"></el-table-column>
+          <el-table-column prop="goods" label="商品"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row)"></el-button>
@@ -32,35 +27,26 @@
           </el-table-column>
         </el-table>
       </el-card>
-      <el-dialog title="团购需求" :visible.sync="dialogFormVisible">
+      <el-dialog title="优惠商品" :visible.sync="dialogFormVisible">
         <el-form :model="commands">
           <el-form-item label="起始时间">
             <el-date-picker v-model="time" type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss"
                             range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="团购标题">
+          <el-form-item label="优惠标题">
             <el-input v-model="commands.title" ></el-input>
           </el-form-item>
-          <el-form-item label="团购最大人数">
-            <el-input v-model="commands.num" ></el-input>
+          <el-form-item label="优惠商品">
+            <el-input v-model="commands.goods" ></el-input>
           </el-form-item>
-          <el-form-item label="封面">
-            <button class="upload-button" id="upImg" type="button" @click="upF()"></button>
-            <input type='file' accept="image/*" id="file" ref="file" style="display: none"/>
-          </el-form-item>
-          <el-form-item label="团购内容">
+          <el-form-item label="优惠内容">
             <el-input v-model="commands.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addDiscount()">发 布</el-button>
-        </div>
-      </el-dialog>
-      <el-dialog :visible.sync="dialogFormVisible2">
-        <div>
-          <img :src="photo" width="100%">
+          <el-button type="primary" @click="addBargain()">发 布</el-button>
         </div>
       </el-dialog>
     </div>
@@ -69,11 +55,10 @@
 
 <script>
 export default {
-  name: 'MeGroup',
+  name: 'MeBargain',
   data () {
     return {
       search: '',
-      photo: '',
       form: {
         id: '',
         username: '',
@@ -87,17 +72,16 @@ export default {
         detail: '',
         address: ''
       },
+      bargains: [],
+      dialogFormVisible: false,
+      time: [],
       commands: {
         start: '',
         end: '',
         title: '',
-        content: '',
-        num: ''
+        goods: '',
+        content: ''
       },
-      dialogFormVisible: false,
-      dialogFormVisible2: false,
-      group: [],
-      time: [],
       pickerOptions: {
         shortcuts: [{
           text: '未来一周',
@@ -143,34 +127,31 @@ export default {
       this.form.type = sessionStorage.getItem('type')
       this.form.detail = sessionStorage.getItem('detail')
       this.form.address = sessionStorage.getItem('address')
+      this.loadBargain()
     },
-    loadGroup () {
+    loadBargain () {
       let bodyFormData = new FormData()
-      bodyFormData.set('merchantId', this.form.id)
-      let url = '/group-server/api/discount/findDiscountByMerchantId'
+      bodyFormData.set('id', this.form.id)
+      let url = '/group-server/api/bargain/getBargainByMerchantId'
       this.$axios({
         method: 'post',
         url: url,
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.group = response.data
+        this.bargains = response.data
       })
     },
-    addDiscount () {
-      this.dialogFormVisible = false
-      let imagFile = this.$refs.file.files[0]
+    addBargain () {
       let bodyFormData = new FormData()
       bodyFormData.set('startTime', this.time[0])
       bodyFormData.set('endTime', this.time[1])
       bodyFormData.set('merchantId', this.form.id)
-      bodyFormData.set('number', this.commands.num)
+      bodyFormData.set('goods', this.commands.goods)
       bodyFormData.set('content', this.commands.content)
       bodyFormData.set('status', 1)
-      bodyFormData.set('communityId', this.form.communityId)
       bodyFormData.set('title', this.commands.title)
-      bodyFormData.append('photo', imagFile)
-      let url = '/group-server/api/discount/addDiscount'
+      let url = '/group-server/api/bargain/addBargain'
       this.$axios({
         method: 'post',
         url: url,
@@ -179,7 +160,7 @@ export default {
       ).then(response => {
         if (response.data.add === 1) {
           this.$alert('添加成功！')
-          this.loadGroup()
+          this.loadBargain()
           this.dialogFormVisible = false
         } else {
           this.$alert('添加失败！')
@@ -189,7 +170,7 @@ export default {
     handleDelete (row) {
       let bodyFormData = new FormData()
       bodyFormData.set('id', row.id)
-      let url = '/group-server/api/discount/deleteDiscount'
+      let url = '/group-server/api/bargain/deleteBargain'
       this.$axios({
         method: 'post',
         url: url,
@@ -198,37 +179,15 @@ export default {
       ).then(response => {
         if (response.data.delete === 1) {
           this.$alert('删除成功！')
-          this.loadGroup()
+          this.loadBargain()
         } else {
           this.$alert('删除失败！')
         }
-      })
-    },
-    upF () {
-      let element = document.getElementById('file')
-      element.addEventListener('change', function (e) {
-        document.getElementById('upImg').className = 'upload-button2'
-      })
-      element.click()
-    },
-    showPhoto (row) {
-      let bodyFormData = new FormData()
-      bodyFormData.set('path', row.path)
-      let url = '/group-server/api/discount/photo'
-      this.$axios({
-        method: 'post',
-        url: url,
-        data: bodyFormData,
-        config: { headers: { 'Content-type': 'multipart/form-data' } } }
-      ).then(response => {
-        this.photo = response.data.photo
-        this.dialogFormVisible2 = true
       })
     }
   },
   mounted () {
     this.loadData()
-    this.loadGroup()
   }
 }
 </script>
