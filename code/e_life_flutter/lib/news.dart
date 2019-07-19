@@ -6,16 +6,32 @@ class newswidget extends StatefulWidget {
     return new myWidget();
   }
 }
-
+class Choice {
+  const Choice({this.title, this.icon, this.position});
+  final String title;
+  final int position;
+  final IconData icon;
+}
 class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
   final Widget myDevider = Container(
     child: Divider(
       color: Colors.black12,
     ),
   );
-  Widget urgentSection = Expanded(
+  Widget urgentSection = Container(
     child: ListView(
       children: [
+
+        Container(
+          child: Divider(),
+        ),
+        Container(
+          padding: EdgeInsets.all(10),
+          child: new Image.asset(
+            'images/app.png',
+            height: 100,
+          ),
+        ),
         Container(
           padding: const EdgeInsets.only(bottom: 8),
           child: Text(
@@ -28,36 +44,13 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
             textAlign: TextAlign.center,
           ),
         ),
-        Container(
-          child: Divider(),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: new Image.asset(
-            'images/app.png',
-            height: 100,
-          ),
-        ),
-
       ],
     ),
   );
-  Widget newsSection = new Expanded(
+  Widget newsSection = new Container(
     child: ListView(
       children: <Widget>[
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(
-                  "最新资讯",
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
-          ],
-        ),
+
         new ListTile(
           leading: new Icon(Icons.nature_people),
           title: new Text('活动1'),
@@ -89,22 +82,9 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
       ],
     ),
   );
-  Widget activitySection = new Expanded(
+  Widget activitySection = new Container(
     child: ListView(
       children: <Widget>[
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(
-                  "最新资讯",
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
-          ],
-        ),
 
         new ListTile(
           leading: new Icon(Icons.nature_people),
@@ -136,30 +116,38 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
       ],
     ),
   );
-
+  List<Choice> tabs = [];//导航栏
+  TabController mTabController;
+  int mCurrentPosition = 0;
 
   TabController controller;
-  var tabs = <Tab>[];
+
 
   @override
   void initState() {
     super.initState();
-    tabs = <Tab>[
-      Tab(text: "紧急通知",),
-      Tab(text: "最新资讯",),
-      Tab(text: "活动安排",),
+    tabs.add(Choice(title: '紧急通知', icon: Icons.fiber_new, position: 0));
+    tabs.add(Choice(title: '最新资讯', icon: Icons.message, position: 1));
+    tabs.add(Choice(title: '活动管理', icon: Icons.message, position: 2));
 
-
-    ];
-
-    //initialIndex初始选中第几个
-    controller =
-        TabController(initialIndex: 0, length: tabs.length, vsync: this);
+    mTabController = new TabController(vsync: this, length: tabs.length);
+    //判断TabBar是否切换
+    mTabController.addListener(() {
+      if (mTabController.indexIsChanging) {
+        setState(() {
+          mCurrentPosition = mTabController.index;
+        });
+      }
+    });
   }
 
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> newsContain=[];
+    newsContain.add(urgentSection);
+    newsContain.add(newsSection);
+    newsContain.add(activitySection);
 
     return DefaultTabController(
       length: tabs.length,
@@ -167,20 +155,27 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
         home: Scaffold(
           appBar:
           TabBar(
-            controller: controller,//可以和TabBarView使用同一个TabController
-            tabs: tabs,
-            isScrollable: true,
+            tabs: tabs.map((Choice choice) {
+              return new Tab(
+                text: choice.title,
+                icon: new Icon(
+                  choice.icon,
+                ),
+              );
+            }).toList(),
+            controller: mTabController,
+            //isScrollable: true,
             indicatorColor: Colors.black12,
             indicatorWeight: 1,
-            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorSize: TabBarIndicatorSize.label,
             indicatorPadding: EdgeInsets.fromLTRB(5.0,1.0,5.0,1.0),
-            labelPadding: EdgeInsets.only( left: 20),
+            labelPadding: EdgeInsets.all( 10),
             indicator: const BoxDecoration(),
             labelColor: Color(0xff333333),
-            labelStyle: TextStyle(
-
-              fontSize: 12.0,
-            ),
+//            labelStyle: TextStyle(
+//
+//              fontSize: 12.0,
+//            ),
             unselectedLabelColor: Colors.black12,
             unselectedLabelStyle: TextStyle(
               fontSize: 12.0,
@@ -188,11 +183,17 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
           ),
 
           body: TabBarView(
-              controller: controller,
+              controller:  mTabController,
               children: tabs
-                  .map((Tab tab) =>
-                  Container(child: Center(child: Text(tab.text),),))
-                  .toList()),
+                  .map((Choice choice) {
+                return new Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child:newsContain[choice.position] ) ;
+
+
+              }).toList(),
+
+          ),
         ),
       ),
     );
@@ -200,6 +201,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    controller.dispose();
+    mTabController.dispose();
   }
 }
+
