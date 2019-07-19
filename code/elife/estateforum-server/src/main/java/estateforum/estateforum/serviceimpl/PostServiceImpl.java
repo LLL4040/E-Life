@@ -68,17 +68,20 @@ public class PostServiceImpl implements PostService {
         while(iter.hasNext()){
             Post temp = iter.next();
             JSONObject jsonObject = new JSONObject();
-            String[]paths = temp.getPath().split("/");
-            int length = paths.length;
-            List<String> photos=new ArrayList<>();
-            for (int i=0;i<length;i++){
-                File file = new File("./estateforum-server/pic/"+paths[i]);
-                byte[] data = Files.readAllBytes(file.toPath());
-                String photo="data:iamge/jpg;base64"+ Base64.encodeBase64String(data);
-                photos.add(photo);
+            if(temp.getPath().equals("")){
+                jsonObject.put("photo" , null);
+            }else {
+                String[]paths = temp.getPath().split("/");
+                int length = paths.length;
+                List<String> photos=new ArrayList<>();
+                for (int i=0;i<length;i++){
+                    File file = new File("./estateforum-server/pic/"+paths[i]);
+                    byte[] data = Files.readAllBytes(file.toPath());
+                    String photo="data:iamge/jpg;base64"+ Base64.encodeBase64String(data);
+                    photos.add(photo);
+                }
+                jsonObject.put("photo" , photos);
             }
-
-            jsonObject.put("photo" , photos);
             jsonObject.put("title",temp.getTitle());
 
             jsonObject.put("posterName", temp.getPosterName());
@@ -91,6 +94,7 @@ public class PostServiceImpl implements PostService {
         }
         return jsonArray;
     }
+
     @Override
     public Post findPost(String id){
         return postDao.findPost(id);
