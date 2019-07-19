@@ -93,4 +93,18 @@ public interface ActivityDao {
      */
     boolean existApply(int aid,String username);
 
+    /**
+     * find page
+     * @param communityId
+     * @return
+     */
+    int findPageActivity(int communityId);
+
+    /**
+     * find page
+     * @param aid
+     * @return
+     */
+    int findPageParticipator(int aid);
+
 }

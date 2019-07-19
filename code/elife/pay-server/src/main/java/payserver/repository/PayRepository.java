@@ -74,8 +74,30 @@ public interface PayRepository extends JpaRepository<Pay, Integer> {
      */
     @Query(value=" select * from pay where (status=1 or status=2) and community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
     List<Pay> findPayHistoryManager(int communityId,int left,int right);
+    /**
+     * get page num pay manager
+     * @param communityId
+     * @return
+     */
 
+    @Query(value="select * from pay  where  (status=1 or status=2) and community_id=?1",nativeQuery = true)
+    List<Pay> findPageNumManager(int communityId);
 
+    /**
+     * get page num manager
+     * @param communityId
+     * @return
+     */
+    @Query(value="select * from pay  where  (status=-1 or status=-2) and community_id=?1",nativeQuery = true)
+    List<Pay> findPageNumUnpayManager(int communityId);
+
+    /**
+     * get page num
+     * @param username
+     * @return
+     */
+    @Query(value=" select * from pay where username=?1 ",nativeQuery = true)
+    List<Pay> findPageNum(String username);
 
     /**
      * get zfb Account

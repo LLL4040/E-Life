@@ -55,4 +55,14 @@ public interface ActivityRepository extends JpaRepository<Activity, Integer> {
     @Query(value=" select * from activity b where b.community_id=?1 order by id desc limit 5",nativeQuery = true)
     List<Activity> findNew(int communityId);
 
+    /**
+     * get page num
+     * @param communityId
+     * @return
+     */
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value="select * from activity b where b.community_id=?1",nativeQuery = true)
+    List<Activity> findPageNum(int communityId);
+
 }
