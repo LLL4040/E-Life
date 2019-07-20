@@ -41,17 +41,16 @@ public class PostServiceImpl implements PostService {
             for (int i = 0; i < photo.size(); i++) {
                 MultipartFile tmp = photo.get(i);
                 System.out.println(tmp.getOriginalFilename());
-                path = path + UUID.randomUUID() + tmp.getOriginalFilename() + "/";
+                String tmpPath = UUID.randomUUID()+tmp.getOriginalFilename();
+                String oo=tmpPath+"/";
+                path = path + oo;
                 if (!tmp.isEmpty()) {
                     byte[] bytes = tmp.getBytes();
                     BufferedOutputStream bufferedOutputStream = new
-                            BufferedOutputStream(new FileOutputStream(new File("./estateforum-server/pic/" + tmp)));
+                            BufferedOutputStream(new FileOutputStream(new File("./estateforum-server/pic/" + tmpPath)));
                     bufferedOutputStream.write(bytes);
                     bufferedOutputStream.close();
-                    Thumbnails.of("./estateforum-server/pic/" + tmp)
-                            .size(80, 80)
-                            .keepAspectRatio(false)
-                            .toFile("./estateforum-server/cpic/" + tmp);
+
                 }
 
             }
@@ -84,12 +83,14 @@ public class PostServiceImpl implements PostService {
                 jsonObject.put("photo" , null);
             }else {
                 String[]paths = temp.getPath().split("/");
+                System.out.println(paths);
                 int length = paths.length;
                 List<String> photos=new ArrayList<>();
                 for (int i=0;i<length;i++){
+                    System.out.println("图片为"+paths[i]);
                     File file = new File("./estateforum-server/pic/"+paths[i]);
                     byte[] data = Files.readAllBytes(file.toPath());
-                    String photo="data:iamge/jpg;base64"+ Base64.encodeBase64String(data);
+                    String photo="data:image/jpg;base64,"+ Base64.encodeBase64String(data);
                     photos.add(photo);
                 }
                 jsonObject.put("photo" , photos);
