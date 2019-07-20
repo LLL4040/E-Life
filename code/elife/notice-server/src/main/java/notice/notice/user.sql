@@ -19,4 +19,5 @@ select count(*) from (select * from noticeUser where id=9 limit 1)as A;
 delete from noticeUser  where id=25;
 
 select * from (maintain natural join (select username from user where community_id=1)as A);
-insert into `notice`(id,time,content,managername,communityId)value (5,'2019/7/10','你家厕所欠费了','二郎神',1);
+insert into `notice`(id,time,content,managername,communityId)value (2,'2019/7/10','你家厕所欠费了','二郎神',1);
+select  count(*) from notice where managername="二郎神";

@@ -58,7 +58,12 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<NoticeUser> findbyNoticeId(int noticeUser) {
-        return noticeDao.findbyNoticeId(noticeUser);
+    public List<NoticeUser> findbyNoticeId(int noticeId) {
+        return noticeDao.findbyNoticeId(noticeId);
+    }
+
+    @Override
+    public int countByManagerName(String managername) {
+        return noticeDao.countByManagerName(managername);
     }
 }

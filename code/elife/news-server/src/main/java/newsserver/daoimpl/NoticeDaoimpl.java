@@ -100,4 +100,9 @@ public class NoticeDaoimpl implements NoticeDao {
     public List<NoticeUser> findbyNoticeId(int noticeId) {
         return noticeUserRepository.findByNoticeId(noticeId);
     }
+
+    @Override
+    public int countByManagerName(String managername) {
+        return noticeRepository.countByManagerName(managername);
+    }
 }

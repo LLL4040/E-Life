@@ -30,10 +30,10 @@ public class PostController {
     PostCommentsService postCommentsService;
     @RequestMapping(path = "/addPost")
     @ResponseBody
-    public JSONObject addPost(@RequestParam String title, @RequestParam String postContent, @RequestParam String posterName, @RequestParam int communityId, @RequestParam List<MultipartFile> photo)throws IOException {
+    public JSONObject addPost(@RequestParam String title, @RequestParam String postContent, @RequestParam String posterName, @RequestParam int communityId, @RequestParam(required=false) List<MultipartFile> photo)throws IOException {
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
 
-        if(posterName.equals("")||postContent.equals("")||title.equals("")||photo.isEmpty()){
+        if(posterName.equals("")||postContent.equals("")||title.equals("")){
 
             object.put("post", "0");
             object.put("message","信息不能为空");

@@ -3,6 +3,8 @@ package lifeservice.lifeservice.serviceimpl;
 import lifeservice.lifeservice.dao.MaintainDao;
 import lifeservice.lifeservice.entity.Maintain;
 import lifeservice.lifeservice.service.MaintainService;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +42,59 @@ public class MaintainServiceImpl implements MaintainService {
     }
 
     @Override
-    public List<Maintain> findMaintainByCommunityId(int communityId,int pageNumber,int pageSize) {
-        return maintainDao.findMaintainByCommunityId(communityId,pageNumber,pageSize);
+    public JSONArray findMaintainByCommunityId(int communityId, int pageNumber, int pageSize) {
+        List<Maintain> maintainList= maintainDao.findMaintainByCommunityId(communityId,pageNumber,pageSize);
+        long count =maintainDao.countMaintain(communityId);
+        long pageNum = count/pageSize;
+        if (count%pageSize!=0){
+            pageNum+=1;
+        }
+        JSONObject object1=new JSONObject();
+        object1.put("pageNum",pageNum);
+        JSONArray result=new JSONArray();
+        result.add(object1);
+        for (Maintain maintain:maintainList){
+            JSONObject object =new JSONObject();
+            object.put("id",maintain.getId());
+            object.put("time",maintain.getTime());
+            object.put("status",maintain.getStatus());
+            object.put("content",maintain.getContent());
+            object.put("maintainname",maintain.getMaintainname());
+            object.put("phone",maintain.getPhone());
+            object.put("managername",maintain.getManagername());
+            object.put("username",maintain.getUsername());
+            object.put("userphone",maintain.getUserPhone());
+            result.add(object);
+        }
+        return result;
     }
 
     @Override
-    public List<Maintain> findHaveMaintainByCommunityId(int communityId, int pageNumber, int pageSize) {
-        return maintainDao.findHaveMaintainByCommunityId(communityId,pageNumber,pageSize);
+    public JSONArray findHaveMaintainByCommunityId(int communityId, int pageNumber, int pageSize) {
+        List<Maintain> maintainList = maintainDao.findHaveMaintainByCommunityId(communityId,pageNumber,pageSize);
+        long count =maintainDao.countHaveMaintain(communityId);
+        long pageNum= count/pageSize;
+        if (count%pageSize!=0){
+            pageNum+=1;
+        }
+        JSONObject object1=new JSONObject();
+        object1.put("pageNum",pageNum);
+        JSONArray result = new JSONArray();
+        result.add(object1);
+        for (Maintain maintain:maintainList){
+            JSONObject object =new JSONObject();
+            object.put("id",maintain.getId());
+            object.put("time",maintain.getTime());
+            object.put("status",maintain.getStatus());
+            object.put("content",maintain.getContent());
+            object.put("maintainname",maintain.getMaintainname());
+            object.put("phone",maintain.getPhone());
+            object.put("managername",maintain.getManagername());
+            object.put("username",maintain.getUsername());
+            object.put("userphone",maintain.getUserPhone());
+            result.add(object);
+        }
+        return result;
     }
 
     @Override

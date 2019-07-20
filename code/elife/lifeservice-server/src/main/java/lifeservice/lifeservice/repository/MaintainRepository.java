@@ -29,6 +29,8 @@ public interface  MaintainRepository extends JpaRepository<Maintain,Long> {
      */
     @Query(value = "select * from (maintain natural join (select username from user where community_id=?1)as A) where status=0 order by id limit ?2,?3",nativeQuery = true)
     List<Maintain> findMaintainByCommunityId(int communityId,int pageNumber,int pageSize);
+
+
     /**
      * 该函数返回特定小区的所有的已处理和已完成的请求
      * @return 返回请求单的列表
@@ -45,4 +47,10 @@ public interface  MaintainRepository extends JpaRepository<Maintain,Long> {
      */
     @Query(value = "select count(*) from (maintain natural join (select username from user where community_id=?1)as A) where status=0",nativeQuery = true)
     long countMaintain(int communityId);
+    /**
+     * 该函数返回已处理和处理中维修请求的数量
+     * @return
+     * @param communityId */
+    @Query(value = "select count(*) from (maintain natural join (select username from user where community_id=?1)as A) where status<>0",nativeQuery = true)
+    long countHaveMaintain(int communityId);
 }

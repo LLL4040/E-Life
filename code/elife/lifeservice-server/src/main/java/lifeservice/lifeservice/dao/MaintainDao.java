@@ -69,5 +69,10 @@ public interface MaintainDao {
      * @param communityId 小区id
      */
     long countMaintain(int communityId);
+    /**
+     * 该函数返回已处理和处理中维修请求的数量
+     * @return
+     * @param communityId */
+    long countHaveMaintain(int communityId);
 
 }
