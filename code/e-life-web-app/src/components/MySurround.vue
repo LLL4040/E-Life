@@ -137,10 +137,12 @@ export default {
         {
           case '周边餐饮': icons = require('../../static/brown.png')
             break
+          case '超市送货':
           case '超市购物': icons = require('../../static/blue.png')
             break
           case '休闲娱乐': icons = require('../../static/green.png')
             break
+          case '电脑维修':
           case '生活服务': icons = require('../../static/purple.png')
             break
           // default: icons = require('../../static/black.png')
