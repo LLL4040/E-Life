@@ -7,7 +7,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>停车费账单</span>
+            <span style="font-size: 16px;">停车费账单</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible1 = true"></el-button>
           </div>
           <el-table :data="bill.filter(data => (data.status === -1 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
@@ -20,7 +20,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>物业费账单</span>
+            <span style="font-size: 16px;">物业费账单</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible2 = true"></el-button>
           </div>
           <el-table :data="bill.filter(data => (data.status === -2 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">

@@ -2,14 +2,14 @@
   <div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="10" align="left">
-        <el-card class="box-card">
+        <el-card class="box-card" style="font-size: 16px;">
           上班时间：周一至周五下午三点到五点<br>
           联系电话：111-1111-1111<br>
           办公室地址：xxxxxxxxxx
         </el-card>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>添加请求</span>
+            <span style="font-size: 16px;">添加请求</span>
           </div>
           <el-form label-width="70px" :model="form">
             <el-form-item label="联系方式">
@@ -27,7 +27,7 @@
       <el-col :span="14">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>我的请求&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="font-size: 16px;">我的请求&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <el-input v-model="search" size="medium" style="width: 400px" suffix-icon="el-icon-search" placeholder="输入012筛选状态-(2:已解决、0:未处理、1:处理中)"/>
             </span>
           </div>

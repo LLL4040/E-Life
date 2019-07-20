@@ -6,7 +6,7 @@
     <div style="padding-top: 20px;">
       <el-card style="padding-left: 20px">
         <div slot="header" class="clearfix" style="padding-right: 20px;">
-          <span>已发送邮包通知列表</span>
+          <span style="font-size: 16px;">已发送邮包通知列表</span>
           <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
         </div>
         <el-table :data="messages.filter(data => !search || data.status === search)" style="width: 100%">

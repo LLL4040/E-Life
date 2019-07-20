@@ -4,7 +4,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>停车费账单</span>
+            <span style="font-size: 16px;">停车费账单</span>
           </div>
           <el-table :data="bill.filter(data => (data.status === -1 || data.status === 1 || data.status === -11))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
@@ -22,7 +22,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>物业费账单</span>
+            <span style="font-size: 16px;">物业费账单</span>
           </div>
           <el-table :data="bill.filter(data => (data.status === -2 || data.status === 2 || data.status === -12))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>

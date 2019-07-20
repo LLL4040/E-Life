@@ -6,7 +6,7 @@
     <div style="padding-top: 20px">
       <el-card style="padding-left: 20px; padding-right: 20px;">
         <div slot="header" class="clearfix">
-          <span>已发送通知</span>
+          <span style="font-size: 16px;">已发送通知</span>
           <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
         </div>
         <el-table :data="message.filter(data => !search || data.user.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
@@ -72,7 +72,7 @@ export default {
         user: '',
         content: ''
       },
-      pageNumber: 1,
+      pageNum: 1,
       pageSize: 10
     }
   },
@@ -105,7 +105,7 @@ export default {
     loadMessage () {
       let bodyFormData = new FormData()
       bodyFormData.set('managerName', this.userInfo.username)
-      bodyFormData.set('pageNumber', this.pageNumber)
+      bodyFormData.set('pageNumber', this.pageNum)
       bodyFormData.set('pageSize', this.pageSize)
       let url = '/news-server/api/notice/ManagerFindNotice'
       this.$axios({
@@ -116,6 +116,10 @@ export default {
       ).then(response => {
         this.message = response.data
         console.log(this.message)
+        this.activity = response.data
+        this.pageSize1 = response.data[response.data.length - 1].pageNum
+        console.log(response.data)
+        this.activity.pop()
       })
     },
     sendM () {

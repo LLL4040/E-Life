@@ -1,22 +1,22 @@
 <template>
   <div>
     <div align="center" style="width: 800px; padding-left: 200px">
-      <el-carousel indicator-position="outside" :interval="4000" height="300px">
+      <el-carousel indicator-position="outside" :interval="4000" height="250px">
         <el-carousel-item  v-if="typeof notice === 'undefined' || notice.length === 0">
-          <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
-          <p style="position: relative; bottom: 150px; left: 10px">目前没有紧急通知哦</p>
+          <el-image style="width: 400px; height: 250px" :src="require('../../public/img/alert.jpg')"></el-image>
+          <p style="position: relative; bottom: 150px; left: 0; font-size: 16px; width: 380px;">目前没有紧急通知哦</p>
         </el-carousel-item>
         <el-carousel-item  v-if="typeof notice !== 'undefined' && notice.length > 0">
-          <el-image style="width: 500px; height: 300px" :src="require('../../public/img/alert.jpg')"></el-image>
-          <p style="position: relative; bottom: 150px; left: 10px">{{ notice }}</p>
+          <el-image style="width: 400px; height: 250px" :src="require('../../public/img/alert.jpg')"></el-image>
+          <p style="position: relative; bottom: 150px; left: 0; font-size: 16px; width: 380px;">{{ notice }}</p>
         </el-carousel-item>
         <el-carousel-item v-if="typeof news !== 'undefined' && news.length > 0">
-          <el-image style="width: 500px; height: 300px" :src="require('../../public/img/news.jpg')"></el-image>
-          <p style="position: relative; bottom: 150px; left: 10px">{{ news[0].title }}</p>
+          <el-image style="width: 400px; height: 250px" :src="require('../../public/img/news.jpg')"></el-image>
+          <p style="position: relative; bottom: 150px; left: 0; font-size: 16px; width: 380px;">{{ news[0].title }}</p>
         </el-carousel-item>
         <el-carousel-item v-if="typeof activity !== 'undefined' && activity.length > 0">
-          <el-image style="width: 500px; height: 300px" :src="require('../../public/img/activity.jpg')"></el-image>
-          <p style="position: relative; bottom: 150px; left: 10px">{{ activity[0].title }}</p>
+          <el-image style="width: 400px; height: 250px" :src="require('../../public/img/activity.jpg')"></el-image>
+          <p style="position: relative; bottom: 150px; left: 0; font-size: 16px; width: 380px;">{{ activity[0].title }}</p>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -24,7 +24,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>最新资讯</span>
+            <span style="font-size: 16px;">最新资讯</span>
             <el-button style="float: right; padding: 3px 0" type="text" @click="loadNewsMore()">more >></el-button>
           </div>
           <el-table :data="news" style="width: 100%">
@@ -45,12 +45,15 @@
             <el-table-column prop="time" label="时间" align="center"></el-table-column>
             <el-table-column prop="title" label="标题" align="center"></el-table-column>
           </el-table>
+          <div class="block" align="center" >
+            <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="pageSize1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>活动安排</span>
+            <span style="font-size: 16px;">活动安排</span>
             <el-button style="float: right; padding: 3px 0" type="text" @click="loadActivityMore()">more >></el-button>
           </div>
           <el-table :data="activity" style="width: 100%">
@@ -87,6 +90,9 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="block" align="center" >
+            <el-pagination @current-change="handleCurrentChange2" :current-page.sync="pageNum2" :page-count="pageSize2" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -114,7 +120,10 @@ export default {
   name: 'CommunityInformation',
   data () {
     return {
-      page: 1,
+      pageNum1: 1,
+      pageNum2: 1,
+      pageSize1: 1,
+      pageSize2: 1,
       userInfo: {
         community: '',
         communityId: 0,
@@ -217,7 +226,7 @@ export default {
     loadNewsMore () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
-      bodyFormData.append('page', this.page)
+      bodyFormData.set('page', this.pageNum1)
       let url = '/news-server/api/News/findHistory'
       this.$axios({
         method: 'post',
@@ -226,8 +235,14 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.news = response.data
+        this.pageSize1 = response.data[response.data.length - 1].pageNum
         console.log(response.data)
+        this.news.pop()
       })
+    },
+    handleCurrentChange1 (val) {
+      this.pageNum1 = val
+      this.loadNewsMore()
     },
     loadActivity () {
       let bodyFormData = new FormData()
@@ -246,6 +261,7 @@ export default {
     loadActivityMore () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.pageNum2)
       let url = '/news-server/api/Activity/findAllActivity'
       this.$axios({
         method: 'post',
@@ -254,8 +270,14 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.activity = response.data
+        this.pageSize2 = response.data[response.data.length - 1].pageNum
         console.log(response.data)
+        this.activity.pop()
       })
+    },
+    handleCurrentChange2 (val) {
+      this.pageNum2 = val
+      this.loadActivityMore()
     },
     show (row) {
       let bodyFormData = new FormData()

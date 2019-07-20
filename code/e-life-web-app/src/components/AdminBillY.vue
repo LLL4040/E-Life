@@ -7,7 +7,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>停车费账单</span>
+            <span style="font-size: 16px;">停车费账单</span>
           </div>
           <el-table :data="bill.filter(data => (data.status === 1 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
@@ -19,7 +19,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>物业费账单</span>
+            <span style="font-size: 16px;">物业费账单</span>
           </div>
           <el-table :data="bill.filter(data => (data.status === 2 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>

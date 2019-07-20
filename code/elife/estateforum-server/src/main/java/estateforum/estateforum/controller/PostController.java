@@ -40,6 +40,7 @@ public class PostController {
             return object;
 
         }
+        System.out.println(photo);
         postService.save(title,postContent,posterName,communityId,photo);
         object.put("post", "1");
         object.put("message","发表帖子成功");
