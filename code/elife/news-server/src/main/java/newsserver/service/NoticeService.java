@@ -58,7 +58,14 @@ public interface NoticeService {
      * @param communityId 小区号
      * @return 返回居民名字的列表*/
     List<String> findUsernameByCommunityId(int communityId);
-
-    List<NoticeUser> findbyNoticeId(int noticeUser);
-
+    /**
+     * 根据noticeid返回noticeUser的列表
+     * @param noticeId notice 的id
+     * @return 返回noticeUser的列表*/
+    List<NoticeUser> findbyNoticeId(int noticeId);
+    /**
+     * 该函数返回某管理员发的所有通知数
+     * @return 该函数返回某管理员发的所有通知数
+     * @param managername*/
+    int countByManagerName(String managername);
 }

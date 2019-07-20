@@ -2,6 +2,7 @@ package lifeservice.lifeservice.controller;
 
 import lifeservice.lifeservice.entity.Maintain;
 import lifeservice.lifeservice.service.MaintainService;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,13 +54,13 @@ public class MaintainController {
      * 难点*/
     @RequestMapping(path = "/managerFindUnMaintain")
     @ResponseBody
-    public List<Maintain> managerFindUnMaintain(@RequestParam int communityId,@RequestParam int pageNumber,@RequestParam int pageSize){
+    public JSONArray managerFindUnMaintain(@RequestParam int communityId, @RequestParam int pageNumber, @RequestParam int pageSize){
 
         return maintainService.findMaintainByCommunityId(communityId,pageNumber,pageSize);
     }
     @RequestMapping(path = "/managerFindHaveMaintain")
     @ResponseBody
-    public List<Maintain> managerFindHaveMaintain(@RequestParam int communityId,@RequestParam int pageNumber,@RequestParam int pageSize){
+    public JSONArray managerFindHaveMaintain(@RequestParam int communityId,@RequestParam int pageNumber,@RequestParam int pageSize){
 
         return maintainService.findHaveMaintainByCommunityId(communityId,pageNumber,pageSize);
     }

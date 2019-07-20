@@ -64,7 +64,15 @@ public class NoticeController {
     public JSONArray  managerFindNotice(@RequestParam String managerName, @RequestParam int pageNumber, @RequestParam int pageSize){
 
         List<Notice> notices=noticeService.managerFindNotice(managerName,pageNumber,pageSize);
+        int count = noticeService.countByManagerName(managerName);
+        int pageNum = count/pageSize;
+        if (count%pageSize!=0){
+            pageNum=pageNumber+1;
+        }
+        JSONObject firstObject = new JSONObject();
+        firstObject.put("pageNum",pageNum);
         JSONArray result = new JSONArray();
+        result.add(firstObject);
         for(Notice notice : notices){
             JSONObject object = new JSONObject();
             object.put("id", notice.getNoticeId());

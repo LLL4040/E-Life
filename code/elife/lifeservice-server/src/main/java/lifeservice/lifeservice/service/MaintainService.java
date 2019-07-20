@@ -1,6 +1,8 @@
 package lifeservice.lifeservice.service;
 
 import lifeservice.lifeservice.entity.Maintain;
+import net.minidev.json.JSONArray;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -43,7 +45,7 @@ public interface MaintainService {
      * @param pageSize 当前的页中数据的数量
      * @param communityId 小区id
      */
-    List<Maintain> findMaintainByCommunityId(int communityId,int pageNumber,int pageSize);
+    JSONArray findMaintainByCommunityId(int communityId, int pageNumber, int pageSize);
     /**
      * 该函数返回特定小区的所有的已处理和已完成的请求
      * @return 返回请求单的列表
@@ -51,7 +53,7 @@ public interface MaintainService {
      * @param pageNumber 当前的页数
      * @param pageSize 当前的页中数据的数量
      */
-    List<Maintain> findHaveMaintainByCommunityId(int communityId,int pageNumber,int pageSize);
+    JSONArray findHaveMaintainByCommunityId(int communityId,int pageNumber,int pageSize);
 
     /**
      * 该函数返回特定小区的所有的待处理的请求
@@ -72,5 +74,6 @@ public interface MaintainService {
      * @param communityId 小区id
      */
     long countMaintain(int communityId);
+
 
 }

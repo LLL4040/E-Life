@@ -86,4 +86,8 @@ public class MaintainDaoImpl implements MaintainDao {
         return maintainRepository.countMaintain(communityId);
     }
 
+    @Override
+    public long countHaveMaintain(int communityId) {
+        return maintainRepository.countHaveMaintain(communityId);
+    }
 }

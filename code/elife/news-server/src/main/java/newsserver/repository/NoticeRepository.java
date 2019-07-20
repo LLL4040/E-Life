@@ -25,6 +25,12 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
     @Query(value = "select * from notice where managername=?1 order by id  limit ?2,?3", nativeQuery = true)
     List<Notice> findByManagerName(String managerName,int pageNumber,int pageSize);
     /**
+     * 该函数返回某管理员发的所有通知数
+     * @return 该函数返回某管理员发的所有通知数
+     * @param managername*/
+    @Query(value = "select  count(*) from notice where managername=?1",nativeQuery = true)
+    int countByManagerName(String managername);
+    /**
      * 该函数根据noticeId返回物业通知
      * @return  返回得到的一条物业通知
      * @param  noticeId 物业通知的id*/
