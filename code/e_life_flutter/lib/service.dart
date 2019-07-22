@@ -1,3 +1,4 @@
+import 'package:e_life_flutter/group.dart';
 import 'package:flutter/material.dart';
 import 'repair.dart';
 
@@ -21,7 +22,11 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
         return new myRepair();
       }));
     }
-
+    void _toGroup() {
+      Navigator.push(context, new MaterialPageRoute(builder: (context) {
+        return new group();
+      }));
+    }
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[],
@@ -117,7 +122,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                 Text("团购")
               ],
             ),
-            onPressed: _torepair,
+            onPressed: _toGroup,
           ),
           FlatButton(
             child: Column(

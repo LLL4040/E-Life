@@ -24,7 +24,9 @@ class userHttp {
         response,
         ) {
       Map<String,dynamic> responseJson = json.decode(response.body);
+      print(responseJson.toString());
       User user = User.fromJson(responseJson);
+      print(user.email);
       net.onUserResponse(user);
     }, onError: (error) {
       net.onError(error);
