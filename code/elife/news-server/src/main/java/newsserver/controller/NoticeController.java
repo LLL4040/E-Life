@@ -67,7 +67,7 @@ public class NoticeController {
         int count = noticeService.countByManagerName(managerName);
         int pageNum = count/pageSize;
         if (count%pageSize!=0){
-            pageNum=pageNumber+1;
+            pageNum += 1;
         }
         JSONObject firstObject = new JSONObject();
         firstObject.put("pageNum",pageNum);

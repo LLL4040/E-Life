@@ -6,7 +6,7 @@
     <div style="padding-top: 20px;">
       <el-card class="box-card" :gutter="24">
         <el-col span="12">
-          <el-card class="box-card">
+          <el-card class="box-card" shadow="disable">
             <div id="map"></div>
           </el-card>
         </el-col>

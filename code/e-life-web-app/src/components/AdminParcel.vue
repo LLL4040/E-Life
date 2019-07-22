@@ -21,6 +21,9 @@
           </el-table-column>
         </el-table>
       </el-card>
+      <div class="block" align="center" >
+        <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-count="pageSize" :pager-count="7" layout="prev, pager, next, jumper"></el-pagination>
+      </div>
     </div>
     <el-dialog title="发送通知" :visible.sync="dialogFormVisible">
       <el-form :model="sendM">
@@ -58,7 +61,9 @@ export default {
         time: '',
         manager: '',
         user: ''
-      }
+      },
+      pageNum: 1,
+      pageSize: 1
     }
   },
   mounted () {
@@ -90,6 +95,7 @@ export default {
     loadP () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.pageNum)
       let url = '/package-server/api/Package/findHistoryManager'
       this.$axios({
         method: 'post',
@@ -99,7 +105,13 @@ export default {
       ).then(response => {
         this.messages = response.data
         console.log(this.messages)
+        this.pageSize = response.data[response.data.length - 1].pageNum
+        this.messages.pop()
       })
+    },
+    handleCurrentChange (val) {
+      this.pageNum = val
+      this.loadP()
     },
     sendMessage () {
       this.dialogFormVisible = false

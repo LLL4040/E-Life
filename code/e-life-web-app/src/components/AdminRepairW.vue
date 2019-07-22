@@ -5,10 +5,10 @@
     </div>
     <div style="padding-top: 20px;">
       <el-card class="box-card">
-        <el-table :data="requestData.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+        <el-table :data="requestData.filter(data => typeof data.time !== 'undefined' && (!search || data.username.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
           <el-table-column prop="time" label="时间"></el-table-column>
           <el-table-column prop="username" label="用户名"></el-table-column>
-          <el-table-column prop="userPhone" label="联系方式"></el-table-column>
+          <el-table-column prop="userphone" label="联系方式"></el-table-column>
           <el-table-column prop="content" label="内容"></el-table-column>
           <el-table-column label="操作" width="150px" align="center">
             <template slot-scope="scope">
@@ -16,6 +16,9 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="block" align="center" >
+          <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-count="total" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+        </div>
       </el-card>
     </div>
     <el-dialog title="发起活动" :visible.sync="dialogFormVisible">
@@ -54,8 +57,9 @@ export default {
         repairman: '',
         phone: ''
       },
-      pageNumber: 1,
+      pageNum: 1,
       pageSize: 10,
+      total: 1,
       requestId: ''
     }
   },
@@ -88,7 +92,7 @@ export default {
     loadRequest () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
-      bodyFormData.set('pageNumber', this.pageNumber)
+      bodyFormData.set('pageNumber', this.pageNum)
       bodyFormData.set('pageSize', this.pageSize)
       let url = '/lifeservice-server/api/maintain/managerFindUnMaintain'
       this.$axios({
@@ -99,7 +103,12 @@ export default {
       ).then(response => {
         this.requestData = response.data
         console.log(this.requestData)
+        this.total = response.data[0].pageNum
       })
+    },
+    handleCurrentChange (val) {
+      this.pageNum = val
+      this.loadRequest()
     },
     handleIt1 (row) {
       this.requestId = row.id
