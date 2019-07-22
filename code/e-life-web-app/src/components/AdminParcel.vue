@@ -6,7 +6,7 @@
     <div style="padding-top: 20px;">
       <el-card style="padding-left: 20px">
         <div slot="header" class="clearfix" style="padding-right: 20px;">
-          <span>已发送邮包通知列表</span>
+          <span style="font-size: 16px;">已发送邮包通知列表</span>
           <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
         </div>
         <el-table :data="messages.filter(data => !search || data.status === search)" style="width: 100%">
@@ -21,6 +21,9 @@
           </el-table-column>
         </el-table>
       </el-card>
+      <div class="block" align="center" >
+        <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-count="pageSize" :pager-count="7" layout="prev, pager, next, jumper"></el-pagination>
+      </div>
     </div>
     <el-dialog title="发送通知" :visible.sync="dialogFormVisible">
       <el-form :model="sendM">
@@ -58,7 +61,9 @@ export default {
         time: '',
         manager: '',
         user: ''
-      }
+      },
+      pageNum: 1,
+      pageSize: 1
     }
   },
   mounted () {
@@ -90,6 +95,7 @@ export default {
     loadP () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.pageNum)
       let url = '/package-server/api/Package/findHistoryManager'
       this.$axios({
         method: 'post',
@@ -99,7 +105,13 @@ export default {
       ).then(response => {
         this.messages = response.data
         console.log(this.messages)
+        this.pageSize = response.data[response.data.length - 1].pageNum
+        this.messages.pop()
       })
+    },
+    handleCurrentChange (val) {
+      this.pageNum = val
+      this.loadP()
     },
     sendMessage () {
       this.dialogFormVisible = false

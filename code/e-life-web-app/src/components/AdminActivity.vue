@@ -7,7 +7,7 @@
       <el-col :span="14">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>活动列表</span>
+            <span style="font-size: 16px;">活动列表</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
           </div>
           <el-table :data="activity.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
@@ -45,12 +45,15 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="block" align="center" >
+            <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="pageSize1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="10">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>申请列表</span>
+            <span style="font-size: 16px;">申请列表</span>
           </div>
           <el-table :data="apply" style="width: 100%">
             <el-table-column type="expand">
@@ -72,6 +75,9 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="block" align="center" >
+            <el-pagination @current-change="handleCurrentChange2" :current-page.sync="pageNum2" :page-count="pageSize2" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -130,8 +136,10 @@ export default {
         title: '',
         content: ''
       },
-      page1: 1,
-      page2: 1,
+      pageNum1: 1,
+      pageNum2: 1,
+      pageSize1: 1,
+      pageSize2: 1,
       pickerOptions: {
         shortcuts: [{
           text: '未来一周',
@@ -190,7 +198,7 @@ export default {
     loadActivity () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
-      bodyFormData.set('page', this.page1)
+      bodyFormData.set('page', this.pageNum1)
       let url = '/news-server/api/Activity/findAllActivity'
       this.$axios({
         method: 'post',
@@ -199,13 +207,20 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.activity = response.data
+        this.pageSize1 = response.data[response.data.length - 1].pageNum
+        console.log(response.data)
+        this.activity.pop()
       })
+    },
+    handleCurrentChange1 (val) {
+      this.pageNum1 = val
+      this.loadActivity()
     },
     loadApply (row) {
       this.applyId = row
       let bodyFormData = new FormData()
       bodyFormData.set('aid', row.id)
-      bodyFormData.set('page', this.page2)
+      bodyFormData.set('page', this.pageNum2)
       let url = '/news-server/api/Activity/findAllParticipator'
       this.$axios({
         method: 'post',
@@ -214,7 +229,14 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.apply = response.data
+        this.pageSize2 = response.data[response.data.length - 1].pageNum
+        console.log(response.data)
+        this.apply.pop()
       })
+    },
+    handleCurrentChange2 (val) {
+      this.pageNum2 = val
+      this.loadApply()
     },
     handleA (row) {
       let bodyFormData = new FormData()

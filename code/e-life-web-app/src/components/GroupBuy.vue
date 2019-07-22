@@ -7,7 +7,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>商家团购</span>
+            <span style="font-size: 16px;">商家团购</span>
           </div>
           <el-table :data="group.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
             <el-table-column type="expand">
@@ -43,7 +43,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>自发需求</span>
+            <span style="font-size: 16px;">自发需求</span>
             <el-button style="float: right; padding: 3px 0" type="text" @click="dialogFormVisible2 = true">我要开团</el-button>
           </div>
           <el-table :data="demand.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">

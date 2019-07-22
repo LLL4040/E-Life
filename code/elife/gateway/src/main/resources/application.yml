@@ -12,5 +12,5 @@ eureka:
 
 zuul:
   host:
-    connect-timeout-millis: 150000
-    socket-timeout-millis: 600000
+    connect-timeout-millis: 1500000
+    socket-timeout-millis: 6000000

@@ -74,11 +74,9 @@
             <template slot="title">
               <i class="el-icon-service"></i>
               <span style="font-size: 16px">处理报修
-                <el-badge v-if="newRepair !== 0" class="mark" :value=newRepair :max="99" style="background-color: transparent" />
               </span>
             </template>
             <el-menu-item index="4-1" @click="toPage2(4-1, 12)">未处理
-              <el-badge v-if="newRepair !== 0" class="mark" :value=newRepair :max="99" style="background-color: transparent" />
             </el-menu-item>
             <el-menu-item index="4-2" @click="toPage2(4-1, 13)">已处理</el-menu-item>
           </el-submenu>
@@ -139,7 +137,6 @@ export default {
     return {
       tabView: 'page1',
       openList: ['1'],
-      newRepair: 0,
       dialogFormVisible: false,
       userInfo: {
         community: '',
@@ -174,21 +171,6 @@ export default {
         sessionStorage.setItem('community', this.userInfo.community)
       })
     },
-    loadRequest () {
-      let bodyFormData = new FormData()
-      bodyFormData.set('communityId', this.userInfo.communityId)
-      bodyFormData.set('pageNumber', this.pageNumber)
-      bodyFormData.set('pageSize', this.pageSize)
-      let url = '/lifeservice-server/api/maintain/managerFindUnMaintain'
-      this.$axios({
-        method: 'post',
-        url: url,
-        data: bodyFormData,
-        config: { headers: { 'Content-type': 'multipart/form-data' } } }
-      ).then(response => {
-        this.newRepair = response.data.length
-      })
-    },
     toPage1 (id) {
       this.openList[0] = '1'
       this.tabView = `page${id}`
@@ -219,7 +201,6 @@ export default {
   },
   mounted () {
     this.loadData()
-    this.loadRequest()
   }
 }
 </script>

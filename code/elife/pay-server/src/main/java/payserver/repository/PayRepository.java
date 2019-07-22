@@ -62,7 +62,7 @@ public interface PayRepository extends JpaRepository<Pay, Integer> {
      * @param right
      * @return List
      */
-    @Query(value=" select * from pay where (status=-1 or status=-2) and community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
+    @Query(value=" select * from pay where (status=-1 or status=-2 or status=-11 or status=-12) and community_id=?1 order by id desc limit ?2,?3",nativeQuery = true)
     List<Pay> findUnPayManager(int communityId,int left,int right);
     /**
      * return history which not taken

@@ -5,9 +5,9 @@
     </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="12">
-      <el-card style="padding-left: 20px">
+      <el-card style="padding-left: 5px">
         <div slot="header" class="clearfix">
-          <span>紧急通知</span>
+          <span style="font-size: 16px;">紧急通知</span>
           <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible1 = true"></el-button>
         </div>
         <el-table :data="urgent.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
@@ -27,12 +27,15 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="block" align="center" >
+          <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="pageSize1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+        </div>
       </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card style="padding-left: 20px">
+        <el-card style="padding-left: 5px">
           <div slot="header" class="clearfix">
-            <span>最新资讯</span>
+            <span style="font-size: 16px;">最新资讯</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible2 = true"></el-button>
           </div>
           <el-table :data="news.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
@@ -60,6 +63,9 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="block" align="center" >
+            <el-pagination @current-change="handleCurrentChange2" :current-page.sync="pageNum2" :page-count="pageSize2" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -126,7 +132,9 @@ export default {
         content: ''
       },
       pageNum1: 1,
-      pageNum2: 1
+      pageNum2: 1,
+      pageSize1: 1,
+      pageSize2: 1
     }
   },
   mounted () {
@@ -168,8 +176,14 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.urgent = response.data
+        this.pageSize1 = response.data[response.data.length - 1].pageNum
         console.log(response.data)
+        this.urgent.pop()
       })
+    },
+    handleCurrentChange1 (val) {
+      this.pageNum1 = val
+      this.loadUrgent()
     },
     loadNews () {
       let bodyFormData = new FormData()
@@ -183,8 +197,14 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         this.news = response.data
+        this.pageSize2 = response.data[response.data.length - 1].pageNum
         console.log(response.data)
+        this.news.pop()
       })
+    },
+    handleCurrentChange2 (val) {
+      this.pageNum2 = val
+      this.loadNews()
     },
     releaseU () {
       this.dialogFormVisible1 = false

@@ -45,7 +45,7 @@
             </el-menu-item>
           </el-submenu>
           <el-menu-item index="4" @click="toPage(4)">
-            <i class="el-icon-alarm-clock"></i>
+            <i class="el-icon-shopping-cart-2"></i>
             <span slot="title" style="font-size: 16px">优惠商品</span>
           </el-menu-item>
         </el-menu>

@@ -369,13 +369,14 @@ CREATE TABLE participate
 CREATE TABLE discount
 ( 
   `id`          bigint AUTO_INCREMENT,
-  `title` varchar(100) Not NULL,
   `starttime`   varchar(20) NOT NULL,
   `endtime`     varchar(20) NOT NULL,
   `merchantid`  bigint NOT NULL,
   `number`      int NOT NULL,
+  `photo`        varchar(200),
   `content`     varchar(1024) NOT NULL,
   `status`      smallint NOT NULL,
+  `title`          varchar(200) NOT NULL,
   `community_id` bigint,
   PRIMARY KEY(`id`),
   FOREIGN KEY (`community_id`)
@@ -385,6 +386,7 @@ CREATE TABLE discount
         REFERENCES merchant (`id`)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
 
 /*==============================================================*/
 /* Table: bargain                                                                                                                     */
