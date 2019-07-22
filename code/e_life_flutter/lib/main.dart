@@ -3,25 +3,39 @@ import 'mainpage.dart';
 import 'bottom_navigation_widget.dart';
 
 void main() => runApp(new MyApp());
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: new Login());
-
+    return MaterialApp(
+      title: 'MainApp',
+      home: LoginWidget(),
+    );
+  }
+}
+class LoginWidget  extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new Login();
   }
 }
 
-class Login extends StatelessWidget {
-
-
+class Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
+  String   role = "用户";
   @override
   Widget build(BuildContext context) {
-    void _toNews(){
+    final TextEditingController _username =
+        new TextEditingController.fromValue(new TextEditingValue(text: ""));
+    final TextEditingController _password =
+        new TextEditingController.fromValue(new TextEditingValue(text: ""));
+    void _toNews() {
+//      print(_username.text);
+//      print(_password.text);
+//      print(role);
       Navigator.of(context).pushAndRemoveUntil(
           new MaterialPageRoute(builder: (context) => new BottomNavigationWidget()
           ), (route) => route == null);
     }
+
     Widget loginSection = Container(
       width: 320.0,
       child: new Card(
@@ -32,11 +46,10 @@ class Login extends StatelessWidget {
               padding: new EdgeInsets.all(10.0),
               child: new Text(
                 '登录',
-                style: new TextStyle(
-                    color: Colors.white, fontSize: 16.0),
+                style: new TextStyle(color: Colors.white, fontSize: 16.0),
               ),
             ),
-            onPressed:_toNews),
+            onPressed: _toNews),
       ),
     );
     Widget quickLogibSession = new Container(
@@ -49,8 +62,7 @@ class Login extends StatelessWidget {
             padding: new EdgeInsets.all(10.0),
             child: new Text(
               '手机号快捷登录',
-              style: new TextStyle(
-                  color: Colors.black, fontSize: 16.0),
+              style: new TextStyle(color: Colors.black, fontSize: 16.0),
             ),
           ),
         ),
@@ -63,15 +75,16 @@ class Login extends StatelessWidget {
         elevation: 16.0,
         child: new FlatButton(
             child: new Padding(
-              padding: new EdgeInsets.all(10.0),
-              child: new Text(
-                '忘记密码',
-                style:
-                new TextStyle(color: Colors.black, fontSize: 16.0),
-              ),
-            )),
+          padding: new EdgeInsets.all(10.0),
+          child: new Text(
+            '忘记密码',
+            style: new TextStyle(color: Colors.black, fontSize: 16.0),
+          ),
+        )),
       ),
     );
+
+
     return new MaterialApp(
         title: '小区登录',
         home: new Scaffold(
@@ -101,6 +114,7 @@ class Login extends StatelessWidget {
                         ),
                         new Expanded(
                             child: new TextField(
+                          controller: _username,
                           decoration: new InputDecoration(
                             hintText: '请输入用户名',
                           ),
@@ -118,6 +132,7 @@ class Login extends StatelessWidget {
                         ),
                         new Expanded(
                             child: new TextField(
+                          controller: _password,
                           decoration: new InputDecoration(
                             hintText: '请输入密码',
                           ),
@@ -125,12 +140,52 @@ class Login extends StatelessWidget {
                         ))
                       ]),
                 ),
+                Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: RadioListTile<String>(
+                        value: '用户',
+                        title: Text('用户'),
+                        groupValue: role,
+                        onChanged: (value) {
+                          setState(() {
+                            role=value;
+                          });
+                        },
+                      ),
+                    ),
+                    Flexible(
+                      child: RadioListTile<String>(
+                        value: '管理员',
+                        title: Text('管理员'),
+                        groupValue: role,
+                        onChanged: (value) {
+                          setState(() {
+                            role=value;
+                          });
+                        },
+                      ),
+                    ),
+                    Flexible(
+                      child: RadioListTile<String>(
+                        value: '商家',
+                        title: Text('商家'),
+                        groupValue: role,
+                        onChanged: (value) {
+                          setState(() {
+                            role=value;
+                          });
+
+                        },
+                      ),
+                    ),
+                  ],
+                ),
                 loginSection,
                 quickLogibSession,
                 forgetSession,
                 new Padding(
                   padding: new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 40.0),
-
                 ),
               ],
             ),

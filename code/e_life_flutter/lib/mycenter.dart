@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'notice.dart';
+
 import 'friend.dart';
 class mycenter extends StatefulWidget {
   @override
@@ -9,12 +9,7 @@ class mycenter extends StatefulWidget {
 }
 class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin {
 
-  void _toNotice(){
-    Navigator.push(context,
-        new MaterialPageRoute(builder: (context) {
-          return new myNotice();
-        }));
-  }
+
   void _toFrind(){
     Navigator.push(context,
         new MaterialPageRoute(builder: (context) {
@@ -65,13 +60,13 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
           Expanded(
             child: ListView(
               children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.fiber_new),
-                  title: const Text('我的通知'),
-                  onTap:  () {
-                    _toNotice();
-                  },
-                ),
+//                ListTile(
+//                  leading: const Icon(Icons.fiber_new),
+//                  title: const Text('我的通知'),
+//                  onTap:  () {
+//                    _toNotice();
+//                  },
+//                ),
                 ListTile(
                   leading: const Icon(Icons.people_outline),
                   title: const Text('我的好友'),
@@ -81,7 +76,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
                 ),
                 ListTile(
                   leading: const Icon(Icons.settings_system_daydream),
-                  title: const Text('邮包'),
+                  title: const Text('邮包提醒'),
                   onTap:  () {
                     print("邮包");
                   },
