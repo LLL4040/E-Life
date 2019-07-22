@@ -23,28 +23,6 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
   int mCurrentPosition = 0;
   List<Widget> widgetList = [];//要显示的下方组件
 
-  List<Widget> noticeList=[];//要显示的物业通知列表
-
-
-
-  Widget _getNotice(String title, String time,String content  ) {
-    return  new ListTile(
-      leading: new Icon(Icons.message),
-      title: new Text(title),
-      subtitle: new Column(
-        crossAxisAlignment:CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(time),
-          new Text(content),
-        ],
-      ),
-      trailing: new Icon(Icons.delete,color:Colors.black54 ,),
-      onTap: () {
-        print(content);
-      },
-      dense: true,
-    );
-  }
   Widget _getpost(String name, String time,String title  ) {
     return  new ListTile(
       leading: new Text(name),
@@ -65,23 +43,15 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> notices = [];
-    List<Widget> forums = [];
-    List<Widget> minwidgetList = [];
 
-    Widget notice = _getNotice("欠费", "2019/7/12", "请尽快缴费");
-    Widget notice2 = _getNotice("交钱", "2019/7/12", "请尽快缴纳房租你怎么还不交钱啊啊啊啊啊啊快交钱啊啊啊啊啊");
+    List<Widget> forums = [];
+
     Widget post1 = _getpost("小王", "2019/5/7", "有人一起赏月吗");
     Widget post2 = _getpost("老王", "2019/5/7", "有人一起逛街吗");
-    notices.add(notice);
-    notices.add(notice2);
+
     forums.add(post1);
     forums.add(post2);
 
-    // 从 itemBuilder 调用的独立函数
-    Widget buildNoticeBody(BuildContext ctxt, int index) {
-      return notices[index];
-    }
     // 从 itemBuilder 调用的独立函数
     Widget buildforumBody(BuildContext ctxt, int index) {
       return forums[index];
@@ -92,8 +62,8 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
     Widget forumConatin =new Container(
       child:new ListView.builder
         (
-          itemCount: notices.length,
-          itemBuilder: (BuildContext ctxt, int index) => buildNoticeBody(ctxt, index)
+          itemCount: forums.length,
+          itemBuilder: (BuildContext ctxt, int index) => buildforumBody(ctxt, index)
       ) ,
     );
     widgetList.add(newsContain);

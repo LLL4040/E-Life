@@ -47,41 +47,9 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
       ],
     ),
   );
-  Widget newsSection = new Container(
-    child: ListView(
-      children: <Widget>[
 
-        new ListTile(
-          leading: new Icon(Icons.nature_people),
-          title: new Text('活动1'),
-          subtitle: new Row(
-            children: <Widget>[
-              new Text('时间:2019/7/23'),
-              new Icon(Icons.person)
-            ],
-          ),
-          trailing: new Icon(Icons.keyboard_arrow_down),
-          onTap: () {
-            print('点击');
-          },
-          dense: true,
-        ),
 
-        new ListTile(
-          leading: new Icon(Icons.nature_people),
-          title: new Text('活动3'),
-          subtitle: new Row(
-            children: <Widget>[new Text('时间:2019/7/9'), new Icon(Icons.person)],
-          ),
-          trailing: new Icon(Icons.keyboard_arrow_down),
-          onTap: () {
-            print('点击');
-          },
-          dense: true,
-        ),
-      ],
-    ),
-  );
+  //活动通知初始化的函数
   Widget _getActivity(String photo, String startTime,String endTime,String detail) {
     return  new ListTile(
       leading: new Icon(Icons.nature_people),
@@ -101,6 +69,27 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
       dense: true,
     );
   }
+//最新资讯初始化的函数
+  Widget _getNews(String photo, String title,String time,String detail) {
+    return new ListTile(
+      leading: new Icon(Icons.near_me),
+      title: new Text(photo),
+      subtitle: new Column(
+        crossAxisAlignment:CrossAxisAlignment.start,
+        children: <Widget>[
+          new Text(title),
+          new Text(time),
+          new Text(detail),
+
+        ],
+      ),
+
+      onTap: () {
+        print('点击');
+      },
+      dense: true,
+    );
+  }
 
   List<Choice> tabs = [];//导航栏
   TabController mTabController;
@@ -114,7 +103,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
     super.initState();
     tabs.add(Choice(title: '紧急通知', icon: Icons.fiber_new, position: 0));
     tabs.add(Choice(title: '最新资讯', icon: Icons.message, position: 1));
-    tabs.add(Choice(title: '活动管理', icon: Icons.message, position: 2));
+    tabs.add(Choice(title: '活动管理', icon: Icons.nature, position: 2));
 
     mTabController = new TabController(vsync: this, length: tabs.length);
     //判断TabBar是否切换
@@ -131,15 +120,23 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
   Widget buildActivityBody(BuildContext ctxt, int index) {
     return activitys[index];
   }
-
+  List<Widget> news = [];
+  Widget buildNewsBody(BuildContext ctxt, int index) {
+    return news[index];
+  }
   @override
   Widget build(BuildContext context) {
     activitys =[];
+    news=[];
     Widget activity1 = _getActivity("暂无图片", "2019/7/13 19:00", "2019/7/14 23:59", "一起去钓鱼 ");
     Widget activity2 = _getActivity("暂无图片", "2019/7/18 18:00", "2019/7/19 23:59", "一起去赏月");
-
+    Widget news1 = _getNews("暂无图片", "放风筝今晚", "2019/7/14 23:59", "有人吗有人吗哈哈哈哈");
+    Widget news2 = _getNews("暂无图片", "放风筝结束的结束今晚", "2019/7/14 23:59", "有人吗有人吗哈哈哈哈");
     activitys.add(activity1);
     activitys.add(activity2);
+    news.add(news1);
+    news.add(news2);
+    //展示活动安排的组件
     Widget activitySection = new Container(
       child:new ListView.builder
         (
@@ -147,6 +144,16 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
           itemBuilder: (BuildContext ctxt, int index) => buildActivityBody(ctxt, index)
       ) ,
     );
+    //展示最新资讯的组件
+    Widget newsSection = new Container(
+      child:new ListView.builder
+        (
+          itemCount: news.length,
+          itemBuilder: (BuildContext ctxt, int index) => buildNewsBody(ctxt, index)
+      ) ,
+
+    );
+
     List<Widget> newsContain=[];
     newsContain.add(urgentSection);
     newsContain.add(newsSection);

@@ -88,7 +88,7 @@ class messageState extends State<message> with SingleTickerProviderStateMixin {
     Widget packageMessage = new Container(
       child:new ListView.builder
         (
-          itemCount: notices.length,
+          itemCount: packages.length,
           itemBuilder: (BuildContext ctxt, int index) => buildPackageBody(ctxt, index)
       ) ,
     );
