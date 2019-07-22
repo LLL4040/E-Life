@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'notice.dart';
+import 'friend.dart';
 class mycenter extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -7,15 +8,17 @@ class mycenter extends StatefulWidget {
   }
 }
 class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin {
-  void _toNotice1(){
-    Navigator.of(context).pushAndRemoveUntil(
-        new MaterialPageRoute(builder: (context) => new myNotice()
-        ), (route) => route == null);
-  }
+
   void _toNotice(){
     Navigator.push(context,
         new MaterialPageRoute(builder: (context) {
           return new myNotice();
+        }));
+  }
+  void _toFrind(){
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (context) {
+          return new friendWidget();
         }));
   }
   @override
@@ -73,7 +76,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
                   leading: const Icon(Icons.people_outline),
                   title: const Text('我的好友'),
                   onTap:  () {
-                    print("我的好友");
+                    _toFrind();
                   },
                 ),
                 ListTile(
