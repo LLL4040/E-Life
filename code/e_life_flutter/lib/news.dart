@@ -319,6 +319,10 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
     activityList = body;
     setState(() {});
   }
+  @override
+  void onSaveParticipantResponse(String body){
+    String temp = body;
+  }
 }
 
 
