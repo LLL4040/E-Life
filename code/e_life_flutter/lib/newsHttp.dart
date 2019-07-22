@@ -75,6 +75,26 @@ class httpManager {
       client.close,
     );
   }
+  saveParticipator(NetListener net,int aid,String content,String username){
+    var client = new http.Client();
+    client.post(
+        activityUrl,
+        body: {
+          "aid": aid.toString(),
+          "content": content,
+          "username": username,
+        }
+    ).then((
+        response,
+        ) {
+      print(response.body);
+      net.onSaveParticipantResponse(response.body);
+    }, onError: (error) {
+      net.onError(error);
+    }).whenComplete(
+      client.close,
+    );
+  }
 
 }
 
@@ -86,6 +106,7 @@ abstract class NetListener {
   void onUrgentResponse(List<urgent> body);
   void onNewsResponse(List<News> body);
   void onActivityResponse(List<Activity> body);
+  void onSaveParticipantResponse(String body);
   void onError(error);
 }
 
