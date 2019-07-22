@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'notice.dart';
+import 'map.dart'
 class mycenter extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -16,6 +17,12 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
     Navigator.push(context,
         new MaterialPageRoute(builder: (context) {
           return new myNotice();
+        }));
+  }
+  void _toMap(){
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (context) {
+          return new Map();
         }));
   }
   @override
@@ -81,6 +88,13 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
                   title: const Text('邮包'),
                   onTap:  () {
                     print("邮包");
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.add_location),
+                  title: const Text('我的周边'),
+                  onTap:  () {
+                    _toMap();
                   },
                 ),
               ],
