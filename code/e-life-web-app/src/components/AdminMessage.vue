@@ -6,10 +6,10 @@
     <div style="padding-top: 20px">
       <el-card style="padding-left: 20px; padding-right: 20px;">
         <div slot="header" class="clearfix">
-          <span>已发送通知</span>
+          <span style="font-size: 16px;">已发送通知</span>
           <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
         </div>
-        <el-table :data="message.filter(data => !search || data.user.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+        <el-table :data="message.filter(data => typeof data.time !== 'undefined' && (!search || data.user.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -28,6 +28,9 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="block" align="center" >
+          <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-count="total" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+        </div>
       </el-card>
     </div>
     <el-dialog title="发送通知" :visible.sync="dialogFormVisible">
@@ -72,8 +75,9 @@ export default {
         user: '',
         content: ''
       },
-      pageNumber: 1,
-      pageSize: 10
+      pageNum: 1,
+      pageSize: 10,
+      total: 1
     }
   },
   mounted () {
@@ -105,7 +109,7 @@ export default {
     loadMessage () {
       let bodyFormData = new FormData()
       bodyFormData.set('managerName', this.userInfo.username)
-      bodyFormData.set('pageNumber', this.pageNumber)
+      bodyFormData.set('pageNumber', this.pageNum)
       bodyFormData.set('pageSize', this.pageSize)
       let url = '/news-server/api/notice/ManagerFindNotice'
       this.$axios({
@@ -116,7 +120,12 @@ export default {
       ).then(response => {
         this.message = response.data
         console.log(this.message)
+        this.total = response.data[0].pageNum
       })
+    },
+    handleCurrentChange (val) {
+      this.pageNum = val
+      this.loadMessage()
     },
     sendM () {
       this.dialogFormVisible = false

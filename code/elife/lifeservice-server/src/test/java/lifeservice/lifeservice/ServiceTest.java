@@ -56,29 +56,29 @@ public class ServiceTest {
         //maintainService.deleteById(m1);
 
     }
-    @Test
-    public void findMaintainByCommunityId() throws Exception{
-
-        List<Maintain> maintainList=maintainService.findMaintainByCommunityId(1,1,1);
-        Assert.assertNotNull(maintainList);
-    }
-    @Test
-    public void findbyUsernameAndStatus() throws Exception{
-
-        List<Maintain> maintainList=maintainService.findbyUsernameAndStatus("哪吒");
-        Assert.assertNotNull(maintainList);
-    }
-    @Test
-    public void findSupermarket() throws Exception{
-
-        List<Merchant> merchantList=supermarketService.findSupermarket(1);
-        Assert.assertNotNull(merchantList);
-    }
-    @Test
-    public void findComputerMaintain() throws Exception{
-
-        List<Merchant> merchantList=computerService.findComputerMaintain(1);
-        Assert.assertNotNull(merchantList);
-    }
+//    @Test
+//    public void findMaintainByCommunityId() throws Exception{
+//
+//        List<Maintain> maintainList=maintainService.findMaintainByCommunityId(1,1,1);
+//        Assert.assertNotNull(maintainList);
+//    }
+//    @Test
+//    public void findbyUsernameAndStatus() throws Exception{
+//
+//        List<Maintain> maintainList=maintainService.findbyUsernameAndStatus("哪吒");
+//        Assert.assertNotNull(maintainList);
+//    }
+//    @Test
+//    public void findSupermarket() throws Exception{
+//
+//        List<Merchant> merchantList=supermarketService.findSupermarket(1);
+//        Assert.assertNotNull(merchantList);
+//    }
+//    @Test
+//    public void findComputerMaintain() throws Exception{
+//
+//        List<Merchant> merchantList=computerService.findComputerMaintain(1);
+//        Assert.assertNotNull(merchantList);
+//    }
 
 }

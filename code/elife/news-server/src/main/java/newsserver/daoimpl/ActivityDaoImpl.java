@@ -33,7 +33,7 @@ public class ActivityDaoImpl implements ActivityDao {
 
     @Override
     public List<Activity> findAllActivity(int communityId, int page){
-        return activityRepository.findAllActivity(communityId,10*(page-1),10*page-1);
+        return activityRepository.findAllActivity(communityId,5*(page-1),5);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ActivityDaoImpl implements ActivityDao {
 
     @Override
     public List<Participator> findAllParticipator(int aid,int page){
-        return participatorRepository.findAllParticipator(aid,10*(page-1),10*page-1);
+        return participatorRepository.findAllParticipator(aid,5*(page-1),5);
     }
 
     @Override
@@ -92,11 +92,11 @@ public class ActivityDaoImpl implements ActivityDao {
     public int findPageActivity(int communityId){
         List<Activity> temp = activityRepository.findPageNum(communityId);
         int pageNum=temp.size();
-        if(pageNum%10!=0){
-            pageNum=pageNum/10+1;
+        if(pageNum%5!=0){
+            pageNum=pageNum/5+1;
         }
         else {
-            pageNum=pageNum/10;
+            pageNum=pageNum/5;
         }
         return pageNum;
     }
@@ -105,11 +105,11 @@ public class ActivityDaoImpl implements ActivityDao {
     public int findPageParticipator(int aid){
         List<Participator> temp = participatorRepository.findPageNum(aid);
         int pageNum=temp.size();
-        if(pageNum%10!=0){
-            pageNum=pageNum/10+1;
+        if(pageNum%5!=0){
+            pageNum=pageNum/5+1;
         }
         else {
-            pageNum=pageNum/10;
+            pageNum=pageNum/5;
         }
         return pageNum;
     }

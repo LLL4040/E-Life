@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'newsHttp.dart';
 //资讯的widget
 class newswidget extends StatefulWidget {
   @override
@@ -12,74 +15,96 @@ class Choice {
   final int position;
   final IconData icon;
 }
-class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
+
+class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, NetListener{
+  List<urgent> urgentList=[];
+  List<News> newsList=[];
+  List<Activity> activityList=[];
+  httpManager manager = new httpManager();
+
   final Widget myDevider = Container(
     child: Divider(
       color: Colors.black12,
     ),
   );
-  Widget urgentSection = Container(
-    child: ListView(
-      children: [
 
-        Container(
-          child: Divider(),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: new Image.asset(
-            'images/app.png',
-            height: 100,
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Text(
-            '紧急通知',
-            style: TextStyle(
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
-
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    ),
-  );
-
-
-  //活动通知初始化的函数
-  Widget _getActivity(String photo, String startTime,String endTime,String detail) {
+  //紧急通知初始化的函数
+  Widget _getUrgent(String time, String managerName,String content) {
     return  new ListTile(
       leading: new Icon(Icons.nature_people),
-      title: new Text(photo),
+      title: new Text(managerName),
+      subtitle: new Column(
+        crossAxisAlignment:CrossAxisAlignment.start,
+        children: <Widget>[
+
+          new Text(time),
+          new Text(content),
+        ],
+      ),
+
+      onTap: () {
+        print(content);
+      },
+      dense: true,
+    );
+  }
+
+  //活动通知初始化的函数
+  Widget _getActivity(String title, String photo,String content,String startTime,String endTime,int status) {
+    String activity = status==0?"报名中":"已结束";
+    return  new ListTile(
+      leading: Image.memory(
+        base64.decode(
+            photo.split(',')[1]),
+        height:80,    //设置高度
+        width:80,    //设置宽度
+        fit: BoxFit.fill,    //填充
+        gaplessPlayback:true, //防止重绘
+
+      ),
+      title: new Text(title),
       subtitle: new Column(
         crossAxisAlignment:CrossAxisAlignment.start,
         children: <Widget>[
           new Text(startTime),
           new Text(endTime),
-          new Text(detail),
+          new Text(content),
+          new Text(activity),
         ],
       ),
       trailing: new Icon(Icons.add,color:Colors.black54 ,),
       onTap: () {
-        print(detail);
+        print(content);
       },
       dense: true,
     );
   }
 //最新资讯初始化的函数
-  Widget _getNews(String photo, String title,String time,String detail) {
+  Widget _getNews(String photo, String title,String time,String content) {
+
     return new ListTile(
-      leading: new Icon(Icons.near_me),
-      title: new Text(photo),
+      leading: Image.memory(
+
+        base64.decode(
+
+            photo.split(',')[1]),
+
+        height:80,    //设置高度
+
+        width:80,    //设置宽度
+
+        fit: BoxFit.fill,    //填充
+
+        gaplessPlayback:true, //防止重绘
+
+      ),
+      //title: new Text(photo),
       subtitle: new Column(
         crossAxisAlignment:CrossAxisAlignment.start,
         children: <Widget>[
           new Text(title),
           new Text(time),
-          new Text(detail),
+          new Text(content),
 
         ],
       ),
@@ -100,7 +125,9 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+
     super.initState();
+    _getMessage();
     tabs.add(Choice(title: '紧急通知', icon: Icons.fiber_new, position: 0));
     tabs.add(Choice(title: '最新资讯', icon: Icons.message, position: 1));
     tabs.add(Choice(title: '活动管理', icon: Icons.nature, position: 2));
@@ -114,8 +141,12 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
         });
       }
     });
-  }
 
+  }
+  List<Widget> urgents = [];
+  Widget buildUrgentBody(BuildContext ctxt, int index) {
+    return urgents[index];
+  }
   List<Widget> activitys = [];
   Widget buildActivityBody(BuildContext ctxt, int index) {
     return activitys[index];
@@ -126,16 +157,69 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
   }
   @override
   Widget build(BuildContext context) {
+
+    urgents =[];
     activitys =[];
     news=[];
-    Widget activity1 = _getActivity("暂无图片", "2019/7/13 19:00", "2019/7/14 23:59", "一起去钓鱼 ");
-    Widget activity2 = _getActivity("暂无图片", "2019/7/18 18:00", "2019/7/19 23:59", "一起去赏月");
-    Widget news1 = _getNews("暂无图片", "放风筝今晚", "2019/7/14 23:59", "有人吗有人吗哈哈哈哈");
-    Widget news2 = _getNews("暂无图片", "放风筝结束的结束今晚", "2019/7/14 23:59", "有人吗有人吗哈哈哈哈");
-    activitys.add(activity1);
-    activitys.add(activity2);
-    news.add(news1);
-    news.add(news2);
+    if(urgentList.length>0){
+      for(int i=0;i<urgentList.length-1;i++){
+        Widget urgent = _getUrgent(urgentList[i].time, urgentList[i].managerName, urgentList[i].content);
+        urgents.add(urgent);
+      }
+    }
+    if(newsList.length>0){
+      for(int i=0;i<newsList.length;i++){
+        Widget news1 = _getNews(newsList[i].photo, newsList[i].title, newsList[i].time, newsList[i].content);
+        news.add(news1);
+      }
+    }
+    if(activityList.length>0){
+      for(int i=0;i<activityList.length;i++){
+        Widget activity1 = _getActivity(activityList[i].title,activityList[i].photo, activityList[i].content, activityList[i].startTime, activityList[i].endTime,activityList[i].status);
+        activitys.add(activity1);
+      }
+    }
+    //Widget activity2 = _getActivity("暂无图片", "2019/7/18 18:00", "2019/7/19 23:59", "一起去赏月");
+
+    //activitys.add(activity2);
+
+    Widget urgentSection = Container(
+      child: Column(
+        children: [
+
+          Container(
+            child: Divider(),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: new Image.asset(
+              'images/app.png',
+              height: 100,
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              '紧急通知',
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          new Expanded(
+                child: ListView.builder
+          (
+             itemCount: urgents.length,
+              itemBuilder: (BuildContext ctxt, int index) => buildUrgentBody(ctxt, index)
+           ) ,
+            )
+
+        ],
+      ),
+    );
     //展示活动安排的组件
     Widget activitySection = new Container(
       child:new ListView.builder
@@ -206,10 +290,40 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
       ),
     );
   }
+  _getMessage() async {
+    await manager.getNews(this, 1);
+    await manager.getUrgent(this, 1);
+    await manager.getActivity(this, 1);
+    return true;
+  }
   @override
   void dispose() {
     super.dispose();
     mTabController.dispose();
   }
+  @override
+  void onError(error) {print("$error");}
+
+  @override
+  void onUrgentResponse(List<urgent> body) {
+    urgentList = body;
+    setState(() {});
+  }
+  @override
+  void onNewsResponse(List<News> body){
+    newsList = body;
+    setState(() {});
+  }
+  @override
+  void onActivityResponse(List<Activity> body){
+    activityList = body;
+    setState(() {});
+  }
+  @override
+  void onSaveParticipantResponse(String body){
+    String temp = body;
+  }
 }
+
+
 

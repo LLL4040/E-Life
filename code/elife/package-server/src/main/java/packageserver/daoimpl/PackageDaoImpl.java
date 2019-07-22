@@ -49,12 +49,12 @@ public class PackageDaoImpl implements PackageDao {
 
     @Override
     public List<Package> findHistory(String username,int page){
-        return packageRepository.findHistory(username,10*(page-1),10*page-1);
+        return packageRepository.findHistory(username,10*(page-1),10);
     }
 
     @Override
     public List<Package> findHistoryManager(int communityId,int page){
-        return packageRepository.findHistoryManager(communityId,10*(page-1),10*page-1);
+        return packageRepository.findHistoryManager(communityId,10*(page-1),10);
     }
 
     @Override

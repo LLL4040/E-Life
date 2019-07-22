@@ -7,7 +7,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>我的申请</span>
+            <span style="font-size: 16px;">我的申请</span>
           </div>
           <el-table :data="my.filter(data => !search || data.status === search)" style="width: 100%">
             <el-table-column type="expand">
@@ -33,7 +33,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>申请加我</span>
+            <span style="font-size: 16px;">申请加我</span>
           </div>
           <el-table :data="others" style="width: 100%">
             <el-table-column type="expand">

@@ -18,9 +18,10 @@
               <br>
               <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,20)}}</p>
               <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
-              <div v-for="x in o.photo" :key="x">
-                <img :src="x" style="width: 33%"/>
-              </div>
+              <br>
+              <span v-for="x in o.photo" :key="x">
+                <img :src="x" style="width: 30%"/>
+              </span>
               <br>
               <p style="float:right; font-size: 12px;">{{o.time}}</p>
             </el-card>
@@ -63,6 +64,10 @@
               </el-col>
               <el-col :span="20" style="float: left">
                 <p style="float:left; font-size: 16px;">{{o.postComment}}</p>
+                <br>
+                <span v-for="x in o.photo" :key="x">
+                  <img :src="x" style="width: 30%"/>
+                </span>
                 <br>
                 <p style="float: right; font-size: 12px;">{{o.location + '楼，发布于' + o.commentsTime}}</p>
               </el-col>
@@ -245,6 +250,7 @@ export default {
       let data = {
         'commenterName': object.poster,
         'pid': object.id,
+        'photo': object.photo,
         'commentsTime': object.time,
         'postComment': object.content,
         'location': 1

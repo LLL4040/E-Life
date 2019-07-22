@@ -7,7 +7,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>停车费账单</span>
+            <span style="font-size: 16px;">停车费账单</span>
           </div>
           <el-table :data="bill.filter(data => (data.status === 1 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
@@ -19,7 +19,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>物业费账单</span>
+            <span style="font-size: 16px;">物业费账单</span>
           </div>
           <el-table :data="bill.filter(data => (data.status === 2 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
@@ -29,6 +29,9 @@
         </el-card>
       </el-col>
     </el-row>
+    <div class="block" align="center" >
+      <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-count="pageSize" :pager-count="7" layout="prev, pager, next, jumper"></el-pagination>
+    </div>
   </div>
 </template>
 
@@ -45,7 +48,9 @@ export default {
         phone: ''
       },
       search: '',
-      bill: []
+      bill: [],
+      pageNum: 1,
+      pageSize: 1
     }
   },
   mounted () {
@@ -77,6 +82,7 @@ export default {
     loadBill () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.pageNum)
       let url = '/pay-server/api/Pay/findPayHistory'
       this.$axios({
         method: 'post',
@@ -86,7 +92,13 @@ export default {
       ).then(response => {
         this.bill = response.data
         console.log(response.data)
+        this.pageSize = response.data[response.data.length - 1].pageNum
+        this.bill.pop()
       })
+    },
+    handleCurrentChange (val) {
+      this.pageNum = val
+      this.loadBill()
     }
   }
 }

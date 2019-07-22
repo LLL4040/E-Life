@@ -7,10 +7,10 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>停车费账单</span>
+            <span style="font-size: 16px;">停车费账单</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible1 = true"></el-button>
           </div>
-          <el-table :data="bill.filter(data => (data.status === -1 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
+          <el-table :data="bill.filter(data => ((data.status === -1 || data.status === -11) && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
             <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
@@ -20,10 +20,10 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>物业费账单</span>
+            <span style="font-size: 16px;">物业费账单</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible2 = true"></el-button>
           </div>
-          <el-table :data="bill.filter(data => (data.status === -2 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
+          <el-table :data="bill.filter(data => ((data.status === -2 || data.status === -12) && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
             <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
@@ -31,6 +31,9 @@
         </el-card>
       </el-col>
     </el-row>
+    <div class="block" align="center" >
+      <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-count="pageSize" :pager-count="7" layout="prev, pager, next, jumper"></el-pagination>
+    </div>
     <el-dialog title="添加停车费账单" :visible.sync="dialogFormVisible1">
       <el-form :model="newT">
         <el-form-item label="截止时间">
@@ -93,7 +96,9 @@ export default {
         time: '',
         amount: '',
         username: ''
-      }
+      },
+      pageNum: 1,
+      pageSize: 1
     }
   },
   mounted () {
@@ -125,6 +130,7 @@ export default {
     loadBill () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('page', this.pageNum)
       let url = '/pay-server/api/Pay/findUnPayHistory'
       this.$axios({
         method: 'post',
@@ -134,7 +140,13 @@ export default {
       ).then(response => {
         this.bill = response.data
         console.log(response.data)
+        this.pageSize = response.data[response.data.length - 1].pageNum
+        this.bill.pop()
       })
+    },
+    handleCurrentChange (val) {
+      this.pageNum = val
+      this.loadBill()
     },
     releaseT () {
       this.dialogFormVisible1 = false
