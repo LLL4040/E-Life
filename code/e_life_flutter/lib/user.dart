@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class UserModel extends Model with NetListener{
   userHttp manager = new userHttp();
-  User weather;
+  User user;
 
   void login(String username,String password,String id) async{
     await _getLogin(username,password,id);
@@ -17,8 +17,8 @@ class UserModel extends Model with NetListener{
   }
   @override
   void onUserResponse(User body) {
-    weather = body;
-    print(weather.username);
+    user = body;
+    print(user.username);
   }
   @override
   void onError(error) {
