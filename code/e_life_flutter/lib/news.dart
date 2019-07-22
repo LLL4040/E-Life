@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'newsHttp.dart';
 //资讯的widget
 class newswidget extends StatefulWidget {
   @override
@@ -12,7 +16,13 @@ class Choice {
   final int position;
   final IconData icon;
 }
-class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
+
+class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, NetListener{
+  List<Photo> urgentList;
+  List<News> newsList;
+  List<Activity> activityList;
+  httpManager manager = new httpManager();
+
   final Widget myDevider = Container(
     child: Divider(
       color: Colors.black12,
@@ -206,10 +216,38 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin {
       ),
     );
   }
+  _getWeather() async {
+    await manager.getNews(this, 1);
+    await manager.getUrgent(this, 1);
+    await manager.getActivity(this, 1);
+  }
   @override
   void dispose() {
     super.dispose();
     mTabController.dispose();
   }
+  @override
+  void onError(error) {print("$error");}
+
+  @override
+  void onUrgentResponse(List<Photo> body) {
+    urgentList = body;
+    setState(() {});
+  }
+  @override
+  void onNewsResponse(List<News> body){
+    newsList = body;
+    setState(() {});
+  }
+  @override
+  void onActivityResponse(List<Activity> body){
+    activityList = body;
+    setState(() {});
+  }
 }
+
+
+
+}
+
 

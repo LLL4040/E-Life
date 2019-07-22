@@ -34,6 +34,8 @@ public class UrgentController {
 
     @RequestMapping("/getNewUrgent")
     public JSONObject findUrgentNew(int communityId) {
+
+        System.out.println("1");
         return urgentService.findNew(communityId);
     }
     @RequestMapping("/deleteUrgent")
