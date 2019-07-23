@@ -3,6 +3,7 @@ import 'notice.dart';
 import 'map.dart';
 import 'friend.dart';
 
+
 class mycenter extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -18,10 +19,13 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
         }));
   }
   void _toMap() {
+    var androidView = new AndroidView(viewType: "MyMap");
     Navigator.push(context,
         new MaterialPageRoute(builder: (context) {
-          return new Map();
-        }));
+          return new Map(androidView : androidView);
+        })).then((var onValue){
+          androidView = onValue;
+    });
   }
   void _toFriend(){
     Navigator.push(context,

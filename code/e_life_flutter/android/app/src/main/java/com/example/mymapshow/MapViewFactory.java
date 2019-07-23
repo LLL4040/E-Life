@@ -2,9 +2,7 @@ package com.example.mymapshow;
 
 import android.content.Context;
 import android.view.View;
-
 import com.baidu.mapapi.map.MapView;
-
 import io.flutter.plugin.common.MessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
@@ -27,7 +25,6 @@ public class MapViewFactory extends PlatformViewFactory {
 
             @Override
             public void dispose() {
-
             }
         };
     }
