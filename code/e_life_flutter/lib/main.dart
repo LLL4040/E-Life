@@ -121,9 +121,12 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                     onPressed: (){
 
                       model.login(_username.text,_password.text,role);
+
                       //initState();
                       setState(() {
                          print("model"+model.user.toString());
+
+
                       });
                         Navigator.of(context).pushAndRemoveUntil(
                             new MaterialPageRoute(

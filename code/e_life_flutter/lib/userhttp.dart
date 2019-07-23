@@ -3,21 +3,17 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class userHttp {
-//  三天预报
+
   var userUrl = "http://elife.natapp1.cc/user-server/api/user/login";
 
-  /**
-   * 三天预报
-   * cityName 城市名称 我们应该使用外部传入
-   * net 监听网络请求的结果 因为他不是同步的
-   */
+
   login(NetListener net, String username, String password, String id) {
     print("发请求");
     var client = new http.Client();
     client.post(userUrl, body: {
-      "username": "1",
-      "password": "1",
-      "id": "0",
+      "username": username,
+      "password": password,
+      "id": id,
     }).then((
       response,
     ) {
@@ -38,7 +34,7 @@ class userHttp {
  * 用来回调成功和失败的结果
  */
 abstract class NetListener {
-  //三天预报
+
   void onUserResponse(User body);
   void onError(error);
 }
