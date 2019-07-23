@@ -1,0 +1,149 @@
+import 'package:flutter/material.dart';
+import 'package:e_life_flutter/friendhttp.dart';
+class addFriend extends StatefulWidget {
+  final username;
+  final friend;
+  addFriend(this.username, this.friend);
+  @override
+  State<StatefulWidget> createState() {
+    return new addFriendCenter(username, friend);
+  }
+}
+
+class addFriendCenter extends State<addFriend>
+    with SingleTickerProviderStateMixin ,NetListener{
+  final username;
+  final friend;
+  addFriendCenter(this.username, this.friend);
+  friendHttp manager = new friendHttp();
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController _contentController =
+        new TextEditingController.fromValue(new TextEditingValue(text: ""));
+
+    void _addRepair() {
+      print(_contentController.text);
+      manager.sendRequest(this, username, friend, _contentController.text);
+      Navigator.pop(context, "发送添加好友请求成功");
+    }
+
+    Widget addrepairSection = new Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          new Padding(
+            padding: new EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+            child: new Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  new Padding(
+                    padding: new EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
+                    child: Text("留言: "),
+                  ),
+                  new Padding(
+                      padding: new EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
+                      child: new TextField(
+                        maxLines: 5,
+                        controller: _contentController,
+                        decoration: new InputDecoration(
+                          hintMaxLines: 6,
+                        ),
+                      ))
+                ]),
+          ),
+          new Container(
+            padding: new EdgeInsets.fromLTRB(10.0, 0.0, 5.0, 0.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FlatButton(
+                  color: Colors.blue,
+                  highlightColor: Colors.blue[700],
+                  colorBrightness: Brightness.dark,
+                  splashColor: Colors.grey,
+                  child: Text("确定"),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  onPressed: _addRepair,
+                ),
+                FlatButton(
+                  color: Colors.black54,
+                  highlightColor: Colors.black38,
+                  colorBrightness: Brightness.dark,
+                  splashColor: Colors.grey,
+                  child: Text("取消"),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  onPressed: () => Navigator.pop(context, "取消发送请求"),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('添加好友'),
+      ),
+      body: Column(
+        children: <Widget>[
+          new Expanded(
+            child: addrepairSection,
+          )
+        ],
+      ),
+    );
+  }
+  @override
+  void onFriendResponse(List<Friend> friendList) {
+
+    print("收到" + friendList[0].email);
+    setState(() {});
+  }
+
+  @override
+  void onFriendSearchResponse(List<Friend> friendSearchList) {
+
+    setState(() {});
+  }
+
+  @override
+  void onRequestListResponse(List<friendRequest> requestList) {
+
+    setState(() {});
+  }
+
+  @override
+  void onResponseListResponse(List<friendRequest> responseList) {
+    setState(() {});
+  }
+
+  @override
+  void onSendRequestResponse(bool send) {
+    setState(() {});
+  }
+
+  @override
+  void onAcceptRequestResponse(bool accept) {
+    setState(() {});
+  }
+
+  @override
+  void onRejectRequestResponse(bool reject) {
+    setState(() {});
+  }
+
+  @override
+  void onDeleteFriendResponse(bool delete) {
+    setState(() {});
+  }
+
+  @override
+  void onError(error) {
+    print("$error");
+  }
+}

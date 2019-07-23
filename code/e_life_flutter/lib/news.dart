@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'newsHttp.dart';
+import 'joinActivity.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'user.dart';
+
 //资讯的widget
 class newswidget extends StatefulWidget {
+  final communityId;
+  newswidget(this.communityId);
   @override
   State<StatefulWidget> createState() {
-    return new myWidget();
+    return new myWidget(communityId);
   }
 }
 class Choice {
@@ -17,6 +23,8 @@ class Choice {
 }
 
 class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, NetListener{
+  final communityId;
+  myWidget(this.communityId);
   List<urgent> urgentList=[];
   List<News> newsList=[];
   List<Activity> activityList=[];
@@ -48,9 +56,16 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
       dense: true,
     );
   }
-
+  void _joinActivity(int id){
+    Navigator.push<String>(context,
+        new MaterialPageRoute(builder: (BuildContext context) {
+          return new joinActivity(id.toString());
+        })).then((String result){
+      print(result);
+    });
+  }
   //活动通知初始化的函数
-  Widget _getActivity(String title, String photo,String content,String startTime,String endTime,int status) {
+  Widget _getActivity(int id,String title, String photo,String content,String startTime,String endTime,int status) {
     String activity = status==0?"报名中":"已结束";
     return  new ListTile(
       leading: Image.memory(
@@ -74,7 +89,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
       ),
       trailing: new Icon(Icons.add,color:Colors.black54 ,),
       onTap: () {
-        print(content);
+        _joinActivity(id);
       },
       dense: true,
     );
@@ -175,7 +190,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
     }
     if(activityList.length>0){
       for(int i=0;i<activityList.length;i++){
-        Widget activity1 = _getActivity(activityList[i].title,activityList[i].photo, activityList[i].content, activityList[i].startTime, activityList[i].endTime,activityList[i].status);
+        Widget activity1 = _getActivity(activityList[i].id,activityList[i].title,activityList[i].photo, activityList[i].content, activityList[i].startTime, activityList[i].endTime,activityList[i].status);
         activitys.add(activity1);
       }
     }
@@ -242,58 +257,61 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
     newsContain.add(urgentSection);
     newsContain.add(newsSection);
     newsContain.add(activitySection);
+    return  ScopedModelDescendant<UserModel>(
+        builder: (context, child, model)
+    {
+      return DefaultTabController(
+        length: tabs.length,
+        child: MaterialApp(
+          home: Scaffold(
+            appBar:
+            TabBar(
+              tabs: tabs.map((Choice choice) {
+                return new Tab(
+                  text: choice.title,
 
-    return DefaultTabController(
-      length: tabs.length,
-      child: MaterialApp(
-        home: Scaffold(
-          appBar:
-          TabBar(
-            tabs: tabs.map((Choice choice) {
-              return new Tab(
-                text: choice.title,
+                );
+              }).toList(),
+              controller: mTabController,
+              //isScrollable: true,//加了之后就不是中间对齐了
+              indicatorColor: Colors.black54,
+              indicatorWeight: 1,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorPadding: EdgeInsets.fromLTRB(5.0, 1.0, 5.0, 1.0),
+              labelPadding: EdgeInsets.all(15),
+              //indicator: const BoxDecoration(),//加了之后指示条消失
+              labelColor: Color(0xff333333),
+              labelStyle: TextStyle(
 
-              );
-            }).toList(),
-            controller: mTabController,
-            //isScrollable: true,//加了之后就不是中间对齐了
-            indicatorColor: Colors.black54,
-            indicatorWeight: 1,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorPadding: EdgeInsets.fromLTRB(5.0,1.0,5.0,1.0),
-            labelPadding: EdgeInsets.all(15),
-            //indicator: const BoxDecoration(),//加了之后指示条消失
-            labelColor: Color(0xff333333),
-            labelStyle: TextStyle(
-
-              fontSize: 12.0,
+                fontSize: 12.0,
+              ),
+              unselectedLabelColor: Colors.black54,
+              unselectedLabelStyle: TextStyle(
+                fontSize: 12.0,
+              ),
             ),
-            unselectedLabelColor: Colors.black54,
-            unselectedLabelStyle: TextStyle(
-              fontSize: 12.0,
-            ),
-          ),
 
-          body: TabBarView(
-              controller:  mTabController,
+            body: TabBarView(
+              controller: mTabController,
               children: tabs
                   .map((Choice choice) {
                 return new Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child:newsContain[choice.position] ) ;
-
-
+                    padding: const EdgeInsets.all(1.0),
+                    child: newsContain[choice.position]);
               }).toList(),
 
+            ),
           ),
         ),
-      ),
+      );
+    }
     );
+
   }
   _getMessage() async {
-    await manager.getNews(this, 1);
-    await manager.getUrgent(this, 1);
-    await manager.getActivity(this, 1);
+    await manager.getNews(this, communityId);
+    await manager.getUrgent(this, communityId);
+    await manager.getActivity(this, communityId);
     return true;
   }
   @override

@@ -11,6 +11,40 @@ eureka:
       defaultZone: http://localhost:9000/eureka/
 
 zuul:
+  ignoredServices: '*' #忽略所有未配置的service
   host:
     connect-timeout-millis: 1500000
     socket-timeout-millis: 6000000
+  routes:
+    redis-session-service:
+      path: /user-session/**
+      serviceId: session-redis
+      sensitiveHeaders: "*"
+    user-server:
+      path: /user-server/**
+      serviceId: user-server
+      sensitiveHeaders: "*"
+    news-server:
+      path: /news-server/**
+      serviceId: news-server
+      sensitiveHeaders: "*"
+    package-server:
+      path: /package-server/**
+      serviceId: package-server
+      sensitiveHeaders: "*"
+    group-server:
+      path: /group-server/**
+      serviceId: group-server
+      sensitiveHeaders: "*"
+    lifeservice-server:
+      path: /lifeservice-server/**
+      serviceId: lifeservice-server
+      sensitiveHeaders: "*"
+    estateforum-server:
+      path: /estateforum-server/**
+      serviceId: estateforum-server
+      sensitiveHeaders: "*"
+    pay-server:
+      path: /pay-server/**
+      serviceId: pay-server
+      sensitiveHeaders: "*"

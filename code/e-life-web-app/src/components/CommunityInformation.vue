@@ -168,9 +168,9 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         if (response.data) {
-          this.$alert('加入成功！')
+          this.$alert('申请成功！待审核')
         } else {
-          this.$alert('加入失败！')
+          this.$alert('申请失败！请重新登录重试')
         }
       })
     },
@@ -205,8 +205,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.notice = response.data.content
-        console.log(response.data)
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.notice = response.data.content
+        }
       })
     },
     loadNews () {
@@ -219,8 +222,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.news = response.data
-        console.log(response.data)
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.news = response.data
+        }
       })
     },
     loadNewsMore () {
@@ -234,10 +240,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.news = response.data
-        this.pageSize1 = response.data[response.data.length - 1].pageNum
-        console.log(response.data)
-        this.news.pop()
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.news = response.data
+          this.pageSize1 = response.data[response.data.length - 1].pageNum
+          console.log(response.data)
+          this.news.pop()
+        }
       })
     },
     handleCurrentChange1 (val) {
@@ -254,8 +264,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.activity = response.data
-        console.log(response.data)
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.activity = response.data
+          console.log(response.data)
+        }
       })
     },
     loadActivityMore () {
@@ -269,10 +283,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.activity = response.data
-        this.pageSize2 = response.data[response.data.length - 1].pageNum
-        console.log(response.data)
-        this.activity.pop()
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.activity = response.data
+          this.pageSize2 = response.data[response.data.length - 1].pageNum
+          console.log(response.data)
+          this.activity.pop()
+        }
       })
     },
     handleCurrentChange2 (val) {
@@ -289,8 +307,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.photo = response.data.photo
-        this.dialogFormVisible2 = true
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.photo = response.data.photo
+          this.dialogFormVisible2 = true
+        }
       })
     },
     show2 (row) {
@@ -303,8 +325,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.photo = response.data.photo
-        this.dialogFormVisible2 = true
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.photo = response.data.photo
+          this.dialogFormVisible2 = true
+        }
       })
     }
   }

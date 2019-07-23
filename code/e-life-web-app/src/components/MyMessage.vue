@@ -64,7 +64,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.messages = response.data
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.messages = response.data
+        }
       })
     },
     handleDelete (row) {
@@ -78,10 +82,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.deleteMyOneNotice === '1') {
-          this.loadMessage()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('删除失败！')
+          if (response.data.deleteMyOneNotice === '1') {
+            this.loadMessage()
+          } else {
+            this.$alert('删除失败！')
+          }
         }
       })
     }

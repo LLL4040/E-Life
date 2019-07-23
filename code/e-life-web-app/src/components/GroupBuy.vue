@@ -216,7 +216,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.group = response.data
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.group = response.data
+        }
       })
     },
     loadDemand () {
@@ -229,7 +233,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.demand = response.data
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.demand = response.data
+        }
       })
     },
     show () {
@@ -252,11 +260,15 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.add === 1) {
-          this.$alert('添加成功！')
-          this.loadDemand()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('添加失败！')
+          if (response.data.add === 1) {
+            this.$alert('添加成功！')
+            this.loadDemand()
+          } else {
+            this.$alert('添加失败！')
+          }
         }
       })
     },
@@ -271,8 +283,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.form = response.data
-        this.dialogFormVisible1 = true
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.form = response.data
+          this.dialogFormVisible1 = true
+        }
       })
     },
     handleA (row) {
@@ -286,11 +302,15 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.participate === 1) {
-          this.$alert('加入成功！')
-          this.loadDemand()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('加入失败！')
+          if (response.data.participate === 1) {
+            this.$alert('加入成功！')
+            this.loadDemand()
+          } else {
+            this.$alert('加入失败！')
+          }
         }
       })
     },
@@ -304,11 +324,15 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.delete === 1) {
-          this.$alert('删除成功！')
-          this.loadDemand()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('删除失败！')
+          if (response.data.delete === 1) {
+            this.$alert('删除成功！')
+            this.loadDemand()
+          } else {
+            this.$alert('删除失败！')
+          }
         }
       })
     },
@@ -322,8 +346,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.photo = response.data.photo
-        this.dialogFormVisible3 = true
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.photo = response.data.photo
+          this.dialogFormVisible3 = true
+        }
       })
     }
   },

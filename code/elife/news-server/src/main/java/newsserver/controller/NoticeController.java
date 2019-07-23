@@ -8,10 +8,13 @@ import newsserver.entity.NoticeUser;
 import newsserver.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -93,9 +96,28 @@ public class NoticeController {
     }
     @RequestMapping(path = "/findMyNotice")
     @ResponseBody
-    public List<Notice> findMyNotice(@RequestParam String username){
-
-        return noticeService.findByUsername(username);
+    public JSONArray findMyNotice(HttpServletRequest request, @RequestParam String username){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        JSONArray jsonArray = new JSONArray();
+        if (StringUtils.isEmpty(name) || !("0".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            jsonArray.add(jsonObject);
+        } else {
+            List<Notice> notices = noticeService.findByUsername(username);
+            for(Notice notice : notices){
+                JSONObject object = new JSONObject();
+                object.put("id", notice.getNoticeId());
+                object.put("noticeTime", notice.getNoticeTime());
+                object.put("noticeContent",notice.getNoticeContent());
+                object.put("managerName",notice.getManagerName());
+                object.put("communityId",notice.getCommunityId());
+                jsonArray.add(object);
+            }
+        }
+        return jsonArray;
     }
     /**
      * 管理员功能，删除数据库中一条物业信息，包括notice表中和noticeUser表中*/
@@ -118,18 +140,26 @@ public class NoticeController {
      * 用户功能，删除我的通知列表中的某一条通知*/
     @RequestMapping(path = "/deleteMyOneNotice")
     @ResponseBody
-    public JSONObject deleteMyOneNotice(@RequestParam String username,@RequestParam int noticeId){
-        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
-        if(noticeService.deleteByUsernameAndNoticeId(username,noticeId).equals("删除我的该条物业信息成功")){
-            object.put("deleteMyOneNotice", "1");
-            object.put("message","删除我的该条物业信息成功");
+    public JSONObject deleteMyOneNotice(HttpServletRequest request, @RequestParam String username,@RequestParam int noticeId){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("0".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        } else {
+            net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
+            if (noticeService.deleteByUsernameAndNoticeId(username, noticeId).equals("删除我的该条物业信息成功")) {
+                object.put("deleteMyOneNotice", "1");
+                object.put("message", "删除我的该条物业信息成功");
+                return object;
+
+            }
+            object.put("deleteMyOneNotice", "0");
+            object.put("message", "删除我的该条物业信息失败");
             return object;
-
         }
-        object.put("deleteMyOneNotice", "0");
-        object.put("message","删除我的该条物业信息失败");
-        return object;
-
     }
     /**
      * 用户功能，删除我的通知列表中的所有条通知*/

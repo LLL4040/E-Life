@@ -16,6 +16,18 @@ spring:
         ddl-auto: update
         format_sql: true
         enable_lazy_load_no_trans: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: root123
+    timeout: 6000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    database: 0
 
 # server monitor port
 server:
@@ -26,3 +38,12 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:9000/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"

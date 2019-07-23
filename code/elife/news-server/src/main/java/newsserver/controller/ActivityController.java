@@ -5,12 +5,15 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import newsserver.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RequestMapping(path="/api/Activity")
@@ -52,7 +55,17 @@ public class ActivityController {
      */
     @RequestMapping(path = "/findAllActivity")
     @ResponseBody
-    public JSONArray findAllActivity(int communityId,int page) throws IOException {
+    public JSONArray findAllActivity(HttpServletRequest request, int communityId,int page) throws IOException {
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return activityService.findAllActivity(communityId,page);
     }
 
@@ -64,7 +77,17 @@ public class ActivityController {
      */
     @RequestMapping(path = "/findNewActivity")
     @ResponseBody
-    public JSONArray findNewActivity(int communityId) throws IOException {
+    public JSONArray findNewActivity(HttpServletRequest request, int communityId) throws IOException {
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return activityService.findNewActivity(communityId);
     }
 
@@ -99,7 +122,13 @@ public class ActivityController {
      */
     @RequestMapping(path = "/saveParticipator")
     @ResponseBody
-    public boolean saveParticipator(int aid,String content,String username){
+    public boolean saveParticipator(HttpServletRequest request, int aid,String content,String username){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            return false;
+        }
         return activityService.saveParticipator(aid,content,0,username);
     }
 
@@ -128,7 +157,15 @@ public class ActivityController {
 
     @RequestMapping(path = "/photo")
     @ResponseBody
-    public JSONObject getBigPhoto(String path){
-        return activityService.getBigPhoto( path);
+    public JSONObject getBigPhoto(HttpServletRequest request, String path){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
+        return activityService.getBigPhoto(path);
     }
 }

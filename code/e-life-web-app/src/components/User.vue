@@ -47,9 +47,13 @@
           <div align="center">
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
             <div style="clear:both"></div>
-            <el-button type="success" plain size="mini" icon="el-icon-info">居民</el-button>
+            <el-tooltip class="item" effect="light" content="点击退出登录" placement="right">
+              <el-button type="success" plain size="mini" icon="el-icon-info" @click="logout()">居民</el-button>
+            </el-tooltip>
             <div style="clear:both"></div>
-            <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="dialogFormVisible = true">{{ userInfo.username }}</el-button>
+            <el-tooltip class="item" effect="light" content="点击查看或修改个人信息" placement="right">
+              <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="dialogFormVisible = true">{{ userInfo.username }}</el-button>
+            </el-tooltip>
             <div style="clear:both"></div>
           </div>
           <el-menu-item index="1" @click="toPage2(1, 7)">
@@ -85,9 +89,9 @@
             <el-menu-item index="4-1" @click="toPage2(4, 12)">邮包通知
               <el-badge v-if="newParcel !== 0" class="mark" :value=newParcel :max="99" style="background-color: transparent" />
             </el-menu-item>
-            <el-menu-item index="4-2" @click="toPage2(4, 13)">上门寄件</el-menu-item>
+            <el-menu-item index="4-2" @click="toSF()">上门寄件</el-menu-item>
           </el-submenu>
-          <el-menu-item index="5" @click="toPage2(5, 14)">
+          <el-menu-item index="5" @click="toPage2(5, 13)">
             <i class="el-icon-map-location"></i><span slot="title" style="font-size: 16px">我的周边</span>
           </el-menu-item>
         </el-menu>
@@ -134,8 +138,7 @@ import page9 from './MyFriend.vue'
 import page10 from './MyFriendAdd.vue'
 import page11 from './MyFriendApply.vue'
 import page12 from './MyParcel.vue'
-import page13 from './MySending.vue'
-import page14 from './MySurround.vue'
+import page13 from './MySurround.vue'
 
 export default {
   name: 'User',
@@ -157,6 +160,26 @@ export default {
     }
   },
   methods: {
+    logout () {
+      let bodyFormData = new FormData()
+      let url = '/user-server/api/user/logout'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.logout === 1) {
+          sessionStorage.clear()
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.$alert('退出登录失败！请关闭页面重试')
+        }
+      })
+    },
+    toSF () {
+      window.location.href = 'http://www.sf-express.com/cn/sc/dynamic_function/order/quick/'
+    },
     toPage1 (id) {
       this.openList[0] = '1'
       this.tabView = `page${id}`
@@ -200,7 +223,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.newMessage = response.data.length
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.newMessage = response.data.length
+        }
       })
     },
     loadF () {
@@ -213,7 +240,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.newFriend = response.data.number
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.newFriend = response.data.number
+        }
       })
     },
     loadP () {
@@ -226,7 +257,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.newParcel = response.data.length
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.newParcel = response.data.length
+        }
       })
     }
   },
@@ -243,8 +278,7 @@ export default {
     page10,
     page11,
     page12,
-    page13,
-    page14
+    page13
   },
   mounted () {
     this.loadData()

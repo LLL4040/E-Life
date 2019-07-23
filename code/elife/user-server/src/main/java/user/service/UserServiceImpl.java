@@ -1,5 +1,6 @@
 package user.service;
 
+import io.swagger.models.auth.In;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class UserServiceImpl implements UserService {
         this.communityRepository = communityRepository;
     }
 
+    @Override
+    public String findUsernameByPhone(String phone) {
+        return userDao.findByPhone(phone).getUsername();
+    }
 
     @Override
     public JSONObject usernameAvailable(String username) {

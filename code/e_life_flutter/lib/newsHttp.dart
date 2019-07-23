@@ -8,14 +8,15 @@ class httpManager {
   var newsUrl = "http://elife.natapp1.cc/news-server/api/News/findNews";
 
   var activityUrl = "http://elife.natapp1.cc/news-server/api/Activity/findNewActivity";
+  var joinUrl = "http://elife.natapp1.cc/news-server/api/Activity/saveParticipator";
 
 
-  getUrgent(NetListener net,num communityId) {
+  getUrgent(NetListener net,String communityId) {
     var client = new http.Client();
     client.post(
         urgentUrl,
         body: {
-          "communityId": communityId.toString(),
+          "communityId": communityId,
           "page": "1"
         }
     ).then((
@@ -33,12 +34,12 @@ class httpManager {
     );
   }
 
-  getNews(NetListener net,num communityId) {
+  getNews(NetListener net,String communityId) {
     var client = new http.Client();
     client.post(
         newsUrl,
         body: {
-          "communityId": communityId.toString(),
+          "communityId": communityId,
         }
     ).then((
         response,
@@ -54,12 +55,12 @@ class httpManager {
     );
   }
 
-  getActivity(NetListener net,num communityId) {
+  getActivity(NetListener net,String communityId) {
     var client = new http.Client();
     client.post(
         activityUrl,
         body: {
-          "communityId": communityId.toString(),
+          "communityId": communityId,
         }
     ).then((
         response,
@@ -75,19 +76,19 @@ class httpManager {
       client.close,
     );
   }
-  saveParticipator(NetListener net,int aid,String content,String username){
+  saveParticipator(NetListener net,String aid,String content,String username){
     var client = new http.Client();
     client.post(
-        activityUrl,
+        joinUrl,
         body: {
-          "aid": aid.toString(),
+          "aid": aid,
           "content": content,
           "username": username,
         }
     ).then((
         response,
         ) {
-      print(response.body);
+      print("发送请求结果"+response.body);
       net.onSaveParticipantResponse(response.body);
     }, onError: (error) {
       net.onError(error);

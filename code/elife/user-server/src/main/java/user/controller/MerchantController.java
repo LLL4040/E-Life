@@ -2,11 +2,15 @@ package user.controller;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import user.service.MerchantService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author ztHou
@@ -31,12 +35,30 @@ public class MerchantController {
 
     @RequestMapping(path = "/findAllByType")
     @ResponseBody
-    public JSONArray findAllByType(@RequestParam String type){
+    public JSONArray findAllByType(HttpServletRequest request, @RequestParam String type){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        if (StringUtils.isEmpty(name)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return merchantService.findAllByType(type);
     }
 
     @RequestMapping(path = "/findAll")
-    public JSONArray findAll(){
+    public JSONArray findAll(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        if (StringUtils.isEmpty(name)) {
+            JSONObject jsonObject = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            jsonObject.put("login", 0);
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return merchantService.findAll();
     }
 
@@ -55,7 +77,15 @@ public class MerchantController {
 
     @RequestMapping(path = "/getMerchantById")
     @ResponseBody
-    public JSONObject getMerchant(@RequestParam Long id){
+    public JSONObject getMerchant(HttpServletRequest request, @RequestParam Long id){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         return merchantService.getMerchant(id);
     }
 
