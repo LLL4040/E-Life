@@ -11,12 +11,12 @@ class mycenter extends StatefulWidget {
 class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin {
  String username="用户";
  String role = "用户";
-  void _toFrind(){
-    Navigator.push(context,
-        new MaterialPageRoute(builder: (context) {
-          return new friendWidget();
-        }));
-  }
+//  void _toFrind(){
+//    Navigator.push(context,
+//        new MaterialPageRoute(builder: (context) {
+//          return new friendWidget();
+//        }));
+//  }
   @override
   Widget build(BuildContext context) {
     return  ScopedModelDescendant<UserModel>(
@@ -85,9 +85,12 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
                   ListTile(
                     leading: const Icon(Icons.people_outline),
                     title: const Text('我的好友'),
-                    onTap: () {
-                      _toFrind();
-                    },
+                    onTap: (){
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) {
+                            return new friendWidget(username);
+                          }));
+                    }
                   ),
                   ListTile(
                     leading: const Icon(Icons.settings_system_daydream),

@@ -126,7 +126,7 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
   @override
   void onMyMaintainResponse(List<Maintain> maintain){
     maintainList=maintain;
-    print("收到maintain "+maintain[0].content);
+    //print("收到maintain "+maintain[0].content);
     setState(() {
     });
 

@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class friendHttp {
 
-  var friendUrl = "http://elife.natapp1.cc/news-server/api/friend/friendList";
+  var friendUrl = "http://elife.natapp1.cc/user-server/api/friend/friendList";
 
-  var friendSearchListUrl = "http://elife.natapp1.cc/news-server/api/friend/friendSearchList";
+  var friendSearchListUrl = "http://elife.natapp1.cc/user-server/api/friend/friendSearchList";
 
-  var requestListUrl = "http://elife.natapp1.cc/news-server/api/friend/requestList";
+  var requestListUrl = "http://elife.natapp1.cc/user-server/api/friend/responseList";
 
-  var responseListUrl= "http://elife.natapp1.cc/news-server/api/friend/responseList";
+  var responseListUrl= "http://elife.natapp1.cc/user-server/api/friend/requestList";
 
-  var sendRequestUrl= "http://elife.natapp1.cc/news-server/api/friend/sendFriendRequest";
+  var sendRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/sendFriendRequest";
 
-  var acceptRequestUrl= "http://elife.natapp1.cc/news-server/api/friend/acceptRequestUrl";
+  var acceptRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/acceptRequest";
 
-  var rejectRequestUrl= "http://elife.natapp1.cc/news-server/api/friend/rejectRequestUrl";
+  var rejectRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/rejectRequest";
 
-  var deleteFriendUrl= "http://elife.natapp1.cc/news-server/api/friend/deleteFriendUrl";
+  var deleteFriendUrl= "http://elife.natapp1.cc/user-server/api/friend/deleteFriend";
 
 
   /**
@@ -61,7 +61,7 @@ class friendHttp {
       print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Friend> friendList = responseJson.map((m) => new Friend.fromJson(m)).toList();
-      net.onFriendResponse(friendList);
+      net.onFriendSearchResponse(friendList);
     }, onError: (error) {
       net.onError(error);
     }).whenComplete(
@@ -146,6 +146,7 @@ class friendHttp {
         response,
         ) {
       Map<String,dynamic> responseJson = json.decode(response.body);
+      print("请求加好友成功");
       bool success = responseJson.containsValue("1");
       net.onAcceptRequestResponse(success);
     }, onError: (error) {
@@ -216,13 +217,15 @@ class Friend{
   final String friend;
   final String phone;
   final String email;
-  final int communityId;
+  final String communityId;
+  final String searchUser;
 
   Friend({
     this.friend,
     this.phone,
     this.email,
     this.communityId,
+    this.searchUser
   }) ;
 
   factory Friend.fromJson(Map<String, dynamic> json){
@@ -230,7 +233,8 @@ class Friend{
       friend: json['friend'],
       phone: json['phone'],
       email: json['email'],
-      communityId: json['communityId'],
+      communityId: json['community'],
+      searchUser: json['username'],
     );
   }
 }
