@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'mycenter.dart';
 import 'service.dart';
 import 'mainpage.dart';
-
+import 'package:scoped_model/scoped_model.dart';
+import 'user.dart';
 class BottomNavigationWidget extends StatefulWidget {
   @override
   _BottomNavigationWidget createState() => _BottomNavigationWidget();
@@ -21,6 +22,7 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
         body: list[_currentIndex],
@@ -74,5 +76,6 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
             });
           },
         ));
-  }
+
+}
 }
