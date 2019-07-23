@@ -10,17 +10,18 @@ class MyApp extends StatelessWidget {
   //UserModel userModel = UserModel();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MainApp',
-      home: LoginWidget(),
-    );
-//    return ScopedModel<UserModel>(
-//      model: userModel,
-//      child: new MaterialApp(
-//        title: 'MainApp',
-//        home: LoginWidget(),
-//      ),
+//    return MaterialApp(
+//      title: 'MainApp',
+//      home: LoginWidget(),
 //    );
+  UserModel userModel = UserModel();
+    return ScopedModel<UserModel>(
+      model: userModel,
+      child: new MaterialApp(
+        title: 'MainApp',
+        home: LoginWidget(),
+      ),
+    );
   }
 }
 
@@ -78,9 +79,7 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
 
-    return ScopedModel<UserModel>(
-        model: UserModel(),
-        child: ScopedModelDescendant<UserModel>(
+    return  ScopedModelDescendant<UserModel>(
           builder: (context, child, model) {
 
 
@@ -88,16 +87,16 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
               print(_username.text);
               print(_password.text);
               print(role);
-              print("aaaaaa" + model.weather.toString());
-              model.login(_username.text, _password.text, "0");
-//            if (model.user != null) {
-//              Navigator.of(context).pushAndRemoveUntil(
-//                  new MaterialPageRoute(
-//                      builder: (context) => new BottomNavigationWidget()),
-//                  (route) => route == null);
-//            }
-              if (model.weather != null) {
-                print("hasksa" + model.weather.toString());
+              print("aaaaaa" + model.user.toString());
+              model.login(_username.text, _password.text, role);
+            if (model.user != null) {
+              Navigator.of(context).pushAndRemoveUntil(
+                  new MaterialPageRoute(
+                      builder: (context) => new BottomNavigationWidget()),
+                  (route) => route == null);
+            }
+              if (model.user != null) {
+                print("hasksa" + model.user.toString());
                 Navigator.push<String>(context,
                     new MaterialPageRoute(builder: (BuildContext context) {
                       return new BottomNavigationWidget();
@@ -120,8 +119,17 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     onPressed: (){
-                      model.login("1","1","0");
-                      print(model.weather.toString());
+
+                      model.login(_username.text,_password.text,role);
+                      //initState();
+                      setState(() {
+                         print("model"+model.user.toString());
+                      });
+                        Navigator.of(context).pushAndRemoveUntil(
+                            new MaterialPageRoute(
+                                builder: (context) => new BottomNavigationWidget()),
+                                (route) => route == null);
+
                     }),
               ),
             );
@@ -189,7 +197,7 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                           children: <Widget>[
                             Flexible(
                               child: RadioListTile<String>(
-                                value: '用户',
+                                value: '0',
                                 title: Text('用户'),
                                 groupValue: role,
                                 onChanged: (value) {
@@ -201,7 +209,7 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                             ),
                             Flexible(
                               child: RadioListTile<String>(
-                                value: '管理员',
+                                value: '1',
                                 title: Text('管理员'),
                                 groupValue: role,
                                 onChanged: (value) {
@@ -213,7 +221,7 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                             ),
                             Flexible(
                               child: RadioListTile<String>(
-                                value: '商家',
+                                value: '2',
                                 title: Text('商家'),
                                 groupValue: role,
                                 onChanged: (value) {
@@ -237,6 +245,6 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                   ),
                 ));
           },
-        ));
+        );
   }
 }

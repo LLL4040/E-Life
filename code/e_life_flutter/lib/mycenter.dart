@@ -22,9 +22,17 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
     return  ScopedModelDescendant<UserModel>(
         builder: (context, child, model)
     {
-//      print("ooooo" + model.user.toString());
-//      username=model.user.username;
-//      role = model.user.role.toString();
+
+      username=model.user.username;
+      if(model.user.role==0){
+        role="用户";
+      }
+      if(model.user.role==1){
+        role="管理员";
+      }
+      if(model.user.role==2){
+        role="商家";
+      }
       return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
@@ -55,7 +63,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "身份",
+                        role,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],

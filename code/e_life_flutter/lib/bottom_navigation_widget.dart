@@ -22,9 +22,7 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<UserModel>(
-        builder: (context, child, model) {
-      //print("iiiiii"+model.user.toString());
+
     return Scaffold(
 
         body: list[_currentIndex],
@@ -78,6 +76,6 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
             });
           },
         ));
-  },);
+
 }
 }

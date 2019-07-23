@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'newsHttp.dart';
+
 //资讯的widget
 class newswidget extends StatefulWidget {
   @override

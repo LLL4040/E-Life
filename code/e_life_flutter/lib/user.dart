@@ -8,21 +8,21 @@ import 'package:http/http.dart' as http;
 
 class UserModel extends Model with NetListener{
   userHttp manager = new userHttp();
-  User weather;
+  User user;
 
   void login(String username,String password,String id) async{
     await _getLogin(username,password,id);
     print("75858585");
     notifyListeners();
   }
-  _getLogin(String username,String password,String id) async {
-    await manager.login(this, username,password,id);
+  _getLogin(String username,String password,String id)  {
+     manager.login(this, username,password,id);
     print("123");
   }
   @override
   void onUserResponse(User body) {
-    weather = body;
-    print("shshshh"+weather.username);
+    user = body;
+    print("shshshh"+user.username);
     notifyListeners();
   }
   @override
