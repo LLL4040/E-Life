@@ -21,6 +21,7 @@ class Choice {
 }
 
 class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, NetListener{
+
   List<urgent> urgentList=[];
   List<News> newsList=[];
   List<Activity> activityList=[];
