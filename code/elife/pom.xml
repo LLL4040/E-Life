@@ -11,7 +11,18 @@
     <modules>
         <module>eureka-server</module>
         <module>urgent-server</module>
+        <module>user-server</module>
+        <module>auth-server</module>
+        <module>service-hi</module>
         <module>news-server</module>
+        <module>group-server</module>
+        <module>notice-server</module>
+        <module>estateforum-server</module>
+        <module>lifeservice-server</module>
+        <module>gateway</module>
+        <module>package-server</module>
+        <module>activity-server</module>
+        <module>pay-server</module>
     </modules>
 
     <properties>
@@ -176,14 +187,13 @@
         </dependencies>
     </dependencyManagement>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: gateway
+
+server:
+  port: 9010
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+
+zuul:
+  host:
+    connect-timeout-millis: 1500000
+    socket-timeout-millis: 6000000

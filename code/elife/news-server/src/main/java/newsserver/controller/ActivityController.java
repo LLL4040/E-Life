@@ -2,6 +2,7 @@ package newsserver.controller;
 
 
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import newsserver.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,6 @@ public class ActivityController {
      * @param content
      * @param managerName
      * @param title
-     * @param status
      * @param photo
      * @param communityId
      * @return true or false
@@ -40,8 +40,8 @@ public class ActivityController {
     @PostMapping(path="/saveActivity") // Map ONLY GET Requests
     @ResponseBody
     public boolean saveActivity(String startTime, String endTime, String content,
-                                String managerName, String title, int status, MultipartFile photo, int communityId) throws IOException {
-        return activityService.saveActivity(startTime,endTime,content,managerName,title,status,photo,communityId);
+                                String managerName, String title, MultipartFile photo, int communityId) throws IOException {
+        return activityService.saveActivity(startTime,endTime,content,managerName,title,0,photo,communityId);
     }
 
     /**
@@ -52,8 +52,8 @@ public class ActivityController {
      */
     @RequestMapping(path = "/findAllActivity")
     @ResponseBody
-    public JSONArray findAllActivity(int communityId) throws IOException {
-        return activityService.findAllActivity(communityId);
+    public JSONArray findAllActivity(int communityId,int page) throws IOException {
+        return activityService.findAllActivity(communityId,page);
     }
 
     /**
@@ -94,14 +94,13 @@ public class ActivityController {
      * save participant
      * @param aid
      * @param content
-     * @param status
      * @param username
      * @return boolean
      */
     @RequestMapping(path = "/saveParticipator")
     @ResponseBody
-    public boolean saveParticipator(int aid,String content,int status,String username){
-        return activityService.saveParticipator(aid,content,status,username);
+    public boolean saveParticipator(int aid,String content,String username){
+        return activityService.saveParticipator(aid,content,0,username);
     }
 
     /**
@@ -111,8 +110,8 @@ public class ActivityController {
      */
     @RequestMapping(path = "/findAllParticipator")
     @ResponseBody
-    public JSONArray findAllParticipator(int aid){
-        return activityService.findAllParticipator(aid);
+    public JSONArray findAllParticipator(int aid,int page){
+        return activityService.findAllParticipator(aid,page);
     }
 
     /**
@@ -125,5 +124,11 @@ public class ActivityController {
     @ResponseBody
     public boolean disagreeParticipator(int pid,int status){
         return activityService.disagreeParticipator(pid,status);
+    }
+
+    @RequestMapping(path = "/photo")
+    @ResponseBody
+    public JSONObject getBigPhoto(String path){
+        return activityService.getBigPhoto( path);
     }
 }

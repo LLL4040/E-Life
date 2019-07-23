@@ -1,6 +1,7 @@
 package newsserver.serviceimpl;
 
 
+import net.coobird.thumbnailator.Thumbnails;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import newsserver.dao.ActivityDao;
@@ -31,10 +32,11 @@ public class ActivityServiceImpl implements ActivityService {
         while(iter.hasNext()){
             Activity temp = iter.next();
             JSONObject jsonObject = new JSONObject();
-            File file = new File("./activity-server/pic/"+temp.getPhoto());
+            File file = new File("./news-server/cpic/"+temp.getPhoto());
             byte[] data = Files.readAllBytes(file.toPath());
             String photo= Base64.encodeBase64String(data);
             jsonObject.put("photo" , "data:image/jpg;base64,"+photo);
+            jsonObject.put("path", temp.getPhoto());
             jsonObject.put("id",temp.getId());
             jsonObject.put("status",temp.getStatus());
             jsonObject.put("title",temp.getTitle());
@@ -54,10 +56,14 @@ public class ActivityServiceImpl implements ActivityService {
             if (!photo.isEmpty()) {
                 byte[] bytes = photo.getBytes();
                 BufferedOutputStream bufferedOutputStream = new
-                        BufferedOutputStream(new FileOutputStream(new File("./activity-server/pic/" + path)));
+                        BufferedOutputStream(new FileOutputStream(new File("./news-server/pic/" + path)));
                 bufferedOutputStream.write(bytes);
                 bufferedOutputStream.close();
             }
+            Thumbnails.of("./news-server/pic/"+path)
+                    .size(80,80)
+                    .keepAspectRatio(false)
+                    .toFile("./news-server/cpic/"+path);
            activityDao.saveActivity(startTime,endTime,content,managerName,title,status,path,communityId);
             return true;
         }
@@ -67,9 +73,13 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public JSONArray findAllActivity(int communityId) throws IOException {
-        List<Activity> list = activityDao.findAllActivity(communityId);
-        return listToJsonArray(list);
+    public JSONArray findAllActivity(int communityId,int page) throws IOException {
+        List<Activity> list = activityDao.findAllActivity(communityId,page);
+        JSONArray jsonArray = listToJsonArray(list);
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",activityDao.findPageActivity(communityId));
+        jsonArray.add(pageNum);
+        return jsonArray;
     }
 
     @Override
@@ -118,9 +128,9 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public JSONArray findAllParticipator(int aid){
+    public JSONArray findAllParticipator(int aid,int page){
         JSONArray jsonArray = new JSONArray();
-        List<Participator> list = activityDao.findAllParticipator(aid);
+        List<Participator> list = activityDao.findAllParticipator(aid,page);
         Iterator<Participator> iter = list.iterator();
         while (iter.hasNext()){
             JSONObject jsonObject = new JSONObject();
@@ -131,6 +141,9 @@ public class ActivityServiceImpl implements ActivityService {
             jsonObject.put("status",participator.getStatus());
             jsonArray.add(jsonObject);
         }
+        JSONObject pageNum = new JSONObject();
+        pageNum.put("pageNum",activityDao.findPageParticipator(aid));
+        jsonArray.add(pageNum);
         return jsonArray;
     }
 
@@ -142,6 +155,22 @@ public class ActivityServiceImpl implements ActivityService {
         }
         catch (Exception e){
             return false;
+        }
+    }
+
+    @Override
+    public JSONObject getBigPhoto(String path){
+        JSONObject jsonObject = new JSONObject();
+        try{
+            File file = new File("./news-server/pic/" + path);
+            byte[] data = Files.readAllBytes(file.toPath());
+            String photo = Base64.encodeBase64String(data);
+            jsonObject.put("photo", "data:image/jpg;base64," + photo);
+            return jsonObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonObject.put("error","notfound");
+            return jsonObject;
         }
     }
 }

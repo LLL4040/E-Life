@@ -1,32 +1,28 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   // 基本路径
-  baseUrl: './',
+  publicPath: '/',
   // 输出文件目录
   outputDir: 'static',
   // eslint-loader 是否在保存的时候检查
   lintOnSave: true,
   // webpack配置
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-  chainWebpack: () => {},
-  configureWebpack: (config) => {
-    if (process.env.NODE_ENV === 'production') {
-      // 为生产环境修改配置...
-      config.mode = 'production'
-    } else {
-      // 为开发环境修改配置...
-      config.mode = 'development'
+  chainWebpack: (config) => {
+    config.plugin('provide').use(webpack.ProvidePlugin, [{
+      $: 'jquery',
+      jquery: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default'] // 在jquery的配置下添加多这一行配置
+    }])
+  },
+  configureWebpack: {
+    externals: {
+      'BMap': 'BMap'
     }
-    Object.assign(config, {
-      // 开发生产共同配置
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, './src'),
-          '@c': path.resolve(__dirname, './src/components')
-        }
-      }
-    })
   },
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: true,
@@ -49,8 +45,26 @@ module.exports = {
   // see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   pwa: {},
   // webpack-dev-server 相关配置
+  devServer: {
+    disableHostCheck: true,
+    proxy: {
+      '': {
+        target: 'http://localhost:9010/',
+        changeOrigin: true,
+        ws: true,
+
+        pathRewrite: {
+          '^/': ''
+        }
+      }
+    }
   // devServer: {
   //   disableHostCheck: true,
+  //   host: '0.0.0.0',
+  //   port: 8081,
+  //   https: false,
+  //   open: false,
+  //   hotOnly: false,
   //   proxy: {
   //     '': {
   //       target: 'http://localhost:9010/',
@@ -61,7 +75,7 @@ module.exports = {
   //       }
   //     }
   //   }
-  // },
+  },
   // 第三方插件配置
   pluginOptions: {
     // ...

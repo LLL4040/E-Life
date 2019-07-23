@@ -9,6 +9,7 @@ import newsserver.repository.ParticipatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.event.ListDataEvent;
 import java.util.List;
 
 @Repository
@@ -31,8 +32,8 @@ public class ActivityDaoImpl implements ActivityDao {
     }
 
     @Override
-    public List<Activity> findAllActivity(int communityId){
-        return activityRepository.findAllActivity(communityId);
+    public List<Activity> findAllActivity(int communityId, int page){
+        return activityRepository.findAllActivity(communityId,5*(page-1),5);
     }
 
     @Override
@@ -58,8 +59,8 @@ public class ActivityDaoImpl implements ActivityDao {
     }
 
     @Override
-    public List<Participator> findAllParticipator(int aid){
-        return participatorRepository.findAllParticipator(aid);
+    public List<Participator> findAllParticipator(int aid,int page){
+        return participatorRepository.findAllParticipator(aid,5*(page-1),5);
     }
 
     @Override
@@ -85,5 +86,31 @@ public class ActivityDaoImpl implements ActivityDao {
             return false;
         }
 
+    }
+
+    @Override
+    public int findPageActivity(int communityId){
+        List<Activity> temp = activityRepository.findPageNum(communityId);
+        int pageNum=temp.size();
+        if(pageNum%5!=0){
+            pageNum=pageNum/5+1;
+        }
+        else {
+            pageNum=pageNum/5;
+        }
+        return pageNum;
+    }
+
+    @Override
+    public int findPageParticipator(int aid){
+        List<Participator> temp = participatorRepository.findPageNum(aid);
+        int pageNum=temp.size();
+        if(pageNum%5!=0){
+            pageNum=pageNum/5+1;
+        }
+        else {
+            pageNum=pageNum/5;
+        }
+        return pageNum;
     }
 }

@@ -48,12 +48,38 @@ public class PackageDaoImpl implements PackageDao {
     }
 
     @Override
-    public List<Package> findHistory(String username){
-        return packageRepository.findHistory(username);
+    public List<Package> findHistory(String username,int page){
+        return packageRepository.findHistory(username,10*(page-1),10);
     }
 
     @Override
-    public List<Package> findHistoryManager(int communityId){
-        return packageRepository.findHistoryManager(communityId);
+    public List<Package> findHistoryManager(int communityId,int page){
+        return packageRepository.findHistoryManager(communityId,10*(page-1),10);
+    }
+
+    @Override
+    public int findPageNum(String username){
+        List<Package> temp = packageRepository.findPageNum(username);
+        int pageNum=temp.size();
+        if(pageNum%10!=0){
+            pageNum=pageNum/10+1;
+        }
+        else {
+            pageNum=pageNum/10;
+        }
+        return pageNum;
+    }
+
+    @Override
+    public int findPageNumManager(int communityId){
+        List<Package> temp = packageRepository.findPageNumManager(communityId);
+        int pageNum=temp.size();
+        if(pageNum%10!=0){
+            pageNum=pageNum/10+1;
+        }
+        else {
+            pageNum=pageNum/10;
+        }
+        return pageNum;
     }
    }

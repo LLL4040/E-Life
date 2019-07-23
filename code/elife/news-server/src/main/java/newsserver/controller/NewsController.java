@@ -58,7 +58,13 @@ public class NewsController {
     }
     @RequestMapping(path = "/findHistory")
     @ResponseBody
-    public JSONArray findHistory(int communityId) throws IOException {
-        return newsService.findHistory(communityId);
+    public JSONArray findHistory(int communityId,int page) throws IOException {
+        System.out.println(10000);
+        return newsService.findHistory(communityId,page);
+    }
+    @RequestMapping(path = "/photo")
+    @ResponseBody
+    public JSONObject getBigPhoto(String path){
+        return newsService.getBigPhoto( path);
     }
 }

@@ -1,6 +1,7 @@
 package newsserver.service;
 
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -31,9 +32,10 @@ public interface ActivityService {
     /**
      * find All Activity to user
      * @param communityId
+     * @param page
      * @return JSONArray Activity
      */
-    JSONArray findAllActivity(int communityId) throws IOException;
+    JSONArray findAllActivity(int communityId,int page) throws IOException;
 
     /**
      * find five Activity to user
@@ -69,9 +71,10 @@ public interface ActivityService {
     /**
      * findAllParticipator
      * @param aid
+     * @param page
      * @return JSONArray
      */
-    JSONArray findAllParticipator(int aid);
+    JSONArray findAllParticipator(int aid,int page);
 
     /**
      * change Participator status to disagree apply
@@ -80,4 +83,11 @@ public interface ActivityService {
      * @return
      */
     boolean disagreeParticipator(int pid,int status);
+
+    /**
+     * get real photo
+     * @param path
+     * @return JSONObject
+     */
+    JSONObject getBigPhoto(String path);
 }

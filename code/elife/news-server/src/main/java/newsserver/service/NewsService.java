@@ -61,5 +61,19 @@ public interface NewsService {
      */
     boolean moveTable();
 
-    JSONArray findHistory(int communityId) throws IOException;
+    /**
+     * findHistory JSON
+     * @param communityId
+     * @param page
+     * @return JSONArray
+     * @throws IOException
+     */
+    JSONArray findHistory(int communityId,int page) throws IOException;
+
+    /**
+     * get real photo
+     * @param path
+     * @return JSONObject
+     */
+    JSONObject getBigPhoto(String path);
 }

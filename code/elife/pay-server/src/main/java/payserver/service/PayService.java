@@ -20,12 +20,13 @@ public interface PayService {
      * save pay without id and status is 0
      * @param time
      * @param bill
+     * @param status
      * @param managerName
      * @param username
      * @param communityId
      * @return
      */
-    boolean save(String time, BigDecimal bill, String managerName, String username, int communityId);
+    boolean save(String time, BigDecimal bill, int status, String managerName, String username, int communityId);
 
     /**
      * find List<pay> turn to JSON
@@ -61,32 +62,61 @@ public interface PayService {
     /**
      * move hot data to cold table
      * @param  username
+     * @param page
      * @return boolean
      */
-    JSONArray findHistory(String username);
+    JSONArray findHistory(String username, int page);
 
     /**
      * manager find those pay not pay
      * @param communityId
+     * @param page
      * @return JSONArray
      */
-    JSONArray findUnPayHistoryManager(int communityId);
+    JSONArray findUnPayHistoryManager(int communityId, int page);
 
     /**
      * manager find those pay  payed
      * @param communityId
+     * @param page
      * @return JSONArray
      */
-    JSONArray findPayHistoryManager(int communityId);
+    JSONArray findPayHistoryManager(int communityId, int page);
 
     /**
      * use aliPay interface
      * @param response
      * @param request
+     * @param bill
+     * @param id
+     * @param time
      * @throws AlipayApiException
      * @throws IOException
      */
-    void ali(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
+    void ali(HttpServletResponse response, HttpServletRequest request
+    ,String id,String bill,String time) throws AlipayApiException, IOException;
+
+/**
+     * aliBaBa return url
+     * @param response
+     * @param request
+     * @throws AlipayApiException
+     * @throws IOException
+     */
+/*
+
+    void returnUrl(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
+*/
+
+    /**
+     * aliBaBa notify url
+     * @param response
+     * @param request
+     * @throws AlipayApiException
+     * @throws IOException
+     */
+    void notifyUrl(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
+
 
     /**
      * saveOrders username to make orderId
@@ -96,4 +126,12 @@ public interface PayService {
      * @return
      */
     boolean saveOrders(int pid,String username,BigDecimal bill);
+
+    /**
+     * get Orders by username
+     * @param username
+     * @param pid
+     * @return JSONArray
+     */
+    JSONArray getOrders(String username, int pid);
 }

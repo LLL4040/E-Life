@@ -23,8 +23,8 @@ public class UrgentController {
     private UrgentService urgentService;
 
     @RequestMapping("/saveUrgent")
-    public boolean saveUrgent(String managerName, String content, int status, int communityId){
-        return urgentService.save(managerName, content, status, communityId);
+    public boolean saveUrgent(String managerName, String content, int communityId){
+        return urgentService.save(managerName, content, 0, communityId);
     }
 
     @RequestMapping("/getUrgent")
@@ -34,6 +34,8 @@ public class UrgentController {
 
     @RequestMapping("/getNewUrgent")
     public JSONObject findUrgentNew(int communityId) {
+
+        System.out.println("1");
         return urgentService.findNew(communityId);
     }
     @RequestMapping("/deleteUrgent")
@@ -47,8 +49,8 @@ public class UrgentController {
     }
 
     @RequestMapping("/findHistory")
-    public JSONArray findHistory(int communityId){
-        return urgentService.findHistory(communityId);
+    public JSONArray findHistory(int communityId,int page){
+        return urgentService.findHistory(communityId,page);
     }
 
 }
