@@ -2,8 +2,12 @@ package user.controller;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import user.service.UserService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author ztHou
@@ -58,14 +62,49 @@ public class UserController {
 
     @PostMapping(path = "/login")
     @ResponseBody
-    public JSONObject login(@RequestParam String username, @RequestParam String password, @RequestParam String id) {
-        return ("1".equals(id)) ? userService.loginManager(username, password) : userService.login(username, password, id);
+    public JSONObject login(HttpServletRequest request, @RequestParam String username, @RequestParam String password, @RequestParam String id) {
+        JSONObject result = ("1".equals(id)) ? userService.loginManager(username, password) : userService.login(username, password, id);
+        if ("1".equals(result.getAsString("login"))) {
+            HttpSession session = request.getSession();
+            String name = (String) session.getAttribute("username");
+            if (StringUtils.isEmpty(name)) {
+                session.setAttribute("username", username);
+                session.setAttribute("role", id);
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping(path = "/logout")
+    @ResponseBody
+    public JSONObject logout(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        if (StringUtils.isEmpty(name)) {
+            result.put("logout", 0);
+        } else {
+            session.removeAttribute("username");
+            session.removeAttribute("role");
+            result.put("logout", 1);
+        }
+        return result;
     }
 
     @PostMapping(path = "/loginPhone")
     @ResponseBody
-    public JSONObject loginPhone(@RequestParam String phone, @RequestParam String code, @RequestParam String id) {
-        return ("1".equals(id)) ? userService.loginPhoneManager(phone, code) : userService.loginPhone(phone, code, id);
+    public JSONObject loginPhone(HttpServletRequest request, @RequestParam String phone, @RequestParam String code, @RequestParam String id) {
+        JSONObject result = ("1".equals(id)) ? userService.loginPhoneManager(phone, code) : userService.loginPhone(phone, code, id);
+        if ("1".equals(result.getAsString("login"))) {
+            HttpSession session = request.getSession();
+            String name = (String) session.getAttribute("username");
+            if (StringUtils.isEmpty(name)) {
+                name = userService.findUsernameByPhone(phone);
+                session.setAttribute("username", name);
+                session.setAttribute("role", id);
+            }
+        }
+        return result;
     }
 
     @PostMapping(path = "/findPassword")

@@ -111,12 +111,11 @@
           </p>
         </div>
         <div class="col-lg-4">
-          <i class="fas fa-3x fa-envelope text-center tm-icon" style="float:left"></i>
-          <h3 class="text-center tm-text-primary mb-4" style="padding-top:12px; float:left; font-size: 24px;">&nbsp;&nbsp;邮包提醒</h3>
+          <i class="fas fa-3x fa-comments text-center tm-icon" style="float:left"></i>
+          <h3 class="text-center tm-text-primary mb-4" style="padding-top:12px; float:left; font-size: 24px;">&nbsp;&nbsp;小区话题</h3>
           <div style="clear:both"></div>
           <p style="line-height: 45px;">
-            有邮包寄到小区被收发室代签之后，会给用户发送邮包提醒信息，
-            同时用户也可以享受上门寄件服务
+            平台上有小区论坛，用户可以在论坛中结识好友、畅所欲言
           </p>
         </div>
         <div class="col-lg-4 mt-5 mt-lg-0">
@@ -128,21 +127,20 @@
           </p>
         </div>
         <div class="col-lg-4 mt-5 mt-lg-0">
-          <i class="fas fa-3x fa-shopping-cart text-center tm-icon" style="float:left"></i>
-          <h3 class="text-center tm-text-primary mb-4" style="padding-top:12px; float:left; font-size: 24px;">&nbsp;&nbsp;小区团购</h3>
+          <i class="fas fa-3x fa-money-check text-center tm-icon" style="float:left"></i>
+          <h3 class="text-center tm-text-primary mb-4" style="padding-top:12px; float:left; font-size: 24px;">&nbsp;&nbsp;物业缴费</h3>
           <div style="clear:both"></div>
           <p style="line-height: 45px;">
-            是为小区居民特别推出的团购项目，小区居民只要展示手机客户端，
-            证明您是某小区的住户，在商家即可享受相应的团购优惠。
-            无需出示任何其他手续
+            在线查询和缴纳物业费、停车费，无需前往物业收费处
           </p>
         </div>
         <div class="col-lg-4">
-          <i class="fas fa-3x fa-comments text-center tm-icon" style="float:left"></i>
-          <h3 class="text-center tm-text-primary mb-4" style="padding-top:12px; float:left; font-size: 24px;">&nbsp;&nbsp;小区话题</h3>
+          <i class="fas fa-3x fa-envelope text-center tm-icon" style="float:left"></i>
+          <h3 class="text-center tm-text-primary mb-4" style="padding-top:12px; float:left; font-size: 24px;">&nbsp;&nbsp;邮包提醒</h3>
           <div style="clear:both"></div>
           <p style="line-height: 45px;">
-            平台上有小区论坛，用户可以在论坛中结识好友、畅所欲言
+            有邮包寄到小区被收发室代签之后，会给用户发送邮包提醒信息，
+            同时用户也可以享受上门寄件服务
           </p>
         </div>
         <div class="col-lg-4 mt-5 mt-lg-0">
@@ -156,11 +154,13 @@
           </p>
         </div>
         <div class="col-lg-4 mt-5 mt-lg-0">
-          <i class="fas fa-3x fa-money-check text-center tm-icon" style="float:left"></i>
-          <h3 class="text-center tm-text-primary mb-4" style="padding-top:12px; float:left; font-size: 24px;">&nbsp;&nbsp;物业缴费</h3>
+          <i class="fas fa-3x fa-shopping-cart text-center tm-icon" style="float:left"></i>
+          <h3 class="text-center tm-text-primary mb-4" style="padding-top:12px; float:left; font-size: 24px;">&nbsp;&nbsp;小区团购</h3>
           <div style="clear:both"></div>
           <p style="line-height: 45px;">
-            在线查询和缴纳物业费、停车费，无需前往物业收费处
+            是为小区居民特别推出的团购项目，小区居民只要展示手机客户端，
+            证明您是某小区的住户，在商家即可享受相应的团购优惠。
+            无需出示任何其他手续
           </p>
         </div>
       </div>

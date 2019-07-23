@@ -1,9 +1,14 @@
 package packageserver.controller;
 
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import packageserver.service.PackageService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RequestMapping(path="/api/Package")
 @RestController
@@ -24,7 +29,17 @@ public class PackageController {
     }
     @RequestMapping(path = "/findNew")
     @ResponseBody
-    public JSONArray findNew(String username){
+    public JSONArray findNew(HttpServletRequest request, String username){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("0".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return packageService.findNew(username);
     }
     @RequestMapping(path = "/deleteOne")

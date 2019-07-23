@@ -18,9 +18,13 @@
           <div align="center">
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
             <div style="clear:both"></div>
-            <el-button type="success" plain size="mini" icon="el-icon-info">商家</el-button>
+            <el-tooltip class="item" effect="light" content="点击退出登录" placement="right">
+              <el-button type="success" plain size="mini" icon="el-icon-info" @click="logout()">商家</el-button>
+            </el-tooltip>
             <div style="clear:both"></div>
-            <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="toPage(1)">{{ userInfo.username }}</el-button>
+            <el-tooltip class="item" effect="light" content="点击查看或修改个人信息" placement="right">
+              <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="toPage(1)">{{ userInfo.username }}</el-button>
+            </el-tooltip>
             <div style="clear:both"></div>
           </div>
           <el-menu-item index="1" @click="toPage(2)">
@@ -94,6 +98,23 @@ export default {
     }
   },
   methods: {
+    logout () {
+      let bodyFormData = new FormData()
+      let url = '/user-server/api/user/logout'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.logout === 1) {
+          sessionStorage.clear()
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.$alert('退出登录失败！请关闭页面重试')
+        }
+      })
+    },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
       if (this.userInfo.username === '' || this.userInfo.username === null) {

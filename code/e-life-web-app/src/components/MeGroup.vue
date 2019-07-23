@@ -221,8 +221,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.photo = response.data.photo
-        this.dialogFormVisible2 = true
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.photo = response.data.photo
+          this.dialogFormVisible2 = true
+        }
       })
     }
   },

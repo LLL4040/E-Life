@@ -2,8 +2,12 @@ package user.controller;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import user.service.FriendService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author ztHou
@@ -31,7 +35,15 @@ public class FriendController {
 
     @RequestMapping(path = "/requestNumber")
     @ResponseBody
-    public JSONObject requestNumber(@RequestParam String username){
+    public JSONObject requestNumber(HttpServletRequest request, @RequestParam String username){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "1".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         JSONObject object = new JSONObject();
         object.put("number", friendService.responseList(username).size());
         return object;

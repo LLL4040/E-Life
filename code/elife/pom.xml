@@ -10,19 +10,15 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>eureka-server</module>
-        <module>urgent-server</module>
         <module>user-server</module>
-        <module>auth-server</module>
-        <module>service-hi</module>
         <module>news-server</module>
         <module>group-server</module>
-        <module>notice-server</module>
         <module>estateforum-server</module>
         <module>lifeservice-server</module>
         <module>gateway</module>
         <module>package-server</module>
-        <module>activity-server</module>
         <module>pay-server</module>
+        <module>session-redis</module>
     </modules>
 
     <properties>

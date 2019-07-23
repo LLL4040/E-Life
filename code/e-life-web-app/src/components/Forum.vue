@@ -26,6 +26,9 @@
               <p style="float:right; font-size: 12px;">{{o.time}}</p>
             </el-card>
           </div>
+          <div class="block" align="center" >
+            <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="total1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+          </div>
         </div>
       </el-col>
       <el-col :span="6">
@@ -72,6 +75,9 @@
                 <p style="float: right; font-size: 12px;">{{o.location + '楼，发布于' + o.commentsTime}}</p>
               </el-col>
             </el-card>
+          </div>
+          <div class="block" align="center" >
+            <el-pagination @current-change="handleCurrentChange2" :current-page.sync="pageNum2" :page-count="total2" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
           </div>
         </el-col>
         <el-col :span="4" >
@@ -160,17 +166,19 @@ export default {
         content: ''
       },
       postData: [],
-      commentPage: 1,
-      commentSize: 5,
       commentData: [],
       imgList: [],
-      pageNum: 1,
-      pageSize: 1
+      pageNum1: 1,
+      pageSize1: 10,
+      total1: 1,
+      pageNum2: 1,
+      pageSize2: 10,
+      total2: 1
     }
   },
   mounted () {
     this.loadData()
-    this.findPost()
+    this.loadPost()
     this.formData = new FormData()
   },
   methods: {
@@ -210,40 +218,51 @@ export default {
         data: this.formData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.post) {
-          this.$alert('发布帖子成功！')
-          this.findPost()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('发布帖子失败！')
+          if (response.data.post) {
+            this.$alert('发布帖子成功！')
+            this.findPost()
+          } else {
+            this.$alert('发布帖子失败！')
+          }
         }
       })
     },
-    findPost () {
+    loadPost () {
       let bodyFormData = new FormData()
       bodyFormData.set('communityId', this.userInfo.communityId)
-      bodyFormData.set('page', 1)
-      bodyFormData.set('size', 1000)
+      bodyFormData.set('page', this.pageNum1)
+      bodyFormData.set('size', this.pageSize1)
       this.$axios({
         method: 'post',
         url: '/estateforum-server/api/post/findPost',
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.postData = []
-        this.pageSize = response.data[0].pageNum
-        for (let i = 1; i < response.data.length; i++) {
-          let objproject = {
-            'photo': response.data[i].photo,
-            'title': response.data[i].title, // 这个是赋值到一个数组对象里面去，开发的时候就是取到里面的值进行一个逻辑判断，要干嘛干嘛的。这个也加上他的下标
-            'poster': response.data[i].posterName,
-            'content': response.data[i].postContent,
-            'time': response.data[i].postTime,
-            'id': response.data[i].id
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.postData = []
+          this.total2 = response.data[0].pageNum
+          for (let i = 1; i < response.data.length; i++) {
+            let objproject = {
+              'photo': response.data[i].photo,
+              'title': response.data[i].title,
+              'poster': response.data[i].posterName,
+              'content': response.data[i].postContent,
+              'time': response.data[i].postTime,
+              'id': response.data[i].id
+            }
+            this.postData.push(objproject)
           }
-          this.postData.push(objproject)
         }
-        // this.postData = response.data
       })
+    },
+    handleCurrentChange1 (val) {
+      this.pageNum1 = val
+      this.loadPost()
     },
     toDetail (object) {
       this.commentData = []
@@ -259,25 +278,32 @@ export default {
       this.commentPage = 1
       let bodyFormData = new FormData()
       bodyFormData.set('pid', object.id)
-      bodyFormData.set('page', 1)
-      bodyFormData.set('size', this.commentSize)
+      bodyFormData.set('page', this.pageNum2)
+      bodyFormData.set('size', this.pageSize2)
       this.$axios({
         method: 'post',
         url: '/estateforum-server/api/postComments/findComments',
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } }
       }).then(response => {
-        if (response.data[0].pageNum === 0) {
-          this.pageSize = 1
+        if (response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.pageSize = response.data[0].pageNum
+          if (response.data[0].pageNum === 0) {
+            this.total2 = 1
+          } else {
+            this.total2 = response.data[0].pageNum
+          }
+          for (let i = 1; i < response.data.length; i++) {
+            this.commentData.push(response.data[i])
+          }
+          this.dialogFormVisibleMain = false
         }
-        console.log(response.data)
-        for (let i = 1; i < response.data.length; i++) {
-          this.commentData.push(response.data[i])
-        }
-        this.dialogFormVisibleMain = false
       })
+    },
+    handleCurrentChange2 (val) {
+      this.pageNum2 = val
+      this.toDetail()
     },
     goBack () {
       this.dialogFormVisibleMain = true
@@ -297,42 +323,44 @@ export default {
           data: bodyFormData,
           config: { headers: { 'Content-type': 'multipart/form-data' } } }
         ).then(response => {
-          if (response.data.addComments === '1') {
-            this.$alert('评论成功')
-            if (this.commentPage === 1) {
-              let data = this.commentData[0]
-              this.commentData = []
-              this.commentData.push(data)
-            } else {
-              this.commentData = []
-            }
-            bodyFormData = new FormData()
-            bodyFormData.set('pid', pid)
-            bodyFormData.set('page', this.commentPage)
-            bodyFormData.set('size', this.commentSize)
-            this.$alert(bodyFormData)
-            this.$axios({
-              method: 'post',
-              url: '/estateforum-server/api/postComments/findComments',
-              data: bodyFormData,
-              config: { headers: { 'Content-type': 'multipart/form-data' } }
-            }).then(response => {
-              if (response.data[0].pageNum === 0) {
-                this.pageSize = 1
-              } else {
-                this.pageSize = response.data[0].pageNum
-              }
-              console.log(response.data)
-              for (let i = 1; i < response.data.length; i++) {
-                this.commentData.push(response.data[i])
-              }
-            })
+          if (response.data.login === 0) {
+            this.$router.push({ name: 'Login' })
           } else {
-            this.$alert('评论失败！')
+            if (response.data.addComments === '1') {
+              this.$alert('评论成功')
+              if (this.pageNum2 === 1) {
+                let data = this.commentData[0]
+                this.commentData = []
+                this.commentData.push(data)
+              } else {
+                this.commentData = []
+              }
+              bodyFormData = new FormData()
+              bodyFormData.set('pid', pid)
+              bodyFormData.set('page', this.pageNum2)
+              bodyFormData.set('size', this.pageSize2)
+              this.$alert(bodyFormData)
+              this.$axios({
+                method: 'post',
+                url: '/estateforum-server/api/postComments/findComments',
+                data: bodyFormData,
+                config: { headers: { 'Content-type': 'multipart/form-data' } }
+              }).then(response => {
+                if (response.data[0].pageNum === 0) {
+                  this.total2 = 1
+                } else {
+                  this.total2 = response.data[0].pageNum
+                }
+                console.log(response.data)
+                for (let i = 1; i < response.data.length; i++) {
+                  this.commentData.push(response.data[i])
+                }
+              })
+            } else {
+              this.$alert('评论失败！')
+            }
           }
         })
-      } else {
-        this.$alert('评论失败！')
       }
     },
     fileClick () { // 点击选择图片按钮

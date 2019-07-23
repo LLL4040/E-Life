@@ -3,11 +3,15 @@ package group.controller;
 import group.service.DiscountService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author ztHou
@@ -43,13 +47,30 @@ public class DiscountController {
 
     @RequestMapping(path = "/findDiscountByCommunityId")
     @ResponseBody
-    public JSONArray findDiscountByCommunityId(@RequestParam Long communityId){
+    public JSONArray findDiscountByCommunityId(HttpServletRequest request, @RequestParam Long communityId){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return discountService.findDiscountByCommunityId(communityId);
     }
 
     @RequestMapping(path = "/photo")
     @ResponseBody
-    public JSONObject getBigPhoto(String path){
+    public JSONObject getBigPhoto(HttpServletRequest request, String path){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        if (StringUtils.isEmpty(name)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         return discountService.getBigPhoto(path);
     }
 }

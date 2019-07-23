@@ -7,6 +7,13 @@ import net.minidev.json.JSONObject;
  * @author ztHou
  */
 public interface UserService {
+    /**
+     * find username by phone
+     *
+     * @param phone user's phone
+     * @return username
+     */
+    String findUsernameByPhone(String phone);
 
     /**
      * whether username typed by user available

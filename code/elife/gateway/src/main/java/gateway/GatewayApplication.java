@@ -16,18 +16,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableCircuitBreaker
 @SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
 public class GatewayApplication {
-    @Bean
-    protected WebMvcConfigurer corsConfigure() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedHeaders("*")
-                        .allowedMethods("*")
-                        .allowedOrigins("*");
-            }
-        };
-    }
+//    @Bean
+//    protected WebMvcConfigurer corsConfigure() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedHeaders("*")
+//                        .allowedMethods("*")
+//                        .allowedOrigins("*");
+//            }
+//        };
+//    }
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
