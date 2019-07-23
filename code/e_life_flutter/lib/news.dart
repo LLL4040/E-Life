@@ -8,9 +8,11 @@ import 'user.dart';
 
 //资讯的widget
 class newswidget extends StatefulWidget {
+  final communityId;
+  newswidget(this.communityId);
   @override
   State<StatefulWidget> createState() {
-    return new myWidget();
+    return new myWidget(communityId);
   }
 }
 class Choice {
@@ -21,7 +23,8 @@ class Choice {
 }
 
 class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, NetListener{
-
+  final communityId;
+  myWidget(this.communityId);
   List<urgent> urgentList=[];
   List<News> newsList=[];
   List<Activity> activityList=[];
@@ -306,9 +309,9 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
 
   }
   _getMessage() async {
-    await manager.getNews(this, 1);
-    await manager.getUrgent(this, 1);
-    await manager.getActivity(this, 1);
+    await manager.getNews(this, communityId);
+    await manager.getUrgent(this, communityId);
+    await manager.getActivity(this, communityId);
     return true;
   }
   @override

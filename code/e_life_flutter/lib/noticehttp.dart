@@ -9,7 +9,7 @@ class noticeHttp {
 
 
 
-  myBill(NetListener net, String username,) {
+  myNotice(NetListener net, String username) {
     var client = new http.Client();
     client.post(
         myNoticeHttp,
@@ -17,7 +17,9 @@ class noticeHttp {
           "username": username,
         }
     ).then((response,) {
+
       List responseJson = json.decode(response.body);
+      print(response.body);
       List<Notice> noticeList = responseJson.map((m) => new Notice.fromJson(m)).toList();
       print(response.body);
       net.onMyNoticeResponse(noticeList);

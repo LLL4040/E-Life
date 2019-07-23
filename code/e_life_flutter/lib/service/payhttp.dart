@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class payHttp {
 
-  var myBillUrl = "http://elife.natapp1.cc/pay-server/api/pay/findNew";
+  var myBillUrl = "http://elife.natapp1.cc/pay-server/api/Pay/findNew";
 
 
 
@@ -40,7 +40,7 @@ class Bill{
   final int id;
   final String time;
   final int status;
-  final int bill;
+  final double bill;
   final String username;
   final String phone;
   final String managerName;

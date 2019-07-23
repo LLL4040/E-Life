@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'addRepair.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'user.dart';
-import 'maintainhttp.dart';
+import 'package:e_life_flutter/user.dart';
+import 'package:e_life_flutter/service/maintainhttp.dart';
 import 'dart:convert';
 
 
@@ -64,7 +64,7 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
 
   void _toaddRepair() {
     Navigator.push<String>(context, new MaterialPageRoute(builder: (context) {
-      return new addRepair();
+      return new addRepair(username);
     })).then((String result) {
       print(result);
     });
@@ -79,7 +79,7 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
   @override
   Widget build(BuildContext context) {
 
-    //myrepairs = [];
+    myrepairs = [];
     if(maintainList.length>0){
       for(int i=0;i<maintainList.length;i++){
         Widget myrepair1 = _getMyRepair(maintainList[i].time, maintainList[i].content, maintainList[i].status);

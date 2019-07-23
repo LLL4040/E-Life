@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-
+import 'package:e_life_flutter/service/maintainhttp.dart';
 class addRepair extends StatefulWidget {
+  final username;
+  addRepair(this.username);
   @override
   State<StatefulWidget> createState() {
-    return new addRepairCenter();
+    return new addRepairCenter(username);
   }
 }
 
 class addRepairCenter extends State<addRepair>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin,NetListener {
 
-
+  final username;
+  addRepairCenter(this.username);
+  maintainHttp manager = new maintainHttp();
   @override
   Widget build(BuildContext context) {
 
@@ -22,6 +26,7 @@ class addRepairCenter extends State<addRepair>
     void _addRepair(){
       print(_phoneController.text);
       print(_contentController.text);
+      manager.addMaintain(this, username, _phoneController.text, _contentController.text);
       Navigator.pop(context,"发送请求成功");
     }
     Widget addrepairSection = new Container(
@@ -110,5 +115,20 @@ class addRepairCenter extends State<addRepair>
         ],
       ),
     );
+  }
+  @override
+  void onAddMaintainResponse(bool send){
+    setState(() {});
+  }
+  @override
+  void onMyMaintainResponse(List<Maintain> maintain){
+
+    setState(() {
+    });
+
+  }
+  @override
+  void onError(error){
+    print("$error");
   }
 }

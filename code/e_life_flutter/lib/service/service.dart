@@ -1,8 +1,8 @@
-import 'package:e_life_flutter/group.dart';
+import 'package:e_life_flutter/service/pay.dart';
 import 'package:flutter/material.dart';
 import 'repair.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'user.dart';
+import 'package:e_life_flutter/user.dart';
 class Choice {
   const Choice({this.title, this.icon, this.position});
   final String title;
@@ -23,9 +23,9 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
         return new myRepair(username);
       }));
     }
-    void _toGroup() {
+    void _toPay(String username) {
       Navigator.push(context, new MaterialPageRoute(builder: (context) {
-        return new group();
+        return new pay(username);
       }));
     }
     return  ScopedModelDescendant<UserModel>(
@@ -136,7 +136,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                   Text("团购")
                 ],
               ),
-              onPressed: _toGroup,
+              onPressed: null,
             ),
             FlatButton(
               child: Column(
@@ -145,12 +145,20 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                   IconButton(
                     icon: new Icon(Icons.monetization_on),
                     color: Colors.black38,
-                    onPressed: null,
+                    onPressed:(){
+                      Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                        return new pay(model.user.username);
+                      }));
+                    },
                   ),
                   Text("账单")
                 ],
               ),
-              onPressed: null,
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                  return new pay(model.user.username);
+                }));
+              },
             ),
 
           ],
