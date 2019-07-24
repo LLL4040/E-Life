@@ -80,11 +80,12 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             new SliverAppBar(
-              forceElevated :true,
+              //forceElevated :true,
               bottom: PreferredSize(
                   child: new Container(
                     color: Colors.white,
                     child: new TabBar(
+
                       indicatorSize: TabBarIndicatorSize.label,
                       indicatorColor: Colors.blueAccent,
                       labelColor: Colors.blueAccent,
@@ -92,6 +93,7 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
                       tabs: tabs.map((Choice choice) {
                         return new Tab(
                           text: choice.title,
+
                           icon: new Icon(
                             choice.icon,
                           ),
@@ -100,7 +102,7 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
                       controller: mTabController,
                     ),
                   ),
-                  preferredSize: new Size(double.infinity, 18.0)),
+                  preferredSize: new Size(double.infinity, 18)),
 
             )
           ];

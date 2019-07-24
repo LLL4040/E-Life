@@ -278,8 +278,8 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
               indicatorColor: Colors.black54,
               indicatorWeight: 1,
               indicatorSize: TabBarIndicatorSize.label,
-              indicatorPadding: EdgeInsets.fromLTRB(5.0, 1.0, 5.0, 1.0),
-              labelPadding: EdgeInsets.all(15),
+              indicatorPadding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+              labelPadding: EdgeInsets.all(0),
               //indicator: const BoxDecoration(),//加了之后指示条消失
               labelColor: Color(0xff333333),
               labelStyle: TextStyle(

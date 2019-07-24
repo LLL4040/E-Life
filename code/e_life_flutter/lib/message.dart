@@ -42,7 +42,7 @@ class messageState extends State<message> with SingleTickerProviderStateMixin,Ne
         ],
       ),
       trailing: new Icon(Icons.delete,color:Colors.black54 ,),
-      onTap: () {
+      onTap: (){
         print(content);
       },
       dense: true,
@@ -80,12 +80,10 @@ class messageState extends State<message> with SingleTickerProviderStateMixin,Ne
     notices = [];
     packages = [];
 
-//    Widget notice = _getNotice("欠费", "2019/7/12", "请尽快缴费");
-//    Widget notice2 = _getNotice("交钱", "2019/7/12", "请尽快缴纳房租你怎么还不交钱啊啊啊啊啊啊快交钱啊啊啊啊啊");
+
     Widget package1 = _getpackage("未提取", "2019/5/7", "您有一个邮包代取");
     Widget package2 = _getpackage("已签收", "2019/5/7", "您有一个邮包代取");
-//    notices.add(notice);
-//    notices.add(notice2);
+
     packages.add(package1);
     packages.add(package2);
 
@@ -127,13 +125,14 @@ class messageState extends State<message> with SingleTickerProviderStateMixin,Ne
                 return [
                   new SliverAppBar(
 
-                    forceElevated: true,
-                    pinned: true,
-                    expandedHeight: 220.0,
+                    forceElevated: true,//是否显示阴影
+                    //pinned: true,//是否固定在顶部
+                    expandedHeight: 200.0,
                     bottom: PreferredSize(
                         child: new Container(
                           color: Colors.white,
                           child: new TabBar(
+                            labelPadding: EdgeInsets.all(0),
                             indicatorSize: TabBarIndicatorSize.label,
                             indicatorColor: Colors.blueAccent,
                             labelColor: Colors.blueAccent,

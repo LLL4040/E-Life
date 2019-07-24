@@ -103,7 +103,8 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                             setState(() {
 
                             });
-                            if(joinResult=="true"){
+                            String tmp = await joinResult;
+                            if(tmp=="true"){
                               print("joinresult=true");
                               joinResult="false";
                               Navigator.pop(context,"发送请求成功");
@@ -111,7 +112,7 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                             }else{
                               print("请求失败");
                             }
-                            Navigator.pop(context,joinResult);
+                            //Navigator.pop(context,joinResult);
                           },
                         ),
                         FlatButton(
@@ -161,8 +162,8 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
     setState(() {});
   }
   @override
-  void onSaveParticipantResponse(String body){
-    joinResult = body;
+  void onSaveParticipantResponse(String body)async{
+    joinResult = await  body;
     print("response"+joinResult);
     setState(() {
 

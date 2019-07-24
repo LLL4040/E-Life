@@ -3,15 +3,24 @@ import 'map.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 import 'friend.dart';
+import 'main.dart';
 
 
 class mycenter extends StatefulWidget {
+  final username;
+  final role;
+  mycenter(this.username,this.role);
+
   @override
   State<StatefulWidget> createState() {
-    return new myCenterWidget();
+    return new myCenterWidget(username,role);
   }
 }
 class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin {
+
+  final username1;
+  final role1;
+  myCenterWidget(this.username1,this.role1);
 
   void _toMap() {
     var androidView = new AndroidView(viewType: "MyMap");
@@ -22,7 +31,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
           androidView = onValue;
     });
   }
- String username="用户";
+ String username="未登录";
  String role = "用户";
   @override
   Widget build(BuildContext context) {
@@ -30,19 +39,21 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
         builder: (context, child, model)
     {
 
-      username=model.user.username;
-      if(model.user.role==0){
+      username=username1;
+
+      if(role1=="0"){
         role="用户";
       }
-      if(model.user.role==1){
+      if(role1=="1"){
         role="管理员";
       }
-      if(model.user.role==2){
+      if(role1=="2"){
         role="商家";
       }
       return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
+
           ],
           title: Text('个人中心'),
         ),
@@ -110,7 +121,15 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
             ),
           ],
         ),
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push<String>(context, new MaterialPageRoute(builder: (context) {
+            return new MyApp();
+          }));
+        },
+        tooltip: '退出登录',
+        child: Icon(Icons.keyboard_return),
+      ),
       );
     });
   }
