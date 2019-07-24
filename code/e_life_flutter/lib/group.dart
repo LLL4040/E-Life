@@ -60,7 +60,7 @@ class groupWeightState extends State<groupWeight>
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
             builder: (context){
-              return ;
+              return new DiscountDetail(discount);
             })
         );
       }
@@ -74,11 +74,36 @@ class groupWeightState extends State<groupWeight>
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
             builder: (context){
-              return ;
+              return new DemandDetail(demand);
             })
         );
-      }
+      },
     );
+  }
+
+//  Widget _getDemand(Demand demand){
+//    return new Scaffold(
+//      body: ListTile(
+//        leading: new Icon(Icons.filter_none),
+//        title: new Text(demand.title),
+//        onTap: (){
+//          Navigator.push(context, MaterialPageRoute(
+//              builder: (context){
+//                return new DemandDetail(demand);
+//              })
+//          );
+//        },
+//      ),
+//      floatingActionButton: FloatingActionButton(
+//        onPressed: _toaddDemand,
+//        tooltip: 'addRepair',
+//        child: Icon(Icons.add),
+//      ),
+//    );
+//  }
+//
+  void _toaddDemand() {
+
   }
 
   _getGroup() async {
@@ -182,6 +207,11 @@ class groupWeightState extends State<groupWeight>
             controller: mTabController,
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _toaddDemand,
+          tooltip: 'addDemand',
+          child: Icon(Icons.add),
+        ),
       );
     });
   }
@@ -236,4 +266,65 @@ class Choice {
   final IconData icon;
 }
 
+class DiscountDetail extends StatelessWidget {
+  final Discount discount;
+  DiscountDetail(this.discount);
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("团购详情"),),
+      body: Center(
+        child: ListView(
+          children: <Widget>[
+            Text(
+              discount.title,
+              textAlign: TextAlign.left,
+              textScaleFactor: 1.5,
+            ),
+            Image.memory(
+              base64.decode(
+                  discount.photo.split(',')[1]),
+              height:80,    //设置高度
+              width:80,    //设置宽度
+              //fit: BoxFit.fill,    //填充
+              alignment: Alignment.topLeft,
+              gaplessPlayback:true, //防止重绘
+            ),
+            Text("开始时间：" + discount.start),
+            Text("结束时间：" + discount.end),
+            Text("团购内容：" + discount.content),
+            Text("团购数量：" + discount.num.toString()),
+          ],
+        )
+      ),
+    );
+  }
+}
+
+class DemandDetail extends StatelessWidget {
+  final Demand demand;
+  DemandDetail(this.demand);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("需求详情"),),
+      body: Center(
+          child: ListView(
+            children: <Widget>[
+              Text(
+                demand.title,
+                textAlign: TextAlign.left,
+                textScaleFactor: 1.5,
+              ),
+              Text("开始时间：" + demand.start),
+              Text("结束时间：" + demand.end),
+              Text("团购内容：" + demand.content),
+              Text("发起人：" + demand.username),
+            ],
+          )
+      ),
+    );
+  }
+}

@@ -167,7 +167,7 @@ class Demand{
 
   factory Demand.fromJson(Map<String, dynamic> json){
     return new Demand(
-      id: json['id'],
+      id: json['id'].toString(),
       start: json['start'],
       end: json['end'],
       title: json['title'],
@@ -209,7 +209,7 @@ class Discount{
 
   factory Discount.fromJson(Map<String, dynamic> json){
     return new Discount(
-      id: json['id'],
+      id: json['id'].toString(),
       start: json['start'],
       end: json['end'],
       mId: json['mId'],
