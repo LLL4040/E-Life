@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 import 'newsHttp.dart';
 
+
 class joinActivity extends StatefulWidget {
 
   final id;
@@ -22,27 +23,34 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
 
     final TextEditingController _contentController =
     new TextEditingController.fromValue(new TextEditingValue(text: ""));
-    void _joinActivity(){
-
-      print(_contentController.text);
-      Navigator.pop(context,"发送请求成功");
-    }
 
     return  ScopedModelDescendant<UserModel>(
         builder: (context, child, model) {
-          if(joinResult=="true"){
-            print("joinresult=true");
-            joinResult="false";
-            Navigator.pop(context,"发送请求成功");
-          }else{
-            print("您已参加过该活动");
-          }
+
+//            if(joinResult=="true"){
+//              print("joinresult=true");
+//              joinResult="false";
+//              Navigator.pop(context,"发送请求成功");
+//              return null;
+//            }else{
+//              Fluttertoast.showToast(
+//                  msg: "您已参加过该活动",
+//                  toastLength: Toast.LENGTH_SHORT,
+//                  gravity: ToastGravity.CENTER,
+//                  timeInSecForIos: 1,
+//                  backgroundColor: Colors.redAccent,
+//                  textColor: Colors.black54,
+//                  fontSize: 16.0
+//              );
+//
+//              print("您已参加过该活动");
+//            }
 
     return Scaffold(
 
       appBar: AppBar(
 
-        title: Text('活动报名'),
+        title: Text('参加活动报名'),
       ),
       body: Column(
         children: <Widget>[
@@ -92,7 +100,18 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                             print(model.user.username);
                             print(id);
                             manager.saveParticipator(this, id, _contentController.text, model.user.username);
+                            setState(() {
 
+                            });
+                            if(joinResult=="true"){
+                              print("joinresult=true");
+                              joinResult="false";
+                              Navigator.pop(context,"发送请求成功");
+                              return null;
+                            }else{
+                              print("请求失败");
+                            }
+                            Navigator.pop(context,joinResult);
                           },
                         ),
                         FlatButton(
@@ -121,7 +140,11 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
   }
   @override
   void onError(error) {print("$error");}
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
   @override
   void onUrgentResponse(List<urgent> body) {
 
@@ -141,8 +164,9 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
   void onSaveParticipantResponse(String body){
     joinResult = body;
     print("response"+joinResult);
-    setState(() {});
+    setState(() {
 
+    });
 
   }
 }

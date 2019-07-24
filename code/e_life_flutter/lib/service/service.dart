@@ -4,6 +4,8 @@ import 'repair.dart';
 import 'package:e_life_flutter/group.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:e_life_flutter/user.dart';
+import 'supermarket.dart';
+import 'computer.dart';
 class Choice {
   const Choice({this.title, this.icon, this.position});
   final String title;
@@ -90,12 +92,20 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                   IconButton(
                     icon: new Icon(Icons.shopping_cart),
                     color: Colors.black38,
-                    onPressed: null,
+                    onPressed:  (){
+                      Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                        return new surpermarket(model.user.communityId.toString());
+                      }));
+                    },
                   ),
                   Text("超市送货")
                 ],
               ),
-              onPressed: null,
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                  return new surpermarket(model.user.communityId.toString());
+                }));
+              },
             ),
             FlatButton(
               child: Column(
@@ -104,12 +114,20 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                   IconButton(
                     icon: new Icon(Icons.computer),
                     color: Colors.black38,
-                    onPressed: null,
+                    onPressed:  (){
+                      Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                        return new computer(model.user.communityId.toString());
+                      }));
+                    },
                   ),
                   Text("电脑维修")
                 ],
               ),
-              onPressed: null,
+              onPressed:  (){
+                Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                  return new computer(model.user.communityId.toString());
+                }));
+              },
             ),
             FlatButton(
               child: Column(

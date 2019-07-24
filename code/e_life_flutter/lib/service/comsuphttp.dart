@@ -3,18 +3,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class comsupHttp {
 
-  var myComputerUrl = "http://elife.natapp1.cc/lifeservice-server/api/computer/findComputerMaintain";
+  var myComputerUrl = "http://elife.natapp1.cc/user-server/api/merchant/findAllByType";
 
-  var mySupermarketUrl = "http://elife.natapp1.cc/lifeservice-server/api/supermarket/findSupermarket";
+  var mySupermarketUrl = "http://elife.natapp1.cc/user-server/api/merchant/findAllByType";
 
 
 
-  myComputer(NetListener net, String communityId,) {
+  myComputer(NetListener net) {
     var client = new http.Client();
     client.post(
         myComputerUrl,
         body: {
-          "communityId": communityId,
+          "type": "电脑维修",
         }
     ).then((response,) {
       List responseJson = json.decode(response.body);
@@ -28,18 +28,18 @@ class comsupHttp {
     );
   }
 
-  mySupermarket(NetListener net, String communityId,) {
+  mySupermarket(NetListener net) {
     var client = new http.Client();
     client.post(
         mySupermarketUrl,
         body: {
-          "communityId": communityId,
+          "type": "超市送货",
         }
     ).then((response,) {
       List responseJson = json.decode(response.body);
       List<Merchant> supList = responseJson.map((m) => new Merchant.fromJson(m)).toList();
       print(response.body);
-      net.onMyComputerResponse(supList);
+      net.onMySupermarketResponse(supList);
     }, onError: (error) {
       net.onError(error);
     }).whenComplete(

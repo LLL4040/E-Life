@@ -56,12 +56,13 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
       dense: true,
     );
   }
-  void _joinActivity(int id){
+   _joinActivity(int id){
     Navigator.push<String>(context,
         new MaterialPageRoute(builder: (BuildContext context) {
           return new joinActivity(id.toString());
         })).then((String result){
-      print(result);
+      print("报名收到的信息为:"+result);
+
     });
   }
   //活动通知初始化的函数
