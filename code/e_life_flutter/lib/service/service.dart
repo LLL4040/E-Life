@@ -116,20 +116,6 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                 children: <Widget>[
 
                   IconButton(
-                    icon: new Icon(Icons.search),
-                    color: Colors.black38,
-                    onPressed: null,
-                  ),
-                  Text("周边")
-                ],
-              ),
-              onPressed: null,
-            ),
-            FlatButton(
-              child: Column(
-                children: <Widget>[
-
-                  IconButton(
                     icon: new Icon(Icons.free_breakfast),
                     color: Colors.black38,
                       onPressed: (){
@@ -141,7 +127,11 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                   Text("团购")
                 ],
               ),
-              onPressed: null,
+                onPressed: (){
+                  Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                    return new groupWeight(model.user.username, model.user.communityId);
+                  }));
+                }
             ),
             FlatButton(
               child: Column(
