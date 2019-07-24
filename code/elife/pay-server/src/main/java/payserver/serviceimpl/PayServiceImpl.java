@@ -196,7 +196,7 @@ public class PayServiceImpl implements PayService {
         return jsonArray;
     }
 
-   /* @Override
+    @Override
     public void returnUrl(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
 
         //获取支付宝GET过来反馈信息
@@ -233,8 +233,16 @@ public class PayServiceImpl implements PayService {
             //e_life 业务逻辑
             Orders orders = payDao.getOrder(out_trade_no);
             int payId = orders.getPayId();
-            System.out.println(payId);
-            payDao.changeStatus(payId);
+            Pay pay = payDao.findOne(payId);
+            BigDecimal money = pay.getBill();
+            if(pay.getStatus()<0) {
+                System.out.println(payId);
+                orders.setStatus(1);
+                payDao.SaveOrders(orders);
+                payDao.changeStatus(payId);
+                payDao.transfer( response, request,pay.getCommunityId(),money,trade_no);
+                out.println("success");
+            }
             //e_life 业务逻辑
             out.println("trade_no:"+trade_no+"<br/>out_trade_no:"+out_trade_no+"<br/>total_amount:"+total_amount);
         }else {
@@ -242,7 +250,7 @@ public class PayServiceImpl implements PayService {
         }
         //——请在这里编写您的程序（以上代码仅作参考）——
     }
-*/
+
 
     @Override
     public void notifyUrl(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException {
