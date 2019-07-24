@@ -11,7 +11,7 @@
           </el-card>
         </el-col>
         <el-col span="12">
-          <el-table :data="shop.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="shop.filter(data => typeof data.name !== 'undefined' && (!search || data.name.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -21,7 +21,6 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column prop="id" label="编号"></el-table-column>
             <el-table-column prop="name" label="商店名称"></el-table-column>
             <el-table-column prop="phone" label="商店电话"></el-table-column>
           </el-table>

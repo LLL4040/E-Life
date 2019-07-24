@@ -173,7 +173,8 @@ export default {
       total1: 1,
       pageNum2: 1,
       pageSize2: 10,
-      total2: 1
+      total2: 1,
+      currentP: {}
     }
   },
   mounted () {
@@ -265,17 +266,19 @@ export default {
       this.loadPost()
     },
     toDetail (object) {
+      this.currentP = object
       this.commentData = []
-      let data = {
-        'commenterName': object.poster,
-        'pid': object.id,
-        'photo': object.photo,
-        'commentsTime': object.time,
-        'postComment': object.content,
-        'location': 1
+      if (this.pageNum2 === 1) {
+        let data = {
+          'commenterName': object.poster,
+          'pid': object.id,
+          'photo': object.photo,
+          'commentsTime': object.time,
+          'postComment': object.content,
+          'location': 1
+        }
+        this.commentData.push(data)
       }
-      this.commentData.push(data)
-      this.commentPage = 1
       let bodyFormData = new FormData()
       bodyFormData.set('pid', object.id)
       bodyFormData.set('page', this.pageNum2)
@@ -303,9 +306,10 @@ export default {
     },
     handleCurrentChange2 (val) {
       this.pageNum2 = val
-      this.toDetail()
+      this.toDetail(this.currentP)
     },
     goBack () {
+      this.pageNum2 = 1
       this.dialogFormVisibleMain = true
     },
     addComment () {
@@ -339,7 +343,6 @@ export default {
               bodyFormData.set('pid', pid)
               bodyFormData.set('page', this.pageNum2)
               bodyFormData.set('size', this.pageSize2)
-              this.$alert(bodyFormData)
               this.$axios({
                 method: 'post',
                 url: '/estateforum-server/api/postComments/findComments',

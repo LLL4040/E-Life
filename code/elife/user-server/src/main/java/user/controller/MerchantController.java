@@ -64,8 +64,16 @@ public class MerchantController {
 
     @RequestMapping(path = "/changeMerchant")
     @ResponseBody
-    public JSONObject changeMerchant(@RequestParam Long id, @RequestParam String name, @RequestParam String merchantPhone,
+    public JSONObject changeMerchant(HttpServletRequest request, @RequestParam Long id, @RequestParam String name, @RequestParam String merchantPhone,
                                      @RequestParam String type, @RequestParam String address, @RequestParam String detail){
+        HttpSession session = request.getSession();
+        String mName = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(mName) || !("2".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         return merchantService.changeMerchant(id, name, merchantPhone, type, address, detail);
     }
 

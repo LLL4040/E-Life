@@ -65,15 +65,35 @@ public class MaintainController {
      * 难点*/
     @RequestMapping(path = "/managerFindUnMaintain")
     @ResponseBody
-    public JSONArray managerFindUnMaintain(@RequestParam int communityId, @RequestParam int pageNumber, @RequestParam int pageSize){
-
-        return maintainService.findMaintainByCommunityId(communityId,pageNumber,pageSize);
+    public JSONArray managerFindUnMaintain(HttpServletRequest request, @RequestParam int communityId, @RequestParam int pageNumber, @RequestParam int pageSize){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        } else {
+            return maintainService.findMaintainByCommunityId(communityId, pageNumber, pageSize);
+        }
     }
     @RequestMapping(path = "/managerFindHaveMaintain")
     @ResponseBody
-    public JSONArray managerFindHaveMaintain(@RequestParam int communityId,@RequestParam int pageNumber,@RequestParam int pageSize){
-
-        return maintainService.findHaveMaintainByCommunityId(communityId,pageNumber,pageSize);
+    public JSONArray managerFindHaveMaintain(HttpServletRequest request, @RequestParam int communityId,@RequestParam int pageNumber,@RequestParam int pageSize){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        } else {
+            return maintainService.findHaveMaintainByCommunityId(communityId, pageNumber, pageSize);
+        }
     }
     @RequestMapping(path = "/userFindMaintain")
     @ResponseBody
@@ -102,31 +122,49 @@ public class MaintainController {
         return jsonArray;
     }
     @RequestMapping(path = "/manageMaintain")
-    @ResponseBody JSONObject manageMaintain(@RequestParam long id,@RequestParam int status,@RequestParam String maintainname,@RequestParam String phone,@RequestParam String managername){
-        String managerResult= maintainService.managerMaintain(id,status,maintainname,phone,managername);
-        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
-        if(managerResult.equals("完成管理物业维修")){
-            object.put("manageMaintain", "1");
-            object.put("message","完成管理物业维修");
-            return object;
+    @ResponseBody JSONObject manageMaintain(HttpServletRequest request, @RequestParam long id,@RequestParam int status,@RequestParam String maintainname,@RequestParam String phone,@RequestParam String managername){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        } else {
+            String managerResult = maintainService.managerMaintain(id, status, maintainname, phone, managername);
+            net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
+            if (managerResult.equals("完成管理物业维修")) {
+                object.put("manageMaintain", "1");
+                object.put("message", "完成管理物业维修");
+                return object;
 
+            }
+            object.put("manageMaintain", "0");
+            object.put("message", "管理物业维修失败");
+            return object;
         }
-        object.put("manageMaintain", "0");
-        object.put("message","管理物业维修失败");
-        return object;
     }
     @RequestMapping(path = "/editMaintain")
-    @ResponseBody JSONObject editMaintain(@RequestParam long id,@RequestParam int status){
-        String editResult=maintainService.userEditMaintain(id, status);
-        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
-        if(editResult.equals("修改物业维修状态成功")){
-            object.put("manageMaintain", "1");
-            object.put("message","修改物业维修状态成功");
+    @ResponseBody JSONObject editMaintain(HttpServletRequest request, @RequestParam long id,@RequestParam int status){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        } else {
+            String editResult = maintainService.userEditMaintain(id, status);
+            net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
+            if (editResult.equals("修改物业维修状态成功")) {
+                object.put("manageMaintain", "1");
+                object.put("message", "修改物业维修状态成功");
+                return object;
+            }
+            object.put("manageMaintain", "0");
+            object.put("message", "修改物业维修状态失败");
             return object;
         }
-        object.put("manageMaintain", "0");
-        object.put("message","修改物业维修状态失败");
-        return object;
     }
     @RequestMapping(path = "/countMaintain")
     @ResponseBody

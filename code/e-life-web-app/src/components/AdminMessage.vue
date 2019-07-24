@@ -24,7 +24,7 @@
           <el-table-column prop="receiver" label="接收人" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
+              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -146,14 +146,37 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.addNotice === '1') {
-          this.loadMessage()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('发送通知失败！')
+          if (response.data.addNotice === '1') {
+            this.loadMessage()
+          } else {
+            this.$alert('发送通知失败！')
+          }
         }
       })
     },
-    handleDelete () {
+    handleDelete (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('noticeId', row.id)
+      let url = '/news-server/api/notice/deleteOneNotice'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          if (response.data.deleteOneNotice === '1') {
+            this.loadMessage()
+          } else {
+            this.$alert('删除通知失败！')
+          }
+        }
+      })
     }
   }
 }

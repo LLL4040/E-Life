@@ -103,10 +103,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.messages = response.data
-        console.log(this.messages)
-        this.pageSize = response.data[response.data.length - 1].pageNum
-        this.messages.pop()
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.messages = response.data
+          console.log(this.messages)
+          this.pageSize = response.data[response.data.length - 1].pageNum
+          this.messages.pop()
+        }
       })
     },
     handleCurrentChange (val) {
@@ -130,7 +134,7 @@ export default {
         if (response.data) {
           this.loadP()
         } else {
-          this.$alert('发送失败！')
+          this.$alert('发送失败！请重新登录再试')
         }
       })
     }

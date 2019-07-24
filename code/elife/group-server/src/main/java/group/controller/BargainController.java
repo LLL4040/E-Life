@@ -26,15 +26,31 @@ public class BargainController {
 
     @RequestMapping(path = "/addBargain")
     @ResponseBody
-    public JSONObject addBargain(@RequestParam String startTime, @RequestParam String endTime, @RequestParam String title,
+    public JSONObject addBargain(HttpServletRequest request, @RequestParam String startTime, @RequestParam String endTime, @RequestParam String title,
                                  @RequestParam Long merchantId, @RequestParam String goods, @RequestParam String content,
                                  @RequestParam Integer status){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("2".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         return bargainService.addBargain(startTime, endTime, title, merchantId, goods, content, status);
     }
 
     @RequestMapping(path = "/deleteBargain")
     @ResponseBody
-    public JSONObject deleteBargain(@RequestParam Long id){
+    public JSONObject deleteBargain(HttpServletRequest request, @RequestParam Long id){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("2".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         return bargainService.deleteBargain(id);
     }
 
@@ -55,7 +71,16 @@ public class BargainController {
 
     @RequestMapping(path = "/getBargainByMerchantId")
     @ResponseBody
-    public JSONArray getBargainByMerchantId(@RequestParam Long id){
+    public JSONArray getBargainByMerchantId(HttpServletRequest request, @RequestParam Long id){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        if (StringUtils.isEmpty(name)) {
+            JSONObject jsonObject = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            jsonObject.put("login", 0);
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return bargainService.getBargainByMerchantId(id);
     }
 }

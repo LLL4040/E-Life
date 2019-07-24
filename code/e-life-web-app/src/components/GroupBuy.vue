@@ -1,7 +1,7 @@
 <template>
   <div>
     <div align="center">
-      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>
+      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入标题关键字搜索"/>
     </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="12">
@@ -9,7 +9,7 @@
           <div slot="header" class="clearfix">
             <span style="font-size: 16px;">商家团购</span>
           </div>
-          <el-table :data="group.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="group.filter(data => typeof data.title !== 'undefined' && (!search || data.title.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -46,7 +46,7 @@
             <span style="font-size: 16px;">自发需求</span>
             <el-button style="float: right; padding: 3px 0" type="text" @click="dialogFormVisible2 = true">我要开团</el-button>
           </div>
-          <el-table :data="demand.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="demand.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -140,21 +140,8 @@ export default {
       time: [],
       group: [],
       demand: [],
-      commands: {
-        username: '',
-        start: '',
-        end: '',
-        title: '',
-        content: ''
-      },
-      form: {
-        id: '1',
-        shop: '星海网咖',
-        merchantPhone: '11111',
-        type: '休闲娱乐',
-        detail: '嘻嘻嘻',
-        address: 'xx,xx'
-      },
+      commands: {},
+      form: {},
       pickerOptions: {
         shortcuts: [{
           text: '未来一周',

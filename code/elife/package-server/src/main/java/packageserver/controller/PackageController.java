@@ -24,7 +24,13 @@ public class PackageController {
 
     @RequestMapping(path = "/savePackage")
     @ResponseBody
-    public boolean savePackage(String time, String managerName, String username, int communityId ){
+    public boolean savePackage(HttpServletRequest request, String time, String managerName, String username, int communityId ){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role)) || !(name.equals(managerName))) {
+            return false;
+        }
         return packageService.save(time,managerName,username,communityId);
     }
     @RequestMapping(path = "/findNew")
@@ -70,7 +76,17 @@ public class PackageController {
     }
     @RequestMapping(path = "/findHistoryManager")
     @ResponseBody
-    public JSONArray findHistoryManager(int communityId,int page){
+    public JSONArray findHistoryManager(HttpServletRequest request, int communityId,int page){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return packageService.findHistoryManager(communityId,page);
     }
 }
