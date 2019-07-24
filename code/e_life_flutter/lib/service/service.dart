@@ -1,6 +1,7 @@
 import 'package:e_life_flutter/service/pay.dart';
 import 'package:flutter/material.dart';
 import 'repair.dart';
+import 'package:e_life_flutter/group.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:e_life_flutter/user.dart';
 class Choice {
@@ -131,7 +132,11 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                   IconButton(
                     icon: new Icon(Icons.free_breakfast),
                     color: Colors.black38,
-                    onPressed: null,
+                      onPressed: (){
+                        Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                          return new groupWeight(model.user.username, model.user.communityId);
+                        }));
+                      }
                   ),
                   Text("团购")
                 ],
