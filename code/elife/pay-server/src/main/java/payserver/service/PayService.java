@@ -103,10 +103,9 @@ public interface PayService {
      * @throws AlipayApiException
      * @throws IOException
      */
-/*
+
 
     void returnUrl(HttpServletResponse response, HttpServletRequest request) throws AlipayApiException, IOException;
-*/
 
     /**
      * aliBaBa notify url

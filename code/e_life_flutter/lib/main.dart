@@ -83,26 +83,26 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
           builder: (context, child, model) {
 
 
-            void _toNews() {
-              print(_username.text);
-              print(_password.text);
-              print(role);
-              print("aaaaaa" + model.user.toString());
-              model.login(_username.text, _password.text, role);
-            if (model.user != null) {
-              Navigator.of(context).pushAndRemoveUntil(
-                  new MaterialPageRoute(
-                      builder: (context) => new BottomNavigationWidget()),
-                  (route) => route == null);
-            }
-              if (model.user != null) {
-                print("hasksa" + model.user.toString());
-                Navigator.push<String>(context,
-                    new MaterialPageRoute(builder: (BuildContext context) {
-                      return new BottomNavigationWidget();
-                    }));
-              }
-            }
+//            void _toNews() {
+//              print(_username.text);
+//              print(_password.text);
+//              print(role);
+//              print("aaaaaa" + model.user.toString());
+//              model.login(_username.text, _password.text, role);
+//            if (model.user != null) {
+//              Navigator.of(context).pushAndRemoveUntil(
+//                  new MaterialPageRoute(
+//                      builder: (context) => new BottomNavigationWidget(model.user.username,model.user.communityId)),
+//                  (route) => route == null);
+//            }
+//              if (model.user != null) {
+//                print("hasksa" + model.user.toString());
+//                Navigator.push<String>(context,
+//                    new MaterialPageRoute(builder: (BuildContext context) {
+//                      return new BottomNavigationWidget(model.user.username,model.user.communityId);
+//                    }));
+//              }
+//            }
 
             Widget loginSection = Container(
               width: 320.0,
@@ -121,17 +121,12 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                     onPressed: (){
 
                       model.login(_username.text,_password.text,role);
-
-                      //initState();
-                      setState(() {
-                         print("model"+model.user.toString());
-
-
-                      });
+                      if(model.loginSuccess!=false){
                         Navigator.of(context).pushAndRemoveUntil(
                             new MaterialPageRoute(
-                                builder: (context) => new BottomNavigationWidget()),
+                                builder: (context) => new BottomNavigationWidget(model.user.username,model.user.communityId.toString())),
                                 (route) => route == null);
+                      }
 
                     }),
               ),

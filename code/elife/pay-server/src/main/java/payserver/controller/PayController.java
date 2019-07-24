@@ -79,11 +79,13 @@ public class PayController {
         payService.ali(response,request,id,bill,time);
     }
 
-   /* @RequestMapping("/return")
+    @RequestMapping("/return")
     public void returnUrl(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
         System.out.println(12345);
         payService.returnUrl(response,request);
-    }*/
+        System.out.println("跳转成功");
+        response.sendRedirect("http://localhost:8080/user");
+    }
     @RequestMapping("/notify")
     public void notifyUrl(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
         System.out.println(12345);

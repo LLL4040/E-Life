@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'map.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 import 'friend.dart';
+
+
 class mycenter extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -9,14 +12,18 @@ class mycenter extends StatefulWidget {
   }
 }
 class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin {
- String username="用户";
- String role = "用户";
-  void _toFrind(){
+
+  void _toMap() {
+    var androidView = new AndroidView(viewType: "MyMap");
     Navigator.push(context,
         new MaterialPageRoute(builder: (context) {
-          return new friendWidget();
-        }));
+          return new Map(androidView : androidView);
+        })).then((var onValue){
+          androidView = onValue;
+    });
   }
+ String username="用户";
+ String role = "用户";
   @override
   Widget build(BuildContext context) {
     return  ScopedModelDescendant<UserModel>(
@@ -75,19 +82,22 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
             Expanded(
               child: ListView(
                 children: <Widget>[
-//                ListTile(
-//                  leading: const Icon(Icons.fiber_new),
-//                  title: const Text('我的通知'),
-//                  onTap:  () {
-//                    _toNotice();
-//                  },
-//                ),
+                ListTile(
+                  leading: const Icon(Icons.fiber_new),
+                  title: const Text('我的周边'),
+                  onTap:  () {
+                    _toMap();
+                  },
+                ),
                   ListTile(
                     leading: const Icon(Icons.people_outline),
                     title: const Text('我的好友'),
-                    onTap: () {
-                      _toFrind();
-                    },
+                    onTap: (){
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) {
+                            return new friendWidget(username);
+                          }));
+                    }
                   ),
                   ListTile(
                     leading: const Icon(Icons.settings_system_daydream),

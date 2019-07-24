@@ -9,20 +9,22 @@ import 'package:http/http.dart' as http;
 class UserModel extends Model with NetListener{
   userHttp manager = new userHttp();
   User user;
+  bool loginSuccess = false;
 
-  void login(String username,String password,String id) async{
+  Future<bool> login(String username,String password,String id) async{
     await _getLogin(username,password,id);
-    print("75858585");
     notifyListeners();
+    return loginSuccess;
   }
-  _getLogin(String username,String password,String id)  {
-     manager.login(this, username,password,id);
-    print("123");
+  Future  _getLogin(String username,String password,String id)  async{
+    manager.login(this, username,password,id);
+
   }
   @override
-  void onUserResponse(User body) {
+  void onUserResponse(User body,bool login) {
     user = body;
-    print("shshshh"+user.username);
+    loginSuccess = login;
+    print(user.username);
     notifyListeners();
   }
   @override
