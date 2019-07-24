@@ -11,7 +11,7 @@ class userHttp {
    * cityName 城市名称 我们应该使用外部传入
    * net 监听网络请求的结果 因为他不是同步的
    */
-  void login(NetListener net,String username,String password,String id) {
+  Future login(NetListener net,String username,String password,String id) {
     var client = new http.Client();
     client.post(
         userUrl,
@@ -22,16 +22,21 @@ class userHttp {
         }
     ).then((
         response,
-        ) {
+        ) async{
       Map<String,dynamic> responseJson = json.decode(response.body);
       print(responseJson.toString());
       User user = User.fromJson(responseJson);
       bool login = false;
+
+
       if(user.login==1){
         print("httpTrue");
         login=true;
       }
       net.onUserResponse(user,login);
+      await new Future.delayed(new Duration(milliseconds: 1));
+      print("userhttp");
+      return  login;
     }, onError: (error) {
       net.onError(error);
     }).whenComplete(
@@ -47,7 +52,7 @@ class userHttp {
  */
 abstract class NetListener {
   //三天预报
-  void onUserResponse(User body,bool login);
+  void onUserResponse(User body,bool login) ;
   void onError(error);
 }
 

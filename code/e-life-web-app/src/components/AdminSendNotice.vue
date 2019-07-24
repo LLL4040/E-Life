@@ -175,10 +175,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.urgent = response.data
-        this.pageSize1 = response.data[response.data.length - 1].pageNum
-        console.log(response.data)
-        this.urgent.pop()
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.urgent = response.data
+          this.pageSize1 = response.data[response.data.length - 1].pageNum
+          console.log(response.data)
+          this.urgent.pop()
+        }
       })
     },
     handleCurrentChange1 (val) {
@@ -196,10 +200,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.news = response.data
-        this.pageSize2 = response.data[response.data.length - 1].pageNum
-        console.log(response.data)
-        this.news.pop()
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.news = response.data
+          this.pageSize2 = response.data[response.data.length - 1].pageNum
+          console.log(response.data)
+          this.news.pop()
+        }
       })
     },
     handleCurrentChange2 (val) {
@@ -222,7 +230,7 @@ export default {
         if (response.data) {
           this.loadUrgent()
         } else {
-          this.$alert('发布紧急通知失败！')
+          this.$alert('发布紧急通知失败！请重新登录再试')
         }
       })
     },
@@ -245,7 +253,7 @@ export default {
         if (response.data) {
           this.loadNews()
         } else {
-          this.$alert('发布资讯失败！')
+          this.$alert('发布资讯失败！请重新登录再试')
         }
       })
     },
@@ -262,7 +270,7 @@ export default {
         if (response.data) {
           this.loadNews()
         } else {
-          this.$alert('删除紧急通知失败！')
+          this.$alert('删除紧急通知失败！请重新登录再试')
         }
       })
     },
@@ -279,7 +287,7 @@ export default {
         if (response.data) {
           this.loadNews()
         } else {
-          this.$alert('删除资讯失败！')
+          this.$alert('删除资讯失败！请重新登录再试')
         }
       })
     },
@@ -300,8 +308,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.photo = response.data.photo
-        this.dialogFormVisible3 = true
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.photo = response.data.photo
+          this.dialogFormVisible3 = true
+        }
       })
     }
   }

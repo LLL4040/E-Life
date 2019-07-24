@@ -107,14 +107,18 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.change === 1) {
-          this.$alert('修改成功!')
-          sessionStorage.setItem('name', this.form.name)
-          sessionStorage.setItem('detail', this.form.detail)
-          sessionStorage.setItem('type', this.form.type)
-          sessionStorage.setItem('merchantPhone', this.form.merchantPhone)
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('修改失败！')
+          if (response.data.change === 1) {
+            this.$alert('修改成功!')
+            sessionStorage.setItem('name', this.form.name)
+            sessionStorage.setItem('detail', this.form.detail)
+            sessionStorage.setItem('type', this.form.type)
+            sessionStorage.setItem('merchantPhone', this.form.merchantPhone)
+          } else {
+            this.$alert('修改失败！')
+          }
         }
       })
     }

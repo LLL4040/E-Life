@@ -40,10 +40,16 @@ public class ActivityController {
      * @return true or false
      * @throws IOException
      */
-    @PostMapping(path="/saveActivity") // Map ONLY GET Requests
+    @PostMapping(path="/saveActivity")
     @ResponseBody
-    public boolean saveActivity(String startTime, String endTime, String content,
+    public boolean saveActivity(HttpServletRequest request, String startTime, String endTime, String content,
                                 String managerName, String title, MultipartFile photo, int communityId) throws IOException {
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            return false;
+        }
         return activityService.saveActivity(startTime,endTime,content,managerName,title,0,photo,communityId);
     }
 
@@ -98,7 +104,13 @@ public class ActivityController {
      */
     @RequestMapping(path = "/deleteActivity")
     @ResponseBody
-    public boolean deleteActivity(int aid){
+    public boolean deleteActivity(HttpServletRequest request, int aid){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            return false;
+        }
         return activityService.deleteActivity(aid);
     }
 
@@ -139,7 +151,17 @@ public class ActivityController {
      */
     @RequestMapping(path = "/findAllParticipator")
     @ResponseBody
-    public JSONArray findAllParticipator(int aid,int page){
+    public JSONArray findAllParticipator(HttpServletRequest request, int aid,int page){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return activityService.findAllParticipator(aid,page);
     }
 
@@ -151,7 +173,13 @@ public class ActivityController {
      */
     @RequestMapping(path = "/disagreeParticipator")
     @ResponseBody
-    public boolean disagreeParticipator(int pid,int status){
+    public boolean disagreeParticipator(HttpServletRequest request, int pid,int status){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            return false;
+        }
         return activityService.disagreeParticipator(pid,status);
     }
 

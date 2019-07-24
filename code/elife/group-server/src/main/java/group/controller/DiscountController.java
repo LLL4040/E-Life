@@ -27,21 +27,47 @@ public class DiscountController {
 
     @RequestMapping(path = "/addDiscount")
     @ResponseBody
-    public JSONObject addDiscount(@RequestParam String startTime, @RequestParam String endTime, @RequestParam Long merchantId,
+    public JSONObject addDiscount(HttpServletRequest request, @RequestParam String startTime, @RequestParam String endTime, @RequestParam Long merchantId,
                                   @RequestParam Integer number, @RequestParam String content, @RequestParam Integer status,
                                   @RequestParam Long communityId, @RequestParam String title, @RequestParam MultipartFile photo){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("2".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         return discountService.addDiscount(startTime, endTime, merchantId, number, content, status, communityId, title, photo);
     }
 
     @RequestMapping(path = "/deleteDiscount")
     @ResponseBody
-    public JSONObject deleteDiscount(@RequestParam Long id){
+    public JSONObject deleteDiscount(HttpServletRequest request, @RequestParam Long id){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("2".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         return discountService.deleteDiscount(id);
     }
 
     @RequestMapping(path = "/findDiscountByMerchantId")
     @ResponseBody
-    public JSONArray findDiscountByMerchantId(@RequestParam Long merchantId){
+    public JSONArray findDiscountByMerchantId(HttpServletRequest request, @RequestParam Long merchantId){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("2".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return discountService.findDiscountByMerchantId(merchantId);
     }
 

@@ -70,6 +70,10 @@ public class UserController {
             if (StringUtils.isEmpty(name)) {
                 session.setAttribute("username", username);
                 session.setAttribute("role", id);
+            } else if (!(name.equals(username))) {
+                JSONObject err = new JSONObject();
+                err.put("login", -1);
+                return err;
             }
         }
         return result;
@@ -102,6 +106,10 @@ public class UserController {
                 name = userService.findUsernameByPhone(phone);
                 session.setAttribute("username", name);
                 session.setAttribute("role", id);
+            } else if (!(name.equals(userService.findUsernameByPhone(phone)))) {
+                JSONObject err = new JSONObject();
+                err.put("login", -1);
+                return err;
             }
         }
         return result;

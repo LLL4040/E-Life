@@ -9,7 +9,7 @@
           <span style="font-size: 16px;">已发送通知</span>
           <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
         </div>
-        <el-table :data="message.filter(data => typeof data.time !== 'undefined' && (!search || data.user.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
+        <el-table :data="message.filter(data => typeof data.time !== 'undefined' && (!search || data.receiver.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -24,7 +24,7 @@
           <el-table-column prop="receiver" label="接收人" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
+              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -118,9 +118,13 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.message = response.data
-        console.log(this.message)
-        this.total = response.data[0].pageNum
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.message = response.data
+          console.log(this.message)
+          this.total = response.data[0].pageNum
+        }
       })
     },
     handleCurrentChange (val) {
@@ -142,14 +146,37 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.addNotice === '1') {
-          this.loadMessage()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('发送通知失败！')
+          if (response.data.addNotice === '1') {
+            this.loadMessage()
+          } else {
+            this.$alert('发送通知失败！')
+          }
         }
       })
     },
-    handleDelete () {
+    handleDelete (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('noticeId', row.id)
+      let url = '/news-server/api/notice/deleteOneNotice'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          if (response.data.deleteOneNotice === '1') {
+            this.loadMessage()
+          } else {
+            this.$alert('删除通知失败！')
+          }
+        }
+      })
     }
   }
 }
