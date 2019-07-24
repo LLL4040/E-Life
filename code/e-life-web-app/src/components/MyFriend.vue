@@ -73,7 +73,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.userData = response.data
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.userData = response.data
+        }
       })
     },
     handleDelete (row) {
@@ -87,11 +91,15 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.delete === 1) {
-          this.$alert('删除成功！')
-          this.getFriend()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('删除失败！')
+          if (response.data.delete === 1) {
+            this.$alert('删除成功！')
+            this.getFriend()
+          } else {
+            this.$alert('删除失败！')
+          }
         }
       })
     }

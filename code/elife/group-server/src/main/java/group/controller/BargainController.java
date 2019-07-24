@@ -3,10 +3,14 @@ package group.controller;
 import group.service.BargainService;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author ztHou
@@ -36,7 +40,16 @@ public class BargainController {
 
     @RequestMapping(path = "/getAllBargain")
     @ResponseBody
-    public JSONArray getAllBargain(){
+    public JSONArray getAllBargain(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        if (StringUtils.isEmpty(name)) {
+            JSONObject jsonObject = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            jsonObject.put("login", 0);
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return bargainService.getAllBargain();
     }
 

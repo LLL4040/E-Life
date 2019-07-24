@@ -178,7 +178,8 @@ export default {
       })
     },
     toSF () {
-      window.location.href = 'http://www.sf-express.com/cn/sc/dynamic_function/order/quick/'
+      window.open('http://www.sf-express.com/cn/sc/dynamic_function/order/quick/')
+      // window.location.href = 'http://www.sf-express.com/cn/sc/dynamic_function/order/quick/'
     },
     toPage1 (id) {
       this.openList[0] = '1'

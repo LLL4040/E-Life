@@ -18,6 +18,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>商家分类</span>
+            <el-button size="medium" style="float: right" type="primary" @click="createMap()">全部商家</el-button>
           </div>
           <el-row :gutter="25">
             <el-col :span="8">
@@ -84,8 +85,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.merchantList = response.data
-        this.loadBargain()
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.merchantList = response.data
+          this.loadBargain()
+        }
       })
     },
     loadBargain () {
@@ -95,8 +100,12 @@ export default {
         url: url,
         config: { headers: { 'Content-type': 'multipart/form-data' } }
       }).then(response => {
-        this.bargainList = response.data
-        this.createMap()
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.bargainList = response.data
+          this.createMap()
+        }
       })
     },
     createMap () {

@@ -241,7 +241,7 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data[0].login === 0) {
+        if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
           this.postData = []
@@ -286,7 +286,7 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } }
       }).then(response => {
-        if (response.data[0].login === 0) {
+        if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
           if (response.data[0].pageNum === 0) {

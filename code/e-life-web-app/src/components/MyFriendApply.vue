@@ -113,7 +113,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.my = response.data
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.my = response.data
+        }
       })
     },
     loadOthers () {
@@ -126,7 +130,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.others = response.data
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.others = response.data
+        }
       })
     },
     handleA (row) {
@@ -139,11 +147,15 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.accept === 1) {
-          this.$alert('接受成功！')
-          this.loadOthers()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('接受失败！')
+          if (response.data.accept === 1) {
+            this.$alert('接受成功！')
+            this.loadOthers()
+          } else {
+            this.$alert('接受失败！')
+          }
         }
       })
     },
@@ -157,11 +169,15 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.reject === 1) {
-          this.$alert('拒绝成功！')
-          this.loadOthers()
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('拒绝失败！')
+          if (response.data.reject === 1) {
+            this.$alert('拒绝成功！')
+            this.loadOthers()
+          } else {
+            this.$alert('拒绝失败！')
+          }
         }
       })
     }

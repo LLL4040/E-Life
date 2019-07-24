@@ -64,35 +64,45 @@ public class NoticeController {
     }
     @RequestMapping(path = "/ManagerFindNotice")
     @ResponseBody
-    public JSONArray  managerFindNotice(@RequestParam String managerName, @RequestParam int pageNumber, @RequestParam int pageSize){
+    public JSONArray  managerFindNotice(HttpServletRequest request, @RequestParam String managerName, @RequestParam int pageNumber, @RequestParam int pageSize){
 
-        List<Notice> notices=noticeService.managerFindNotice(managerName,pageNumber,pageSize);
-        int count = noticeService.countByManagerName(managerName);
-        int pageNum = count/pageSize;
-        if (count%pageSize!=0){
-            pageNum += 1;
-        }
-        JSONObject firstObject = new JSONObject();
-        firstObject.put("pageNum",pageNum);
-        JSONArray result = new JSONArray();
-        result.add(firstObject);
-        for(Notice notice : notices){
-            JSONObject object = new JSONObject();
-            object.put("id", notice.getNoticeId());
-            object.put("time", notice.getNoticeTime());
-            object.put("content",notice.getNoticeContent());
-            object.put("managename",notice.getManagerName());
-            object.put("communityId",notice.getCommunityId());
-            List<NoticeUser> noticeUserList=noticeService.findbyNoticeId(notice.getNoticeId());
-            if(noticeUserList.size()>1){
-                object.put("receiver","全部");
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        JSONArray jsonArray = new JSONArray();
+        if (StringUtils.isEmpty(name) || !("1".equals(role)) || !(name.equals(managerName))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        } else {
+            List<Notice> notices = noticeService.managerFindNotice(managerName, pageNumber, pageSize);
+            int count = noticeService.countByManagerName(managerName);
+            int pageNum = count / pageSize;
+            if (count % pageSize != 0) {
+                pageNum += 1;
             }
-            else if(noticeUserList.size()>0){
-                object.put("receiver",noticeUserList.get(0).getUsername());
+            JSONObject firstObject = new JSONObject();
+            firstObject.put("pageNum", pageNum);
+            JSONArray result = new JSONArray();
+            result.add(firstObject);
+            for (Notice notice : notices) {
+                JSONObject object = new JSONObject();
+                object.put("id", notice.getNoticeId());
+                object.put("time", notice.getNoticeTime());
+                object.put("content", notice.getNoticeContent());
+                object.put("managename", notice.getManagerName());
+                object.put("communityId", notice.getCommunityId());
+                List<NoticeUser> noticeUserList = noticeService.findbyNoticeId(notice.getNoticeId());
+                if (noticeUserList.size() > 1) {
+                    object.put("receiver", "全部");
+                } else if (noticeUserList.size() > 0) {
+                    object.put("receiver", noticeUserList.get(0).getUsername());
+                }
+                result.appendElement(object);
             }
-            result.appendElement(object);
+            return result;
         }
-        return result;
     }
     @RequestMapping(path = "/findMyNotice")
     @ResponseBody
@@ -101,7 +111,7 @@ public class NoticeController {
         String name = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
         JSONArray jsonArray = new JSONArray();
-        if (StringUtils.isEmpty(name) || !("0".equals(role))) {
+        if (StringUtils.isEmpty(name) || !("0".equals(role))  || !(name.equals(username))) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("login", 0);
             jsonArray.add(jsonObject);
@@ -129,7 +139,6 @@ public class NoticeController {
             object.put("deleteOneNotice", "1");
             object.put("message","删除这一条物业信息成功");
             return object;
-
         }
         object.put("deleteOneNotice", "0");
         object.put("message","删除这一条物业信息失败");
@@ -144,7 +153,7 @@ public class NoticeController {
         HttpSession session = request.getSession();
         String name = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
-        if (StringUtils.isEmpty(name) || !("0".equals(role))) {
+        if (StringUtils.isEmpty(name) || !("0".equals(role)) || !name.equals(username)) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("login", 0);
             return jsonObject;
@@ -165,12 +174,20 @@ public class NoticeController {
      * 用户功能，删除我的通知列表中的所有条通知*/
     @RequestMapping(path = "/deleteMyNotice")
     @ResponseBody
-    public JSONObject deleteMyNotice(@RequestParam String username){
-        noticeService.deleteAllByUsername(username);
-        net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
-        object.put("deleteMyNotice", "1");
-        object.put("message","删除我的所有通知成功");
-        return object;
-
+    public JSONObject deleteMyNotice(HttpServletRequest request, @RequestParam String username){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("0".equals(role)) || !name.equals(username)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        } else {
+            noticeService.deleteAllByUsername(username);
+            net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
+            object.put("deleteMyNotice", "1");
+            object.put("message", "删除我的所有通知成功");
+            return object;
+        }
     }
 }

@@ -9,7 +9,7 @@
           <span style="font-size: 16px;">已发送通知</span>
           <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
         </div>
-        <el-table :data="message.filter(data => typeof data.time !== 'undefined' && (!search || data.user.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
+        <el-table :data="message.filter(data => typeof data.time !== 'undefined' && (!search || data.receiver.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -118,9 +118,13 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.message = response.data
-        console.log(this.message)
-        this.total = response.data[0].pageNum
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.message = response.data
+          console.log(this.message)
+          this.total = response.data[0].pageNum
+        }
       })
     },
     handleCurrentChange (val) {

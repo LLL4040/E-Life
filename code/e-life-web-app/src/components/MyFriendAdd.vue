@@ -88,7 +88,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.userData = response.data
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.userData = response.data
+        }
       })
     },
     handleAdd1 (row) {
@@ -108,10 +112,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.send === 1) {
-          this.$alert('添加成功！')
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
         } else {
-          this.$alert('添加失败！')
+          if (response.data.send === 1) {
+            this.$alert('添加成功！')
+          } else {
+            this.$alert('添加失败！')
+          }
         }
       })
     }

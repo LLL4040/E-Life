@@ -27,18 +27,21 @@ public class NewsController {
     @PostMapping(path="/saveNews") // Map ONLY GET Requests
     @ResponseBody
     public
-    boolean saveNews (@RequestParam String  content, @RequestParam String managerName,
+    boolean saveNews (HttpServletRequest request, @RequestParam String  content, @RequestParam String managerName,
                      @RequestParam String title, @RequestParam MultipartFile photo,
                       @RequestParam int communityId) throws IOException {
-        return newsService.save(content,managerName,title,photo,communityId);
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role)) || !(name.equals(managerName))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return false;
+        } else {
+            return newsService.save(content, managerName, title, photo, communityId);
+        }
     }
-    @PostMapping(path="/save") // Map ONLY GET Requests
-    @ResponseBody
-    public
-    String save ( @RequestParam MultipartFile photo) throws IOException {
-        newsService.save("ss","1","hh",photo,1);
-        return "success";
-    }
+
     @RequestMapping(path = "/findNews")
     @ResponseBody
     public JSONArray findNew(HttpServletRequest request, int communityId) throws IOException {
@@ -56,8 +59,17 @@ public class NewsController {
     }
     @RequestMapping(path = "/deleteOne")
     @ResponseBody
-    public boolean deleteOne(int id){
-        return newsService.deleteOne(id);
+    public boolean deleteOne(HttpServletRequest request, int id){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return false;
+        } else {
+            return newsService.deleteOne(id);
+        }
     }
     @RequestMapping(path = "/findOne")
     @ResponseBody

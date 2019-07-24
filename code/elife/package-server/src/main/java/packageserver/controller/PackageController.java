@@ -33,7 +33,7 @@ public class PackageController {
         HttpSession session = request.getSession();
         String name = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
-        if (StringUtils.isEmpty(name) || !("0".equals(role))) {
+        if (StringUtils.isEmpty(name) || !("0".equals(role)) || !(name.equals(username))) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("login", 0);
             JSONArray jsonArray = new JSONArray();
@@ -49,7 +49,13 @@ public class PackageController {
     }
     @RequestMapping(path = "/takeOut")
     @ResponseBody
-    public boolean takeOne(int id){
+    public boolean takeOne(HttpServletRequest request, int id){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("0".equals(role))) {
+            return false;
+        }
         return packageService.takeOut(id);
     }
     @RequestMapping(path = "/findOne")
