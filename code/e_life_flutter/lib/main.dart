@@ -118,9 +118,12 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                             new TextStyle(color: Colors.white, fontSize: 16.0),
                       ),
                     ),
-                    onPressed: (){
+                    onPressed: ()async{
 
-                      model.login(_username.text,_password.text,role);
+                      bool temp = await model.login(_username.text,_password.text,role);
+                      if(temp==true){
+                        print("哈哈哈哈哈哈");
+                      }
                       if(model.loginSuccess!=false){
                         Navigator.of(context).pushAndRemoveUntil(
                             new MaterialPageRoute(
