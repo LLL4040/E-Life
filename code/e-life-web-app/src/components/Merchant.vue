@@ -170,7 +170,11 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.newFriend = response.data.number
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.newFriend = response.data.number
+        }
       })
     }
   },

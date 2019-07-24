@@ -2,11 +2,15 @@ package payserver.controller;
 
 import com.alipay.api.AlipayApiException;
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import org.springframework.util.StringUtils;
 import payserver.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 
@@ -33,7 +37,13 @@ public class PayController {
      */
     @RequestMapping(path = "/savePay")
     @ResponseBody
-    public boolean savePay(String time, BigDecimal bill,int status, String managerName, String username, int communityId ){
+    public boolean savePay(HttpServletRequest request, String time, BigDecimal bill,int status, String managerName, String username, int communityId ){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))  || !(name.equals(managerName))) {
+            return false;
+        }
         return payService.save(time,bill,status,managerName,username,communityId);
     }
     @RequestMapping(path = "/findNew")
@@ -59,17 +69,47 @@ public class PayController {
     }
     @RequestMapping(path = "/findHistory")
     @ResponseBody
-    public JSONArray findHistory(String username, int page){
+    public JSONArray findHistory(HttpServletRequest request, String username, int page){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        JSONArray jsonArray = new JSONArray();
+        if (StringUtils.isEmpty(name) || !("0".equals(role))  || !(name.equals(username))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return payService.findHistory(username,page);
     }
     @RequestMapping(path = "/findUnPayHistory")
     @ResponseBody
-    public JSONArray findUnPayHistoryManager(int communityId, int page){
+    public JSONArray findUnPayHistoryManager(HttpServletRequest request, int communityId, int page){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        JSONArray jsonArray = new JSONArray();
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return payService.findUnPayHistoryManager(communityId,page);
     }
     @RequestMapping(path = "/findPayHistory")
     @ResponseBody
-    public JSONArray findPayHistoryManager(int communityId, int page){
+    public JSONArray findPayHistoryManager(HttpServletRequest request, int communityId, int page){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        JSONArray jsonArray = new JSONArray();
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return payService.findPayHistoryManager(communityId,page);
     }
 
@@ -84,7 +124,6 @@ public class PayController {
         System.out.println(12345);
         payService.returnUrl(response,request);
         System.out.println("跳转成功");
-        response.sendRedirect("http://localhost:8080/user");
     }
     @RequestMapping("/notify")
     public void notifyUrl(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {

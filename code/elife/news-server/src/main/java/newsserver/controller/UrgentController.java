@@ -27,8 +27,17 @@ public class UrgentController {
     private UrgentService urgentService;
 
     @RequestMapping("/saveUrgent")
-    public boolean saveUrgent(String managerName, String content, int communityId){
-        return urgentService.save(managerName, content, 0, communityId);
+    public boolean saveUrgent(HttpServletRequest request, String managerName, String content, int communityId){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role)) || !(name.equals(managerName))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return false;
+        } else {
+            return urgentService.save(managerName, content, 0, communityId);
+        }
     }
 
     @RequestMapping("/getUrgent")
@@ -50,8 +59,17 @@ public class UrgentController {
         }
     }
     @RequestMapping("/deleteUrgent")
-    public boolean deleteUrgent(int id){
-        return urgentService.deleteOne(id);
+    public boolean deleteUrgent(HttpServletRequest request, int id){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return false;
+        } else {
+            return urgentService.deleteOne(id);
+        }
     }
 
     @RequestMapping("/moveTable")
@@ -60,7 +78,17 @@ public class UrgentController {
     }
 
     @RequestMapping("/findHistory")
-    public JSONArray findHistory(int communityId,int page){
+    public JSONArray findHistory(HttpServletRequest request, int communityId,int page){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
         return urgentService.findHistory(communityId,page);
     }
 

@@ -21,7 +21,6 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column prop="id" label="编号"></el-table-column>
             <el-table-column prop="name" label="商店名称"></el-table-column>
             <el-table-column prop="phone" label="商店电话"></el-table-column>
           </el-table>
@@ -71,7 +70,7 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        if (response.data.login === 0) {
+        if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
           this.shop = response.data

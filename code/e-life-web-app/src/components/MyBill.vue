@@ -44,13 +44,13 @@
     <el-dialog title="订单详情" :visible.sync="dialogFormVisible">
       <el-form :model="order">
         <el-form-item label="订单号">
-          <el-input v-model="order.id" type="text"></el-input>
+          <el-input v-model="order.id" type="text" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="时间">
-          <el-input v-model="order.time" type="text"></el-input>
+          <el-input v-model="order.time" type="text" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="金额">
-          <el-input v-model="order.bill" type="text"></el-input>
+          <el-input v-model="order.bill" type="text" :disabled="true"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -117,10 +117,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.bill = response.data
-        console.log(response.data)
-        this.pageSize = response.data[response.data.length - 1].pageNum
-        this.bill.pop()
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.bill = response.data
+          console.log(response.data)
+          this.pageSize = response.data[response.data.length - 1].pageNum
+          this.bill.pop()
+        }
       })
     },
     handleCurrentChange (val) {

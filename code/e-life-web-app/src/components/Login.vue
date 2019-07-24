@@ -155,6 +155,8 @@ export default {
             } else if (this.form1.id === '2') {
               self.$router.push({ name: 'Merchant' })
             }
+          } else if (response.data.login === -1) {
+            this.$alert('请勿重复登录！请退出账号或关闭页面清除浏览器缓存之后重试')
           } else {
             this.$alert('登录失败！')
           }
@@ -190,6 +192,8 @@ export default {
             } else if (this.form2.id === '2') {
               self.$router.push({ name: 'Merchant' })
             }
+          } else if (response.data.login === -1) {
+            this.$alert('请勿重复登录！请退出账号或关闭页面清除浏览器缓存之后重试')
           } else {
             this.$alert('登录失败！')
           }

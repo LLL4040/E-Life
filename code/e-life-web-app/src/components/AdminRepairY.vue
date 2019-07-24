@@ -101,9 +101,13 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } }
       }
       ).then(response => {
-        this.requestData = response.data
-        console.log(this.requestData)
-        this.total = response.data[0].pageNum
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.requestData = response.data
+          console.log(this.requestData)
+          this.total = response.data[0].pageNum
+        }
       })
     },
     handleCurrentChange (val) {

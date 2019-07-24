@@ -206,10 +206,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.activity = response.data
-        this.pageSize1 = response.data[response.data.length - 1].pageNum
-        console.log(response.data)
-        this.activity.pop()
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.activity = response.data
+          this.pageSize1 = response.data[response.data.length - 1].pageNum
+          console.log(response.data)
+          this.activity.pop()
+        }
       })
     },
     handleCurrentChange1 (val) {
@@ -228,10 +232,14 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.apply = response.data
-        this.pageSize2 = response.data[response.data.length - 1].pageNum
-        console.log(response.data)
-        this.apply.pop()
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.apply = response.data
+          this.pageSize2 = response.data[response.data.length - 1].pageNum
+          console.log(response.data)
+          this.apply.pop()
+        }
       })
     },
     handleCurrentChange2 (val) {
@@ -252,7 +260,7 @@ export default {
         if (response.data) {
           this.loadApply(this.applyId)
         } else {
-          this.$alert('同意失败！')
+          this.$alert('操作失败！请重新登录再试')
         }
       })
     },
@@ -270,7 +278,7 @@ export default {
         if (response.data) {
           this.loadApply(this.applyId)
         } else {
-          this.$alert('拒绝失败！')
+          this.$alert('操作失败！请重新登录再试')
         }
       })
     },
@@ -302,7 +310,7 @@ export default {
         if (response.data) {
           this.loadActivity()
         } else {
-          this.$alert('发布活动失败！')
+          this.$alert('发布活动失败！请重新登录再试')
         }
       })
     },
@@ -319,7 +327,7 @@ export default {
         if (response.data) {
           this.loadActivity()
         } else {
-          this.$alert('删除活动失败！')
+          this.$alert('删除活动失败！请重新登录再试')
         }
       })
     },
@@ -333,8 +341,12 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
-        this.photo = response.data.photo
-        this.dialogFormVisible2 = true
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.photo = response.data.photo
+          this.dialogFormVisible2 = true
+        }
       })
     }
   }
