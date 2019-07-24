@@ -164,6 +164,7 @@ export default {
       bodyFormData.set('bill', this.order.bill)
       bodyFormData.set('time', this.order.time)
       let url = '/pay-server/api/Pay/ali'
+      const newTab = window.open()
       this.$axios({
         method: 'post',
         url: url,
@@ -171,9 +172,10 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         const div = document.createElement('div')
+        newTab.console.log(response.data)
         div.innerHTML = response.data // html code
-        document.body.appendChild(div)
-        document.forms[1].submit()
+        newTab.document.body.appendChild(div)
+        newTab.document.forms[0].submit()
       })
     }
   }
