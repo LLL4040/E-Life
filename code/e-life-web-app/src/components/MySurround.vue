@@ -10,7 +10,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>优惠商品搜索</span>
-            <el-button size="medium" style="float: right" type="primary" @click="showBargain()">全部优惠商品</el-button>
+            <el-button size="medium" maxLength="50" style="float: right" type="primary" @click="showBargain()">全部优惠商品</el-button>
           </div>
           <el-input v-model="search" size="mini" style="width: 235px" placeholder="搜索优惠商品"/>
           <el-button icon="el-icon-search" size="mini" type="primary" @click="searchBargain()"></el-button>

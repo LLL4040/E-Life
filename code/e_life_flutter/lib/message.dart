@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'noticehttp.dart';
 import 'user.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:e_life_flutter/packagehttp.dart';
 
 class message extends StatefulWidget {
   final username;
@@ -13,181 +15,267 @@ class message extends StatefulWidget {
   }
 }
 
-class messageState extends State<message> with SingleTickerProviderStateMixin,NetListener {
+class messageState extends State<message>
+    with SingleTickerProviderStateMixin, NetListener, packNetListener {
   final username;
   messageState(this.username);
-
+  String success1; //用于判断删除信息是否成功
+  String success2;
   noticeHttp manager = new noticeHttp();
-  List<Notice> mynoticeList=[];//后端传的
-  List<Choice> tabs = [];//导航栏
+  packageHttp manager1 = new packageHttp();
+  List<Notice> mynoticeList = []; //后端传的
+  List<Package> mypackageList = [];
+  List<Choice> tabs = []; //导航栏
   TabController mTabController;
   int mCurrentPosition = 0;
 
-
-
-  void _returnNotice()async{
-    print("获得的是用户的物业信息"+username);
+  void _returnNotice() async {
+    print("获得的是用户的物业信息" + username);
     await manager.myNotice(this, username);
   }
 
-  Widget _getNotice(String managerName, String time,String content  ) {
-    return  new ListTile(
+  void _returnPackage() async {
+    print("获得的是用户的邮件提醒" + username);
+    await manager1.myPackage(this, username);
+  }
+
+  Widget _getNotice(String managerName, String time, String content, int id) {
+    return new ListTile(
       leading: new Icon(Icons.message),
       title: new Text(managerName),
       subtitle: new Column(
-        crossAxisAlignment:CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Text(time),
           new Text(content),
         ],
       ),
-      trailing: new Icon(Icons.delete,color:Colors.black54 ,),
-      onTap: () {
-        print(content);
+      trailing: new Icon(
+        Icons.delete,
+        color: Colors.black54,
+      ),
+      onTap: () async {
+        print(id.toString() + "id号");
+        print(username + "用户名");
+        manager.deleteNotice(this, username, id);
+        await new Future.delayed(new Duration(milliseconds: 1000));
+        if (success1 == "true") {
+          showToast("删除物业消息成功");
+        }
       },
       dense: true,
     );
   }
-  Widget _getpackage(String status, String time,String content  ) {
-    return  new ListTile(
-      leading: new Icon(Icons.markunread_mailbox),
-      title: new Text(status),
-      subtitle: new Row(
-        children: <Widget>[
-          new Text('时间:'+time),
 
+  _takeOut(String id) async {
+    print(id + "邮包id号");
+    manager1.takeOut(this, id);
+    await new Future.delayed(new Duration(milliseconds: 1000));
+    if (success2 == "true") {
+      showToast("提取邮包成功");
+    }
+  }
+
+  Widget _getpackage(String status, String time, String manage, String id) {
+    String statustmp = "";
+    if (status == "0") {
+      statustmp = "未提取";
+    }
+    return new ListTile(
+      leading: new Icon(Icons.markunread_mailbox),
+      title: new Text('时间:' + time),
+      subtitle: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Text("负责人: " + manage),
+          new Text(statustmp),
         ],
       ),
-      trailing: new Icon(Icons.keyboard_arrow_down),
+      trailing: new Icon(Icons.offline_pin),
+//      onTap: () async{
+//        print(id+"邮包id号");
+//        manager1.takeOut(this, id);
+//        await new Future.delayed(new Duration(milliseconds: 1000));
+//        if (success2=="true"){
+//          showToast("提取邮包成功");
+//        }},
       onTap: () {
-        print(content);
+        showDialog<Null>(
+          context: context,
+          builder: (BuildContext context) {
+            return new SimpleDialog(
+              title: new Text('确定提取吗'),
+              children: <Widget>[
+                new Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    new SimpleDialogOption(
+                      child: FlatButton(
+                        color: Colors.blue,
+                        highlightColor: Colors.blue[700],
+                        colorBrightness: Brightness.dark,
+                        splashColor: Colors.grey,
+                        child: Text("确定"),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        onPressed: () {
+                          _takeOut(id);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+
+                    ),
+                    new SimpleDialogOption(
+                      child: FlatButton(
+                        color: Colors.black54,
+                        highlightColor: Colors.black38,
+                        colorBrightness: Brightness.dark,
+                        splashColor: Colors.grey,
+                        child: Text("取消"),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        onPressed: () {
+                          showToast("取消提取邮包");
+                          Navigator.of(context).pop();
+                        },
+                      ),
+
+                    ),
+                  ],
+                ),
+
+              ],
+            );
+          },
+        ).then((val) {
+          print(val);
+        });
       },
       dense: true,
     );
   }
+
   List<Widget> notices = [];
   List<Widget> packages = [];
   // 从 itemBuilder 调用的独立函数
   Widget buildNoticeBody(BuildContext ctxt, int index) {
     return notices[index];
   }
+
   // 从 itemBuilder 调用的独立函数
   Widget buildPackageBody(BuildContext ctxt, int index) {
     return packages[index];
   }
+
   @override
   Widget build(BuildContext context) {
     notices = [];
     packages = [];
 
-//    Widget notice = _getNotice("欠费", "2019/7/12", "请尽快缴费");
-//    Widget notice2 = _getNotice("交钱", "2019/7/12", "请尽快缴纳房租你怎么还不交钱啊啊啊啊啊啊快交钱啊啊啊啊啊");
-    Widget package1 = _getpackage("未提取", "2019/5/7", "您有一个邮包代取");
-    Widget package2 = _getpackage("已签收", "2019/5/7", "您有一个邮包代取");
-//    notices.add(notice);
-//    notices.add(notice2);
-    packages.add(package1);
-    packages.add(package2);
-
-
-    if(mynoticeList.length>0){
-      for(int i=0;i<mynoticeList.length;i++){
-        Widget notice4 = _getNotice(mynoticeList[i].managerName, mynoticeList[i].time, mynoticeList[i].content);
+    if (mynoticeList.length > 0) {
+      for (int i = 0; i < mynoticeList.length; i++) {
+        Widget notice4 = _getNotice(mynoticeList[i].managerName,
+            mynoticeList[i].time, mynoticeList[i].content, mynoticeList[i].id);
         print("sjsjj");
         notices.add(notice4);
       }
     }
+    if (mypackageList.length > 0) {
+      for (int i = 0; i < mypackageList.length; i++) {
+        Widget package4 = _getpackage(
+            mypackageList[i].status.toString(),
+            mypackageList[i].time,
+            mypackageList[i].managerName,
+            mypackageList[i].id.toString());
+        print("jjjjssusu");
+        packages.add(package4);
+      }
+    }
     //物业通知界面
     Widget noticeContain = new Container(
-      child:new ListView.builder
-        (
+      child: new ListView.builder(
           itemCount: notices.length,
-          itemBuilder: (BuildContext ctxt, int index) => buildNoticeBody(ctxt, index)
-      ) ,
+          itemBuilder: (BuildContext ctxt, int index) =>
+              buildNoticeBody(ctxt, index)),
     );
     //邮包提醒界面
     Widget packageMessage = new Container(
-      child:new ListView.builder
-        (
+      child: new ListView.builder(
           itemCount: packages.length,
-          itemBuilder: (BuildContext ctxt, int index) => buildPackageBody(ctxt, index)
-      ) ,
+          itemBuilder: (BuildContext ctxt, int index) =>
+              buildPackageBody(ctxt, index)),
     );
 
-    List<Widget> widgetList = [];//要显示的下方组件
+    List<Widget> widgetList = []; //要显示的下方组件
     widgetList.add(noticeContain);
     widgetList.add(packageMessage);
-    return  ScopedModelDescendant<UserModel>(
-        builder: (context, child, model)
-        {
-          return Scaffold(
-
-            body: NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  new SliverAppBar(
-
-                    forceElevated: true,
-                    pinned: true,
-                    expandedHeight: 220.0,
-                    bottom: PreferredSize(
-                        child: new Container(
-                          color: Colors.white,
-                          child: new TabBar(
-                            indicatorSize: TabBarIndicatorSize.label,
-                            indicatorColor: Colors.blueAccent,
-                            labelColor: Colors.blueAccent,
-                            unselectedLabelColor: Colors.black45,
-                            tabs: tabs.map((Choice choice) {
-                              return new Tab(
-                                text: choice.title,
-                                icon: new Icon(
-                                  choice.icon,
-                                ),
-                              );
-                            }).toList(),
-                            controller: mTabController,
-                          ),
-                        ),
-                        preferredSize: new Size(double.infinity, 18.0)),
-                    flexibleSpace: new Container(
-                      child: new Column(
-                        children: <Widget>[
-                          new Expanded(
-                            child: new Container(
-                              child: Image.asset(
-                                "images/app.png",
-                                fit: BoxFit.cover,
-                              ),
-                              width: double.infinity,
+    return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
+      return Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              new SliverAppBar(
+                forceElevated: true, //是否显示阴影
+                //pinned: true,//是否固定在顶部
+                expandedHeight: 200.0,
+                bottom: PreferredSize(
+                    child: new Container(
+                      color: Colors.white,
+                      child: new TabBar(
+                        labelPadding: EdgeInsets.all(0),
+                        indicatorSize: TabBarIndicatorSize.label,
+                        indicatorColor: Colors.blueAccent,
+                        labelColor: Colors.blueAccent,
+                        unselectedLabelColor: Colors.black45,
+                        tabs: tabs.map((Choice choice) {
+                          return new Tab(
+                            text: choice.title,
+                            icon: new Icon(
+                              choice.icon,
                             ),
-                          )
-                        ],
+                          );
+                        }).toList(),
+                        controller: mTabController,
                       ),
                     ),
-                  )
-                ];
-              },
-              body: new TabBarView(
-                children: tabs.map((Choice choice) {
-                  return new Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: widgetList[choice.position]);
-                }).toList(),
-                controller: mTabController,
-              ),
-            ),
-          );
-        }
-    );
-
+                    preferredSize: new Size(double.infinity, 18.0)),
+                flexibleSpace: new Container(
+                  child: new Column(
+                    children: <Widget>[
+                      new Expanded(
+                        child: new Container(
+                          child: Image.asset(
+                            "images/app.png",
+                            fit: BoxFit.cover,
+                          ),
+                          width: double.infinity,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ];
+          },
+          body: new TabBarView(
+            children: tabs.map((Choice choice) {
+              return new Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: widgetList[choice.position]);
+            }).toList(),
+            controller: mTabController,
+          ),
+        ),
+      );
+    });
   }
 
   @override
   void initState() {
-
     super.initState();
     _returnNotice();
+    _returnPackage();
     tabs.add(Choice(title: '物业通知', icon: Icons.monetization_on, position: 0));
     tabs.add(Choice(title: '邮包通知', icon: Icons.local_post_office, position: 1));
 
@@ -207,21 +295,51 @@ class messageState extends State<message> with SingleTickerProviderStateMixin,Ne
     super.dispose();
     mTabController.dispose();
   }
-  @override
-  void onMyNoticeResponse(List<Notice> notice){
-    mynoticeList=notice;
-    setState(() {
 
+  @override
+  void onMyNoticeResponse(List<Notice> notice) {
+    mynoticeList = notice;
+    setState(() {});
+  }
+
+  @override
+  void onDeleteNoticeResponse(bool success) {
+    if (success == true) {
+      success1 = "true";
+    } else {
+      success1 = "false";
+    }
+    setState(() {
+      manager.myNotice(this, username);
     });
   }
-  @override
-  void onDeleteNoticeResponse(bool success){
 
-  }
   @override
-  void onError(error){
-
+  void onError(error) {}
+  @override
+  void onMyPackageResponse(List<Package> package) {
+    mypackageList = package;
+    print("我的邮包提醒");
+    setState(() {});
   }
+
+  @override
+  void onTakeOutResponse(String bool) {
+    print("邮包提取：" + bool);
+    if (bool == "true") {
+      success2 = "true";
+    } else {
+      success2 = "false";
+    }
+    setState(() {
+      manager1.myPackage(this, username);
+    });
+  }
+
+  @override
+  void onDeleteResponse(String bool) {}
+  @override
+  void onError1(error) {}
 }
 
 class Choice {
@@ -230,4 +348,3 @@ class Choice {
   final int position;
   final IconData icon;
 }
-

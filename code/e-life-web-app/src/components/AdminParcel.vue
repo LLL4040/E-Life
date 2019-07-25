@@ -27,7 +27,7 @@
           <el-date-picker v-model="sendM.time" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
         </el-form-item>
         <el-form-item label="接收人用户名">
-          <el-input v-model="sendM.user"></el-input>
+          <el-input maxLength="20" v-model="sendM.user"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

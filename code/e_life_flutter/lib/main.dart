@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'mainpage.dart';
+
 import 'bottom_navigation_widget.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
-
+import 'package:oktoast/oktoast.dart';
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,12 +15,18 @@ class MyApp extends StatelessWidget {
 //      home: LoginWidget(),
 //    );
   UserModel userModel = UserModel();
+
     return ScopedModel<UserModel>(
+
       model: userModel,
-      child: new MaterialApp(
-        title: 'MainApp',
-        home: LoginWidget(),
+      child: OKToast(
+        child: new MaterialApp(
+          title: 'MainApp',
+          home: LoginWidget(),
+        ),
       ),
+
+
     );
   }
 }
@@ -127,7 +133,7 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                       if(model.loginSuccess!=false){
                         Navigator.of(context).pushAndRemoveUntil(
                             new MaterialPageRoute(
-                                builder: (context) => new BottomNavigationWidget(model.user.username,model.user.communityId.toString())),
+                                builder: (context) => new BottomNavigationWidget(model.user.username,model.user.communityId.toString(),model.user.role.toString())),
                                 (route) => route == null);
                       }
 

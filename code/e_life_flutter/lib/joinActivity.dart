@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 import 'newsHttp.dart';
-
+import 'package:oktoast/oktoast.dart';
 
 class joinActivity extends StatefulWidget {
 
   final id;
-  joinActivity(this.id);
+  final username;
+  joinActivity(this.id,this.username);
   @override
   State<StatefulWidget> createState() {
-    return new joinActivityWidget(id);
+    return new joinActivityWidget(id,username);
   }
 }
 class joinActivityWidget extends State<joinActivity> with SingleTickerProviderStateMixin,NetListener{
   String joinResult="";
   final id;
-  joinActivityWidget(this.id);
+  final username;
+  joinActivityWidget(this.id,this.username);
   httpManager manager = new httpManager();
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,12 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                         children: [
                           new Padding(
                             padding: new EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
-                            child: Text("留言: "),
+                            child: Text("留言: "
+                            ,style: TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.black87
+
+                              ),),
                           ),
                           new Padding(
                               padding: new EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
@@ -78,6 +85,18 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                                 controller: _contentController,
                                 decoration: new InputDecoration(
                                   hintMaxLines: 6,
+                                  enabledBorder: OutlineInputBorder(
+
+                                    borderSide: BorderSide(
+                                      color: Colors.black38,
+                                      width: 1, //边线宽度为2
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.blue, //边框颜色为绿色
+                                        width: 2, //宽度为5
+                                      )),
                                 ),
                               ))
                         ]),
@@ -97,21 +116,27 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0)),
                           onPressed: ()async{
-                            print(model.user.username);
-                            print(id);
-                            manager.saveParticipator(this, id, _contentController.text, model.user.username);
-                            setState(() {
-
-                            });
-                            if(joinResult=="true"){
+                            //print(model.user.username);
+                            //print(id);
+                            if(_contentController.text==""){
+                              showToast("留言不应该为空",position: ToastPosition.top);
+                              return;
+                            }
+                            manager.saveParticipator(this, id, _contentController.text, username);
+                            String tmp;
+                            await new Future.delayed(new Duration(milliseconds: 1000));
+                            tmp =  joinResult;
+                            if(tmp=="true"){
                               print("joinresult=true");
                               joinResult="false";
-                              Navigator.pop(context,"发送请求成功");
-                              return null;
+                              Navigator.pop(context,"发送报名请求成功");
+
                             }else{
-                              print("请求失败");
+                              showToast("您已参加过该活动",position: ToastPosition.top);
                             }
-                            Navigator.pop(context,joinResult);
+
+
+                            //Navigator.pop(context,joinResult);
                           },
                         ),
                         FlatButton(
@@ -162,11 +187,15 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
   }
   @override
   void onSaveParticipantResponse(String body){
-    joinResult = body;
+    joinResult =   body;
     print("response"+joinResult);
     setState(() {
 
     });
+
+  }
+  @override
+  void onPhotoResponse(String photo){
 
   }
 }

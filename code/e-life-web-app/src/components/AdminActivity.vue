@@ -83,7 +83,7 @@
     <el-dialog title="发起活动" :visible.sync="dialogFormVisible">
       <el-form :model="newA">
         <el-form-item label="活动标题">
-          <el-input v-model="newA.title"></el-input>
+          <el-input v-model="newA.title" maxLength="25"></el-input>
         </el-form-item>
         <el-form-item label="起始时间">
           <el-date-picker v-model="time" type="datetimerange" :picker-options="pickerOptions"
@@ -95,7 +95,7 @@
         <input type='file' accept="image/*" id="file" ref="file" style="display: none"/>
       </el-form-item>
         <el-form-item label="详情">
-          <el-input v-model="newA.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
+          <el-input maxLength="512" v-model="newA.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

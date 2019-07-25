@@ -24,4 +24,32 @@ public interface CommunityRepository extends JpaRepository<Community, String> {
      */
     @Transactional(rollbackOn = Exception.class)
     void deleteById(Long id);
+
+    /**
+     * whether exists manager
+     * @param manager manager
+     * @return whether exists manager
+     */
+    Boolean existsByManager(String manager);
+
+    /**
+     * whether exists phone
+     * @param phone phone
+     * @return whether exists phone
+     */
+    Boolean existsByPhone(String phone);
+
+    /**
+     * find community by manager
+     * @param manager manager
+     * @return community
+     */
+    Community findByManager(String manager);
+
+    /**
+     * find community by phone
+     * @param phone phone
+     * @return community
+     */
+    Community findByPhone(String phone);
 }

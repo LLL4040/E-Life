@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:oktoast/oktoast.dart';
 import 'dart:convert';
 import 'newsHttp.dart';
 import 'joinActivity.dart';
@@ -9,10 +10,11 @@ import 'user.dart';
 //资讯的widget
 class newswidget extends StatefulWidget {
   final communityId;
-  newswidget(this.communityId);
+  final usename;
+  newswidget(this.communityId,this.usename);
   @override
   State<StatefulWidget> createState() {
-    return new myWidget(communityId);
+    return new myWidget(communityId,usename);
   }
 }
 class Choice {
@@ -24,7 +26,8 @@ class Choice {
 
 class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, NetListener{
   final communityId;
-  myWidget(this.communityId);
+  final username;
+  myWidget(this.communityId,this.username);
   List<urgent> urgentList=[];
   List<News> newsList=[];
   List<Activity> activityList=[];
@@ -59,9 +62,10 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
    _joinActivity(int id){
     Navigator.push<String>(context,
         new MaterialPageRoute(builder: (BuildContext context) {
-          return new joinActivity(id.toString());
+          return new joinActivity(id.toString(),username);
         })).then((String result){
       print("报名收到的信息为:"+result);
+      showToast(result);
 
     });
   }
@@ -88,7 +92,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
           new Text(activity),
         ],
       ),
-      trailing: new Icon(Icons.add,color:Colors.black54 ,),
+      trailing: new Icon(Icons.add_circle,color:Colors.black54 ,),
       onTap: () {
         _joinActivity(id);
       },
@@ -179,6 +183,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
     news=[];
     if(urgentList.length>0){
       for(int i=0;i<urgentList.length-1;i++){
+
         Widget urgent = _getUrgent(urgentList[i].time, urgentList[i].managerName, urgentList[i].content);
         urgents.add(urgent);
       }
@@ -278,8 +283,8 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
               indicatorColor: Colors.black54,
               indicatorWeight: 1,
               indicatorSize: TabBarIndicatorSize.label,
-              indicatorPadding: EdgeInsets.fromLTRB(5.0, 1.0, 5.0, 1.0),
-              labelPadding: EdgeInsets.all(15),
+              indicatorPadding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+              labelPadding: EdgeInsets.all(0),
               //indicator: const BoxDecoration(),//加了之后指示条消失
               labelColor: Color(0xff333333),
               labelStyle: TextStyle(
@@ -326,6 +331,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
   @override
   void onUrgentResponse(List<urgent> body) {
     urgentList = body;
+
     setState(() {});
   }
   @override
@@ -341,6 +347,10 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
   @override
   void onSaveParticipantResponse(String body){
     String temp = body;
+  }
+  @override
+  void onPhotoResponse(String photo){
+
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'comsuphttp.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class surpermarket extends StatefulWidget {
   final communityId;
   surpermarket(this.communityId);
@@ -13,7 +13,14 @@ class surpermarket extends StatefulWidget {
 class surpermarketCenter extends State<surpermarket> with SingleTickerProviderStateMixin,NetListener {
   final communityId;
   surpermarketCenter(this.communityId);
-
+  _launchURL(String phone) async {
+    String url="tel: "+phone;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   List<Merchant> supermarketMerchantList=[];//存后端数据
 
   comsupHttp manager = comsupHttp();
@@ -33,7 +40,7 @@ class surpermarketCenter extends State<surpermarket> with SingleTickerProviderSt
         ],
       ),
       onTap: () {
-        print(name);
+        _launchURL(phone);
       },
       dense: true,
     );

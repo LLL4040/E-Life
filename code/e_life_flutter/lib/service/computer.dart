@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'comsuphttp.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class computer extends StatefulWidget {
   final communityId;
   computer(this.communityId);
@@ -13,7 +13,14 @@ class computer extends StatefulWidget {
 class computerCenter extends State<computer> with SingleTickerProviderStateMixin,NetListener {
   final communityId;
   computerCenter(this.communityId);
-
+  _launchURL(String phone) async {
+    String url="tel: "+phone;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   List<Merchant> computerMerchantList=[];//存后端数据
 
   comsupHttp manager = comsupHttp();
@@ -33,7 +40,7 @@ class computerCenter extends State<computer> with SingleTickerProviderStateMixin
         ],
       ),
       onTap: () {
-        print(name);
+        _launchURL(phone);
       },
       dense: true,
     );

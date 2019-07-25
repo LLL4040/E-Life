@@ -29,17 +29,19 @@ class noticeHttp {
       client.close,
     );
   }
-  deleteNotice(NetListener net, String username, int noticeId) {
+  deleteNotice(NetListener net, String username, int noticeId){
     var client = new http.Client();
     client.post(
         deleteNoticeHttp,
         body: {
           "username": username,
-          "noticeId": noticeId,
+          "noticeId": noticeId.toString(),
         }
     ).then((response,) {
+      print(response);
       Map<String, dynamic> responseJson = json.decode(response.body);
-      bool success = responseJson.containsValue("1");
+      bool success =  responseJson.containsValue("1");
+
       net.onDeleteNoticeResponse(success);
     }, onError: (error) {
       net.onError(error);

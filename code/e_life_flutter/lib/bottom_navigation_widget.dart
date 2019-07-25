@@ -8,15 +8,17 @@ import 'user.dart';
 class BottomNavigationWidget extends StatefulWidget {
   final username;
   final communityId;
-  BottomNavigationWidget(this.username,this.communityId);
+  final role;
+  BottomNavigationWidget(this.username,this.communityId,this.role);
   @override
-  _BottomNavigationWidget createState() => _BottomNavigationWidget(username,communityId);
+  _BottomNavigationWidget createState() => _BottomNavigationWidget(username,communityId,role);
 }
 
 class _BottomNavigationWidget extends State<BottomNavigationWidget> {
   final username;
   final communityId;
-  _BottomNavigationWidget(this.username,this.communityId);
+  final role;
+  _BottomNavigationWidget(this.username,this.communityId,this.role);
   final _BottomNavigationColor = Colors.black54; //组件内部私有变量
   int _currentIndex = 0;
   List<Widget> list = List();
@@ -25,7 +27,7 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
     print(username+"登录");
     print(communityId+"登录");
 
-    list..add(mainpage(communityId))..add(service())..add(message(username))..add(mycenter());
+    list..add(mainpage(communityId,username))..add(service(username,communityId,role))..add(message(username))..add(mycenter(username,role));
     super.initState(); //无名无参需要调用
   }
 

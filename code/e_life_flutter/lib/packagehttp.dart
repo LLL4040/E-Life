@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class packageHttp {
 
-  var myPackageUrl = "http://elife.natapp1.cc/package-server/api/package/findNew";
+  var myPackageUrl = "http://elife.natapp1.cc/package-server/api/Package/findNew";
 
-  var takeOutUrl = "http://elife.natapp1.cc/package-server/api/package/takeOut";
+  var takeOutUrl = "http://elife.natapp1.cc/package-server/api/Package/takeOut";
 
-  var deleteUrl = "http://elife.natapp1.cc/package-server/api/package/deleteOne";
+  var deleteUrl = "http://elife.natapp1.cc/package-server/api/Package/deleteOne";
 
 
 
-  myBill(NetListener net, String username,) {
+  myPackage(packNetListener net, String username) {
     var client = new http.Client();
     client.post(
         myPackageUrl,
@@ -24,13 +24,13 @@ class packageHttp {
       print(response.body);
       net.onMyPackageResponse(packageList);
     }, onError: (error) {
-      net.onError(error);
+      net.onError1(error);
     }).whenComplete(
       client.close,
     );
   }
 
-  takeOut(NetListener net,int id) {
+  takeOut(packNetListener net,String id) {
     var client = new http.Client();
     client.post(
         takeOutUrl,
@@ -40,12 +40,12 @@ class packageHttp {
     ).then((response,) {
       net.onTakeOutResponse(response.body);
     }, onError: (error) {
-      net.onError(error);
+      net.onError1(error);
     }).whenComplete(
       client.close,
     );
   }
-  delete(NetListener net,int id) {
+  delete(packNetListener net,int id) {
     var client = new http.Client();
     client.post(
         deleteUrl,
@@ -55,7 +55,7 @@ class packageHttp {
     ).then((response,) {
       net.onDeleteResponse(response.body);
     }, onError: (error) {
-      net.onError(error);
+      net.onError1(error);
     }).whenComplete(
       client.close,
     );
@@ -65,13 +65,13 @@ class packageHttp {
 /**
  * 用来回调成功和失败的结果
  */
-abstract class NetListener {
+abstract class packNetListener {
 
 
-  void onMyPackageResponse(List<Package> bill);
+  void onMyPackageResponse(List<Package> package);
   void onTakeOutResponse(String bool);
   void onDeleteResponse(String bool);
-  void onError(error);
+  void onError1(error);
 }
 class Package{
   final int id;

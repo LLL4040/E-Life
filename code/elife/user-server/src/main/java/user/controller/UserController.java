@@ -55,8 +55,16 @@ public class UserController {
 
     @RequestMapping(path = "/changeManagerStatus")
     @ResponseBody
-    public JSONObject changeManagerRole(@RequestParam String username,@RequestParam Integer role){
-        return userService.changeManagerRole(username, role);
+    public JSONObject changeManagerRole(HttpServletRequest request, @RequestParam String username,@RequestParam Integer role){
+        HttpSession session = request.getSession();
+        String matter = (String) session.getAttribute("role");
+        if("-1".equals(matter)){
+            return userService.changeManagerRole(username, role);
+        } else {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
     }
 
 
@@ -69,7 +77,11 @@ public class UserController {
             String name = (String) session.getAttribute("username");
             if (StringUtils.isEmpty(name)) {
                 session.setAttribute("username", username);
-                session.setAttribute("role", id);
+                if ("1".equals(result.getAsString("final"))) {
+                    session.setAttribute("role", "-1");
+                } else {
+                    session.setAttribute("role", id);
+                }
             } else if (!(name.equals(username))) {
                 JSONObject err = new JSONObject();
                 err.put("login", -1);

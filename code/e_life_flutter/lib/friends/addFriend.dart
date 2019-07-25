@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:e_life_flutter/friendhttp.dart';
+import 'package:e_life_flutter/friends/friendhttp.dart';
 class addFriend extends StatefulWidget {
   final username;
   final friend;
@@ -40,7 +40,11 @@ class addFriendCenter extends State<addFriend>
                 children: [
                   new Padding(
                     padding: new EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
-                    child: Text("留言: "),
+                    child: Text("留言: ",style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black87
+
+                    ),),
                   ),
                   new Padding(
                       padding: new EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
@@ -48,6 +52,18 @@ class addFriendCenter extends State<addFriend>
                         maxLines: 5,
                         controller: _contentController,
                         decoration: new InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+
+                            borderSide: BorderSide(
+                              color: Colors.black38,
+                              width: 1, //边线宽度为2
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.blue, //边框颜色为绿色
+                                width: 2, //宽度为5
+                              )),
                           hintMaxLines: 6,
                         ),
                       ))

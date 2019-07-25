@@ -6,10 +6,11 @@ import 'news.dart';
 
 class mainpage extends StatefulWidget {
   final communityId;
-  mainpage(this.communityId);
+  final username;
+  mainpage(this.communityId,this.username);
   @override
   State<StatefulWidget> createState() {
-    return new mainpageWidget(communityId);
+    return new mainpageWidget(communityId,username);
   }
 }
 class Choice {
@@ -21,7 +22,8 @@ class Choice {
 
 class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin {
   final communityId;
-  mainpageWidget(this.communityId);
+  final username;
+  mainpageWidget(this.communityId,this.username);
 
   List<Choice> tabs = [];//导航栏
   TabController mTabController;
@@ -62,7 +64,7 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
       return forums[index];
     }
     //小区资讯界面
-    Widget newsContain = new newswidget(communityId);
+    Widget newsContain = new newswidget(communityId,username);
     //小区论坛界面
     Widget forumConatin =new Container(
       child:new ListView.builder
@@ -80,11 +82,12 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             new SliverAppBar(
-              forceElevated :true,
+              //forceElevated :true,
               bottom: PreferredSize(
                   child: new Container(
                     color: Colors.white,
                     child: new TabBar(
+
                       indicatorSize: TabBarIndicatorSize.label,
                       indicatorColor: Colors.blueAccent,
                       labelColor: Colors.blueAccent,
@@ -92,6 +95,7 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
                       tabs: tabs.map((Choice choice) {
                         return new Tab(
                           text: choice.title,
+
                           icon: new Icon(
                             choice.icon,
                           ),
@@ -100,7 +104,7 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
                       controller: mTabController,
                     ),
                   ),
-                  preferredSize: new Size(double.infinity, 18.0)),
+                  preferredSize: new Size(double.infinity, 18)),
 
             )
           ];

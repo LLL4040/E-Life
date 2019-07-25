@@ -5,6 +5,7 @@ import 'package:e_life_flutter/user.dart';
 import 'package:e_life_flutter/service/maintainhttp.dart';
 import 'dart:convert';
 
+import 'package:oktoast/oktoast.dart';
 
 class myRepair extends StatefulWidget {
   final username;
@@ -67,6 +68,18 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
       return new addRepair(username);
     })).then((String result) {
       print(result);
+      showToast(result,textStyle: TextStyle(
+
+
+
+      ));
+      setState(() async{
+        await new Future.delayed(new Duration(milliseconds: 1000));
+        manager.myMaintain(this, username);
+
+      });
+
+
     });
   }
 
@@ -90,7 +103,7 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
 
     return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
 
-      print("ppppppppp1" + model.user.username);
+
 
       return Scaffold(
         appBar: AppBar(
@@ -121,13 +134,16 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
 
   @override
   void onAddMaintainResponse(bool send){
-    setState(() {});
+    setState(() {
+
+    });
   }
   @override
   void onMyMaintainResponse(List<Maintain> maintain){
     maintainList=maintain;
     //print("收到maintain "+maintain[0].content);
     setState(() {
+      //manager.myMaintain(this, username);
     });
 
   }
