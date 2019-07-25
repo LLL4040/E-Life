@@ -82,23 +82,17 @@ class messageState extends State<message>
       statustmp = "未提取";
     }
     return new ListTile(
-      leading: new Icon(Icons.markunread_mailbox),
+      leading: new Icon(Icons.settings_system_daydream),
       title: new Text('时间:' + time),
       subtitle: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Text("负责人: " + manage),
-          new Text(statustmp),
+          new Text(statustmp ,),
         ],
       ),
       trailing: new Icon(Icons.offline_pin),
-//      onTap: () async{
-//        print(id+"邮包id号");
-//        manager1.takeOut(this, id);
-//        await new Future.delayed(new Duration(milliseconds: 1000));
-//        if (success2=="true"){
-//          showToast("提取邮包成功");
-//        }},
+
       onTap: () {
         showDialog<Null>(
           context: context,

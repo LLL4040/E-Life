@@ -1,37 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:e_life_flutter/friends/friendhttp.dart';
-class addFriend extends StatefulWidget {
+import 'demandhttp.dart';
+class addDemand extends StatefulWidget {
   final username;
-  final friend;
-  addFriend(this.username, this.friend);
+  final CommunityId;
+  addDemand(this.username, this.CommunityId);
   @override
   State<StatefulWidget> createState() {
-    return new addFriendCenter(username, friend);
+    return new addDemandCenter(username, CommunityId);
   }
 }
 
-class addFriendCenter extends State<addFriend>
+class addDemandCenter extends State<addDemand>
     with SingleTickerProviderStateMixin ,NetListener{
   final username;
-  final friend;
-  addFriendCenter(this.username, this.friend);
-  friendHttp manager = new friendHttp();
+  final CommunityId;
+  addDemandCenter(this.username, this.CommunityId);
+  demandHttp manager = new demandHttp();
+  var _date;
+  var _time;
+  _showDataPicker() async {
+    Locale myLocale = Localizations.localeOf(context);
+    var picker = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2016),
+        lastDate: DateTime(2019),
+        locale: myLocale);
+    setState(() {
+      _date = picker.toString();
+    });
+  }
+
+  _showTimePicker() async {
+    var picker =
+    await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    setState(() {
+      _time = picker.toString();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final TextEditingController _contentController =
-        new TextEditingController.fromValue(new TextEditingValue(text: ""));
+    new TextEditingController.fromValue(new TextEditingValue(text: ""));
 
-    void _addRepair() {
-      print(_contentController.text);
-      manager.sendRequest(this, username, friend, _contentController.text);
-      Navigator.pop(context, "发送添加好友请求成功");
-    }
 
-    Widget addFriendSection = new Container(
+
+    Widget addDemandSection = new Container(
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
+
           new Padding(
             padding: new EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
             child: new Column(
@@ -83,7 +102,9 @@ class addFriendCenter extends State<addFriend>
                   child: Text("确定"),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
-                  onPressed: _addRepair,
+                  onPressed: (){
+
+                  },
                 ),
                 FlatButton(
                   color: Colors.black54,
@@ -103,63 +124,30 @@ class addFriendCenter extends State<addFriend>
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text('添加好友'),
+        title: Text('添加需求'),
       ),
       body: Column(
         children: <Widget>[
           new Expanded(
-            child: addFriendSection,
+            child: addDemandSection,
           )
         ],
       ),
     );
   }
+
+@override
+  void onAddDemandResponse(bool success){
+
+}
   @override
-  void onFriendResponse(List<Friend> friendList) {
-
-    print("收到" + friendList[0].email);
-    setState(() {});
-  }
-
+  void onAllDemandResponse(List<Demand> demandList){}
   @override
-  void onFriendSearchResponse(List<Friend> friendSearchList) {
-
-    setState(() {});
-  }
-
+  void onParticipateDemandResponse(bool success){}
   @override
-  void onRequestListResponse(List<friendRequest> requestList) {
-
-    setState(() {});
-  }
-
+  void onQuitDemandResponse(bool success){}
   @override
-  void onResponseListResponse(List<friendRequest> responseList) {
-    setState(() {});
-  }
-
+  void onAllDiscountResponse(List<Discount> discountList){}
   @override
-  void onSendRequestResponse(bool send) {
-    setState(() {});
-  }
-
-  @override
-  void onAcceptRequestResponse(bool accept) {
-    setState(() {});
-  }
-
-  @override
-  void onRejectRequestResponse(bool reject) {
-    setState(() {});
-  }
-
-  @override
-  void onDeleteFriendResponse(bool delete) {
-    setState(() {});
-  }
-
-  @override
-  void onError(error) {
-    print("$error");
-  }
+  void onError(error){}
 }
