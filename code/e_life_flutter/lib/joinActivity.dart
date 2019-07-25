@@ -194,4 +194,8 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
     });
 
   }
+  @override
+  void onPhotoResponse(String photo){
+
+  }
 }

@@ -348,6 +348,10 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
   void onSaveParticipantResponse(String body){
     String temp = body;
   }
+  @override
+  void onPhotoResponse(String photo){
+
+  }
 }
 
 
