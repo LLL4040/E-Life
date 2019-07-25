@@ -116,9 +116,9 @@ export default {
           this.$router.push({ name: 'Login' })
         } else {
           if (response.data.send === 1) {
-            this.$alert('添加成功！')
+            this.$alert('发送申请成功！')
           } else {
-            this.$alert('添加失败！')
+            this.$alert('发送申请失败！')
           }
         }
       })

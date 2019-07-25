@@ -172,4 +172,16 @@ public class MaintainController {
 
         return maintainService.countMaintain(communityId);
     }
+
+    @RequestMapping(path = "/deleteMaintain")
+    @ResponseBody
+    public boolean deleteMaintain(HttpServletRequest request, @RequestParam long id){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || !("1".equals(role))) {
+            return false;
+        }
+        return maintainService.deleteById(id);
+    }
 }

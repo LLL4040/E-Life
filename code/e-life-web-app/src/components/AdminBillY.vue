@@ -9,9 +9,9 @@
           <div slot="header" class="clearfix">
             <span style="font-size: 16px;">停车费账单</span>
           </div>
-          <el-table :data="bill.filter(data => (data.status === 1 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
+          <el-table :data="bill.filter(data => typeof data.time !== 'undefined' && (data.status === 1 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
-            <el-table-column label="金额" prop="amount" align="center"></el-table-column>
+            <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
           </el-table>
         </el-card>
@@ -21,9 +21,9 @@
           <div slot="header" class="clearfix">
             <span style="font-size: 16px;">物业费账单</span>
           </div>
-          <el-table :data="bill.filter(data => (data.status === 2 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
+          <el-table :data="bill.filter(data => typeof data.time !== 'undefined' && (data.status === 2 && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
-            <el-table-column label="金额" prop="amount" align="center"></el-table-column>
+            <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
           </el-table>
         </el-card>
@@ -103,6 +103,7 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = val
       this.loadBill()
+      this.$forceUpdate()
     }
   }
 }

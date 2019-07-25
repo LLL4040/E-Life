@@ -36,7 +36,16 @@
     <el-dialog title="发送通知" :visible.sync="dialogFormVisible">
       <el-form :model="newMessage">
         <el-form-item label="接收人用户名">
-          <el-input v-model="newMessage.user"></el-input>
+          <el-select v-model="newMessage.user" filterable placeholder="输入小区名称关键字搜索">
+            <el-option
+              v-for="item in userList"
+              :key="item.username"
+              :label="item.username"
+              :value="item.username">
+              <span style="float: left">{{ item.username }}</span>
+<!--              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="通知内容">
           <el-input v-model="newMessage.content" maxLength="512" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
@@ -64,12 +73,7 @@ export default {
       },
       search: '',
       dialogFormVisible: false,
-      message: [{
-        time: 'xxx',
-        manager: '996',
-        user: '233',
-        content: '快交钱啊啊啊'
-      }],
+      message: [],
       newMessage: {
         manager: '',
         user: '',
@@ -77,12 +81,14 @@ export default {
       },
       pageNum: 1,
       pageSize: 10,
-      total: 1
+      total: 1,
+      userList: []
     }
   },
   mounted () {
     this.loadData()
     this.loadMessage()
+    this.loadUsers()
   },
   methods: {
     loadData () {
@@ -122,14 +128,31 @@ export default {
           this.$router.push({ name: 'Login' })
         } else {
           this.message = response.data
-          console.log(this.message)
           this.total = response.data[0].pageNum
+        }
+      })
+    },
+    loadUsers () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/user-server/api/user/getUsers'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.userList = response.data
         }
       })
     },
     handleCurrentChange (val) {
       this.pageNum = val
       this.loadMessage()
+      this.$forceUpdate()
     },
     sendM () {
       this.dialogFormVisible = false
@@ -151,6 +174,7 @@ export default {
         } else {
           if (response.data.addNotice === '1') {
             this.loadMessage()
+            this.$forceUpdate()
           } else {
             this.$alert('发送通知失败！')
           }
@@ -172,6 +196,7 @@ export default {
         } else {
           if (response.data.deleteOneNotice === '1') {
             this.loadMessage()
+            this.$forceUpdate()
           } else {
             this.$alert('删除通知失败！')
           }
