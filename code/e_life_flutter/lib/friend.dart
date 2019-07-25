@@ -3,6 +3,7 @@ import 'user.dart';
 import 'friendhttp.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:e_life_flutter/friends/addFriend.dart';
+import 'package:oktoast/oktoast.dart';
 class friendWidget extends StatefulWidget {
   final username;
   friendWidget(this.username);
@@ -15,6 +16,7 @@ class friendWidget extends StatefulWidget {
 class friendWidgetState extends State<friendWidget>
     with SingleTickerProviderStateMixin, NetListener {
   final username;
+  String success2;
   friendWidgetState(this.username);
 
   List<Friend> myFriendList = [];
@@ -40,6 +42,7 @@ class friendWidgetState extends State<friendWidget>
       if (mTabController.indexIsChanging) {
         setState(() {
           mCurrentPosition = mTabController.index;
+          manager.getFriendList(this, username);
         });
       }
     });
@@ -60,8 +63,14 @@ class friendWidgetState extends State<friendWidget>
         Icons.delete,
         color: Colors.black54,
       ),
-      onTap: () {
-        print("删除功能未实现");
+      onTap: ()async{
+        print(username+"用户名");
+        manager.deleteFriend(this, username,name);
+        await new Future.delayed(new Duration(milliseconds: 1000));
+        if (success2=="true"){
+          showToast("删除好友成功");
+        }
+        showToast("删除好友成功");
       },
       dense: true,
     );
@@ -87,6 +96,7 @@ class friendWidgetState extends State<friendWidget>
               return new addFriend(username,user);
             })).then((String result){
           print(result);
+          showToast(result);
         });
       },
       dense: true,
@@ -103,7 +113,7 @@ class friendWidgetState extends State<friendWidget>
         //textDirection: TextDirection.rtl,
         children: <Widget>[
           SizedBox(
-            width: 165.0,
+            width: 130.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -123,7 +133,7 @@ class friendWidgetState extends State<friendWidget>
                   print("id是");
                   print(id);
                   manager.acceptRequest(this, id);
-                  print("加好友成功");
+                  showToast("加好友成功");
 
                 },
               ),
@@ -132,7 +142,7 @@ class friendWidgetState extends State<friendWidget>
                 onPressed: () {
                   manager.rejectRequest(this, id);
                   print("拒绝成功");
-
+                  showToast("拒绝成功");
                 },
               ),
             ],
@@ -360,17 +370,29 @@ class friendWidgetState extends State<friendWidget>
 
   @override
   void onAcceptRequestResponse(bool accept) {
-    setState(() {});
+    setState(() {
+      manager.getRequestList(this, username);
+    });
   }
 
   @override
   void onRejectRequestResponse(bool reject) {
-    setState(() {});
+    setState(() {
+      manager.getRequestList(this, username);
+    });
   }
 
   @override
   void onDeleteFriendResponse(bool delete) {
-    setState(() {});
+    print("delete:"+delete.toString());
+    if(delete==true){
+      success2="true";
+    }else{
+      success2="false";
+    }
+    setState(() {
+      manager.getFriendList(this, username);
+    });
   }
 
   @override

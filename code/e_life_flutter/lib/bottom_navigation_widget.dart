@@ -27,7 +27,7 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
     print(username+"登录");
     print(communityId+"登录");
 
-    list..add(mainpage(communityId))..add(service())..add(message(username))..add(mycenter(username,role));
+    list..add(mainpage(communityId))..add(service(username,communityId,role))..add(message(username))..add(mycenter(username,role));
     super.initState(); //无名无参需要调用
   }
 

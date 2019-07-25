@@ -45,7 +45,7 @@ class groupWeightState extends State<groupWeight>
       }
     });
   }
-  
+
   Widget _getDiscount(Discount discount) {
     return new ListTile(
       leading: Image.memory(
@@ -108,8 +108,8 @@ class groupWeightState extends State<groupWeight>
 
   _getGroup() async {
     print("我的团购" + username);
-    await manager.getDemandList(this, communityId.toString());
-    await manager.getDiscountList(this, communityId.toString());
+    await manager.getDemandList(this, communityId);
+    await manager.getDiscountList(this, communityId);
     return true;
   }
 

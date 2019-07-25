@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'noticehttp.dart';
 import 'user.dart';
 import 'package:scoped_model/scoped_model.dart';
-
+import 'package:oktoast/oktoast.dart';
 class message extends StatefulWidget {
   final username;
   message(this.username);
@@ -13,10 +13,10 @@ class message extends StatefulWidget {
   }
 }
 
-class messageState extends State<message> with SingleTickerProviderStateMixin,NetListener {
+class messageState extends State<message> with SingleTickerProviderStateMixin,NetListener{
   final username;
   messageState(this.username);
-
+  String success1;//用于判断删除信息是否成功
   noticeHttp manager = new noticeHttp();
   List<Notice> mynoticeList=[];//后端传的
   List<Choice> tabs = [];//导航栏
@@ -30,7 +30,7 @@ class messageState extends State<message> with SingleTickerProviderStateMixin,Ne
     await manager.myNotice(this, username);
   }
 
-  Widget _getNotice(String managerName, String time,String content  ) {
+  Widget _getNotice(String managerName, String time,String content,int id  ) {
     return  new ListTile(
       leading: new Icon(Icons.message),
       title: new Text(managerName),
@@ -42,8 +42,15 @@ class messageState extends State<message> with SingleTickerProviderStateMixin,Ne
         ],
       ),
       trailing: new Icon(Icons.delete,color:Colors.black54 ,),
-      onTap: (){
-        print(content);
+      onTap: ()async{
+        print(id.toString()+"id号");
+        print(username+"用户名");
+        manager.deleteNotice(this, username, id);
+        await new Future.delayed(new Duration(milliseconds: 1000));
+        if (success1=="true"){
+          showToast("删除物业消息成功");
+        }
+
       },
       dense: true,
     );
@@ -90,7 +97,8 @@ class messageState extends State<message> with SingleTickerProviderStateMixin,Ne
 
     if(mynoticeList.length>0){
       for(int i=0;i<mynoticeList.length;i++){
-        Widget notice4 = _getNotice(mynoticeList[i].managerName, mynoticeList[i].time, mynoticeList[i].content);
+
+        Widget notice4 = _getNotice(mynoticeList[i].managerName, mynoticeList[i].time, mynoticeList[i].content,mynoticeList[i].id);
         print("sjsjj");
         notices.add(notice4);
       }
@@ -215,7 +223,14 @@ class messageState extends State<message> with SingleTickerProviderStateMixin,Ne
   }
   @override
   void onDeleteNoticeResponse(bool success){
-
+      if(success==true){
+        success1="true";
+      }else{
+        success1="false";
+      }
+      setState(() {
+          manager.myNotice(this, username);
+      });
   }
   @override
   void onError(error){

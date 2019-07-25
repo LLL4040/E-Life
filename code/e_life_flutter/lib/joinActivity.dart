@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 import 'newsHttp.dart';
-
+import 'package:oktoast/oktoast.dart';
 
 class joinActivity extends StatefulWidget {
 
@@ -69,7 +69,12 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                         children: [
                           new Padding(
                             padding: new EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
-                            child: Text("留言: "),
+                            child: Text("留言: "
+                            ,style: TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.black87
+
+                              ),),
                           ),
                           new Padding(
                               padding: new EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
@@ -78,6 +83,18 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                                 controller: _contentController,
                                 decoration: new InputDecoration(
                                   hintMaxLines: 6,
+                                  enabledBorder: OutlineInputBorder(
+
+                                    borderSide: BorderSide(
+                                      color: Colors.black38,
+                                      width: 1, //边线宽度为2
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.blue, //边框颜色为绿色
+                                        width: 2, //宽度为5
+                                      )),
                                 ),
                               ))
                         ]),
@@ -100,18 +117,19 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                             print(model.user.username);
                             print(id);
                             manager.saveParticipator(this, id, _contentController.text, model.user.username);
-                            setState(() {
-
-                            });
-                            String tmp = await joinResult;
+                            String tmp;
+                            await new Future.delayed(new Duration(milliseconds: 1000));
+                            tmp =  joinResult;
                             if(tmp=="true"){
                               print("joinresult=true");
                               joinResult="false";
                               Navigator.pop(context,"发送请求成功");
-                              return null;
+
                             }else{
                               print("请求失败");
                             }
+
+
                             //Navigator.pop(context,joinResult);
                           },
                         ),
@@ -163,7 +181,7 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
   }
   @override
   void onSaveParticipantResponse(String body)async{
-    joinResult = await  body;
+    joinResult =   body;
     print("response"+joinResult);
     setState(() {
 

@@ -3,7 +3,7 @@ import 'mainpage.dart';
 import 'bottom_navigation_widget.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
-
+import 'package:oktoast/oktoast.dart';
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,12 +15,18 @@ class MyApp extends StatelessWidget {
 //      home: LoginWidget(),
 //    );
   UserModel userModel = UserModel();
+
     return ScopedModel<UserModel>(
+
       model: userModel,
-      child: new MaterialApp(
-        title: 'MainApp',
-        home: LoginWidget(),
+      child: OKToast(
+        child: new MaterialApp(
+          title: 'MainApp',
+          home: LoginWidget(),
+        ),
       ),
+
+
     );
   }
 }

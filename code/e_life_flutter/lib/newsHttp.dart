@@ -87,9 +87,11 @@ class httpManager {
         }
     ).then((
         response,
-        ) {
+        ) async {
       print("发送请求结果"+response.body);
+
       net.onSaveParticipantResponse(response.body);
+      //await new Future.delayed(new Duration(milliseconds: 1000));
     }, onError: (error) {
       net.onError(error);
     }).whenComplete(

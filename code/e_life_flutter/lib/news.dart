@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:oktoast/oktoast.dart';
 import 'dart:convert';
 import 'newsHttp.dart';
 import 'joinActivity.dart';
@@ -62,6 +63,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
           return new joinActivity(id.toString());
         })).then((String result){
       print("报名收到的信息为:"+result);
+      showToast(result);
 
     });
   }
@@ -88,7 +90,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
           new Text(activity),
         ],
       ),
-      trailing: new Icon(Icons.add,color:Colors.black54 ,),
+      trailing: new Icon(Icons.add_circle,color:Colors.black54 ,),
       onTap: () {
         _joinActivity(id);
       },
@@ -179,6 +181,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
     news=[];
     if(urgentList.length>0){
       for(int i=0;i<urgentList.length-1;i++){
+
         Widget urgent = _getUrgent(urgentList[i].time, urgentList[i].managerName, urgentList[i].content);
         urgents.add(urgent);
       }
@@ -326,6 +329,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
   @override
   void onUrgentResponse(List<urgent> body) {
     urgentList = body;
+
     setState(() {});
   }
   @override

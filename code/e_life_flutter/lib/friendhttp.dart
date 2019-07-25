@@ -176,16 +176,18 @@ class friendHttp {
     );
   }
 
-  deleteFriend(NetListener net,String username) {
+  deleteFriend(NetListener net,String username,String friend) {
     var client = new http.Client();
     client.post(
         deleteFriendUrl,
         body: {
           "username": username,
+          "friend":friend,
         }
     ).then((
         response,
         ) {
+      print(response);
       Map<String,dynamic> responseJson = json.decode(response.body);
       bool success = responseJson.containsValue("1");
       net.onDeleteFriendResponse(success);
