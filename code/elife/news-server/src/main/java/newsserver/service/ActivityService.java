@@ -54,9 +54,11 @@ public interface ActivityService {
     /**
      * change activity status and delete all disParticipator
      * @param aid
+     * @param managerName
+     * @param communityId
      * @return boolean true or false
      */
-    boolean submitActivity(int aid);
+    boolean submitActivity(int aid,String managerName,int communityId);
 
     /**
      * save Participator

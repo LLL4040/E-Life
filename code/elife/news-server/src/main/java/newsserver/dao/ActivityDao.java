@@ -107,4 +107,18 @@ public interface ActivityDao {
      */
     int findPageParticipator(int aid);
 
+    /**
+     * find all participatar without page
+     * @param aid
+     * @return
+     */
+    List<Participator> allParticipator(int aid);
+
+    /**
+     * get activity By id
+     * @param aid
+     * @return
+     */
+    Activity getOne(int aid);
+
 }
