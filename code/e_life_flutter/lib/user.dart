@@ -6,25 +6,30 @@ import 'userhttp.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 
+
 class UserModel extends Model with NetListener{
   userHttp manager = new userHttp();
   User user;
   bool loginSuccess = false;
 
   Future<bool> login(String username,String password,String id) async{
-    await _getLogin(username,password,id);
+     bool temp = await _getLogin(username,password,id);
     notifyListeners();
-    return loginSuccess;
+      await new Future.delayed(new Duration(milliseconds: 1000));
+    print("login请求");
+    return temp;
   }
-  Future  _getLogin(String username,String password,String id)  async{
-    manager.login(this, username,password,id);
+  Future<bool>  _getLogin(String username,String password,String id)  async{
+    bool temp = await manager.login(this, username,password,id);
+    print("ciji");
+    return temp;
 
   }
   @override
   void onUserResponse(User body,bool login) {
     user = body;
     loginSuccess = login;
-    print(user.username);
+    print("response");
     notifyListeners();
   }
   @override

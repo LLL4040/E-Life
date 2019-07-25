@@ -5,7 +5,10 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import newsserver.dao.ActivityDao;
+import newsserver.dao.NoticeDao;
 import newsserver.entity.Activity;
+import newsserver.entity.Notice;
+import newsserver.entity.NoticeUser;
 import newsserver.entity.Participator;
 import newsserver.service.ActivityService;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -18,6 +21,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +30,8 @@ import java.util.UUID;
 public class ActivityServiceImpl implements ActivityService {
     @Autowired
     ActivityDao activityDao;
+    @Autowired
+    NoticeDao noticeDao;
 
     public JSONArray listToJsonArray (List<Activity> list) throws IOException {
         JSONArray jsonArray =new JSONArray();
@@ -100,9 +107,30 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public boolean submitActivity(int aid){
+    public boolean submitActivity(int aid,String manageName,int communityId){
         try {
             activityDao.changeStatusAct(aid, 1);
+            String activityName = activityDao.getOne(aid).getTitle();
+            List<Participator> participators = activityDao.allParticipator(aid);
+            Iterator<Participator> iter = participators.iterator();
+            while(iter.hasNext()){
+                Participator temp = iter.next();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String noticeTime = df.format(new Date());
+                if(temp.getStatus()==1) {
+                    Notice notice = new Notice(noticeTime, "您关于《"+activityName+"》活动的报名已成功通过审核", manageName, communityId);
+                    int noticeId =noticeDao.save(notice);
+                    NoticeUser noticeUser = new NoticeUser(noticeId,temp.getUsername());
+                    noticeDao.saveNoticeUser(noticeUser);
+                }
+                else{
+                    Notice notice = new Notice(noticeTime, "很抱歉，您关于《"+activityName+"》活动的报名未通过", manageName, communityId);
+                    int noticeId = noticeDao.save(notice);
+                    NoticeUser noticeUser = new NoticeUser(noticeId,temp.getUsername());
+                    noticeDao.saveNoticeUser(noticeUser);
+                }
+            }
+
             activityDao.deleteAllDisPar(aid);
             return true;
         }
