@@ -18,13 +18,17 @@ class demandHttp {
 
   addDemand(NetListener net, String startTime, String endTime, String content,
       String username, String communityId, String title) {
+    var start  = startTime.split('.');
+    var end = startTime.split('.');
+    print(start[0]);
+    print(end[0]);
     var client = new http.Client();
     client.post(
         addDemandUrl,
         body: {
           "username": username,
-          "startTime": startTime,
-          "endTime": endTime,
+          "startTime": start[0],
+          "endTime": end[0],
           "content": content,
           "communityId": communityId,
           "title": title,
