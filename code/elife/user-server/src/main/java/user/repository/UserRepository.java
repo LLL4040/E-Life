@@ -1,6 +1,8 @@
 package user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import user.entity.User;
 
 import javax.transaction.Transactional;
@@ -56,5 +58,21 @@ public interface UserRepository extends JpaRepository<User, String> {
      * @return all user that contains the username
      */
     List<User> findAllByUsernameContains(String username);
+
+    /**
+     * find all user in the given community
+     * @param communityId communityId
+     * @return all user in the given community
+     */
+    List<User> findAllByCommunityId(Long communityId);
+
+    /**
+     * find all username from community
+     * @param communityId community id
+     * @return all username
+     */
+    @Modifying
+    @Query(value = "select username from user where community_id = ?1", nativeQuery = true)
+    List<String> findUsernameByCommunityId(Long communityId);
 
 }

@@ -145,5 +145,7 @@ public class UserController {
         return userService.getCommunityById(id);
     }
 
-
+    @RequestMapping(path = "/getUsers")
+    @ResponseBody
+    public JSONArray getUsername(@RequestParam Long communityId)
 }

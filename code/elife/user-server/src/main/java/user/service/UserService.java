@@ -166,4 +166,10 @@ public interface UserService {
      */
     JSONObject getCommunityById(Long id);
 
+    /**
+     * get username list by communityId
+     * @param communityId community id
+     * @return username list
+     */
+    JSONArray getUsername(Long communityId);
 }
