@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
     public JSONObject usernameAvailableManager(String username) {
         JSONObject result = new JSONObject();
         Boolean flag = managerDao.existByUsername(username);
+        flag = flag && communityRepository.existsByManager(username);
         result.put("available", (flag) ? 0 : 1);
         return result;
     }
@@ -64,6 +65,7 @@ public class UserServiceImpl implements UserService {
     public JSONObject phoneAvailableManager(String phone) {
         JSONObject result = new JSONObject();
         Boolean flag = managerDao.existsByPhone(phone);
+        flag = flag && communityRepository.existsByPhone(phone);
         result.put("available", (flag) ? 0 : 1);
         return result;
     }
@@ -219,7 +221,21 @@ public class UserServiceImpl implements UserService {
         JSONObject result = new JSONObject();
         result.put("login", 0);
         if (!managerDao.existByUsername(username)) {
-            return result;
+            if(!communityRepository.existsByManager(username)){
+                return result;
+            } else {
+                Community community = communityRepository.findByManager(username);
+                if(!community.getPassword().equals(password)) {
+                    return result;
+                }
+                result.put("login", 1);
+                result.put("username", community.getManager());
+                result.put("communityId", community.getId());
+                result.put("phone", community.getPhone());
+                result.put("email", community.getEmail());
+                result.put("final", "1");
+                return result;
+            }
         } else {
             Manager manager = managerDao.findByUsername(username);
             if (!manager.getPassword().equals(password) || manager.getRole() == 0) {
@@ -230,6 +246,7 @@ public class UserServiceImpl implements UserService {
                 result.put("communityId", manager.getCommunityId());
                 result.put("phone", manager.getPhone());
                 result.put("email", manager.getEmail());
+                result.put("final", "0");
                 return result;
             }
         }
@@ -240,7 +257,23 @@ public class UserServiceImpl implements UserService {
         JSONObject result = new JSONObject();
         result.put("login", 0);
         if (!managerDao.existsByPhone(phone)) {
-            return result;
+            if(!communityRepository.existsByPhone(phone)){
+                return result;
+            }
+            else{
+                Community community = communityRepository.findByPhone(phone);
+                if (!identifyService.verifyIdentifyCode(phone, code)) {
+                    return result;
+                } else {
+                    result.put("login", 1);
+                    result.put("username", community.getManager());
+                    result.put("communityId", community.getId());
+                    result.put("phone", community.getPhone());
+                    result.put("email", community.getEmail());
+                    result.put("final", "1");
+                    return result;
+                }
+            }
         } else {
             Manager manager = managerDao.findByPhone(phone);
             if (!identifyService.verifyIdentifyCode(phone, code)) {
@@ -251,6 +284,7 @@ public class UserServiceImpl implements UserService {
                 result.put("communityId", manager.getCommunityId());
                 result.put("phone", manager.getPhone());
                 result.put("email", manager.getEmail());
+                result.put("final", "0");
                 return result;
             }
         }
@@ -261,8 +295,22 @@ public class UserServiceImpl implements UserService {
         JSONObject result = new JSONObject();
         result.put("findPassword", 0);
         if (!managerDao.existsByPhone(phone)) {
-            result.put("exists", 0);
-            return result;
+            if (!communityRepository.existsByPhone(phone)) {
+                result.put("exists", 0);
+                return result;
+            } else {
+                result.put("exists", 1);
+                if (!identifyService.verifyIdentifyCode(phone, code)) {
+                    result.put("identify", 0);
+                    return result;
+                } else {
+                    Community community = communityRepository.findByPhone(phone);
+                    community.setPassword(password);
+                    communityRepository.save(community);
+                    result.put("findPassword", 1);
+                    return result;
+                }
+            }
         } else {
             result.put("exists", 1);
             if (!identifyService.verifyIdentifyCode(phone, code)) {
