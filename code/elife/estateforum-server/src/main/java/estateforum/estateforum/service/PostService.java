@@ -2,6 +2,7 @@ package estateforum.estateforum.service;
 
 import estateforum.estateforum.entity.Post;
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -39,6 +40,13 @@ public interface PostService {
      *该方法删除特定pid的的帖子
      * @param  id 指定的帖子id*/
     void deletePost(String id);
+
+    /**
+     * get big photo by path
+     * @param path
+     * @return
+     */
+    JSONObject getBigPhoto(String path);
 
 
 

@@ -50,6 +50,10 @@ public class PostServiceImpl implements PostService {
                             BufferedOutputStream(new FileOutputStream(new File("./estateforum-server/pic/" + tmpPath)));
                     bufferedOutputStream.write(bytes);
                     bufferedOutputStream.close();
+                    Thumbnails.of("./estateforum-server/pic/"+path)
+                            .size(160,160)
+                            .keepAspectRatio(false)
+                            .toFile("./estateforum-server/cpic/"+path);
 
                 }
 
@@ -88,12 +92,13 @@ public class PostServiceImpl implements PostService {
                 List<String> photos=new ArrayList<>();
                 for (int i=0;i<length;i++){
                     System.out.println("图片为"+paths[i]);
-                    File file = new File("./estateforum-server/pic/"+paths[i]);
+                    File file = new File("./estateforum-server/cpic/"+paths[i]);
                     byte[] data = Files.readAllBytes(file.toPath());
                     String photo="data:image/jpg;base64,"+ Base64.encodeBase64String(data);
                     photos.add(photo);
                 }
                 jsonObject.put("photo" , photos);
+                jsonObject.put("path" , temp.getPath());
             }
             jsonObject.put("title",temp.getTitle());
 
@@ -117,6 +122,21 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(String pid){
           postDao.deletePost(pid);
+    }
+    @Override
+    public JSONObject getBigPhoto(String path){
+        JSONObject jsonObject = new JSONObject();
+        try{
+            File file = new File("./estateforum-server/pic/" + path);
+            byte[] data = Files.readAllBytes(file.toPath());
+            String photo = Base64.encodeBase64String(data);
+            jsonObject.put("photo", "data:image/jpg;base64," + photo);
+            return jsonObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonObject.put("error","notfound");
+            return jsonObject;
+        }
     }
 
 }
