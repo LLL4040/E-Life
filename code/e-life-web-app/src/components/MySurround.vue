@@ -181,7 +181,6 @@ export default {
           data.push(bargain)
         }
       }
-      this.$alert(data)
       /* eslint-disable */
       // 创建Map实例
       let map = new BMap.Map("map")

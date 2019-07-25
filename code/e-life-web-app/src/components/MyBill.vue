@@ -130,6 +130,7 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = val
       this.loadBill()
+      this.$forceUpdate()
     },
     submit (item) {
       let bodyFormData = new FormData()

@@ -130,6 +130,7 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = val
       this.loadMessage()
+      this.$forceUpdate()
     },
     sendM () {
       this.dialogFormVisible = false
@@ -151,6 +152,7 @@ export default {
         } else {
           if (response.data.addNotice === '1') {
             this.loadMessage()
+            this.$forceUpdate()
           } else {
             this.$alert('发送通知失败！')
           }
@@ -172,6 +174,7 @@ export default {
         } else {
           if (response.data.deleteOneNotice === '1') {
             this.loadMessage()
+            this.$forceUpdate()
           } else {
             this.$alert('删除通知失败！')
           }

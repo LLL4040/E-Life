@@ -113,6 +113,7 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = val
       this.loadRequest()
+      this.$forceUpdate()
     }
   }
 }

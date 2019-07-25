@@ -11,23 +11,25 @@
               <p>这里空空的，什么帖子都没有- -|||</p>
             </el-card>
           </div>
-          <div v-for="o in postData" :key="o" class="text item">
-            <el-card style="margin-bottom: 8px">
-              <el-button style="float: left; padding: 3px 0; font-size: 16px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
-              <p style="float:right; font-size: 12px;">{{o.poster}}</p>
-              <br>
-              <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,20)}}</p>
-              <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
-              <br>
-              <span v-for="x in o.photo" :key="x">
+          <div v-if="postData.length !== 0">
+            <div v-for="o in postData" :key="o" class="text item">
+              <el-card style="margin-bottom: 8px">
+                <el-button style="float: left; padding: 3px 0; font-size: 16px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
+                <p style="float:right; font-size: 12px;">{{o.poster}}</p>
+                <br>
+                <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,20)}}</p>
+                <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
+                <br>
+                <span v-for="x in o.photo" :key="x">
                 <img :src="x" style="width: 30%"/>
               </span>
-              <br>
-              <p style="float:right; font-size: 12px;">{{o.time}}</p>
-            </el-card>
-          </div>
-          <div class="block" align="center" >
-            <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="total1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+                <br>
+                <p style="float:right; font-size: 12px;">{{o.time}}</p>
+              </el-card>
+            </div>
+            <div class="block" align="center" >
+              <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="total1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+            </div>
           </div>
         </div>
       </el-col>
@@ -224,7 +226,8 @@ export default {
         } else {
           if (response.data.post) {
             this.$alert('发布帖子成功！')
-            this.findPost()
+            this.loadPost()
+            this.$forceUpdate()
           } else {
             this.$alert('发布帖子失败！')
           }
@@ -354,10 +357,10 @@ export default {
                 } else {
                   this.total2 = response.data[0].pageNum
                 }
-                console.log(response.data)
                 for (let i = 1; i < response.data.length; i++) {
                   this.commentData.push(response.data[i])
                 }
+                this.$forceUpdate()
               })
             } else {
               this.$alert('评论失败！')

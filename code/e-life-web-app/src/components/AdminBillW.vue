@@ -10,7 +10,7 @@
             <span style="font-size: 16px;">停车费账单</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible1 = true"></el-button>
           </div>
-          <el-table :data="bill.filter(data => ((data.status === -1 || data.status === -11) && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
+          <el-table :data="bill.filter(data => typeof data.time !== 'undefined' && ((data.status === -1 || data.status === -11) && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
             <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
@@ -23,7 +23,7 @@
             <span style="font-size: 16px;">物业费账单</span>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible2 = true"></el-button>
           </div>
-          <el-table :data="bill.filter(data => ((data.status === -2 || data.status === -12) && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
+          <el-table :data="bill.filter(data => typeof data.time !== 'undefined' && ((data.status === -2 || data.status === -12) && (!search || data.username.toLowerCase().includes(search.toLowerCase()))))" style="width: 100%">
             <el-table-column label="时间" prop="time" align="center"></el-table-column>
             <el-table-column label="金额" prop="bill" align="center"></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
@@ -170,6 +170,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadBill()
+          this.$forceUpdate()
         } else {
           this.$alert('添加账单失败！请重新登录再试')
         }
@@ -193,6 +194,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadBill()
+          this.$forceUpdate()
         } else {
           this.$alert('添加账单失败！请重新登录再试')
         }

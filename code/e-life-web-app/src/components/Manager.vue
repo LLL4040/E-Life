@@ -6,7 +6,7 @@
           <div class="container">
             <div class="tm-next">
               <img src="../../public/img/logo.gif" width="60px">
-              <router-link router-link :to="{name:'home'}" class="navbar-brand">E-LIFE</router-link>
+              <a class="navbar-brand" @click="toIndex()">E-LIFE</a>
             </div>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,21 +16,6 @@
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                   <a class="nav-link tm-nav-link" @click="toPage1(1)" style="font-size: 20px;">小区资讯</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link tm-nav-link" @click="toPage1(2)" style="font-size: 20px;">小区团购</a>
-                </li>
-                <li class="nav-item">
-                  <el-dropdown @command="toPage1">
-                    <span class="nav-link tm-nav-link" style="font-size: 20px;">
-                      <i class="el-icon-arrow-down el-icon--right"></i>小区服务
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="4" style="font-size: 14px;">超市送货</el-dropdown-item>
-                      <el-dropdown-item command="5" style="font-size: 14px;">电脑维修</el-dropdown-item>
-                      <el-dropdown-item command="6" style="font-size: 14px;">物业维修</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link tm-nav-link" @click="toPage1(3)" style="font-size: 20px;">小区论坛</a>
@@ -48,7 +33,7 @@
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
             <div style="clear:both"></div>
             <el-tooltip class="item" effect="light" content="点击退出登录" placement="right">
-              <el-button type="success" plain size="mini" icon="el-icon-info" @click="logout()">管理员</el-button>
+              <el-button id="logout" type="success" plain size="mini" icon="el-icon-info" @click="logout()">管理员</el-button>
             </el-tooltip>
             <div style="clear:both"></div>
             <el-tooltip class="item" effect="light" content="点击查看或修改个人信息" placement="right">
@@ -121,11 +106,7 @@
 
 <script>
 import page1 from './CommunityInformation.vue'
-import page2 from './GroupBuy.vue'
 import page3 from './Forum.vue'
-import page4 from './MarketService.vue'
-import page5 from './ComputerService.vue'
-import page6 from './PropertyService.vue'
 import page7 from './AdminSendNotice.vue'
 import page8 from './AdminActivity.vue'
 import page9 from './AdminBillW.vue'
@@ -154,6 +135,23 @@ export default {
     }
   },
   methods: {
+    toIndex () {
+      let bodyFormData = new FormData()
+      let url = '/user-server/api/user/logout'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.logout === 1) {
+          sessionStorage.clear()
+          this.$router.push({ name: 'home' })
+        } else {
+          this.$alert('前往首页失败！请关闭页面重试')
+        }
+      })
+    },
     logout () {
       let bodyFormData = new FormData()
       let url = '/user-server/api/user/logout'
@@ -202,15 +200,27 @@ export default {
     },
     handleModify () {
       this.dialogFormVisible = false
+    },
+    exit () {
+      /* eslint-disable */
+      window.is_confirm = false
+      // 关闭窗口时弹出确认提示
+      $(window).bind('beforeunload', function () {
+        // 只有在标识变量is_confirm不为false时，才弹出确认提示
+        if (window.is_confirm !== false) {
+          window.document.getElementById('logout').click()
+          return '您可能有数据没有保存'
+        }
+      })
+      // mouseleave mouseover事件也可以注册在body、外层容器等元素上
+        .bind('mouseover mouseleave', function (event) {
+          window.is_confirm = (event.type === 'mouseleave')
+        })
     }
   },
   components: {
     page1,
-    page2,
     page3,
-    page4,
-    page5,
-    page6,
     page7,
     page8,
     page9,
@@ -222,6 +232,7 @@ export default {
   },
   mounted () {
     this.loadData()
+    this.exit()
   }
 }
 </script>

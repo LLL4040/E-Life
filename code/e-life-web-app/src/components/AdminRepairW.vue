@@ -21,7 +21,7 @@
         </div>
       </el-card>
     </div>
-    <el-dialog title="发起活动" :visible.sync="dialogFormVisible">
+    <el-dialog title="处理报修" :visible.sync="dialogFormVisible">
       <el-form :model="handleR">
         <el-form-item label="修理人员姓名">
           <el-input v-model="handleR.repairman"></el-input>
@@ -113,6 +113,7 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = val
       this.loadRequest()
+      this.$forceUpdate()
     },
     handleIt1 (row) {
       this.requestId = row.id
@@ -138,6 +139,7 @@ export default {
         } else {
           if (response.data.manageMaintain === '1') {
             this.loadRequest()
+            this.$forceUpdate()
           } else {
             this.$alert('处理失败！')
           }

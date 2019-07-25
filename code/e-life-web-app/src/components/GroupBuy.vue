@@ -253,6 +253,7 @@ export default {
           if (response.data.add === 1) {
             this.$alert('添加成功！')
             this.loadDemand()
+            this.$forceUpdate()
           } else {
             this.$alert('添加失败！')
           }
@@ -295,6 +296,7 @@ export default {
           if (response.data.participate === 1) {
             this.$alert('加入成功！')
             this.loadDemand()
+            this.$forceUpdate()
           } else {
             this.$alert('加入失败！')
           }
@@ -317,6 +319,7 @@ export default {
           if (response.data.delete === 1) {
             this.$alert('删除成功！')
             this.loadDemand()
+            this.$forceUpdate()
           } else {
             this.$alert('删除失败！')
           }
