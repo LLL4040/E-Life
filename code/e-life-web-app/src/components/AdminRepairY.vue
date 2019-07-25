@@ -139,6 +139,22 @@ export default {
       })
     },
     handleDelete (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      let url = '/lifeservice-server/api/maintain/deleteMaintain'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.loadRequest()
+          this.$forceUpdate()
+        } else {
+          this.$alert('删除失败！请重新登录再试')
+        }
+      })
     }
   }
 }
