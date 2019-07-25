@@ -41,7 +41,7 @@ public class NoticeDaoimpl implements NoticeDao {
 
     @Override
     public List<Notice> findByUsername(String username){
-         List<NoticeUser> noticeUsers=noticeUserRepository.findAllByUsername(username);
+         List<NoticeUser> noticeUsers=noticeUserRepository.findAllByUsernameAndStatus(username, 1);
          List<Notice> notices = new ArrayList<>();
          for (int i=0;i<noticeUsers.size();i++){
              NoticeUser nu1=noticeUsers.get(i);

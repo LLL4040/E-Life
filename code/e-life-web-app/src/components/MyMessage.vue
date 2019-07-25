@@ -3,9 +3,16 @@
     <div style="padding-top: 20px;">
       <el-card style="padding-left: 20px">
         <el-table :data="messages" style="width: 100%">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="内容">
+                  <span>{{ props.row.noticeContent }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
           <el-table-column prop="noticeTime" label="时间" align="center"></el-table-column>
           <el-table-column prop="managerName" label="发送人" align="center"></el-table-column>
-          <el-table-column prop="noticeContent" label="内容" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row)"></el-button>
@@ -74,7 +81,7 @@ export default {
     handleDelete (row) {
       let bodyFormData = new FormData()
       bodyFormData.set('username', this.userInfo.username)
-      bodyFormData.set('noticeId', row.noticeId)
+      bodyFormData.set('noticeId', row.id)
       let url = '/news-server/api/notice/deleteMyOneNotice'
       this.$axios({
         method: 'post',
