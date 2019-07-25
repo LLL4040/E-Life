@@ -172,4 +172,12 @@ public interface UserService {
      * @return username list
      */
     JSONArray getUsername(Long communityId);
+
+    /**
+     * change email
+     * @param username username
+     * @param email email
+     * @return whether change successfully
+     */
+    JSONObject changeEmail(String username, String email);
 }
