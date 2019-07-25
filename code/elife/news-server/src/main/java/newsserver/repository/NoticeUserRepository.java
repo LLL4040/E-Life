@@ -37,6 +37,14 @@ public interface NoticeUserRepository extends JpaRepository<NoticeUser,Long> {
     @Query(value = "select * from noticeUser where username=?1", nativeQuery = true)
     List<NoticeUser> findAllByUsername(String username);
     /**
+     * 该函数返回特定的NoticeUser
+     * @return 特定的NoticeUser
+     * @param  username 用户名
+     * @param  status 是否被用户删除
+     */
+    @Query(value = "select * from noticeUser where username=?1 and status=?2", nativeQuery = true)
+    List<NoticeUser> findAllByUsernameAndStatus(String username, int status);
+    /**
      * 该函数删除特定id的NoticeUser
      * @param  noticeId 物业通知的id
      */

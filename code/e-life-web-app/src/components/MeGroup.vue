@@ -189,6 +189,7 @@ export default {
             this.$alert('添加成功！')
             this.loadGroup()
             this.dialogFormVisible = false
+            this.$forceUpdate()
           } else {
             this.$alert('添加失败！')
           }
@@ -211,6 +212,7 @@ export default {
           if (response.data.delete === 1) {
             this.$alert('删除成功！')
             this.loadGroup()
+            this.$forceUpdate()
           } else {
             this.$alert('删除失败！')
           }

@@ -52,4 +52,14 @@ public class UserDaoImpl implements UserDao {
     public List<User> findAllByUsernameContains(String username){
         return userRepository.findAllByUsernameContains(username);
     }
+
+    @Override
+    public List<User> findAllByCommunityId(Long communityId){
+        return  userRepository.findAllByCommunityId(communityId);
+    }
+
+    @Override
+    public List<String> findUsernameByCommunityId(Long communityId){
+        return userRepository.findUsernameByCommunityId(communityId);
+    }
 }

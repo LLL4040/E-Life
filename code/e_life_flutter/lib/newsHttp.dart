@@ -8,7 +8,10 @@ class httpManager {
   var newsUrl = "http://elife.natapp1.cc/news-server/api/News/findNews";
 
   var activityUrl = "http://elife.natapp1.cc/news-server/api/Activity/findNewActivity";
+
   var joinUrl = "http://elife.natapp1.cc/news-server/api/Activity/saveParticipator";
+
+  var photoUrl= "http://elife.natapp1.cc/news-server/api/Activity/getBigPhoto";
 
 
   getUrgent(NetListener net,String communityId) {
@@ -76,6 +79,7 @@ class httpManager {
       client.close,
     );
   }
+
   saveParticipator(NetListener net,String aid,String content,String username){
     var client = new http.Client();
     client.post(
@@ -99,6 +103,28 @@ class httpManager {
     );
   }
 
+  getPhoto(NetListener net,String path) {
+    var client = new http.Client();
+    client.post(
+        photoUrl,
+        body: {
+          "path": path,
+        }
+    ).then((
+        response,
+        ) {
+      Map<String,String> responseJson = json.decode(response.body);
+      String photo = responseJson["photo"];
+      //print(jsonDecode(response.body));
+      net.onPhotoResponse(photo);
+
+    }, onError: (error) {
+      net.onError(error);
+    }).whenComplete(
+      client.close,
+    );
+  }
+
 }
 
 /**
@@ -111,6 +137,7 @@ abstract class NetListener {
   void onActivityResponse(List<Activity> body);
   void onSaveParticipantResponse(String body);
   void onError(error);
+  void onPhotoResponse(String photo);
 }
 
 class urgent{

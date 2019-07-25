@@ -11,23 +11,28 @@
               <p>这里空空的，什么帖子都没有- -|||</p>
             </el-card>
           </div>
-          <div v-for="o in postData" :key="o" class="text item">
-            <el-card style="margin-bottom: 8px">
-              <el-button style="float: left; padding: 3px 0; font-size: 16px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
-              <p style="float:right; font-size: 12px;">{{o.poster}}</p>
-              <br>
-              <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,20)}}</p>
-              <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
-              <br>
-              <span v-for="x in o.photo" :key="x">
-                <img :src="x" style="width: 30%"/>
-              </span>
-              <br>
-              <p style="float:right; font-size: 12px;">{{o.time}}</p>
-            </el-card>
-          </div>
-          <div class="block" align="center" >
-            <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="total1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+          <div v-if="postData.length !== 0">
+            <div v-for="o in postData" :key="o" class="text item">
+              <el-card style="margin-bottom: 8px">
+                <el-button style="float: left; padding: 3px 0; font-size: 16px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
+                <p style="float:right; font-size: 12px;">{{o.poster}}</p>
+                <br>
+                <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,20)}}</p>
+                <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
+                <br>
+                <span v-for="x in o.photo" :key="x">
+                  <button @click="show(x)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                      <img :src="x" style="width: 100%; height: 100%">
+                    </button>
+<!--                <img :src="x" style="width: 30%"/>-->
+                </span>
+                <br>
+                <p style="float:right; font-size: 12px;">{{o.time}}</p>
+              </el-card>
+            </div>
+            <div class="block" align="center" >
+              <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="total1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
+            </div>
           </div>
         </div>
       </el-col>
@@ -137,6 +142,11 @@
         <el-button type="primary" @click="addComment()">发 布</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisiblePhoto">
+      <div>
+        <img :src="photo" width="100%">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -157,6 +167,7 @@ export default {
       dialogFormVisibleMain: true,
       dialogFormVisible: false,
       dialogFormVisibleDetail: false,
+      dialogFormVisiblePhoto: false,
       myPost: {
         username: '',
         title: '',
@@ -174,7 +185,8 @@ export default {
       pageNum2: 1,
       pageSize2: 10,
       total2: 1,
-      currentP: {}
+      currentP: {},
+      photo: ''
     }
   },
   mounted () {
@@ -224,7 +236,8 @@ export default {
         } else {
           if (response.data.post) {
             this.$alert('发布帖子成功！')
-            this.findPost()
+            this.loadPost()
+            this.$forceUpdate()
           } else {
             this.$alert('发布帖子失败！')
           }
@@ -354,10 +367,10 @@ export default {
                 } else {
                   this.total2 = response.data[0].pageNum
                 }
-                console.log(response.data)
                 for (let i = 1; i < response.data.length; i++) {
                   this.commentData.push(response.data[i])
                 }
+                this.$forceUpdate()
               })
             } else {
               this.$alert('评论失败！')
@@ -395,6 +408,24 @@ export default {
     fileDel (index) { // 删除已选择的图片
       this.size = this.size - this.imgList[index].file.size// 总大小
       this.imgList.splice(index, 1)
+    },
+    show (path) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('path', path)
+      let url = '/estateforum-server/api/post/photo'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.photo = response.data.photo
+          this.dialogFormVisiblePhoto = true
+        }
+      })
     }
   }
 }

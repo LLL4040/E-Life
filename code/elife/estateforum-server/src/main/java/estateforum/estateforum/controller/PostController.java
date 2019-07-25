@@ -82,5 +82,18 @@ public class PostController {
         object.put("message","删除成功");
         return object;
     }
+    @RequestMapping(path = "/photo")
+    @ResponseBody
+    public JSONObject getBigPhoto(HttpServletRequest request, String path){
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
+        return postService.getBigPhoto( path);
+    }
 
 }
