@@ -39,7 +39,7 @@
           <el-input v-model="newMessage.user"></el-input>
         </el-form-item>
         <el-form-item label="通知内容">
-          <el-input v-model="newMessage.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
+          <el-input v-model="newMessage.content" maxLength="512" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

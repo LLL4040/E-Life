@@ -1,6 +1,7 @@
 package newsserver.entityTest;
 
 
+import newsserver.entity.Activity;
 import newsserver.entity.Participator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,8 +12,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ParticipatorTest {
-    //数据库中手动写一个activityId=1和username=1的来测试
-    private Participator participator = new Participator(88888,1,"1","test",0);
+    private Activity activity = new Activity(99999,"todayHaveFun","2019-07-09 11:22:11"
+            ,"2020-07-09 11:22:11","1","hello",0,"guigui.jpg",1);
+
+    private Participator participator = new Participator(88888,99999,"1","test",0);
     @Test
     public void IdTest(){
         Assert.assertEquals("IdTest fails", 88888, participator.getId());
@@ -22,10 +25,10 @@ public class ParticipatorTest {
     }
     @Test
     public void ActivityIdTest(){
-        Assert.assertEquals("ActivityIdTest fails", 1, participator.getActivityId());
+        Assert.assertEquals("ActivityIdTest fails", 99999, participator.getActivityId());
         participator.setActivityId(666666);
         Assert.assertEquals("ActivityIdTest fails", 666666, participator.getActivityId());
-        participator.setActivityId(1);
+        participator.setActivityId(99999);
     }
     @Test
     public void UsernameTest(){

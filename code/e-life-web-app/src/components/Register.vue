@@ -70,10 +70,10 @@
           <div v-if="x === 1 && this.form.id !== '商家'" style="padding-top: 20px; padding-left: 20%; width: 77%">
             <el-form  :model="form" :rules="rules" ref="form" label-width="70px"  class="demo-ruleForm" >
               <el-form-item label="用户名" prop="username" >
-                <el-input v-model="form.username" style="float:left; width: 65%"></el-input>
+                <el-input maxLength="20" v-model="form.username" style="float:left; width: 65%"></el-input>
                 <el-button type="primary" @click="checkName()" style="float:left">验证是否可用</el-button>
               </el-form-item>
-              <el-form-item label="密码" prop="password" >
+              <el-form-item maxLength="25" label="密码" prop="password" >
                 <el-input v-model="form.password" show-password></el-input>
               </el-form-item>
               <el-form-item label="邮箱" prop="email" >
@@ -88,19 +88,19 @@
           <div v-if="x === 1 && this.form.id === '商家'">
             <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="70px">
               <el-form-item label="用户名" prop="username">
-                <el-input v-model="form.username" style="float:left; width: 200px"></el-input>
+                <el-input maxLength="20" v-model="form.username" style="float:left; width: 200px"></el-input>
                 <el-button type="primary" @click="checkName()" style="float:left; width: 120px">验证是否可用</el-button>
               </el-form-item>
-              <el-form-item label="密码" prop="password">
+              <el-form-item maxLength="25" label="密码" prop="password">
                 <el-input v-model="form.password" show-password style="width: 200px"></el-input>
               </el-form-item>
               <el-form-item label="邮箱" prop="email">
                 <el-input v-model="form.email" style="width: 320px"></el-input>
               </el-form-item>
               <el-form-item label="商店名称">
-                <el-input v-model="form.name" style="width: 200px"></el-input>
+                <el-input maxLength="25" v-model="form.name" style="width: 200px"></el-input>
               </el-form-item>
-              <el-form-item label="商店电话">
+              <el-form-item maxLength="20" label="商店电话">
                 <el-input v-model="form.merchantPhone" style="width: 320px"></el-input>
               </el-form-item>
               <el-form-item label="商店类型">
@@ -109,7 +109,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="商店描述">
-                <el-input v-model="form.detail" type="textarea" :rows="2" style="width: 320px"></el-input>
+                <el-input maxLength="500" v-model="form.detail" type="textarea" :rows="2" style="width: 320px"></el-input>
               </el-form-item>
               <el-form-item label="商店地址" style="padding-right: 130px">
                 <el-button style="float: right; padding: 10px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">选择地址</el-button>
