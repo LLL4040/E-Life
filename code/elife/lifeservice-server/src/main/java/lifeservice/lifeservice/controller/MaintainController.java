@@ -172,4 +172,11 @@ public class MaintainController {
 
         return maintainService.countMaintain(communityId);
     }
+
+    @RequestMapping(path = "/deleteMaintain")
+    @ResponseBody
+    public boolean deleteMaintain(@RequestParam long id){
+
+        return maintainService.deleteById(id);
+    }
 }
