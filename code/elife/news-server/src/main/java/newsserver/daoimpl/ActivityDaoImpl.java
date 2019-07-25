@@ -113,4 +113,14 @@ public class ActivityDaoImpl implements ActivityDao {
         }
         return pageNum;
     }
+
+    @Override
+    public List<Participator> allParticipator(int aid){
+        return participatorRepository.findPageNum(aid);
+    }
+
+    @Override
+    public Activity getOne(int aid){
+        return activityRepository.getOne(aid);
+    }
 }

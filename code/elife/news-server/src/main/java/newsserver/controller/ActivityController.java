@@ -117,12 +117,14 @@ public class ActivityController {
     /**
      * submitActivity close it
      * @param aid
+     * @param managerName
+     * @Param communityId
      * @return boolean
      */
     @RequestMapping(path = "/submitActivity")
     @ResponseBody
-    public boolean submitActivity(int aid){
-        return activityService.submitActivity(aid);
+    public boolean submitActivity(int aid,String managerName,int communnityId){
+        return activityService.submitActivity(aid,managerName,communnityId);
     }
 
     /**
