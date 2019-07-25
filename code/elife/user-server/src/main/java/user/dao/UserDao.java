@@ -61,4 +61,18 @@ public interface UserDao {
      * @return all user that contains the username
      */
     List<User> findAllByUsernameContains(String username);
+
+    /**
+     * find all user in the given community
+     * @param communityId communityId
+     * @return all user in the given community
+     */
+    List<User> findAllByCommunityId(Long communityId);
+
+    /**
+     * find all username from community
+     * @param communityId community id
+     * @return all username
+     */
+    List<String> findUsernameByCommunityId(Long communityId);
 }
