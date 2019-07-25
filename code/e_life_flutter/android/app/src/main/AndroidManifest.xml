@@ -72,8 +72,8 @@
 
     <application
         android:name=".MainApplication"
-        android:label="mymapshow"
-        android:icon="@mipmap/ic_launcher">
+        android:label="智能生活小区"
+        android:icon="@mipmap/elife">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
