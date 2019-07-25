@@ -371,4 +371,16 @@ public class UserServiceImpl implements UserService {
         return object;
     }
 
+    @Override
+    public JSONArray getUsername(Long communityId){
+        JSONArray jsonArray = new JSONArray();
+        List<String> array = userDao.findUsernameByCommunityId(communityId);
+        for(String string : array){
+            JSONObject object = new JSONObject();
+            object.put("username", string);
+            jsonArray.appendElement(object);
+        }
+        return jsonArray;
+    }
+
 }
