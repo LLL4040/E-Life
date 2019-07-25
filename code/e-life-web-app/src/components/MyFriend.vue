@@ -1,7 +1,7 @@
 <template>
   <div>
     <div align="center">
-      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入用户名关键字搜索"/>
+      <el-input v-model="search" maxLength="25" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入用户名关键字搜索"/>
     </div>
     <div style="padding-top: 20px;">
       <el-card style="padding-left: 20px">

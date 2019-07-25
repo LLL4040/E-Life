@@ -1,7 +1,7 @@
 <template>
   <div>
     <div align="center">
-      <el-input v-model="search" size="medium" style="width: 300px" placeholder="输入用户名关键字搜索"/>
+      <el-input v-model="search" maxLength="25" size="medium" style="width: 300px" placeholder="输入用户名关键字搜索"/>
       <el-button icon="el-icon-search" size="medium" type="primary" @click="loadUser()"></el-button>
     </div>
     <div style="padding-top: 20px;">
@@ -20,7 +20,7 @@
     <el-dialog title="添加好友" :visible.sync="dialogFormVisible">
       <el-form :model="myApply">
         <el-form-item label="留言">
-          <el-input v-model="myApply.content" autocomplete="off" type="textarea" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
+          <el-input v-model="myApply.content" maxLength="100" autocomplete="off" type="textarea" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
