@@ -1,16 +1,14 @@
 <template>
   <div>
-    <div align="center">
-      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入内容关键字搜索"/>
-    </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="12">
       <el-card style="padding-left: 5px">
         <div slot="header" class="clearfix">
-          <span style="font-size: 16px;">紧急通知</span>
+          <span style="font-size: 16px;">紧急通知&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <el-input v-model="search1" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入详情关键字搜索"/>
           <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible1 = true"></el-button>
         </div>
-        <el-table :data="urgent.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+        <el-table :data="urgent.filter(data => typeof data.time !== 'undefined' && (!search1 || data.content.toLowerCase().includes(search1.toLowerCase())))" style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -35,10 +33,11 @@
       <el-col :span="12">
         <el-card style="padding-left: 5px">
           <div slot="header" class="clearfix">
-            <span style="font-size: 16px;">最新资讯</span>
+            <span style="font-size: 16px;">最新资讯&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <el-input v-model="search2" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入标题关键字搜索"/>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible2 = true"></el-button>
           </div>
-          <el-table :data="news.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="news.filter(data => typeof data.time !== 'undefined' && (!search2 || data.title.toLowerCase().includes(search2.toLowerCase())))" style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -118,7 +117,8 @@ export default {
         email: '',
         phone: ''
       },
-      search: '',
+      search1: '',
+      search2: '',
       dialogFormVisible1: false,
       dialogFormVisible2: false,
       dialogFormVisible3: false,
@@ -188,6 +188,7 @@ export default {
     handleCurrentChange1 (val) {
       this.pageNum1 = val
       this.loadUrgent()
+      this.$forceUpdate()
     },
     loadNews () {
       let bodyFormData = new FormData()
@@ -213,6 +214,7 @@ export default {
     handleCurrentChange2 (val) {
       this.pageNum2 = val
       this.loadNews()
+      this.$forceUpdate()
     },
     releaseU () {
       this.dialogFormVisible1 = false
@@ -229,6 +231,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadUrgent()
+          this.$forceUpdate()
         } else {
           this.$alert('发布紧急通知失败！请重新登录再试')
         }
@@ -252,6 +255,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadNews()
+          this.$forceUpdate()
         } else {
           this.$alert('发布资讯失败！请重新登录再试')
         }
@@ -269,6 +273,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadNews()
+          this.$forceUpdate()
         } else {
           this.$alert('删除紧急通知失败！请重新登录再试')
         }
@@ -286,6 +291,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadNews()
+          this.$forceUpdate()
         } else {
           this.$alert('删除资讯失败！请重新登录再试')
         }

@@ -5,7 +5,7 @@
     </div>
     <div style="padding-top: 20px;">
       <el-card style="padding-left: 20px">
-        <el-table :data="userData.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+        <el-table :data="userData.filter(data => typeof data.friend !== 'undefined' && (!search || data.friend.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
           <el-table-column prop="friend" label="姓名" align="center"></el-table-column>
           <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
           <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
@@ -97,6 +97,7 @@ export default {
           if (response.data.delete === 1) {
             this.$alert('删除成功！')
             this.getFriend()
+            this.$forceUpdate()
           } else {
             this.$alert('删除失败！')
           }

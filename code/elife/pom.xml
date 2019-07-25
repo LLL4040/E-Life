@@ -18,7 +18,6 @@
         <module>gateway</module>
         <module>package-server</module>
         <module>pay-server</module>
-        <module>session-redis</module>
     </modules>
 
     <properties>

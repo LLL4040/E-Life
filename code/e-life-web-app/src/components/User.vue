@@ -6,7 +6,7 @@
           <div class="container">
             <div class="tm-next">
               <img src="../../public/img/logo.gif" width="60px">
-              <router-link router-link :to="{name:'home'}" class="navbar-brand">E-LIFE</router-link>
+              <a class="navbar-brand" @click="toIndex()">E-LIFE</a>
             </div>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
             <i class="fas fa-3x fa-user-circle text-center tm-icon"></i>
             <div style="clear:both"></div>
             <el-tooltip class="item" effect="light" content="点击退出登录" placement="right">
-              <el-button type="success" plain size="mini" icon="el-icon-info" @click="logout()">居民</el-button>
+              <el-button id="logout" type="success" plain size="mini" icon="el-icon-info" @click="logout()">居民</el-button>
             </el-tooltip>
             <div style="clear:both"></div>
             <el-tooltip class="item" effect="light" content="点击查看或修改个人信息" placement="right">
@@ -160,6 +160,23 @@ export default {
     }
   },
   methods: {
+    toIndex () {
+      let bodyFormData = new FormData()
+      let url = '/user-server/api/user/logout'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.logout === 1) {
+          sessionStorage.clear()
+          this.$router.push({ name: 'home' })
+        } else {
+          this.$alert('前往首页失败！请关闭页面重试')
+        }
+      })
+    },
     logout () {
       let bodyFormData = new FormData()
       let url = '/user-server/api/user/logout'
@@ -264,6 +281,22 @@ export default {
           this.newParcel = response.data.length
         }
       })
+    },
+    exit () {
+      /* eslint-disable */
+      window.is_confirm = false
+      // 关闭窗口时弹出确认提示
+      $(window).bind('beforeunload', function () {
+        // 只有在标识变量is_confirm不为false时，才弹出确认提示
+        if (window.is_confirm !== false) {
+          window.document.getElementById('logout').click()
+          return '您可能有数据没有保存'
+        }
+      })
+      // mouseleave mouseover事件也可以注册在body、外层容器等元素上
+        .bind('mouseover mouseleave', function (event) {
+          window.is_confirm = (event.type === 'mouseleave')
+        })
     }
   },
   components: {
@@ -286,6 +319,7 @@ export default {
     this.loadM()
     this.loadF()
     this.loadP()
+    this.exit()
   }
 }
 </script>

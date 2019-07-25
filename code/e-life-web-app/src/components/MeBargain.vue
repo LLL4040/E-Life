@@ -1,12 +1,12 @@
 <template>
   <div>
     <div align="center">
-      <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入内容关键字筛选"/>
+      <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入标题关键字筛选"/>
       <el-button style="float: left;" size="medium" type="primary" round @click="dialogFormVisible = true">添加优惠</el-button>
     </div>
     <div style="padding-top: 20px;">
       <el-card class="box-card">
-        <el-table :data="bargains.filter(data => !search || data.content.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+        <el-table :data="bargains.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -169,6 +169,7 @@ export default {
             this.$alert('添加成功！')
             this.loadBargain()
             this.dialogFormVisible = false
+            this.$forceUpdate()
           } else {
             this.$alert('添加失败！')
           }
@@ -191,6 +192,7 @@ export default {
           if (response.data.delete === 1) {
             this.$alert('删除成功！')
             this.loadBargain()
+            this.$forceUpdate()
           } else {
             this.$alert('删除失败！')
           }

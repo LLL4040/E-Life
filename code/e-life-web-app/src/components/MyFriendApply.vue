@@ -1,15 +1,17 @@
 <template>
   <div>
-    <div align="center">
-      <el-input v-model="search" size="medium" style="width: 400px" suffix-icon="el-icon-search" placeholder="输入0或±1筛选状态-(1:已通过、-1:未通过、0:未处理)"/>
-    </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span style="font-size: 16px;">我的申请</span>
+            <el-button-group>
+              <el-button type="success" plain size="small" @click="search = 1">只看已通过</el-button>
+              <el-button type="primary" plain size="small" @click="search = 0">只看未处理</el-button>
+              <el-button type="danger" plain size="small" @click="search = -1">只看未通过</el-button>
+            </el-button-group>
           </div>
-          <el-table :data="my.filter(data => !search || data.status === search)" style="width: 100%">
+          <el-table :data="my.filter(data => (typeof data.status !== 'undefined') && (search === 2 || data.status === search))" style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -64,7 +66,7 @@ export default {
   name: 'MyFriendApply',
   data () {
     return {
-      search: '',
+      search: 2,
       userInfo: {
         community: '',
         communityId: 0,
@@ -153,6 +155,7 @@ export default {
           if (response.data.accept === 1) {
             this.$alert('接受成功！')
             this.loadOthers()
+            this.$forceUpdate()
           } else {
             this.$alert('接受失败！')
           }
@@ -175,6 +178,7 @@ export default {
           if (response.data.reject === 1) {
             this.$alert('拒绝成功！')
             this.loadOthers()
+            this.$forceUpdate()
           } else {
             this.$alert('拒绝失败！')
           }

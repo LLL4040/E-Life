@@ -27,11 +27,27 @@
       <el-col :span="14">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="font-size: 16px;">我的请求&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <el-input v-model="search" size="medium" style="width: 400px" suffix-icon="el-icon-search" placeholder="输入012筛选状态-(2:已解决、0:未处理、1:处理中)"/>
+            <span style="font-size: 16px;">我的请求&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <el-button-group>
+              <el-button type="success" plain size="small" @click="search = 2">只看已解决</el-button>
+              <el-button type="primary" plain size="small" @click="search = 1">只看处理中</el-button>
+              <el-button type="danger" plain size="small" @click="search = 0">只看未处理</el-button>
+            </el-button-group>
             </span>
           </div>
-          <el-table :data="maintain" style="width: 100%">
+          <el-table :data="maintain.filter(data => typeof data.time !== 'undefined' && ((search === -1) || data.status === search))" style="width: 100%">
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="left" inline class="demo-table-expand">
+                  <el-form-item label="维修人员姓名">
+                    <span>{{ props.row.maintainname }}</span>
+                  </el-form-item>
+                  <el-form-item label="维修人员联系方式">
+                    <span>{{ props.row.phone }}</span>
+                  </el-form-item>
+                </el-form>
+              </template>
+            </el-table-column>
             <el-table-column prop="time" label="时间"></el-table-column>
             <el-table-column prop="content" label="内容"></el-table-column>
             <el-table-column label="状态" prop="status" align="center">
@@ -53,7 +69,7 @@ export default {
   name: 'PropertyService',
   data () {
     return {
-      search: '',
+      search: -1,
       info: {
         time: '',
         phone: '',
@@ -134,6 +150,7 @@ export default {
         } else {
           this.$alert('添加成功！')
           this.loadMain()
+          this.$forceUpdate()
         }
       })
     }

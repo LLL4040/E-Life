@@ -45,7 +45,7 @@
             <el-table-column prop="time" label="时间" align="center"></el-table-column>
             <el-table-column prop="title" label="标题" align="center"></el-table-column>
           </el-table>
-          <div class="block" align="center" >
+          <div class="block" align="center" v-if="newsMore">
             <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="pageSize1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
           </div>
         </el-card>
@@ -90,7 +90,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="block" align="center" >
+          <div class="block" align="center" v-if="activityMore">
             <el-pagination @current-change="handleCurrentChange2" :current-page.sync="pageNum2" :page-count="pageSize2" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>
           </div>
         </el-card>
@@ -140,7 +140,9 @@ export default {
         id: '',
         content: ''
       },
-      photo: ''
+      photo: '',
+      newsMore: false,
+      activityMore: false
     }
   },
   mounted () {
@@ -243,16 +245,18 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
+          this.newsMore = true
           this.news = response.data
           this.pageSize1 = response.data[response.data.length - 1].pageNum
-          console.log(response.data)
           this.news.pop()
+          this.$forceUpdate()
         }
       })
     },
     handleCurrentChange1 (val) {
       this.pageNum1 = val
       this.loadNewsMore()
+      this.$forceUpdate()
     },
     loadActivity () {
       let bodyFormData = new FormData()
@@ -268,7 +272,7 @@ export default {
           this.$router.push({ name: 'Login' })
         } else {
           this.activity = response.data
-          console.log(response.data)
+          console.log(this.activity)
         }
       })
     },
@@ -286,16 +290,18 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
+          this.activityMore = true
           this.activity = response.data
           this.pageSize2 = response.data[response.data.length - 1].pageNum
-          console.log(response.data)
           this.activity.pop()
+          this.$forceUpdate()
         }
       })
     },
     handleCurrentChange2 (val) {
       this.pageNum2 = val
       this.loadActivityMore()
+      this.$forceUpdate()
     },
     show (row) {
       let bodyFormData = new FormData()

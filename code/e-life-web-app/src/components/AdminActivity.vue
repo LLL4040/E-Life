@@ -1,16 +1,14 @@
 <template>
   <div>
-    <div align="center">
-      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入活动名称关键字进行搜索"/>
-    </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="14">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="font-size: 16px;">活动列表</span>
+            <span style="font-size: 16px;">活动列表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入活动标题关键字进行搜索"/>
             <el-button style="float: right;" size="medium" type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
           </div>
-          <el-table :data="activity.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))" style="width: 100%">
+          <el-table :data="activity.filter(data => typeof data.title !== 'undefined' && (!search || data.title.toLowerCase().includes(search.toLowerCase())))" style="width: 100%">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -40,6 +38,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
+                <el-button size="medium" type="success" icon="el-icon-caret-right" circle @click="handleStart(scope.row)"></el-button>
                 <el-button size="medium" type="primary" icon="el-icon-view" circle @click="loadApply(scope.row)"></el-button>
                 <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row)"></el-button>
               </template>
@@ -51,7 +50,7 @@
         </el-card>
       </el-col>
       <el-col :span="10">
-        <el-card class="box-card">
+        <el-card class="box-card" v-if="see">
           <div slot="header" class="clearfix">
             <span style="font-size: 16px;">申请列表</span>
           </div>
@@ -125,6 +124,7 @@ export default {
         phone: ''
       },
       search: '',
+      see: false,
       dialogFormVisible: false,
       dialogFormVisible2: false,
       photo: '',
@@ -211,7 +211,6 @@ export default {
         } else {
           this.activity = response.data
           this.pageSize1 = response.data[response.data.length - 1].pageNum
-          console.log(response.data)
           this.activity.pop()
         }
       })
@@ -219,8 +218,11 @@ export default {
     handleCurrentChange1 (val) {
       this.pageNum1 = val
       this.loadActivity()
+      this.see = false
+      this.$forceUpdate()
     },
     loadApply (row) {
+      this.see = true
       this.applyId = row
       let bodyFormData = new FormData()
       bodyFormData.set('aid', row.id)
@@ -245,6 +247,7 @@ export default {
     handleCurrentChange2 (val) {
       this.pageNum2 = val
       this.loadApply()
+      this.$forceUpdate()
     },
     handleA (row) {
       let bodyFormData = new FormData()
@@ -259,6 +262,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadApply(this.applyId)
+          this.$forceUpdate()
         } else {
           this.$alert('操作失败！请重新登录再试')
         }
@@ -277,6 +281,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadApply(this.applyId)
+          this.$forceUpdate()
         } else {
           this.$alert('操作失败！请重新登录再试')
         }
@@ -309,6 +314,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadActivity()
+          this.$forceUpdate()
         } else {
           this.$alert('发布活动失败！请重新登录再试')
         }
@@ -326,8 +332,30 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadActivity()
+          this.$forceUpdate()
         } else {
           this.$alert('删除活动失败！请重新登录再试')
+        }
+      })
+    },
+    handleStart (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('aid', row.id)
+      bodyFormData.set('managerName', this.userInfo.username)
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/news-server/api/Activity/submitActivity'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data) {
+          this.$alert('提交活动成功！')
+          this.loadActivity()
+          this.$forceUpdate()
+        } else {
+          this.$alert('提交活动失败！请重新登录再试')
         }
       })
     },
