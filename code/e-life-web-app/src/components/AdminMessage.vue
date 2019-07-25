@@ -39,11 +39,11 @@
           <el-select v-model="newMessage.user" filterable placeholder="输入小区名称关键字搜索">
             <el-option
               v-for="item in userList"
-              :key="item.id"
-              :label="item.label"
-              :value="item.id">
-              <span style="float: left">{{ item.label }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+              :key="item.username"
+              :label="item.username"
+              :value="item.username">
+              <span style="float: left">{{ item.username }}</span>
+<!--              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
             </el-option>
           </el-select>
         </el-form-item>

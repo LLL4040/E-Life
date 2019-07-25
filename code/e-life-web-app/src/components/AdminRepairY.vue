@@ -25,12 +25,12 @@
           <el-table-column label="状态" prop="status" align="center">
             <template slot-scope="scope">
               <el-button v-if="scope.row.status === 2" type="success" plain size="small">已解决</el-button>
-              <el-button v-if="scope.row.status === 1" type="primary" plain size="small">处理中</el-button>
+              <el-button v-if="scope.row.status === 1" type="primary" plain size="small" @click="handleDone(scope.row)">处理中</el-button>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.$index, scope.row)"></el-button>
+              <el-button size="medium" type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -114,6 +114,31 @@ export default {
       this.pageNum = val
       this.loadRequest()
       this.$forceUpdate()
+    },
+    handleDone (row) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', row.id)
+      bodyFormData.set('status', 2)
+      let url = '/lifeservice-server/api/maintain/editMaintain'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          if (response.data.manageMaintain === '1') {
+            this.loadRequest()
+            this.$forceUpdate()
+          } else {
+            this.$alert('处理失败！')
+          }
+        }
+      })
+    },
+    handleDelete (row) {
     }
   }
 }

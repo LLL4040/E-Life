@@ -156,8 +156,9 @@ public class UserController {
     @ResponseBody
     public JSONArray getUsername(HttpServletRequest request, @RequestParam Long communityId){
         HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
         String matter = (String) session.getAttribute("role");
-        if("1".equals(matter)){
+        if(!StringUtils.isEmpty(name) && "1".equals(matter)){
             return userService.getUsername(communityId);
         } else {
             JSONArray jsonArray = new JSONArray();
