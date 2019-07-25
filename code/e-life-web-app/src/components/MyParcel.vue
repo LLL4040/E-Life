@@ -92,6 +92,7 @@ export default {
       ).then(response => {
         if (response.data) {
           this.loadP()
+          this.$forceUpdate()
         } else {
           this.$alert('确认领取失败！请重新登录后再试')
         }

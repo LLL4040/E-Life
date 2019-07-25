@@ -176,6 +176,7 @@ export default {
         data: bodyFormData,
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
+        this.dialogFormVisible = false
         const div = document.createElement('div')
         newTab.console.log(response.data)
         div.innerHTML = response.data // html code

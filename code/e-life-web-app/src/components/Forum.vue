@@ -21,8 +21,11 @@
                 <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
                 <br>
                 <span v-for="x in o.photo" :key="x">
-                <img :src="x" style="width: 30%"/>
-              </span>
+                  <button @click="show(x)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                      <img :src="x" style="width: 100%; height: 100%">
+                    </button>
+<!--                <img :src="x" style="width: 30%"/>-->
+                </span>
                 <br>
                 <p style="float:right; font-size: 12px;">{{o.time}}</p>
               </el-card>
@@ -139,6 +142,11 @@
         <el-button type="primary" @click="addComment()">发 布</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogFormVisiblePhoto">
+      <div>
+        <img :src="photo" width="100%">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -159,6 +167,7 @@ export default {
       dialogFormVisibleMain: true,
       dialogFormVisible: false,
       dialogFormVisibleDetail: false,
+      dialogFormVisiblePhoto: false,
       myPost: {
         username: '',
         title: '',
@@ -176,7 +185,8 @@ export default {
       pageNum2: 1,
       pageSize2: 10,
       total2: 1,
-      currentP: {}
+      currentP: {},
+      photo: ''
     }
   },
   mounted () {
@@ -398,6 +408,24 @@ export default {
     fileDel (index) { // 删除已选择的图片
       this.size = this.size - this.imgList[index].file.size// 总大小
       this.imgList.splice(index, 1)
+    },
+    show (path) {
+      let bodyFormData = new FormData()
+      bodyFormData.set('path', path)
+      let url = '/estateforum-server/api/post/photo'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.photo = response.data.photo
+          this.dialogFormVisiblePhoto = true
+        }
+      })
     }
   }
 }

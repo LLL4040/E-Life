@@ -97,6 +97,7 @@ export default {
           if (response.data.delete === 1) {
             this.$alert('删除成功！')
             this.getFriend()
+            this.$forceUpdate()
           } else {
             this.$alert('删除失败！')
           }

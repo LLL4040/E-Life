@@ -95,6 +95,7 @@ export default {
         } else {
           if (response.data.deleteMyOneNotice === '1') {
             this.loadMessage()
+            this.$forceUpdate()
           } else {
             this.$alert('删除失败！')
           }
