@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <div align="center">
       <el-input v-model="search" maxLength="25" size="medium" style="width: 300px" placeholder="输入用户名关键字搜索"/>
       <el-button icon="el-icon-search" size="medium" type="primary" @click="loadUser()"></el-button>
@@ -54,9 +57,12 @@ export default {
     }
   },
   mounted () {
-    this.loadData()
+    this.refresh()
   },
   methods: {
+    refresh () {
+      this.loadData()
+    },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
       if (this.userInfo.username === '' || this.userInfo.username === null) {

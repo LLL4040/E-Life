@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>编辑个人信息</span>
@@ -18,7 +21,7 @@
           <el-input v-model="form.community" style="width: 200px" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="商店名称">
-          <el-input v-model="form.shop" style="width: 200px"></el-input>
+          <el-input v-model="form.name" style="width: 200px"></el-input>
         </el-form-item>
         <el-form-item label="商店电话">
           <el-input v-model="form.merchantPhone" style="width: 200px"></el-input>
@@ -53,18 +56,24 @@ export default {
     return {
       dialogFormVisible: false,
       form: {
-        id: '1',
-        username: '233',
-        email: '123',
-        phone: '1551',
-        community: '快乐小区',
-        shop: '星海网咖',
-        merchantPhone: '11111',
-        type: '休闲娱乐',
-        detail: '嘻嘻嘻',
+        username: '',
+        id: '',
+        email: '',
+        phone: '',
+        community: '',
+        name: '',
+        merchantPhone: '',
+        type: '',
+        detail: '',
         address: ''
       },
       types: [{
+        value: '超市送货',
+        label: '超市送货'
+      }, {
+        value: '电脑维修',
+        label: '电脑维修'
+      }, {
         value: '周边餐饮',
         label: '周边餐饮'
       }, {
@@ -83,6 +92,10 @@ export default {
     this.loadData()
   },
   methods: {
+    refresh () {
+      this.loadData()
+      this.$forceUpdate()
+    },
     loadData () {
       this.form.username = sessionStorage.getItem('username')
       if (this.form.username === '' || this.form.username === null) {
@@ -92,14 +105,20 @@ export default {
       this.form.email = sessionStorage.getItem('email')
       this.form.phone = sessionStorage.getItem('phone')
       this.form.community = sessionStorage.getItem('community')
-      this.form.shop = sessionStorage.getItem('name')
+      this.form.name = sessionStorage.getItem('name')
       this.form.merchantPhone = sessionStorage.getItem('merchantPhone')
       this.form.type = sessionStorage.getItem('type')
       this.form.detail = sessionStorage.getItem('detail')
       this.form.address = sessionStorage.getItem('address')
     },
     save () {
-      let bodyFormData = this.form
+      let bodyFormData = new FormData()
+      bodyFormData.set('id', parseInt(this.form.id))
+      bodyFormData.set('name', this.form.name)
+      bodyFormData.set('merchantPhone', this.form.merchantPhone)
+      bodyFormData.set('type', this.form.type)
+      bodyFormData.set('address', this.form.address)
+      bodyFormData.set('detail', this.form.detail)
       let url = '/user-server/api/merchant/changeMerchant'
       this.$axios({
         method: 'post',

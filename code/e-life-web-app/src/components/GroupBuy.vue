@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <div align="center">
       <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入标题关键字搜索"/>
     </div>
@@ -171,7 +174,16 @@ export default {
       }
     }
   },
+  mounted () {
+    this.refresh()
+  },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadGroup()
+      this.loadDemand()
+      this.$forceUpdate()
+    },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
       if (this.userInfo.username === '' || this.userInfo.username === null) {
@@ -206,7 +218,7 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
-          this.group = response.data
+          this.group = response.data.reverse()
         }
       })
     },
@@ -223,7 +235,7 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
-          this.demand = response.data
+          this.demand = response.data.reverse()
         }
       })
     },
@@ -344,11 +356,6 @@ export default {
         }
       })
     }
-  },
-  mounted () {
-    this.loadData()
-    this.loadGroup()
-    this.loadDemand()
   }
 }
 </script>
