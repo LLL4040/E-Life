@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <div align="center">
       <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入标题关键字筛选"/>
       <el-button style="float: left;" size="medium" type="primary" round @click="dialogFormVisible = true">添加优惠</el-button>
@@ -111,7 +114,14 @@ export default {
       }
     }
   },
+  mounted () {
+    this.loadData()
+  },
   methods: {
+    refresh () {
+      this.loadData()
+      this.$forceUpdate()
+    },
     loadData () {
       this.form.username = sessionStorage.getItem('username')
       if (this.form.username === '' || this.form.username === null) {
@@ -199,9 +209,6 @@ export default {
         }
       })
     }
-  },
-  mounted () {
-    this.loadData()
   }
 }
 </script>

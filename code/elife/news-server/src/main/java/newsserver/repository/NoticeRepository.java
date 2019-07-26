@@ -22,7 +22,7 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
      * @param pageNumber 当前页数
      * @param pageSize 每页数据量
      * @param managerName 管理员名*/
-    @Query(value = "select * from notice where managername=?1 order by id  limit ?2,?3", nativeQuery = true)
+    @Query(value = "select * from notice where managername=?1 order by id  desc limit ?2,?3", nativeQuery = true)
     List<Notice> findByManagerName(String managerName,int pageNumber,int pageSize);
     /**
      * 该函数返回某管理员发的所有通知数

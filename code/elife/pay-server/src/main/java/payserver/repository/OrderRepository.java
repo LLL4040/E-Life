@@ -21,7 +21,7 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
      * @param pid
      * @return List
      */
-    @Query(value=" select * from orders where username=?1 and pid=?2 and status=0",nativeQuery = true)
+    @Query(value=" select * from orders where username=?1 and pid=?2 and status=0 order by id desc",nativeQuery = true)
     List<Orders> getOrders(String username,int pid);
 }
 

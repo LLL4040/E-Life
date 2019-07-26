@@ -166,7 +166,6 @@ export default {
           sessionStorage.setItem('detail', this.merchantInfo.detail)
           sessionStorage.setItem('type', this.merchantInfo.type)
           sessionStorage.setItem('merchantPhone', this.merchantInfo.merchantPhone)
-          console.log(this.merchantInfo.id)
         })
       })
     },

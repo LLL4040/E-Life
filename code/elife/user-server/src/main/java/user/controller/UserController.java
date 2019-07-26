@@ -157,8 +157,8 @@ public class UserController {
     public JSONArray getUsername(HttpServletRequest request, @RequestParam Long communityId){
         HttpSession session = request.getSession();
         String name = (String) session.getAttribute("username");
-        String matter = (String) session.getAttribute("role");
-        if(!StringUtils.isEmpty(name) && "1".equals(matter)){
+        String role = (String) session.getAttribute("role");
+        if(!StringUtils.isEmpty(name) && "1".equals(role)){
             return userService.getUsername(communityId);
         } else {
             JSONArray jsonArray = new JSONArray();
@@ -177,15 +177,26 @@ public class UserController {
         String role = (String) session.getAttribute("role");
         JSONObject object = new JSONObject();
         object.put("login", 0);
-        System.out.println(user);
-        System.out.println(username);
-        System.out.println(role);
-        if(!user.equals(username) || !"0".equals(role)){
+        if(StringUtils.isEmpty(user) || !user.equals(username) || !"0".equals(role)){
             return object;
         } else {
             return userService.changeEmail(username, email);
         }
     }
 
+    @RequestMapping(path = "/changeEmailManager")
+    @ResponseBody
+    public JSONObject changeEmailManager(HttpServletRequest request, @RequestParam String username, @RequestParam String email){
+        HttpSession session = request.getSession();
+        String user = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        JSONObject object = new JSONObject();
+        object.put("login", 0);
+        if(StringUtils.isEmpty(user) || !user.equals(username) || !"1".equals(role)){
+            return object;
+        } else {
+            return userService.changeEmailManager(username, email);
+        }
+    }
 
 }

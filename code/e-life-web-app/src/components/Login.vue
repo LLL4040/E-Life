@@ -148,6 +148,7 @@ export default {
             sessionStorage.setItem('communityId', response.data.communityId)
             sessionStorage.setItem('phone', response.data.phone)
             sessionStorage.setItem('email', response.data.email)
+            sessionStorage.setItem('final', response.data.final)
             if (this.form1.id === '0') {
               self.$router.push({ name: 'User' })
             } else if (this.form1.id === '1') {
@@ -185,6 +186,7 @@ export default {
             sessionStorage.setItem('communityId', response.data.communityId)
             sessionStorage.setItem('phone', response.data.phone)
             sessionStorage.setItem('email', response.data.email)
+            sessionStorage.setItem('final', response.data.final)
             if (this.form2.id === '0') {
               self.$router.push({ name: 'User' })
             } else if (this.form2.id === '1') {
@@ -205,10 +207,8 @@ export default {
       } else {
         let bodyFormData = new FormData()
         let form = (this.form2.number === '') ? this.form3 : this.form2
-        this.$alert(form)
         bodyFormData.set('phone', form.number)
         bodyFormData.set('id', form.id)
-        console.log(bodyFormData)
         this.$axios({
           method: 'post',
           url: '/user-server/api/user/phoneAvailable',
