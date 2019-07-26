@@ -383,4 +383,54 @@ public class UserServiceImpl implements UserService {
         return jsonArray;
     }
 
+    @Override
+    public JSONObject changeEmail(String username, String email){
+        JSONObject object = new JSONObject();
+        object.put("change", 0);
+        if(!userDao.existByUsername(username)){
+            return object;
+        } else {
+            try{
+                User user = userDao.findByUsername(username);
+                user.setEmail(email);
+                userDao.save(user);
+                object.put("change", 1);
+                return object;
+            } catch (Exception e){
+                return object;
+            }
+        }
+    }
+
+    @Override
+    public JSONObject changeEmailManager(String username, String email){
+        JSONObject object = new JSONObject();
+        object.put("change", 0);
+        if(!managerDao.existByUsername(username)){
+            if(!communityRepository.existsByManager(username)){
+                return object;
+            } else {
+                try{
+                    Community community = communityRepository.findByManager(username);
+                    community.setEmail(email);
+                    communityRepository.save(community);
+                    object.put("change", 1);
+                    return object;
+                }catch (Exception e){
+                    return object;
+                }
+            }
+        } else {
+            try{
+                Manager manager = managerDao.findByUsername(username);
+                manager.setEmail(email);
+                managerDao.save(manager);
+                object.put("change", 1);
+                return object;
+            }catch (Exception e){
+                return object;
+            }
+        }
+    }
+
 }

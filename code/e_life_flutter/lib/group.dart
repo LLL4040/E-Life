@@ -3,6 +3,8 @@ import 'demandhttp.dart';
 import 'user.dart';
 import 'dart:convert';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:oktoast/oktoast.dart';
+import 'addDemand.dart';
 
 class groupWeight extends StatefulWidget {
   final username;
@@ -103,7 +105,14 @@ class groupWeightState extends State<groupWeight>
 //  }
 //
   void _toaddDemand() {
+    Navigator.push<String>(context,
+        new MaterialPageRoute(builder: (BuildContext context) {
+          return new addDemand(username,communityId);
+        })).then((String result){
+      print("报名收到的信息为:"+result);
+      showToast(result);
 
+    });
   }
 
   _getGroup() async {

@@ -37,7 +37,7 @@ public interface PackageRepository extends JpaRepository<Package, Integer> {
      * @param username
      * @return List
      */
-    @Query(value=" select * from package where username=?1 and status=0",nativeQuery = true)
+    @Query(value=" select * from package where username=?1 and status=0 order by id desc" ,nativeQuery = true)
     List<Package> findNew(String username);
 
     /**

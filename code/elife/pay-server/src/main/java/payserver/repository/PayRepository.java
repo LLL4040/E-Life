@@ -40,7 +40,7 @@ public interface PayRepository extends JpaRepository<Pay, Integer> {
      * @param username
      * @return List
      */
-    @Query(value=" select * from pay where username=?1 and (status=-1 or status=-2)",nativeQuery = true)
+    @Query(value=" select * from pay where username=?1 and (status=-1 or status=-2)  order by id desc",nativeQuery = true)
     List<Pay> findNew(String username);
 
     /**

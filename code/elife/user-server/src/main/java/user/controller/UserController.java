@@ -168,4 +168,35 @@ public class UserController {
             return jsonArray;
         }
     }
+
+    @RequestMapping(path = "/changeEmail")
+    @ResponseBody
+    public JSONObject changeEmail(HttpServletRequest request, @RequestParam String username, @RequestParam String email){
+        HttpSession session = request.getSession();
+        String user = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        JSONObject object = new JSONObject();
+        object.put("login", 0);
+        if(!user.equals(username) || !"0".equals(role)){
+            return object;
+        } else {
+            return userService.changeEmail(username, email);
+        }
+    }
+
+    @RequestMapping(path = "/changeEmailManager")
+    @ResponseBody
+    public JSONObject changeEmailManager(HttpServletRequest request, @RequestParam String username, @RequestParam String email){
+        HttpSession session = request.getSession();
+        String user = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        JSONObject object = new JSONObject();
+        object.put("login", 0);
+        if(!user.equals(username) || !"1".equals(role)){
+            return object;
+        } else {
+            return userService.changeEmailManager(username, email);
+        }
+    }
+
 }

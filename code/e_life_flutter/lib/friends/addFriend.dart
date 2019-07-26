@@ -27,7 +27,7 @@ class addFriendCenter extends State<addFriend>
       Navigator.pop(context, "发送添加好友请求成功");
     }
 
-    Widget addrepairSection = new Container(
+    Widget addFriendSection = new Container(
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -108,7 +108,7 @@ class addFriendCenter extends State<addFriend>
       body: Column(
         children: <Widget>[
           new Expanded(
-            child: addrepairSection,
+            child: addFriendSection,
           )
         ],
       ),
