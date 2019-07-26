@@ -180,4 +180,12 @@ public interface UserService {
      * @return whether change successfully
      */
     JSONObject changeEmail(String username, String email);
+
+    /**
+     * change manager email
+     * @param username username
+     * @param email email
+     * @return whether change successfully
+     */
+    JSONObject changeEmailManager(String username, String email);
 }
