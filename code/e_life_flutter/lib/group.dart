@@ -73,37 +73,45 @@ class groupWeightState extends State<groupWeight>
     return new ListTile(
       leading: new Icon(Icons.shopping_basket),
       title: new Text(demand.title),
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context){
-              return new DemandDetail(demand);
-            })
-        );
-      },
+//      onTap: (){
+//        Navigator.push(context, MaterialPageRoute(
+//            builder: (context){
+//              return new DemandDetail(demand);
+//            })
+//        );
+//      },
+    onTap: (){
+      showDialog<Null>(
+        context: context,
+        builder: (BuildContext context) {
+          return new SimpleDialog(
+            children: <Widget>[
+               Container(
+                 child: Column(
+
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   children: <Widget>[
+                     Text(
+                       demand.title,
+                       textAlign: TextAlign.left,
+                       textScaleFactor: 1.5,
+                     ),
+                     Text("开始时间：" + demand.start),
+                     Text("结束时间：" + demand.end),
+                     Text("团购内容：" + demand.content),
+                     Text("发起人：" + demand.username),
+                   ],
+                 ),
+               ),
+            ],
+          );
+        }
+      );
+    },
     );
   }
 
-//  Widget _getDemand(Demand demand){
-//    return new Scaffold(
-//      body: ListTile(
-//        leading: new Icon(Icons.filter_none),
-//        title: new Text(demand.title),
-//        onTap: (){
-//          Navigator.push(context, MaterialPageRoute(
-//              builder: (context){
-//                return new DemandDetail(demand);
-//              })
-//          );
-//        },
-//      ),
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: _toaddDemand,
-//        tooltip: 'addRepair',
-//        child: Icon(Icons.add),
-//      ),
-//    );
-//  }
-//
+
   void _toaddDemand() {
     Navigator.push<String>(context,
         new MaterialPageRoute(builder: (BuildContext context) {
@@ -111,6 +119,12 @@ class groupWeightState extends State<groupWeight>
         })).then((String result){
       print("报名收到的信息为:"+result);
       showToast(result);
+      manager.getDemandList(this, communityId);
+      setState(() async{
+        await new Future.delayed(new Duration(milliseconds: 1000));
+        manager.getDemandList(this, username);
+      });
+
 
     });
   }
