@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -103,6 +105,7 @@ public class UrgentServiceImpl implements UrgentService {
     public JSONArray findHistory(int communityId,int page){
         try {
             List<Urgent> hotList = urgentDao.findHistoryHot(communityId);
+            Collections.reverse(hotList);
             List<UrgentUsed> coldList = urgentDao.findHistory(communityId);
             JSONArray jsonArray = new JSONArray();
             Iterator<Urgent> hotIter = hotList.iterator();
