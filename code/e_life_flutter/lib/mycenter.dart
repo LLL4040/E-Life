@@ -110,12 +110,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
                           }));
                     }
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.settings_system_daydream),
-                    title: const Text('邮包提醒'),
-                    onTap: () {
-                    },
-                  ),
+
                 ],
               ),
             ),
