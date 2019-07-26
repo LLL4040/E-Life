@@ -42,8 +42,17 @@
         <el-form-item label="截止时间">
           <el-date-picker v-model="newT.time" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
         </el-form-item>
-        <el-form-item label="用户名">
-          <el-input v-model="newT.username"></el-input>
+        <el-form-item label="接收人用户名">
+          <el-select v-model="newT.username" filterable placeholder="输入用户名关键字搜索">
+            <el-option
+              v-for="item in userList"
+              :key="item.username"
+              :label="item.username"
+              :value="item.username">
+              <span style="float: left">{{ item.username }}</span>
+              <!--              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="金额">
           <el-input v-model="newT.amount"></el-input>
@@ -59,8 +68,17 @@
         <el-form-item label="截止时间">
           <el-date-picker v-model="newW.time" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
         </el-form-item>
-        <el-form-item label="用户名">
-          <el-input v-model="newW.username"></el-input>
+        <el-form-item label="接收人用户名">
+          <el-select v-model="newW.username" filterable placeholder="输入用户名关键字搜索">
+            <el-option
+              v-for="item in userList"
+              :key="item.username"
+              :label="item.username"
+              :value="item.username">
+              <span style="float: left">{{ item.username }}</span>
+              <!--              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="金额">
           <el-input v-model="newW.amount"></el-input>
@@ -101,7 +119,8 @@ export default {
         username: ''
       },
       pageNum: 1,
-      pageSize: 1
+      pageSize: 1,
+      userList: []
     }
   },
   mounted () {
@@ -111,6 +130,7 @@ export default {
     refresh () {
       this.loadData()
       this.loadBill()
+      this.loadUsers()
       this.$forceUpdate()
     },
     loadData () {
@@ -132,6 +152,23 @@ export default {
       ).then(response => {
         this.userInfo.community = response.data.community
         sessionStorage.setItem('community', this.userInfo.community)
+      })
+    },
+    loadUsers () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/user-server/api/user/getUsers'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.userList = response.data
+        }
       })
     },
     loadBill () {
