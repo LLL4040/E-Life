@@ -41,6 +41,9 @@
             </el-tooltip>
             <div style="clear:both"></div>
           </div>
+          <el-menu-item index="0" @click="toPage2(0, 0)" v-if="userInfo.final === '1'">
+            <i class="el-icon-s-check"></i><span slot="title" style="font-size: 16px">管理审核</span>
+          </el-menu-item>
           <el-menu-item index="1" @click="toPage2(1, 7)">
             <i class="el-icon-chat-dot-round"></i><span slot="title" style="font-size: 16px">管理资讯</span>
           </el-menu-item>
@@ -49,7 +52,7 @@
           </el-menu-item>
           <el-submenu index="3">
             <template slot="title" style="font-size: 16px">
-              <i class="el-icon-setting"></i>
+              <i class="el-icon-user"></i>
               <span style="font-size: 16px">管理用户</span>
             </template>
             <el-submenu index="3-1">
@@ -105,6 +108,7 @@
 </template>
 
 <script>
+import page0 from './ManageAdmin.vue'
 import page1 from './CommunityInformation.vue'
 import page3 from './Forum.vue'
 import page7 from './AdminSendNotice.vue'
@@ -128,7 +132,8 @@ export default {
         communityId: 0,
         username: '',
         email: '',
-        phone: ''
+        phone: '',
+        final: ''
       },
       pageNumber: 1,
       pageSize: 100
@@ -177,6 +182,7 @@ export default {
       this.userInfo.phone = sessionStorage.getItem('phone')
       this.userInfo.communityId = sessionStorage.getItem('communityId')
       this.userInfo.email = sessionStorage.getItem('email')
+      this.userInfo.final = sessionStorage.getItem('final')
       let bodyFormData = new FormData()
       bodyFormData.set('id', this.userInfo.communityId)
       let url = '/user-server/api/user/getCommunityById'
@@ -199,7 +205,28 @@ export default {
       this.tabView = `page${id2}`
     },
     handleModify () {
-      this.dialogFormVisible = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.userInfo.username)
+      bodyFormData.set('email', this.userInfo.email)
+      let url = '/user-server/api/user/changeEmailManager'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          if (response.data.change === 1) {
+            this.$alert('修改成功！')
+            sessionStorage.setItem('email', this.userInfo.email)
+            this.dialogFormVisible = false
+          } else {
+            this.$alert('修改失败！请重新登录再试')
+          }
+        }
+      })
     },
     exit () {
       /* eslint-disable */
@@ -219,6 +246,7 @@ export default {
     }
   },
   components: {
+    page0,
     page1,
     page3,
     page7,

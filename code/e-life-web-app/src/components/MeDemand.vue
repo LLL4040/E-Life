@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <div align="center">
       <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入标题关键字筛选"/>
     </div>
@@ -47,7 +50,15 @@ export default {
       demand: []
     }
   },
+  mounted () {
+    this.refresh()
+  },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadDemand()
+      this.$forceUpdate()
+    },
     loadData () {
       this.form.username = sessionStorage.getItem('username')
       if (this.form.username === '' || this.form.username === null) {
@@ -81,10 +92,6 @@ export default {
         }
       })
     }
-  },
-  mounted () {
-    this.loadData()
-    this.loadDemand()
   }
 }
 </script>

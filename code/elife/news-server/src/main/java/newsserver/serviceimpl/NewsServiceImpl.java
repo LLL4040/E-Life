@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -127,6 +128,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public JSONArray findHistory(int communityId,int page) throws IOException {
         List<News> hotTable = newsDao.findHistoryHot(communityId);
+        Collections.reverse(hotTable);
         List<NewsUsed> coldTable = newsDao.findHistory(communityId);
         JSONArray jsonArray = new JSONArray();
         Iterator<News> hot = hotTable.iterator();

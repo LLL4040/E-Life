@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="14">
         <el-card class="box-card">
@@ -170,10 +173,14 @@ export default {
     }
   },
   mounted () {
-    this.loadData()
-    this.loadActivity()
+    this.refresh()
   },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadActivity()
+      this.$forceUpdate()
+    },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
       if (this.userInfo.username === '' || this.userInfo.username === null) {
