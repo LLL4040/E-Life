@@ -188,4 +188,11 @@ public interface UserService {
      * @return whether change successfully
      */
     JSONObject changeEmailManager(String username, String email);
+
+    /**
+     * get all managers by community id
+     * @param communityId community id
+     * @return managers
+     */
+    JSONArray getManagers(String communityId);
 }

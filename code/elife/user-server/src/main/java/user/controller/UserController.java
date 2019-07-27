@@ -199,4 +199,20 @@ public class UserController {
         }
     }
 
+    @RequestMapping(path = "/getManagers")
+    @ResponseBody
+    public JSONArray getManagers(HttpServletRequest request, @RequestParam String id){
+        HttpSession session = request.getSession();
+        String matter = (String) session.getAttribute("final");
+        if("1".equals(matter)){
+            return userService.getManagers(id);
+        } else {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.appendElement(jsonObject);
+            return jsonArray;
+        }
+    }
+
 }
