@@ -50,10 +50,10 @@ public class PostServiceImpl implements PostService {
                             BufferedOutputStream(new FileOutputStream(new File("./estateforum-server/pic/" + tmpPath)));
                     bufferedOutputStream.write(bytes);
                     bufferedOutputStream.close();
-                    Thumbnails.of("./estateforum-server/pic/"+path)
+                    Thumbnails.of("./estateforum-server/pic/"+tmpPath)
                             .size(160,160)
                             .keepAspectRatio(false)
-                            .toFile("./estateforum-server/cpic/"+path);
+                            .toFile("./estateforum-server/cpic/"+tmpPath);
 
                 }
 
@@ -98,7 +98,7 @@ public class PostServiceImpl implements PostService {
                     photos.add(photo);
                 }
                 jsonObject.put("photo" , photos);
-                jsonObject.put("path" , temp.getPath());
+                jsonObject.put("path" , paths);
             }
             jsonObject.put("title",temp.getTitle());
 

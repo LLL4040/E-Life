@@ -3,6 +3,9 @@
 <!--    <div align="center">-->
 <!--      <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入关键字搜索"/>-->
 <!--    </div>-->
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <el-row :gutter="10" style="padding-top: 20px" v-if="dialogFormVisibleMain">
       <el-col :span="18">
         <div>
@@ -20,8 +23,8 @@
                 <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,20)}}</p>
                 <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
                 <br>
-                <span v-for="x in o.photo" :key="x">
-                  <button @click="show(x)" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                <span v-for="(x, index) in o.photo" :key="index">
+                  <button @click="show(o.path[index])" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
                       <img :src="x" style="width: 100%; height: 100%">
                     </button>
 <!--                <img :src="x" style="width: 30%"/>-->
@@ -73,8 +76,11 @@
               <el-col :span="20" style="float: left">
                 <p style="float:left; font-size: 16px;">{{o.postComment}}</p>
                 <br>
-                <span v-for="x in o.photo" :key="x">
-                  <img :src="x" style="width: 30%"/>
+                <span v-for="(x, index) in o.photo" :key="index">
+                  <button @click="show(o.path[index])" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
+                      <img :src="x" style="width: 100%; height: 100%">
+                    </button>
+                  <!--                <img :src="x" style="width: 30%"/>-->
                 </span>
                 <br>
                 <p style="float: right; font-size: 12px;">{{o.location + '楼，发布于' + o.commentsTime}}</p>
@@ -190,11 +196,15 @@ export default {
     }
   },
   mounted () {
-    this.loadData()
-    this.loadPost()
-    this.formData = new FormData()
+    this.refresh()
   },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadPost()
+      this.formData = new FormData()
+      this.$forceUpdate()
+    },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
       if (this.userInfo.username === '' || this.userInfo.username === null) {
@@ -222,8 +232,6 @@ export default {
       this.formData.set('postContent', this.myPost.content)
       this.formData.set('posterName', this.userInfo.username)
       this.formData.set('communityId', this.userInfo.communityId)
-      console.log(this.formData)
-      console.log(this.formData.get('photo'))
       let url = '/estateforum-server/api/post/addPost'
       this.$axios({
         method: 'post',
@@ -263,12 +271,14 @@ export default {
           for (let i = 1; i < response.data.length; i++) {
             let objproject = {
               'photo': response.data[i].photo,
+              'path': response.data[i].path,
               'title': response.data[i].title,
               'poster': response.data[i].posterName,
               'content': response.data[i].postContent,
               'time': response.data[i].postTime,
               'id': response.data[i].id
             }
+            console.log(objproject.path)
             this.postData.push(objproject)
           }
         }
@@ -286,6 +296,7 @@ export default {
           'commenterName': object.poster,
           'pid': object.id,
           'photo': object.photo,
+          'path': object.path,
           'commentsTime': object.time,
           'postComment': object.content,
           'location': 1
@@ -410,6 +421,7 @@ export default {
       this.imgList.splice(index, 1)
     },
     show (path) {
+      console.log(path)
       let bodyFormData = new FormData()
       bodyFormData.set('path', path)
       let url = '/estateforum-server/api/post/photo'

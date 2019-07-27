@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <div align="center">
       <el-input v-model="search" size="medium" style="width: 300px" suffix-icon="el-icon-search" placeholder="输入用户名关键字搜索"/>
     </div>
@@ -36,7 +39,7 @@
     <el-dialog title="发送通知" :visible.sync="dialogFormVisible">
       <el-form :model="newMessage">
         <el-form-item label="接收人用户名">
-          <el-select v-model="newMessage.user" filterable placeholder="输入小区名称关键字搜索">
+          <el-select v-model="newMessage.user" filterable placeholder="输入用户名关键字搜索">
             <el-option
               v-for="item in userList"
               :key="item.username"
@@ -86,11 +89,15 @@ export default {
     }
   },
   mounted () {
-    this.loadData()
-    this.loadMessage()
-    this.loadUsers()
+    this.refresh()
   },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadMessage()
+      this.loadUsers()
+      this.$forceUpdate()
+    },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
       if (this.userInfo.username === '' || this.userInfo.username === null) {

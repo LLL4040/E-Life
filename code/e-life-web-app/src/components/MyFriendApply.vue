@@ -1,10 +1,13 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="font-size: 16px;">我的申请</span>
+            <span style="font-size: 16px;">我的申请&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <el-button-group>
               <el-button type="success" plain size="small" @click="search = 1">只看已通过</el-button>
               <el-button type="primary" plain size="small" @click="search = 0">只看未处理</el-button>
@@ -79,11 +82,15 @@ export default {
     }
   },
   mounted () {
-    this.loadData()
-    this.loadMy()
-    this.loadOthers()
+    this.refresh()
   },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadMy()
+      this.loadOthers()
+      this.$forceUpdate()
+    },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
       if (this.userInfo.username === '' || this.userInfo.username === null) {

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <div align="center" style="width: 800px; padding-left: 200px">
       <el-carousel indicator-position="outside" :interval="4000" height="250px">
         <el-carousel-item  v-if="typeof notice === 'undefined' || notice.length === 0">
@@ -146,12 +149,16 @@ export default {
     }
   },
   mounted () {
-    this.loadData()
-    this.loadUrgent()
-    this.loadNews()
-    this.loadActivity()
+    this.refresh()
   },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadUrgent()
+      this.loadNews()
+      this.loadActivity()
+      this.$forceUpdate()
+    },
     handleA (row) {
       this.apply.id = row.id
       this.dialogFormVisible = true
@@ -227,7 +234,7 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
-          this.news = response.data
+          this.news = response.data.reverse()
         }
       })
     },
@@ -304,6 +311,7 @@ export default {
       this.$forceUpdate()
     },
     show (row) {
+      console.log(row.path)
       let bodyFormData = new FormData()
       bodyFormData.set('path', row.path)
       let url = '/news-server/api/News/photo'

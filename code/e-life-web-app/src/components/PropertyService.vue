@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <el-row :gutter="10" style="padding-top: 20px">
       <el-col :span="10" align="left">
         <el-card class="box-card" style="font-size: 16px;">
@@ -91,10 +94,14 @@ export default {
     }
   },
   mounted () {
-    this.loadData()
-    this.loadMain()
+    this.refresh()
   },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadMain()
+      this.$forceUpdate()
+    },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')
       if (this.userInfo.username === '' || this.userInfo.username === null) {
@@ -129,7 +136,7 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
-          this.maintain = response.data
+          this.maintain = response.data.reverse()
         }
       })
     },

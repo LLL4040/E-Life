@@ -207,7 +207,28 @@ export default {
       this.tabView = `page${id2}`
     },
     handleModify () {
-      this.dialogFormVisible = false
+      let bodyFormData = new FormData()
+      bodyFormData.set('username', this.userInfo.username)
+      bodyFormData.set('email', this.userInfo.email)
+      let url = '/user-server/api/user/changeEmail'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          if (response.data.change === 1) {
+            this.$alert('修改成功！')
+            sessionStorage.setItem('email', this.userInfo.email)
+            this.dialogFormVisible = false
+          } else {
+            this.$alert('修改失败！请重新登录再试')
+          }
+        }
+      })
     },
     loadData () {
       this.userInfo.username = sessionStorage.getItem('username')

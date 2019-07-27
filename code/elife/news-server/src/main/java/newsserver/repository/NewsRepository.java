@@ -55,7 +55,7 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
      * @param communityId
      * @return
      */
-    @Query(value=" select * from news where community_id=?1 and status=0 order by desc",nativeQuery = true)
+    @Query(value=" select * from news where community_id=?1 and status=0 order by id desc",nativeQuery = true)
     List<News> findNew(int communityId);
 
     /**

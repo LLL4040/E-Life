@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div align="left">
+      <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+    </div>
     <div align="center">
       <el-input v-model="search" size="medium" style="width: 350px" suffix-icon="el-icon-search" placeholder="输入内容关键字筛选"/>
       <el-button style="float: left;" size="medium" type="primary" round @click="dialogFormVisible = true">添加团购</el-button>
@@ -127,7 +130,15 @@ export default {
       }
     }
   },
+  mounted () {
+    this.refresh()
+  },
   methods: {
+    refresh () {
+      this.loadData()
+      this.loadGroup()
+      this.$forceUpdate()
+    },
     loadData () {
       this.form.username = sessionStorage.getItem('username')
       if (this.form.username === '' || this.form.username === null) {
@@ -146,7 +157,7 @@ export default {
     },
     loadGroup () {
       let bodyFormData = new FormData()
-      bodyFormData.set('merchantId', this.form.id)
+      bodyFormData.set('merchantId', parseInt(this.form.id))
       let url = '/group-server/api/discount/findDiscountByMerchantId'
       this.$axios({
         method: 'post',
@@ -244,10 +255,6 @@ export default {
         }
       })
     }
-  },
-  mounted () {
-    this.loadData()
-    this.loadGroup()
   }
 }
 </script>
