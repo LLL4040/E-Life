@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import user.entity.Manager;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author ztHou
@@ -32,6 +33,13 @@ public interface ManagerRepository extends JpaRepository<Manager, String> {
      * @return manager found
      */
     Manager findByUsername(String username);
+
+    /**
+     * find all by community id
+     * @param communityId community id
+     * @return all managers
+     */
+    List<Manager> findAllByCommunityId(Long communityId);
 
     /**
      * find manager by phone
