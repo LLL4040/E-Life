@@ -39,7 +39,7 @@
     <el-dialog title="发送通知" :visible.sync="dialogFormVisible">
       <el-form :model="newMessage">
         <el-form-item label="接收人用户名">
-          <el-select v-model="newMessage.user" filterable placeholder="输入小区名称关键字搜索">
+          <el-select v-model="newMessage.user" filterable placeholder="输入用户名关键字搜索">
             <el-option
               v-for="item in userList"
               :key="item.username"

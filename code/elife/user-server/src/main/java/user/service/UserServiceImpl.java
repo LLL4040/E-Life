@@ -433,4 +433,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public JSONArray getManagers(String communityId){
+        JSONArray jsonArray = new JSONArray();
+        List<Manager> managerList = managerDao.findAllByCommunityId(Long.valueOf(communityId));
+        for(Manager manager : managerList){
+            JSONObject object = new JSONObject();
+            object.put("username", manager.getUsername());
+            object.put("phone", manager.getPhone());
+            object.put("email", manager.getEmail());
+            object.put("status", manager.getRole());
+            jsonArray.appendElement(object);
+        }
+        return jsonArray;
+    }
+
 }

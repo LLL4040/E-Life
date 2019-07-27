@@ -2,6 +2,8 @@ package user.dao;
 
 import user.entity.Manager;
 
+import java.util.List;
+
 /**
  * @author ztHou
  */
@@ -45,6 +47,13 @@ public interface ManagerDao {
      * @return manager found
      */
     Manager findByPhone(String phone);
+
+    /**
+     * find all by community id
+     * @param communityId community id
+     * @return all managers
+     */
+    List<Manager> findAllByCommunityId(Long communityId);
 
     /**
      * delete data from database by username

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import user.entity.Manager;
 import user.repository.ManagerRepository;
 
+import java.util.List;
+
 /**
  * @author ztHou
  */
@@ -39,6 +41,11 @@ public class ManagerDaoImpl implements ManagerDao {
     @Override
     public Manager findByPhone(String phone) {
         return managerRepository.findByPhone(phone);
+    }
+
+    @Override
+    public List<Manager> findAllByCommunityId(Long communityId){
+        return managerRepository.findAllByCommunityId(communityId);
     }
 
     @Override
