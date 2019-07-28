@@ -93,13 +93,13 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
             Expanded(
               child: ListView(
                 children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.fiber_new),
-                  title: const Text('我的周边'),
-                  onTap:  () {
-                    _toMap();
-                  },
-                ),
+//                ListTile(
+//                  leading: const Icon(Icons.fiber_new),
+//                  title: const Text('我的周边'),
+//                  onTap:  () {
+//                    _toMap();
+//                  },
+//                ),
                   ListTile(
                     leading: const Icon(Icons.people_outline),
                     title: const Text('我的好友'),

@@ -18,17 +18,14 @@ class demandHttp {
 
   addDemand(NetListener net, String startTime, String endTime, String content,
       String username, String communityId, String title) {
-    var start  = startTime.split('.');
-    var end = startTime.split('.');
-    print(start[0]);
-    print(end[0]);
+
     var client = new http.Client();
     client.post(
         addDemandUrl,
         body: {
           "username": username,
-          "startTime": start[0],
-          "endTime": end[0],
+          "startTime": startTime,
+          "endTime": endTime,
           "content": content,
           "communityId": communityId,
           "title": title,
@@ -38,7 +35,8 @@ class demandHttp {
         ) {
       print(response.body);
       Map<String,dynamic> responseJson = json.decode(response.body);
-      bool success = responseJson.containsValue("1");
+      bool success = (responseJson["add"]==1);
+      //print(success.toString()+"是否成功");
       net.onAddDemandResponse(success);
     }, onError: (error) {
       net.onError(error);

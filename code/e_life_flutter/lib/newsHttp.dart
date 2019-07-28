@@ -11,7 +11,7 @@ class httpManager {
 
   var joinUrl = "http://elife.natapp1.cc/news-server/api/Activity/saveParticipator";
 
-  var photoUrl= "http://elife.natapp1.cc/news-server/api/Activity/getBigPhoto";
+  var photoUrl= "http://elife.natapp1.cc/news-server/api/Activity/photo";
 
 
   getUrgent(NetListener net,String communityId) {
@@ -105,6 +105,7 @@ class httpManager {
 
   getPhoto(NetListener net,String path) {
     var client = new http.Client();
+
     client.post(
         photoUrl,
         body: {
@@ -113,8 +114,11 @@ class httpManager {
     ).then((
         response,
         ) {
-      Map<String,String> responseJson = json.decode(response.body);
+      Map<String,dynamic> responseJson = json.decode(response.body);
+      //await new Future.delayed(new Duration(milliseconds: 1500));
       String photo = responseJson["photo"];
+      //print(photo);
+      //print(response.body);
       //print(jsonDecode(response.body));
       net.onPhotoResponse(photo);
 

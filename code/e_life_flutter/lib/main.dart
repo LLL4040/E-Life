@@ -135,6 +135,9 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                             new MaterialPageRoute(
                                 builder: (context) => new BottomNavigationWidget(model.user.username,model.user.communityId.toString(),model.user.role.toString())),
                                 (route) => route == null);
+                        showToast("登录成功");
+                      }else{
+                        showToast("登录失败");
                       }
 
                     }),
@@ -241,8 +244,8 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                           ],
                         ),
                         loginSection,
-                        quickLogibSession,
-                        forgetSession,
+                        //quickLogibSession,
+                        //forgetSession,
                         new Padding(
                           padding:
                               new EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 40.0),
