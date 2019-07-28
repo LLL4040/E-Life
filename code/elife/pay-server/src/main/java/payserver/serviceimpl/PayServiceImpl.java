@@ -244,9 +244,9 @@ public class PayServiceImpl implements PayService {
                 out.println("success");
             }
             //e_life 业务逻辑
-            out.println("trade_no:"+trade_no+"<br/>out_trade_no:"+out_trade_no+"<br/>total_amount:"+total_amount);
+            out.println("支付成功！请关闭当前页面");
         }else {
-            out.println("fail");
+            out.println("支付失败！");
         }
         //——请在这里编写您的程序（以上代码仅作参考）——
     }
