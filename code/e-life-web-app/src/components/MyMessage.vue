@@ -86,7 +86,7 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
-          this.messages = response.data
+          this.messages = response.data.reverse()
         }
       })
     },

@@ -234,7 +234,7 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
-          this.news = response.data.reverse()
+          this.news = response.data
         }
       })
     },
