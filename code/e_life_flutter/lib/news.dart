@@ -27,6 +27,7 @@ class Choice {
 class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, NetListener{
   final communityId;
   final username;
+  String bigphoto;
   myWidget(this.communityId,this.username);
   List<urgent> urgentList=[];
   List<News> newsList=[];
@@ -70,7 +71,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
     });
   }
   //活动通知初始化的函数
-  Widget _getActivity(int id,String title, String photo,String content,String startTime,String endTime,int status) {
+  Widget _getActivity(int id,String title, String photo,String content,String startTime,String endTime,int status,String path) {
     String activity = status==0?"报名中":"已结束";
     return  new ListTile(
       leading: Image.memory(
@@ -90,17 +91,50 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
           new Text(endTime),
           new Text(content),
           new Text(activity),
+
         ],
       ),
-      trailing: new Icon(Icons.add_circle,color:Colors.black54 ,),
-      onTap: () {
-        _joinActivity(id);
+      trailing: IconButton(
+        icon: new Icon(Icons.add_circle),
+        onPressed: ()async {
+          _joinActivity(id);
+        },
+      ),
+      onTap: ()async {
+        print("路径为"+path);
+        manager.getPhoto(this, path);
+        await new Future.delayed(new Duration(milliseconds: 1500));
+        //print("前端收到的图片为"+bigphoto);
+        String tmp = bigphoto.split(',')[1];
+        setState(() {
+          bigphoto="";
+        });
+
+        return showDialog<Null>(
+          context: context,
+            builder: (BuildContext context){
+            return new SimpleDialog(
+
+              children: <Widget>[
+                Image.memory(
+                  base64.decode(
+                      tmp),
+                  height:200,    //设置高度
+                  width:200,    //设置宽度
+                  fit: BoxFit.fill,    //填充
+                  gaplessPlayback:true, //防止重绘
+
+                ),
+              ],
+            );
+            }
+        );
       },
       dense: true,
     );
   }
 //最新资讯初始化的函数
-  Widget _getNews(String photo, String title,String time,String content) {
+  Widget _getNews(String photo, String title,String time,String content,String path) {
 
     return new ListTile(
       leading: Image.memory(
@@ -129,8 +163,36 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
         ],
       ),
 
-      onTap: () {
-        print('点击');
+      onTap: ()async {
+        print("路径为"+path);
+        manager.getPhoto(this, path);
+        await new Future.delayed(new Duration(milliseconds: 1500));
+        //print("前端收到的图片为"+bigphoto);
+        String tmp = bigphoto.split(',')[1];
+        setState(() {
+          bigphoto='';
+        });
+
+        return showDialog<Null>(
+            context: context,
+
+            builder: (BuildContext context){
+              return new SimpleDialog(
+
+                children: <Widget>[
+                  Image.memory(
+                    base64.decode(
+                        tmp),
+                    height:200,    //设置高度
+                    width:200,    //设置宽度
+                    fit: BoxFit.fill,    //填充
+                    gaplessPlayback:true, //防止重绘
+
+                  ),
+                ],
+              );
+            }
+        );
       },
       dense: true,
     );
@@ -190,13 +252,13 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
     }
     if(newsList.length>0){
       for(int i=0;i<newsList.length;i++){
-        Widget news1 = _getNews(newsList[i].photo, newsList[i].title, newsList[i].time, newsList[i].content);
+        Widget news1 = _getNews(newsList[i].photo, newsList[i].title, newsList[i].time, newsList[i].content,newsList[i].path);
         news.add(news1);
       }
     }
     if(activityList.length>0){
       for(int i=0;i<activityList.length;i++){
-        Widget activity1 = _getActivity(activityList[i].id,activityList[i].title,activityList[i].photo, activityList[i].content, activityList[i].startTime, activityList[i].endTime,activityList[i].status);
+        Widget activity1 = _getActivity(activityList[i].id,activityList[i].title,activityList[i].photo, activityList[i].content, activityList[i].startTime, activityList[i].endTime,activityList[i].status,activityList[i].path);
         activitys.add(activity1);
       }
     }
@@ -350,7 +412,10 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
   }
   @override
   void onPhotoResponse(String photo){
+     bigphoto = photo;
+     setState(() {
 
+     });
   }
 }
 
