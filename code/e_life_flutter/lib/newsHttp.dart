@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class httpManager {
 
-  var urgentUrl = "http://elife.natapp1.cc/news-server/api/Urgent/findHistory";
+  var urgentUrl = "http://zhimo.natapp1.cc/news-server/api/Urgent/findHistory";
 
-  var newsUrl = "http://elife.natapp1.cc/news-server/api/News/findNews";
+  var newsUrl = "http://zhimo.natapp1.cc/news-server/api/News/findNews";
 
-  var activityUrl = "http://elife.natapp1.cc/news-server/api/Activity/findNewActivity";
+  var activityUrl = "http://zhimo.natapp1.cc/news-server/api/Activity/findNewActivity";
 
-  var joinUrl = "http://elife.natapp1.cc/news-server/api/Activity/saveParticipator";
+  var joinUrl = "http://zhimo.natapp1.cc/news-server/api/Activity/saveParticipator";
 
-  var photoUrl= "http://elife.natapp1.cc/news-server/api/Activity/photo";
+  var photoUrl= "http://zhimo.natapp1.cc/news-server/api/Activity/photo";
 
 
   getUrgent(NetListener net,String communityId) {

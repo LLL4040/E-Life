@@ -77,7 +77,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
       leading: Image.memory(
         base64.decode(
             photo.split(',')[1]),
-        height:80,    //设置高度
+        height:100,    //设置高度
         width:80,    //设置宽度
         fit: BoxFit.fill,    //填充
         gaplessPlayback:true, //防止重绘
@@ -143,7 +143,7 @@ class myWidget extends State<newswidget> with SingleTickerProviderStateMixin, Ne
 
             photo.split(',')[1]),
 
-        height:80,    //设置高度
+        height:100,    //设置高度
 
         width:80,    //设置宽度
 

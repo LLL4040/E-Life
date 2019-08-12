@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class payHttp {
 
-  var myBillUrl = "http://elife.natapp1.cc/pay-server/api/Pay/findNew";
+  var myBillUrl = "http://zhimo.natapp1.cc/pay-server/api/Pay/findNew";
 
 
 
