@@ -178,7 +178,7 @@ export default {
       let bodyFormData = new FormData()
       bodyFormData.set('startTime', this.time[0])
       bodyFormData.set('endTime', this.time[1])
-      bodyFormData.set('merchantId', this.form.id)
+      bodyFormData.set('merchantId', parseInt(this.form.id))
       bodyFormData.set('number', this.commands.num)
       bodyFormData.set('content', this.commands.content)
       bodyFormData.set('status', 1)

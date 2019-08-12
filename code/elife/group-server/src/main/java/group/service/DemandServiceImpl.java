@@ -61,6 +61,7 @@ public class DemandServiceImpl implements DemandService{
         String dateTime = df.format(new Date());
         List<Demand> demandList = demandDao.findAllByEndTimeAfterAndCommunityId(dateTime, communityId);
         for(Demand demand: demandList){
+            System.out.println(demand.getId());
             JSONObject object = new JSONObject();
             object.put("id", demand.getId());
             object.put("start", demand.getStartTime());
