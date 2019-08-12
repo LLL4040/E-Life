@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'bottom_navigation_widget.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'postDetail.dart';
+import 'post/postDetail.dart';
 import 'news.dart';
 
 class mainpage extends StatefulWidget {
