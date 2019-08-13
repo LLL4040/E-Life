@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'bottom_navigation_widget.dart';
+import '../bottom_navigation_widget.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'post/postDetail.dart';
+import '../post/postDetail.dart';
+import 'HeadImageUploadPage.dart';
 import 'news.dart';
 
 class mainpage extends StatefulWidget {
@@ -43,6 +44,9 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
         print(title);
+        Navigator.push<String>(context, new MaterialPageRoute(builder: (context) {
+          return new HeadImageUploadPage();
+        }));
       },
       dense: true,
     );

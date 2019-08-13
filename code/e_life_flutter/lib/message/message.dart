@@ -1,10 +1,9 @@
-import 'package:e_life_flutter/noticehttp.dart';
+import 'package:e_life_flutter/message/noticehttp.dart';
 import 'package:flutter/material.dart';
-import 'noticehttp.dart';
-import 'user.dart';
+import '../user.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:e_life_flutter/packagehttp.dart';
+import 'package:e_life_flutter/message//packagehttp.dart';
 
 class message extends StatefulWidget {
   final username;
