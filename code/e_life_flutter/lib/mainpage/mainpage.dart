@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../bottom_navigation_widget.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import '../post/postDetail.dart';
+import 'postDetail.dart';
+import 'package:e_life_flutter/mainpage/estateforumhttp.dart';
 import 'HeadImageUploadPage.dart';
 import 'news.dart';
 
@@ -21,17 +22,20 @@ class Choice {
   final IconData icon;
 }
 
-class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin {
+class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin,NetListener  {
   final communityId;
   final username;
   mainpageWidget(this.communityId,this.username);
-
+  estateforumHttp  manager = new estateforumHttp();
   List<Choice> tabs = [];//导航栏
   TabController mTabController;
   int mCurrentPosition = 0;
-  List<Widget> widgetList = [];//要显示的下方组件
+
+  List<Post> postList = [];
+
 
   Widget _getpost(String name, String time,String title  ) {
+
     return  new ListTile(
       leading: new Text(name),
       title: new Text(title),
@@ -51,22 +55,39 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
       dense: true,
     );
   }
+  List<Widget> forums = [];
+  // 从 itemBuilder 调用的独立函数
+  Widget buildforumBody(BuildContext ctxt, int index) {
+    return forums[index];
+  }
+
 
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> forums = [];
 
-    Widget post1 = _getpost("小王", "2019/5/7", "有人一起赏月吗");
-    Widget post2 = _getpost("老王", "2019/5/7", "有人一起逛街吗");
+    forums =[];
+//    Widget post1 = _getpost("小王", "2019/5/7", "有人一起赏月吗");
+//    Widget post2 = _getpost("老王", "2019/5/7", "有人一起逛街吗");
+    if (postList.length > 0) {
+      print("加载帖子成功");
+      for (int i = 1; i < postList.length; i++) {
+        print(postList[i].posterName);
+        print(postList[i].postTime);
+        print(postList[i].title);
+        Widget post5 = _getpost(postList[i].posterName, postList[i].postTime,
+            postList[i].title);
 
-    forums.add(post1);
-    forums.add(post2);
+        forums.add(post5);
+      }
+      setState(() {
 
-    // 从 itemBuilder 调用的独立函数
-    Widget buildforumBody(BuildContext ctxt, int index) {
-      return forums[index];
+      });
     }
+//    forums.add(post1);
+//    forums.add(post2);
+
+
     //小区资讯界面
     Widget newsContain = new newswidget(communityId,username);
     //小区论坛界面
@@ -77,6 +98,9 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
           itemBuilder: (BuildContext ctxt, int index) => buildforumBody(ctxt, index)
       ) ,
     );
+/**
+ * 尤其注意，这个顺序变了之后可能导致数据显示不正常，不能及时渲染*/
+    List<Widget> widgetList = [];//!!!要显示的下方组件
     widgetList.add(newsContain);
     widgetList.add(forumConatin);
 
@@ -125,10 +149,15 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
     );
 
   }
-
+  _getPost()async{
+    print("aaaaaaaaa");
+    await manager.getPostList(this, communityId, "1", "100");
+    return true;
+  }
   @override
   void initState() {
     super.initState();
+    _getPost();
     tabs.add(Choice(title: '资讯', icon: Icons.fiber_new, position: 0));
     tabs.add(Choice(title: '论坛', icon: Icons.message, position: 1));
     mTabController = new TabController(vsync: this, length: tabs.length);
@@ -147,5 +176,27 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
     super.dispose();
     mTabController.dispose();
   }
+  @override
+  void onAllPostResponse(List<Post> body){
+    postList = body;
+    setState(() {
 
+    });
+  }
+  @override
+  void onAllCommentsResponse(List<Comment> commentList){
+
+  }
+  @override
+  void onAddComment(bool success){
+
+  }
+  @override
+  void onDeleteComment(bool success){
+
+  }
+  @override
+  void onError(error){
+
+  }
 }

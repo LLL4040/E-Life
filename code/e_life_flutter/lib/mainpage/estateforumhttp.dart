@@ -5,13 +5,13 @@ class estateforumHttp {
 
 
 
-  var getPostUrl= "http://elife.natapp1.cc/estateforum-server/api/post/findPost";
+  var getPostUrl= "http://zhimo.natapp1.cc/estateforum-server/api/post/findPost";
 
-  var getCommentsUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/findComments";
+  var getCommentsUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/findComments";
 
-  var addCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/addComments";
+  var addCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/addComments";
 
-  var deleteCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/deleteComments";
+  var deleteCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/deleteComments";
 
 
   getPostList(NetListener net,String communityId,String page,String size) {
@@ -109,7 +109,7 @@ abstract class NetListener {
 
 
 
-  void onAllPostResponse(List<Post> postList);
+  void onAllPostResponse(List<Post> body);
   void onAllCommentsResponse(List<Comment> commentList);
   void onAddComment(bool success);
   void onDeleteComment(bool success);
@@ -147,6 +147,7 @@ class Post{
       title: json['title'],
       communityId: json['communityId'],
       photo: json['photo'],
+      //photo: null,
     );
   }
 }
