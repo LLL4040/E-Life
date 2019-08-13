@@ -267,7 +267,7 @@ export default {
           this.$router.push({ name: 'Login' })
         } else {
           this.postData = []
-          this.total2 = response.data[0].pageNum
+          this.total1 = response.data[0].pageNum
           for (let i = 1; i < response.data.length; i++) {
             let objproject = {
               'photo': response.data[i].photo,
