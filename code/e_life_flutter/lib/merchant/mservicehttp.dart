@@ -1,48 +1,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-class demandHttp {
-
-  var addDemandUrl = "http://zhimo.natapp1.cc/group-server/api/demand/addDemand";
-
-  var allDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/getAllDemand";
-
-  var joinDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/participateDemand";
-
-  var quitDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/quitDemand";
-
-  var getDiscountUrl= "http://zhimo.natapp1.cc/group-server/api/discount/findDiscountByCommunityId";
+class mServiceHttp {
 
 
+  var allDemandUrl= "http://elife.natapp1.cc/group-server/api/demand/getAllDemand";
 
-  addDemand(NetListener net, String startTime, String endTime, String content,
-      String username, String communityId, String title) {
+  var getDiscountUrl= "http://elife.natapp1.cc/group-server/api/discount/findDiscountByMerchantId";
 
-    var client = new http.Client();
-    client.post(
-        addDemandUrl,
-        body: {
-          "username": username,
-          "startTime": startTime,
-          "endTime": endTime,
-          "content": content,
-          "communityId": communityId,
-          "title": title,
-        }
-    ).then((
-        response,
-        ) {
-      print(response.body);
-      Map<String,dynamic> responseJson = json.decode(response.body);
-      bool success = (responseJson["add"]==1);
-      //print(success.toString()+"是否成功");
-      net.onAddDemandResponse(success);
-    }, onError: (error) {
-      net.onError(error);
-    }).whenComplete(
-      client.close,
-    );
-  }
+  var getBargainUrl = "http://elife.natapp1.cc/group-server/api/bargain/getBargainByMerchantId";
 
 
   getDemandList(NetListener net,String communityId) {
@@ -67,54 +33,12 @@ class demandHttp {
     );
   }
 
-
-  participantDemand(NetListener net,String username,String id) {
-    var client = new http.Client();
-    client.post(
-        joinDemandUrl,
-        body: {
-          "username": username,
-          "id": id,
-        }
-    ).then((
-        response,
-        ) {
-      Map<String,dynamic> responseJson = json.decode(response.body);
-      bool success = responseJson.containsValue("1");
-      net.onParticipateDemandResponse(success);
-    }, onError: (error) {
-      net.onError(error);
-    }).whenComplete(
-      client.close,
-    );
-  }
-
-  quitDemand(NetListener net,String username,String id) {
-    var client = new http.Client();
-    client.post(
-        quitDemandUrl,
-        body: {
-          "username": username,
-          "id": id,
-        }
-    ).then((
-        response,
-        ) {
-      Map<String,dynamic> responseJson = json.decode(response.body);
-      bool success = responseJson.containsValue("1");
-      net.onQuitDemandResponse(success);
-    }, onError: (error) {
-      net.onError(error);
-    }).whenComplete(
-      client.close,
-    );
-  }
-  getDiscountList(NetListener net,String communityId) {
+   getDiscountList(NetListener net,String merchantId) {
     var client = new http.Client();
     client.post(
         getDiscountUrl,
         body: {
-          "communityId": communityId,
+          "merchantId": merchantId,
         }
     ).then((
         response,
@@ -131,6 +55,28 @@ class demandHttp {
     );
   }
 
+  getBargainList(NetListener net,String merchantId){
+    var client = new http.Client();
+    client.post(
+        getBargainUrl,
+        body: {
+          "merchantId": merchantId,
+        }
+    ).then((
+        response,
+        ) {
+      print(response.body);
+      print(jsonDecode(response.body));
+      List responseJson = json.decode(response.body);
+      List<Bargain> bargain = responseJson.map((m) => new Bargain.fromJson(m)).toList();
+      net.onAllBargainResponse(bargain);
+    }, onError: (error) {
+      net.onError(error);
+    }).whenComplete(
+      client.close,
+    );
+  }
+
 }
 
 /**
@@ -138,11 +84,10 @@ class demandHttp {
  */
 abstract class NetListener {
 
-  void onAddDemandResponse(bool success);
+
   void onAllDemandResponse(List<Demand> demandList);
-  void onParticipateDemandResponse(bool success);
-  void onQuitDemandResponse(bool success);
   void onAllDiscountResponse(List<Discount> discountList);
+  void onAllBargainResponse(List<Bargain> bargain);
   void onError(error);
 }
 
@@ -222,6 +167,54 @@ class Discount{
       communityId: json['communityId'],
       path: json['path'],
       photo: json['photo'],
+    );
+  }
+}
+
+class Bargain{
+  final String id;
+  final String start;
+  final String end;
+  final String goods;
+  final String title;
+  final String content;
+  final int mId;
+  final String merchantName;
+  final String address;
+  final int status;
+  final int communityId;
+
+
+
+  Bargain({
+    this.id,
+    this.start,
+    this.end,
+    this.mId,
+    this.title,
+    this.content,
+    this.status,
+    this.communityId,
+    this.address,
+    this.goods,
+    this.merchantName
+
+  }) ;
+
+  factory Bargain.fromJson(Map<String, dynamic> json){
+    return new Bargain(
+      id: json['id'].toString(),
+      start: json['start'],
+      end: json['end'],
+      mId: json['merchantId'],
+      title: json['title'],
+      content: json['content'],
+      status: json['status'],
+      communityId: json['communityId'],
+      goods: json['goods'],
+      merchantName: json['name'],
+      address: json['address'],
+
     );
   }
 }
