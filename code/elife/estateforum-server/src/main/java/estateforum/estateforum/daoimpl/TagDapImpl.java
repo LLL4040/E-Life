@@ -28,9 +28,14 @@ public class TagDapImpl implements TagDao {
     }
 
     @Override
-    public Boolean addTagNum(String tag){
+    public List<Tag> getAllTagsByCommunityId(Long communityId){
+        return tagRepository.findAllByCommunityId(communityId);
+    }
+
+    @Override
+    public Boolean addTagNum(String tag, Long communityId){
         try{
-            Tag tagAdd = tagRepository.findTagByContent(tag);
+            Tag tagAdd = tagRepository.findTagByContentAndCommunityId(tag, communityId);
             tagAdd.setNum(tagAdd.getNum() + 1);
             tagRepository.save(tagAdd);
             return true;
@@ -40,15 +45,15 @@ public class TagDapImpl implements TagDao {
     }
 
     @Override
-    public Boolean reduceTagNum(String tag){
+    public Boolean reduceTagNum(String tag, Long communityId){
         try{
-            Tag tagAdd = tagRepository.findTagByContent(tag);
-            Integer num = tagAdd.getNum() - 1;
+            Tag tagReduce = tagRepository.findTagByContentAndCommunityId(tag, communityId);
+            int num = tagReduce.getNum() - 1;
             if(num == 0){
-                tagRepository.deleteTagByContent(tag);
+                tagRepository.deleteTagByContentAndCommunityId(tag, communityId);
             } else {
-                tagAdd.setNum(num);
-                tagRepository.save(tagAdd);
+                tagReduce.setNum(num);
+                tagRepository.save(tagReduce);
             }
             return true;
         }catch (Exception e){

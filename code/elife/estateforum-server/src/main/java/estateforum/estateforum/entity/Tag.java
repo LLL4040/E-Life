@@ -19,6 +19,8 @@ public class Tag {
 
     private Integer num;
 
+    private Long communityId;
+
     public Tag(){
     }
 
@@ -51,4 +53,11 @@ public class Tag {
         this.num = num;
     }
 
+    public Long getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(Long communityId) {
+        this.communityId = communityId;
+    }
 }

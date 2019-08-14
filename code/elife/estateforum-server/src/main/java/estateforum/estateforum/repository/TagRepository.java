@@ -12,23 +12,33 @@ import java.util.List;
  */
 public interface TagRepository extends MongoRepository<Tag, String> {
     /**
-     * find tag by content
+     * find tag by content in community with id
      * @param content tag content
+     * @param communityId community id
      * @return tag
      */
-    Tag findTagByContent(String content);
+    Tag findTagByContentAndCommunityId(String content, Long communityId);
 
     /**
-     * whether exists tag by content
+     * find tags in community
+     * @param communityId community id
+     * @return tags in community
+     */
+    List<Tag> findAllByCommunityId(Long communityId);
+
+    /**
+     * whether exists tag by content in community with id
      * @param content tag content
+     * @param communityId community id
      * @return whether exists tag by content
      */
-    Boolean existsTagByContent(String content);
+    Boolean existsTagByContentAndCommunityId(String content, Long communityId);
 
     /**
-     * delete tag by content
+     * delete tag by content and community id
      * @param content tag content
+     * @param communityId community id
      */
     @Transactional(rollbackOn = Exception.class)
-    void deleteTagByContent(String content);
+    void deleteTagByContentAndCommunityId(String content, Long communityId);
 }
