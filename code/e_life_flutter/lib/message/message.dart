@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../user.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:e_life_flutter/message//packagehttp.dart';
+import 'package:e_life_flutter/message/packagehttp.dart';
 
 class message extends StatefulWidget {
   final username;

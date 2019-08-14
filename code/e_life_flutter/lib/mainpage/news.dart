@@ -44,21 +44,44 @@ class myWidget extends State<newswidget>
 
   //紧急通知初始化的函数
   Widget _getUrgent(String time, String managerName, String content) {
-    return new ListTile(
-      leading: new Icon(Icons.nature_people),
-      title: new Text(managerName),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(time),
-          new Text(content),
-        ],
-      ),
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+//        elevation: 15.0, //设置阴影
+//        shape: const RoundedRectangleBorder(
+//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            new ListTile(
+              leading: new Icon(Icons.nature_people),
+              title: new Text(managerName),
+              subtitle: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(time),
+                  new Text(content),
+                ],
+              ),
 
-      onTap: () {
-        print(content);
-      },
-      //dense: true,
+              onTap: () {
+                print(content);
+              },
+              //dense: true,
+            ),
+            //new Divider(),
+
+//            new ListTile(
+//              title: new Text('图片区域'),
+//              leading: new Icon(
+//                Icons.photo,
+//                color: Colors.blue[500],
+//              ),
+//
+//            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -76,122 +99,167 @@ class myWidget extends State<newswidget>
   Widget _getActivity(int id, String title, String photo, String content,
       String startTime, String endTime, int status, String path) {
     String activity = status == 0 ? "报名中" : "已结束";
-    return new ListTile(
-      leading: Image.memory(
-        base64.decode(photo.split(',')[1]),
-        height: 100, //设置高度
-        width: 80, //设置宽度
-        fit: BoxFit.fill, //填充
-        gaplessPlayback: true, //防止重绘
-      ),
-      title: new Text(title),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(startTime),
-          new Text(endTime),
-          new Text(content),
-          new Text(activity),
-        ],
-      ),
-      trailing: RaisedButton(
-        color: Colors.blue,
-        highlightColor: Colors.blue[700],
-        colorBrightness: Brightness.dark,
-        splashColor: Colors.grey,
-        child: Text("参加"),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        onPressed: () async {
-          _joinActivity(id);
-        },
-
-
-      ),
-
-      onTap: () async {
-        print("路径为" + path);
-        manager.getPhoto(this, path);
-        await new Future.delayed(new Duration(milliseconds: 1500));
-        //print("前端收到的图片为"+bigphoto);
-        String tmp = bigphoto.split(',')[1];
-        setState(() {
-          bigphoto = "";
-        });
-
-        return showDialog<Null>(
-            context: context,
-            builder: (BuildContext context) {
-              return new SimpleDialog(
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+//        elevation: 15.0, //设置阴影
+//        shape: const RoundedRectangleBorder(
+//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            new ListTile(
+              leading: Image.memory(
+                base64.decode(photo.split(',')[1]),
+                height: 100, //设置高度
+                width: 80, //设置宽度
+                fit: BoxFit.fill, //填充
+                gaplessPlayback: true, //防止重绘
+              ),
+              title: new Text(title),
+              subtitle: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Image.memory(
-                    base64.decode(tmp),
-                    height: 200, //设置高度
-                    width: 200, //设置宽度
-                    fit: BoxFit.fill, //填充
-                    gaplessPlayback: true, //防止重绘
-                  ),
+                  new Text(startTime),
+                  new Text(endTime),
+                  new Text(content),
+                  new Text(activity),
                 ],
-              );
-            });
-      },
-      //dense: true,
+              ),
+              trailing: null,
+              onTap: () async {
+                print("路径为" + path);
+                manager.getPhoto(this, path);
+                await new Future.delayed(new Duration(milliseconds: 1500));
+                //print("前端收到的图片为"+bigphoto);
+                String tmp = bigphoto.split(',')[1];
+                setState(() {
+                  bigphoto = "";
+                });
+
+                return showDialog<Null>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return new SimpleDialog(
+                        children: <Widget>[
+                          Image.memory(
+                            base64.decode(tmp),
+                            height: 200, //设置高度
+                            width: 200, //设置宽度
+                            fit: BoxFit.fill, //填充
+                            gaplessPlayback: true, //防止重绘
+                          ),
+                        ],
+                      );
+                    });
+              },
+              //dense: true,
+            ),
+            //new Divider(),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                new Padding(padding: new EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0)),
+                RaisedButton(
+                  color: Colors.green,
+                  highlightColor: Colors.green[700],
+                  colorBrightness: Brightness.dark,
+                  splashColor: Colors.grey,
+                  child: Text("参加"),
+                  shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                  onPressed: () async {
+                    _joinActivity(id);
+                  },
+                ),
+                new Padding(padding: new EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0)),
+              ],
+            )
+          ],
+        ),
+      ),
     );
+
   }
 
 //最新资讯初始化的函数
   Widget _getNews(
       String photo, String title, String time, String content, String path) {
-    return new ListTile(
-      leading: Image.memory(
-        base64.decode(photo.split(',')[1]),
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+//        elevation: 15.0, //设置阴影
+//        shape: const RoundedRectangleBorder(
+//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            new ListTile(
+              leading: Image.memory(
+                base64.decode(photo.split(',')[1]),
 
-        height: 100, //设置高度
+                height: 100, //设置高度
 
-        width: 80, //设置宽度
+                width: 80, //设置宽度
 
-        fit: BoxFit.fill, //填充
+                fit: BoxFit.fill, //填充
 
-        gaplessPlayback: true, //防止重绘
-      ),
-      //title: new Text(photo),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(title),
-          new Text(time),
-          new Text(content),
-        ],
-      ),
-
-      onTap: () async {
-        print("路径为" + path);
-        manager.getPhoto(this, path);
-        await new Future.delayed(new Duration(milliseconds: 1500));
-        //print("前端收到的图片为"+bigphoto);
-        String tmp = bigphoto.split(',')[1];
-        setState(() {
-          bigphoto = '';
-        });
-
-        return showDialog<Null>(
-            context: context,
-            builder: (BuildContext context) {
-              return new SimpleDialog(
+                gaplessPlayback: true, //防止重绘
+              ),
+              //title: new Text(photo),
+              subtitle: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Image.memory(
-                    base64.decode(tmp),
-                    height: 200, //设置高度
-                    width: 200, //设置宽度
-                    fit: BoxFit.fill, //填充
-                    gaplessPlayback: true, //防止重绘
-                  ),
+                  new Text(title),
+                  new Text(time),
+                  new Text(content),
                 ],
-              );
-            });
-      },
-      //dense: true,
+              ),
+
+              onTap: () async {
+                print("路径为" + path);
+                manager.getPhoto(this, path);
+                await new Future.delayed(new Duration(milliseconds: 1500));
+                //print("前端收到的图片为"+bigphoto);
+                String tmp = bigphoto.split(',')[1];
+                setState(() {
+                  bigphoto = '';
+                });
+
+                return showDialog<Null>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return new SimpleDialog(
+                        children: <Widget>[
+                          Image.memory(
+                            base64.decode(tmp),
+                            height: 200, //设置高度
+                            width: 200, //设置宽度
+                            fit: BoxFit.fill, //填充
+                            gaplessPlayback: true, //防止重绘
+                          ),
+                        ],
+                      );
+                    });
+              },
+              //dense: true,
+            ),
+            //new Divider(),
+
+//            new ListTile(
+//              title: new Text('图片区域'),
+//              leading: new Icon(
+//                Icons.photo,
+//                color: Colors.blue[500],
+//              ),
+//
+//            ),
+          ],
+        ),
+      ),
     );
+
   }
 
   List<Choice> tabs = []; //导航栏
