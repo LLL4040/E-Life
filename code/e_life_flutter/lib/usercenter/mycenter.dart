@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'map.dart';
+import '../map.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'user.dart';
+import '../user.dart';
 import 'package:e_life_flutter/friends/friend.dart';
-import 'main.dart';
+import '../main.dart';
 
 
 class mycenter extends StatefulWidget {

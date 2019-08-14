@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:oktoast/oktoast.dart';
 
 class HeadImageUploadPage extends StatefulWidget {
   @override
@@ -55,12 +56,10 @@ class _HeadImageUploadPageState extends State<HeadImageUploadPage> {
 
     Dio dio = new Dio();
     //改成你的内网穿透网址
-    var respone = await dio.post<String>("http://elife.natapp1.cc/news-server/api/News/saveNews/", data: formData);
+    var respone = await dio.post<String>("http://zhimo.natapp1.cc/news-server/api/News/saveNews/", data: formData);
     if (respone.statusCode == 200) {
-      Fluttertoast.showToast(
-          msg: "图片上传成功",
-          gravity: ToastGravity.CENTER,
-          textColor: Colors.grey);
+      showToast("图片上传成功");
+    print("图片上传成功");
     }
   }
 }

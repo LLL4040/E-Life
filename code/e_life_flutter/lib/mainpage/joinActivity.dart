@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'user.dart';
-import 'newsHttp.dart';
+import '../user.dart';
+import 'newshttp.dart';
 import 'package:oktoast/oktoast.dart';
 
 class joinActivity extends StatefulWidget {

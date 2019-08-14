@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class comsupHttp {
 
-  var myComputerUrl = "http://elife.natapp1.cc/user-server/api/merchant/findAllByType";
+  var myComputerUrl = "http://zhimo.natapp1.cc/user-server/api/merchant/findAllByType";
 
-  var mySupermarketUrl = "http://elife.natapp1.cc/user-server/api/merchant/findAllByType";
+  var mySupermarketUrl = "http://zhimo.natapp1.cc/user-server/api/merchant/findAllByType";
 
 
 

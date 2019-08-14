@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'demandhttp.dart';
-import 'user.dart';
+import '../user.dart';
 import 'dart:convert';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:oktoast/oktoast.dart';

@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class demandHttp {
 
-  var addDemandUrl = "http://elife.natapp1.cc/group-server/api/demand/addDemand";
+  var addDemandUrl = "http://zhimo.natapp1.cc/group-server/api/demand/addDemand";
 
-  var allDemandUrl= "http://elife.natapp1.cc/group-server/api/demand/getAllDemand";
+  var allDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/getAllDemand";
 
-  var joinDemandUrl= "http://elife.natapp1.cc/group-server/api/demand/participateDemand";
+  var joinDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/participateDemand";
 
-  var quitDemandUrl= "http://elife.natapp1.cc/group-server/api/demand/quitDemand";
+  var quitDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/quitDemand";
 
-  var getDiscountUrl= "http://elife.natapp1.cc/group-server/api/discount/findDiscountByCommunityId";
+  var getDiscountUrl= "http://zhimo.natapp1.cc/group-server/api/discount/findDiscountByCommunityId";
 
 
 

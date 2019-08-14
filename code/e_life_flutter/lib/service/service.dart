@@ -1,7 +1,7 @@
 import 'package:e_life_flutter/service/pay.dart';
 import 'package:flutter/material.dart';
 import 'repair.dart';
-import 'package:e_life_flutter/group.dart';
+import 'package:e_life_flutter/service/group.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:e_life_flutter/user.dart';
 import 'supermarket.dart';
