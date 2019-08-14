@@ -20,11 +20,12 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
   final username;
   joinActivityWidget(this.id,this.username);
   httpManager manager = new httpManager();
+  final TextEditingController _contentController =
+  new TextEditingController.fromValue(new TextEditingValue(text: ""));
   @override
   Widget build(BuildContext context) {
 
-    final TextEditingController _contentController =
-    new TextEditingController.fromValue(new TextEditingValue(text: ""));
+
 
     return  ScopedModelDescendant<UserModel>(
         builder: (context, child, model) {
