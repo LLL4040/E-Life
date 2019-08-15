@@ -24,9 +24,10 @@ public class Tag {
     public Tag(){
     }
 
-    public Tag(String content, Integer num){
+    public Tag(String content, Integer num, Long communityId){
         this.content = content;
         this.num = num;
+        this.communityId = communityId;
     }
 
     public String getId() {

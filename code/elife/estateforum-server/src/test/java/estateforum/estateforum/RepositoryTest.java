@@ -25,7 +25,7 @@ public class RepositoryTest {
     private PostCommentsRepository postCommentsRepository;
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String postTime = df.format(new Date());
-    private Post post= new Post("赏月","有小伙伴一起赏月的吗",postTime,"二郎神",1,null);
+    private Post post= new Post("赏月","tag","有小伙伴一起赏月的吗",postTime,"二郎神",1,null);
 
     @Test
     public void repoTest1(){

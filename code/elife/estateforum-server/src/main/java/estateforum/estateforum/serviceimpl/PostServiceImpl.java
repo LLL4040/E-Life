@@ -1,7 +1,9 @@
 package estateforum.estateforum.serviceimpl;
 
+import estateforum.estateforum.dao.TagDao;
 import estateforum.estateforum.entity.Post;
 import estateforum.estateforum.dao.PostDao;
+import estateforum.estateforum.entity.Tag;
 import estateforum.estateforum.service.PostService;
 import net.coobird.thumbnailator.Thumbnails;
 import net.minidev.json.JSONArray;
@@ -24,16 +26,24 @@ import java.util.*;
  * postComments class
  *
  * @author 符永锐
- * @date 2019/07/04*/
+ * @date 2019/07/04
+ * @author ztHou
+ * @date 2019/08/15
+ * */
 
 @Service
 
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostDao postDao;
+    @Autowired
+    private TagDao tagDao;
 
     @Override
-    public String  save(String title, String postContent, String posterName, int communityId, List<MultipartFile> photo) throws IOException {
+    public String  save(String title,String tag,  String postContent, String posterName, int communityId, List<MultipartFile> photo) throws IOException {
+        if(tag == null || "".equals(tag)){
+            return "0";
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String postTime = df.format(new Date());
         String path="";
@@ -63,8 +73,20 @@ public class PostServiceImpl implements PostService {
             path = "";
         }
 
-        Post post=new Post(title,postContent,postTime,posterName,communityId,path);
-        return postDao.save(post);
+        try{
+            if(tagDao.existsByContentAndCommunityId(tag, (long) communityId)){
+                if(!tagDao.addTagNum(tag, (long) communityId)){
+                    return "0";
+                }
+            } else {
+                Tag tagNew = new Tag(tag, 1, (long) communityId);
+                tagDao.save(tagNew);
+            }
+            Post post = new Post(title, tag, postContent, postTime, posterName, communityId, path);
+            return postDao.save(post);
+        } catch (Exception e){
+            return "0";
+        }
     }
 
     @Override
@@ -101,6 +123,7 @@ public class PostServiceImpl implements PostService {
                 jsonObject.put("path" , paths);
             }
             jsonObject.put("title",temp.getTitle());
+            jsonObject.put("tag", temp.getTag());
 
             jsonObject.put("posterName", temp.getPosterName());
             jsonObject.put("postContent", temp.getPostContent());
@@ -119,9 +142,17 @@ public class PostServiceImpl implements PostService {
     public Post findPost(String id){
         return postDao.findPost(id);
     }
+
     @Override
     public void deletePost(String pid){
-          postDao.deletePost(pid);
+          try{
+              Post post = postDao.findPost(pid);
+              if(!tagDao.reduceTagNum(post.getTag(), (long) post.getCommunityId())){
+                  return;
+              }
+              postDao.deletePost(pid);
+          }catch (Exception e){
+          }
     }
     @Override
     public JSONObject getBigPhoto(String path){
@@ -137,6 +168,19 @@ public class PostServiceImpl implements PostService {
             jsonObject.put("error","notfound");
             return jsonObject;
         }
+    }
+
+    @Override
+    public JSONArray getAllTags(Long communityId){
+        JSONArray jsonArray = new JSONArray();
+        List<Tag> tagList = tagDao.getAllTagsByCommunityId(communityId);
+        for(Tag tag : tagList){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("tag", tag.getContent());
+            jsonObject.put("num", tag.getNum());
+            jsonArray.appendElement(jsonObject);
+        }
+        return jsonArray;
     }
 
 }

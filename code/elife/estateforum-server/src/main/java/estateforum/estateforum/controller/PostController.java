@@ -33,7 +33,7 @@ public class PostController {
     PostCommentsService postCommentsService;
     @RequestMapping(path = "/addPost")
     @ResponseBody
-    public JSONObject addPost(HttpServletRequest request, @RequestParam String title, @RequestParam String postContent, @RequestParam String posterName, @RequestParam int communityId, @RequestParam(required=false) List<MultipartFile> photo)throws IOException {
+    public JSONObject addPost(HttpServletRequest request, @RequestParam String title, @RequestParam String tag, @RequestParam String postContent, @RequestParam String posterName, @RequestParam int communityId, @RequestParam(required=false) List<MultipartFile> photo)throws IOException {
         HttpSession session = request.getSession();
         String name = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
@@ -52,7 +52,7 @@ public class PostController {
 
             }
             System.out.println(photo);
-            postService.save(title,postContent,posterName,communityId,photo);
+            postService.save(title,tag,postContent,posterName,communityId,photo);
             object.put("post", "1");
             object.put("message","发表帖子成功");
             return object;
@@ -75,7 +75,14 @@ public class PostController {
         return postService.findAllByCommunityId(communityId,page,size);
     }
     @RequestMapping(path = "/deletePost")
-    @ResponseBody JSONObject deletePost(@RequestParam String id){
+    @ResponseBody JSONObject deletePost(HttpServletRequest request, @RequestParam String id){
+        HttpSession session = request.getSession();
+        String role = (String) session.getAttribute("role");
+        if (!"1".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         postService.deletePost(id);
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         object.put("delete", "1");
@@ -94,6 +101,12 @@ public class PostController {
             return jsonObject;
         }
         return postService.getBigPhoto( path);
+    }
+
+    @RequestMapping(path = "/tags")
+    @ResponseBody
+    public JSONArray getAllTags(@RequestParam Long communityId){
+        return postService.getAllTags(communityId);
     }
 
 }
