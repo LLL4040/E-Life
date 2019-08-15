@@ -16,11 +16,14 @@ class demandHttp {
 
 
   addDemand(NetListener net, String startTime, String endTime, String content,
-      String username, String communityId, String title) {
+      String username, String communityId, String title,String session) {
 
     var client = new http.Client();
     client.post(
         addDemandUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
           "startTime": startTime,
@@ -45,10 +48,13 @@ class demandHttp {
   }
 
 
-  getDemandList(NetListener net,String communityId) {
+  getDemandList(NetListener net,String communityId,String session) {
     var client = new http.Client();
     client.post(
         allDemandUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "communityId": communityId,
         }
@@ -68,10 +74,13 @@ class demandHttp {
   }
 
 
-  participantDemand(NetListener net,String username,String id) {
+  participantDemand(NetListener net,String username,String id,String session) {
     var client = new http.Client();
     client.post(
         joinDemandUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
           "id": id,
@@ -89,10 +98,13 @@ class demandHttp {
     );
   }
 
-  quitDemand(NetListener net,String username,String id) {
+  quitDemand(NetListener net,String username,String id,String session) {
     var client = new http.Client();
     client.post(
         quitDemandUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
           "id": id,
@@ -109,10 +121,13 @@ class demandHttp {
       client.close,
     );
   }
-  getDiscountList(NetListener net,String communityId) {
+  getDiscountList(NetListener net,String communityId,String session) {
     var client = new http.Client();
     client.post(
         getDiscountUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "communityId": communityId,
         }

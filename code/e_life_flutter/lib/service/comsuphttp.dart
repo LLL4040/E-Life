@@ -9,10 +9,13 @@ class comsupHttp {
 
 
 
-  myComputer(NetListener net) {
+  myComputer(NetListener net,String session) {
     var client = new http.Client();
     client.post(
         myComputerUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "type": "电脑维修",
         }
@@ -28,10 +31,13 @@ class comsupHttp {
     );
   }
 
-  mySupermarket(NetListener net) {
+  mySupermarket(NetListener net,String session) {
     var client = new http.Client();
     client.post(
         mySupermarketUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "type": "超市送货",
         }

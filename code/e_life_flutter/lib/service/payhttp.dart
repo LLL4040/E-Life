@@ -7,10 +7,13 @@ class payHttp {
 
 
 
-  myBill(NetListener net, String username,) {
+  myBill(NetListener net, String username,String session) {
     var client = new http.Client();
     client.post(
         myBillUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
         }

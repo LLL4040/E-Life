@@ -7,10 +7,11 @@ import 'news.dart';
 class mainpage extends StatefulWidget {
   final communityId;
   final username;
-  mainpage(this.communityId,this.username);
+  var session;
+  mainpage(this.communityId,this.username,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new mainpageWidget(communityId,username);
+    return new mainpageWidget(communityId,username,session);
   }
 }
 class Choice {
@@ -23,7 +24,8 @@ class Choice {
 class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin {
   final communityId;
   final username;
-  mainpageWidget(this.communityId,this.username);
+  var session;
+  mainpageWidget(this.communityId,this.username,this.session);
 
   List<Choice> tabs = [];//导航栏
   TabController mTabController;
@@ -64,7 +66,7 @@ class mainpageWidget extends State<mainpage> with SingleTickerProviderStateMixin
       return forums[index];
     }
     //小区资讯界面
-    Widget newsContain = new newswidget(communityId,username);
+    Widget newsContain = new newswidget(communityId,username,session);
     //小区论坛界面
     Widget forumConatin =new Container(
       child:new ListView.builder

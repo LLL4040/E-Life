@@ -9,16 +9,18 @@ class BottomNavigationWidget extends StatefulWidget {
   final username;
   final communityId;
   final role;
-  BottomNavigationWidget(this.username,this.communityId,this.role);
+  var session;
+  BottomNavigationWidget(this.username,this.communityId,this.role,this.session);
   @override
-  _BottomNavigationWidget createState() => _BottomNavigationWidget(username,communityId,role);
+  _BottomNavigationWidget createState() => _BottomNavigationWidget(username,communityId,role,session);
 }
 
 class _BottomNavigationWidget extends State<BottomNavigationWidget> {
   final username;
   final communityId;
   final role;
-  _BottomNavigationWidget(this.username,this.communityId,this.role);
+  var session;
+  _BottomNavigationWidget(this.username,this.communityId,this.role,this.session);
   final _BottomNavigationColor = Colors.black54; //组件内部私有变量
   int _currentIndex = 0;
   List<Widget> list = List();
@@ -26,8 +28,9 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
   void initState() {
     print(username+"登录");
     print(communityId+"登录");
+    print(session+"登陆");
 
-    list..add(mainpage(communityId,username))..add(service(username,communityId,role))..add(message(username))..add(mycenter(username,role));
+    list..add(mainpage(communityId,username,session))..add(service(username,communityId,role,session))..add(message(username,session))..add(mycenter(username,role,session));
     super.initState(); //无名无参需要调用
   }
 

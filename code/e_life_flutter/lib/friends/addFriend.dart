@@ -3,10 +3,11 @@ import 'package:e_life_flutter/friends/friendhttp.dart';
 class addFriend extends StatefulWidget {
   final username;
   final friend;
-  addFriend(this.username, this.friend);
+  var session;
+  addFriend(this.username, this.friend,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new addFriendCenter(username, friend);
+    return new addFriendCenter(username, friend,session);
   }
 }
 
@@ -14,7 +15,8 @@ class addFriendCenter extends State<addFriend>
     with SingleTickerProviderStateMixin ,NetListener{
   final username;
   final friend;
-  addFriendCenter(this.username, this.friend);
+  var session;
+  addFriendCenter(this.username, this.friend,this.session);
   friendHttp manager = new friendHttp();
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class addFriendCenter extends State<addFriend>
 
     void _addRepair() {
       print(_contentController.text);
-      manager.sendRequest(this, username, friend, _contentController.text);
+      manager.sendRequest(this, username, friend, _contentController.text,session);
       Navigator.pop(context, "发送添加好友请求成功");
     }
 

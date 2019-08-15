@@ -6,18 +6,20 @@ import 'package:e_life_flutter/friends/addFriend.dart';
 import 'package:oktoast/oktoast.dart';
 class friendWidget extends StatefulWidget {
   final username;
-  friendWidget(this.username);
+  var session;
+  friendWidget(this.username,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new friendWidgetState(username);
+    return new friendWidgetState(username,session);
   }
 }
 
 class friendWidgetState extends State<friendWidget>
     with SingleTickerProviderStateMixin, NetListener {
   final username;
+  var session;
   String success2;
-  friendWidgetState(this.username);
+  friendWidgetState(this.username,this.session);
 
   List<Friend> myFriendList = [];
   List<friendRequest> friendRequestList = [];
@@ -42,7 +44,7 @@ class friendWidgetState extends State<friendWidget>
       if (mTabController.indexIsChanging) {
         setState(() {
           mCurrentPosition = mTabController.index;
-          manager.getFriendList(this, username);
+          manager.getFriendList(this, username,session);
         });
       }
     });
@@ -65,7 +67,7 @@ class friendWidgetState extends State<friendWidget>
       ),
       onTap: ()async{
         print(username+"用户名");
-        manager.deleteFriend(this, username,name);
+        manager.deleteFriend(this, username,name,session);
         await new Future.delayed(new Duration(milliseconds: 1000));
         if (success2=="true"){
           showToast("删除好友成功");
@@ -93,7 +95,7 @@ class friendWidgetState extends State<friendWidget>
       onTap: () {
         Navigator.push<String>(context,
             new MaterialPageRoute(builder: (BuildContext context) {
-              return new addFriend(username,user);
+              return new addFriend(username,user,session);
             })).then((String result){
           print(result);
           showToast(result);
@@ -132,7 +134,7 @@ class friendWidgetState extends State<friendWidget>
                 onPressed: () {
                   print("id是");
                   print(id);
-                  manager.acceptRequest(this, id);
+                  manager.acceptRequest(this, id,session);
                   showToast("加好友成功");
 
                 },
@@ -140,7 +142,7 @@ class friendWidgetState extends State<friendWidget>
               new IconButton(
                 icon: new Icon(Icons.delete),
                 onPressed: () {
-                  manager.rejectRequest(this, id);
+                  manager.rejectRequest(this, id,session);
                   print("拒绝成功");
                   showToast("拒绝成功");
                 },
@@ -155,8 +157,8 @@ class friendWidgetState extends State<friendWidget>
 
   _getMyFriend() async {
     print("我的好友" + username);
-    await manager.getFriendList(this, username);
-    await manager.getRequestList(this, username);
+    await manager.getFriendList(this, username,session);
+    await manager.getRequestList(this, username,session);
     return true;
   }
 
@@ -266,7 +268,7 @@ class friendWidgetState extends State<friendWidget>
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
             onPressed: (){
-              manager.getFriendSearchList(this, _nameController.text);
+              manager.getFriendSearchList(this, _nameController.text,session);
 
             },
           ),
@@ -371,14 +373,14 @@ class friendWidgetState extends State<friendWidget>
   @override
   void onAcceptRequestResponse(bool accept) {
     setState(() {
-      manager.getRequestList(this, username);
+      manager.getRequestList(this, username,session);
     });
   }
 
   @override
   void onRejectRequestResponse(bool reject) {
     setState(() {
-      manager.getRequestList(this, username);
+      manager.getRequestList(this, username,session);
     });
   }
 
@@ -391,7 +393,7 @@ class friendWidgetState extends State<friendWidget>
       success2="false";
     }
     setState(() {
-      manager.getFriendList(this, username);
+      manager.getFriendList(this, username,session);
     });
   }
 
