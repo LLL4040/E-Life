@@ -102,7 +102,7 @@ class myWidget extends State<newswidget>
     return new SizedBox(
       //height: 210.0, //设置高度
       child: new Card(
-//        elevation: 15.0, //设置阴影
+        elevation: 0.0, //设置阴影
 //        shape: const RoundedRectangleBorder(
 //            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
         child: new Column(
@@ -123,7 +123,10 @@ class myWidget extends State<newswidget>
                   new Text(startTime),
                   new Text(endTime),
                   new Text(content),
-                  new Text(activity),
+                  new Text(activity,style: new TextStyle(
+                    fontWeight: FontWeight.w900, //字体粗细  粗体和正常
+                    color:  activity=="报名中"?Colors.blue:Colors.redAccent, //文字颜色
+                  ),),
                 ],
               ),
               trailing: null,
@@ -307,7 +310,43 @@ class myWidget extends State<newswidget>
     urgents = [];
     activitys = [];
     news = [];
+    Widget mydiv = SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+//        elevation: 15.0, //设置阴影
+//        shape: const RoundedRectangleBorder(
+//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+
+            Container(
+              padding: EdgeInsets.all(10),
+              child: new Image.asset(
+                'images/app.png',
+                height: 100,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(
+                '紧急通知',
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            //new Divider(),
+
+          ],
+        ),
+      ),
+    );
+
     if (urgentList.length > 0) {
+      urgents.add(mydiv);
       for (int i = 0; i < urgentList.length - 1; i++) {
         Widget urgent = _getUrgent(urgentList[i].time,
             urgentList[i].managerName, urgentList[i].content);
@@ -342,27 +381,7 @@ class myWidget extends State<newswidget>
     Widget urgentSection = Container(
       child: Column(
         children: [
-          Container(
-            child: Divider(),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: new Image.asset(
-              'images/app.png',
-              height: 100,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              '紧急通知',
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
+
           new Expanded(
             child: ListView.builder(
                 itemCount: urgents.length,

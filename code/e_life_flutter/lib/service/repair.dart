@@ -34,20 +34,44 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
     if (status == 2) {
       repairStatus = "已完成";
     }
-    return new ListTile(
-      leading: new Icon(Icons.settings),
-      title: new Text(time),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(content),
-          new Text(repairStatus),
-        ],
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+        elevation: 0.0, //设置阴影
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))), //设置圆角
+        semanticContainer: false,
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            ListTile(
+              leading: new Icon(Icons.settings),
+              title: new Text(time),
+              subtitle: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(content),
+                  new Text(repairStatus),
+                ],
+              ),
+              onTap: () {
+                print(content);
+              },
+              dense: true,
+            ),
+            //new Divider(),
+
+//            new ListTile(
+//              title: new Text('图片区域'),
+//              leading: new Icon(
+//                Icons.photo,
+//                color: Colors.blue[500],
+//              ),
+//
+//            ),
+          ],
+        ),
       ),
-      onTap: () {
-        print(content);
-      },
-      dense: true,
     );
   }
   @override

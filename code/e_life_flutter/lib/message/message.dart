@@ -39,30 +39,55 @@ class messageState extends State<message>
   }
 
   Widget _getNotice(String managerName, String time, String content, int id) {
-    return new ListTile(
-      leading: new Icon(Icons.message),
-      title: new Text(managerName),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(time),
-          new Text(content),
-        ],
+
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+        elevation: 0.0, //设置阴影
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))), //设置圆角
+        semanticContainer: false,
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            ListTile(
+              leading: new Icon(Icons.message),
+              title: new Text(managerName),
+              subtitle: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(time),
+                  new Text(content),
+                ],
+              ),
+              trailing: new Icon(
+                Icons.delete,
+                color: Colors.black54,
+              ),
+              onTap: () async {
+                print(id.toString() + "id号");
+                print(username + "用户名");
+                manager.deleteNotice(this, username, id);
+                await new Future.delayed(new Duration(milliseconds: 1000));
+                if (success1 == "true") {
+                  showToast("删除物业消息成功");
+                }
+              },
+              dense: true,
+            ),
+            //new Divider(),
+
+//            new ListTile(
+//              title: new Text('图片区域'),
+//              leading: new Icon(
+//                Icons.photo,
+//                color: Colors.blue[500],
+//              ),
+//
+//            ),
+          ],
+        ),
       ),
-      trailing: new Icon(
-        Icons.delete,
-        color: Colors.black54,
-      ),
-      onTap: () async {
-        print(id.toString() + "id号");
-        print(username + "用户名");
-        manager.deleteNotice(this, username, id);
-        await new Future.delayed(new Duration(milliseconds: 1000));
-        if (success1 == "true") {
-          showToast("删除物业消息成功");
-        }
-      },
-      dense: true,
     );
   }
 
@@ -80,72 +105,97 @@ class messageState extends State<message>
     if (status == "0") {
       statustmp = "未提取";
     }
-    return new ListTile(
-      leading: new Icon(Icons.settings_system_daydream),
-      title: new Text('时间:' + time),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text("负责人: " + manage),
-          new Text(statustmp ,),
-        ],
+
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+        elevation: 0.0, //设置阴影
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))), //设置圆角
+        semanticContainer: false,
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            ListTile(
+              leading: new Icon(Icons.settings_system_daydream),
+              title: new Text('时间:' + time),
+              subtitle: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text("负责人: " + manage),
+                  new Text(statustmp ,),
+                ],
+              ),
+              trailing: new Icon(Icons.offline_pin),
+
+              onTap: () {
+                showDialog<Null>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return new SimpleDialog(
+                      title: new Text('确定提取吗'),
+                      children: <Widget>[
+                        new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            new SimpleDialogOption(
+                              child: FlatButton(
+                                color: Colors.blue,
+                                highlightColor: Colors.blue[700],
+                                colorBrightness: Brightness.dark,
+                                splashColor: Colors.grey,
+                                child: Text("确定"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                onPressed: () {
+                                  _takeOut(id);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+
+                            ),
+                            new SimpleDialogOption(
+                              child: FlatButton(
+                                color: Colors.black54,
+                                highlightColor: Colors.black38,
+                                colorBrightness: Brightness.dark,
+                                splashColor: Colors.grey,
+                                child: Text("取消"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                onPressed: () {
+                                  showToast("取消提取邮包");
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    );
+                  },
+                ).then((val) {
+                  print(val);
+                });
+              },
+              dense: true,
+            ),
+            //new Divider(),
+
+//            new ListTile(
+//              title: new Text('图片区域'),
+//              leading: new Icon(
+//                Icons.photo,
+//                color: Colors.blue[500],
+//              ),
+//
+//            ),
+          ],
+        ),
       ),
-      trailing: new Icon(Icons.offline_pin),
-
-      onTap: () {
-        showDialog<Null>(
-          context: context,
-          builder: (BuildContext context) {
-            return new SimpleDialog(
-              title: new Text('确定提取吗'),
-              children: <Widget>[
-                new Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    new SimpleDialogOption(
-                      child: FlatButton(
-                        color: Colors.blue,
-                        highlightColor: Colors.blue[700],
-                        colorBrightness: Brightness.dark,
-                        splashColor: Colors.grey,
-                        child: Text("确定"),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        onPressed: () {
-                          _takeOut(id);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-
-                    ),
-                    new SimpleDialogOption(
-                      child: FlatButton(
-                        color: Colors.black54,
-                        highlightColor: Colors.black38,
-                        colorBrightness: Brightness.dark,
-                        splashColor: Colors.grey,
-                        child: Text("取消"),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        onPressed: () {
-                          showToast("取消提取邮包");
-                          Navigator.of(context).pop();
-                        },
-                      ),
-
-                    ),
-                  ],
-                ),
-
-              ],
-            );
-          },
-        ).then((val) {
-          print(val);
-        });
-      },
-      dense: true,
     );
   }
 
@@ -209,7 +259,7 @@ class messageState extends State<message>
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               new SliverAppBar(
-                forceElevated: true, //是否显示阴影
+                //forceElevated: true, //是否显示阴影
                 //pinned: true,//是否固定在顶部
                 expandedHeight: 200.0,
                 bottom: PreferredSize(
@@ -232,7 +282,8 @@ class messageState extends State<message>
                         controller: mTabController,
                       ),
                     ),
-                    preferredSize: new Size(double.infinity, 18.0)),
+                    preferredSize: new Size(double.infinity, 18.0)
+                ),
                 flexibleSpace: new Container(
                   child: new Column(
                     children: <Widget>[

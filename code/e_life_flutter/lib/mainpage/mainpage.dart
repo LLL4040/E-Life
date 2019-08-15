@@ -5,7 +5,7 @@ import 'postDetail.dart';
 import 'package:e_life_flutter/mainpage/estateforumhttp.dart';
 import 'addPost.dart';
 import 'news.dart';
-
+import 'package:oktoast/oktoast.dart';
 class mainpage extends StatefulWidget {
   final communityId;
   final username;
@@ -40,7 +40,7 @@ class mainpageWidget extends State<mainpage>
     return new SizedBox(
       //height: 210.0, //设置高度
       child: new Card(
-//        elevation: 15.0, //设置阴影
+        //elevation: 0.1, //设置阴影
 //        shape: const RoundedRectangleBorder(
 //            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
         child: new Column(
@@ -164,8 +164,14 @@ class mainpageWidget extends State<mainpage>
         onPressed: () async {
           Navigator.push<String>(context,
               new MaterialPageRoute(builder: (context) {
-            return new addPost();
-          }));
+            return new addPost(username,communityId);
+          })).then((String result) {
+            print("报名收到的信息为:" + result);
+            showToast(result);
+            setState(() {
+              _getPost();
+            });
+          });
         },
       ):null,
     );
