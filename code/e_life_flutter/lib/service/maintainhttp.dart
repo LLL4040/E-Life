@@ -3,15 +3,19 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class maintainHttp {
 
-  var addMaintainUrl = "http://zhimo.natapp1.cc/lifeservice-server/api/maintain/addMaintain";
+  var addMaintainUrl = "http://elife.natapp1.cc/lifeservice-server/api/maintain/addMaintain";
 
-  var myMaintainUrl = "http://zhimo.natapp1.cc/lifeservice-server/api/maintain/userFindMaintain";
+  var myMaintainUrl = "http://elife.natapp1.cc/lifeservice-server/api/maintain/userFindMaintain";
 
   addMaintain(NetListener net, String username, String userphone,
-      String content) {
+      String content,String session) {
     var client = new http.Client();
+    print(session+"添加维修");
     client.post(
         addMaintainUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
           "userphone": userphone,
@@ -28,10 +32,13 @@ class maintainHttp {
     );
   }
 
-  myMaintain(NetListener net, String username) {
+  myMaintain(NetListener net, String username,String session) {
     var client = new http.Client();
     client.post(
         myMaintainUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
         }

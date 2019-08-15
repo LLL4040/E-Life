@@ -3,16 +3,19 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class comsupHttp {
 
-  var myComputerUrl = "http://zhimo.natapp1.cc/user-server/api/merchant/findAllByType";
+  var myComputerUrl = "http://elife.natapp1.cc/user-server/api/merchant/findAllByType";
 
-  var mySupermarketUrl = "http://zhimo.natapp1.cc/user-server/api/merchant/findAllByType";
+  var mySupermarketUrl = "http://elife.natapp1.cc/user-server/api/merchant/findAllByType";
 
 
 
-  myComputer(NetListener net) {
+  myComputer(NetListener net,String session) {
     var client = new http.Client();
     client.post(
         myComputerUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "type": "电脑维修",
         }
@@ -28,10 +31,13 @@ class comsupHttp {
     );
   }
 
-  mySupermarket(NetListener net) {
+  mySupermarket(NetListener net,String session) {
     var client = new http.Client();
     client.post(
         mySupermarketUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "type": "超市送货",
         }

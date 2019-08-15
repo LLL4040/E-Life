@@ -80,6 +80,7 @@ public class UrgentController {
     @RequestMapping("/findHistory")
     public JSONArray findHistory(HttpServletRequest request, int communityId,int page){
         HttpSession session = request.getSession();
+        System.out.println(session);
         String name = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
         if (StringUtils.isEmpty(name) || "2".equals(role)) {

@@ -8,23 +8,26 @@ class joinActivity extends StatefulWidget {
 
   final id;
   final username;
-  joinActivity(this.id,this.username);
+  var session;
+  joinActivity(this.id,this.username,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new joinActivityWidget(id,username);
+    return new joinActivityWidget(id,username,session);
   }
 }
 class joinActivityWidget extends State<joinActivity> with SingleTickerProviderStateMixin,NetListener{
   String joinResult="";
   final id;
   final username;
-  joinActivityWidget(this.id,this.username);
+  var session;
+  joinActivityWidget(this.id,this.username,this.session);
   httpManager manager = new httpManager();
+  final TextEditingController _contentController =
+  new TextEditingController.fromValue(new TextEditingValue(text: ""));
   @override
   Widget build(BuildContext context) {
 
-    final TextEditingController _contentController =
-    new TextEditingController.fromValue(new TextEditingValue(text: ""));
+
 
     return  ScopedModelDescendant<UserModel>(
         builder: (context, child, model) {
@@ -122,7 +125,7 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                               showToast("留言不应该为空",position: ToastPosition.top);
                               return;
                             }
-                            manager.saveParticipator(this, id, _contentController.text, username);
+                            manager.saveParticipator(this, id, _contentController.text, username,session);
                             String tmp;
                             await new Future.delayed(new Duration(milliseconds: 1000));
                             tmp =  joinResult;

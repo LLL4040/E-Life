@@ -1,3 +1,5 @@
+
+import 'package:e_life_flutter/userhttp.dart' as prefix0;
 import 'package:flutter/material.dart';
 import '../map.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -6,21 +8,25 @@ import 'package:e_life_flutter/friends/friend.dart';
 import '../main.dart';
 
 
+
 class mycenter extends StatefulWidget {
   final username;
   final role;
-  mycenter(this.username,this.role);
+  var session;
+  mycenter(this.username,this.role,this.session);
 
   @override
   State<StatefulWidget> createState() {
-    return new myCenterWidget(username,role);
+    return new myCenterWidget(username,role,session);
   }
 }
-class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin {
+class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin,prefix0.NetListener {
 
   final username1;
   final role1;
-  myCenterWidget(this.username1,this.role1);
+  var session1;
+  myCenterWidget(this.username1,this.role1,this.session1);
+  prefix0.userHttp manager = new prefix0.userHttp();
 
   void _toMap() {
     var androidView = new AndroidView(viewType: "MyMap");
@@ -106,7 +112,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
                     onTap: (){
                       Navigator.push(context,
                           new MaterialPageRoute(builder: (context) {
-                            return new friendWidget(username);
+                            return new friendWidget(username,session1);
                           }));
                     }
                   ),
@@ -117,7 +123,8 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
           ],
         ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: () async{
+          manager.logout(this,username,session1);
           Navigator.push<String>(context, new MaterialPageRoute(builder: (context) {
             return new MyApp();
           }));
@@ -128,4 +135,19 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
       );
     });
   }
-}
+  @override
+  void onUserResponse(prefix0.User body,bool login) {
+
+  }
+  @override void onLogoutResponse(bool logout) {
+    // TODO: implement onLogoutResponse
+  }
+  @override
+  void onError(error) {
+    // TODO: implement onError
+  }
+
+  }
+
+
+

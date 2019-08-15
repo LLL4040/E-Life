@@ -22,17 +22,19 @@ class service  extends StatefulWidget {
   final username1;
   final communityId1;
   final role1;
-  service(this.username1,this.communityId1,this.role1);
+  var session1;
+  service(this.username1,this.communityId1,this.role1,this.session1);
   @override
   State<StatefulWidget> createState() {
-    return new serviceWidget(username1,communityId1,role1);
+    return new serviceWidget(username1,communityId1,role1,session1);
   }
 }
 class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
   final username1;
   final communityId1;
   final role1;
-  serviceWidget(this.username1,this.communityId1,this.role1);
+  var session1;
+  serviceWidget(this.username1,this.communityId1,this.role1,this.session1);
   @override
   Widget build(BuildContext context) {
 //    void _torepair(String username) {
@@ -95,7 +97,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       Navigator.push(context, new MaterialPageRoute(builder: (context) {
                         print("我的维修"+username1);
-                        return new myRepair(username1);
+                        return new myRepair(username1,session1);
                       }));
                     }
                   ),
@@ -104,7 +106,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                  return new myRepair(username1);
+                  return new myRepair(username1,session1);
                 }));
               },
             ),
@@ -117,7 +119,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                     color: Colors.black38,
                     onPressed:  (){
                       Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                        return new surpermarket(communityId1);
+                        return new surpermarket(communityId1,session1);
                       }));
                     },
                   ),
@@ -126,7 +128,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                  return new surpermarket(communityId1);
+                  return new surpermarket(communityId1,session1);
                 }));
               },
             ),
@@ -139,7 +141,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                     color: Colors.black38,
                     onPressed:  (){
                       Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                        return new computer(communityId1);
+                        return new computer(communityId1,session1);
                       }));
                     },
                   ),
@@ -148,7 +150,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
               ),
               onPressed:  (){
                 Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                  return new computer(communityId1);
+                  return new computer(communityId1,session1);
                 }));
               },
             ),
@@ -161,7 +163,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                     color: Colors.black38,
                       onPressed: (){
                         Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                          return new groupWeight(username1, communityId1);
+                          return new groupWeight(username1, communityId1,session1);
                         }));
                       }
                   ),
@@ -170,7 +172,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
               ),
                 onPressed: (){
                   Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                    return new groupWeight(username1, communityId1);
+                    return new groupWeight(username1, communityId1,session1);
                   }));
                 }
             ),
@@ -183,7 +185,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
                     color: Colors.black38,
                     onPressed:(){
                       Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                        return new pay(username1);
+                        return new pay(username1,session1);
                       }));
                     },
                   ),
@@ -192,7 +194,7 @@ class serviceWidget extends State<service> with SingleTickerProviderStateMixin {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                  return new pay(username1);
+                  return new pay(username1,session1);
                 }));
               },
             ),

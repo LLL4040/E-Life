@@ -3,14 +3,17 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class payHttp {
 
-  var myBillUrl = "http://zhimo.natapp1.cc/pay-server/api/Pay/findNew";
+  var myBillUrl = "http://elife.natapp1.cc/pay-server/api/Pay/findNew";
 
 
 
-  myBill(NetListener net, String username,) {
+  myBill(NetListener net, String username,String session) {
     var client = new http.Client();
     client.post(
         myBillUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
         }

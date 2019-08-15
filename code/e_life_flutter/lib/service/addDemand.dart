@@ -4,10 +4,11 @@ import 'package:oktoast/oktoast.dart';
 class addDemand extends StatefulWidget {
   final username;
   final communityId;
-  addDemand(this.username, this.communityId);
+  var session;
+  addDemand(this.username, this.communityId,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new addDemandCenter(username, communityId);
+    return new addDemandCenter(username, communityId,session);
   }
 }
 
@@ -15,8 +16,9 @@ class addDemandCenter extends State<addDemand>
     with SingleTickerProviderStateMixin, NetListener {
   final username;
   final communityId;
+  var session;
   String success1;
-  addDemandCenter(this.username, this.communityId);
+  addDemandCenter(this.username, this.communityId,this.session);
   demandHttp manager = new demandHttp();
   String _startTime = "";
   String _endTime = "";
@@ -210,7 +212,8 @@ class addDemandCenter extends State<addDemand>
                       _contentController.text,
                       username,
                       communityId,
-                      _titleController.text);
+                      _titleController.text,
+                      session);
                   await new Future.delayed(new Duration(milliseconds: 1000));
                   if (success1 == "true") {
                     Navigator.pop(context, "发布需求成功");

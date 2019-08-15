@@ -133,7 +133,7 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                       if(model.loginSuccess!=false){
                         Navigator.of(context).pushAndRemoveUntil(
                             new MaterialPageRoute(
-                                builder: (context) => new BottomNavigationWidget(model.user.username,model.user.communityId.toString(),model.user.role.toString())),
+                                builder: (context) => new BottomNavigationWidget(model.user.username,model.user.communityId.toString(),model.user.role.toString(),model.user.session)),
                                 (route) => route == null);
                         showToast("登录成功");
                       }else{

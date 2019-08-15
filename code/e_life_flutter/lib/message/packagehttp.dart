@@ -3,25 +3,29 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class packageHttp {
 
-  var myPackageUrl = "http://zhimo.natapp1.cc/package-server/api/Package/findNew";
+  var myPackageUrl = "http://elife.natapp1.cc/package-server/api/Package/findNew";
 
-  var takeOutUrl = "http://zhimo.natapp1.cc/package-server/api/Package/takeOut";
+  var takeOutUrl = "http://elife.natapp1.cc/package-server/api/Package/takeOut";
 
-  var deleteUrl = "http://zhimo.natapp1.cc/package-server/api/Package/deleteOne";
+  var deleteUrl = "http://elife.natapp1.cc/package-server/api/Package/deleteOne";
 
 
 
-  myPackage(packNetListener net, String username) {
+  myPackage(packNetListener net, String username,String session) {
     var client = new http.Client();
     client.post(
         myPackageUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
         }
     ).then((response,) {
       List responseJson = json.decode(response.body);
+      print(responseJson);
       List<Package> packageList = responseJson.map((m) => new Package.fromJson(m)).toList();
-      print(response.body);
+      print(response.body+"我的邮包Hhhhhhhhhhhhhhhhhhh");
       net.onMyPackageResponse(packageList);
     }, onError: (error) {
       net.onError1(error);
@@ -30,10 +34,14 @@ class packageHttp {
     );
   }
 
-  takeOut(packNetListener net,String id) {
+  takeOut(packNetListener net,String id,String session) {
     var client = new http.Client();
+
     client.post(
         takeOutUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "id": id,
         }
@@ -45,10 +53,13 @@ class packageHttp {
       client.close,
     );
   }
-  delete(packNetListener net,int id) {
+  delete(packNetListener net,int id,String session) {
     var client = new http.Client();
     client.post(
         deleteUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "id": id,
         }

@@ -32,6 +32,9 @@ class UserModel extends Model with NetListener{
     print("response");
     notifyListeners();
   }
+  @override void onLogoutResponse(bool logout) {
+    // TODO: implement onLogoutResponse
+  }
   @override
   void onError(error) {
     // TODO: implement onError

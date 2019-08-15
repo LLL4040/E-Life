@@ -3,21 +3,23 @@ import 'package:flutter/material.dart';
 import '../user.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:e_life_flutter/message//packagehttp.dart';
+import 'package:e_life_flutter/message/packagehttp.dart';
 
 class message extends StatefulWidget {
   final username;
-  message(this.username);
+  var session;
+  message(this.username,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new messageState(username);
+    return new messageState(username,session);
   }
 }
 
 class messageState extends State<message>
     with SingleTickerProviderStateMixin, NetListener, packNetListener {
   final username;
-  messageState(this.username);
+  var session;
+  messageState(this.username,this.session);
   String success1; //用于判断删除信息是否成功
   String success2;
   noticeHttp manager = new noticeHttp();
@@ -30,12 +32,12 @@ class messageState extends State<message>
 
   void _returnNotice() async {
     print("获得的是用户的物业信息" + username);
-    await manager.myNotice(this, username);
+    await manager.myNotice(this, username,session);
   }
 
   void _returnPackage() async {
     print("获得的是用户的邮件提醒" + username);
-    await manager1.myPackage(this, username);
+    await manager1.myPackage(this, username,session);
   }
 
   Widget _getNotice(String managerName, String time, String content, int id) {
@@ -56,7 +58,7 @@ class messageState extends State<message>
       onTap: () async {
         print(id.toString() + "id号");
         print(username + "用户名");
-        manager.deleteNotice(this, username, id);
+        manager.deleteNotice(this, username, id,session);
         await new Future.delayed(new Duration(milliseconds: 1000));
         if (success1 == "true") {
           showToast("删除物业消息成功");
@@ -68,7 +70,7 @@ class messageState extends State<message>
 
   _takeOut(String id) async {
     print(id + "邮包id号");
-    manager1.takeOut(this, id);
+    manager1.takeOut(this, id,session);
     await new Future.delayed(new Duration(milliseconds: 1000));
     if (success2 == "true") {
       showToast("提取邮包成功");
@@ -303,7 +305,7 @@ class messageState extends State<message>
       success1 = "false";
     }
     setState(() {
-      manager.myNotice(this, username);
+      manager.myNotice(this, username,session);
     });
   }
 
@@ -325,7 +327,7 @@ class messageState extends State<message>
       success2 = "false";
     }
     setState(() {
-      manager1.myPackage(this, username);
+      manager1.myPackage(this, username,session);
     });
   }
 

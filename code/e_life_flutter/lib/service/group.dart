@@ -9,10 +9,11 @@ import 'addDemand.dart';
 class groupWeight extends StatefulWidget {
   final username;
   final communityId;
-  groupWeight(this.username, this.communityId);
+  var session;
+  groupWeight(this.username, this.communityId,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new groupWeightState(username, communityId);
+    return new groupWeightState(username, communityId,session);
   }
 }
 
@@ -20,7 +21,8 @@ class groupWeightState extends State<groupWeight>
     with SingleTickerProviderStateMixin, NetListener {
   final username;
   final communityId;
-  groupWeightState(this.username, this.communityId);
+  var session;
+  groupWeightState(this.username, this.communityId,this.session);
 
   List<Demand> demandList = [];
   List<Discount> discountList = [];
@@ -115,14 +117,14 @@ class groupWeightState extends State<groupWeight>
   void _toaddDemand() {
     Navigator.push<String>(context,
         new MaterialPageRoute(builder: (BuildContext context) {
-          return new addDemand(username,communityId);
+          return new addDemand(username,communityId,session);
         })).then((String result){
       print("报名收到的信息为:"+result);
       showToast(result);
-      manager.getDemandList(this, communityId);
+      manager.getDemandList(this, communityId,session);
       setState(() async{
         await new Future.delayed(new Duration(milliseconds: 1000));
-        manager.getDemandList(this, username);
+        manager.getDemandList(this, username,session);
       });
 
 
@@ -131,8 +133,8 @@ class groupWeightState extends State<groupWeight>
 
   _getGroup() async {
     print("我的团购" + username);
-    await manager.getDemandList(this, communityId);
-    await manager.getDiscountList(this, communityId);
+    await manager.getDemandList(this, communityId,session);
+    await manager.getDiscountList(this, communityId,session);
     return true;
   }
 

@@ -3,16 +3,18 @@ import 'package:e_life_flutter/service/addRepair.dart';
 import 'payhttp.dart';
 class pay extends StatefulWidget {
   final username;
-  pay(this.username);
+  var session;
+  pay(this.username,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new payCenter(username);
+    return new payCenter(username,session);
   }
 }
 
 class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListener {
   final username;
-  payCenter(this.username);
+  var session;
+  payCenter(this.username,this.session);
 
   List<Bill> billList=[];//存后端数据
 
@@ -84,7 +86,7 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
     );
   }
   void _returnMyBill()async{
-    await manager.myBill(this, username);
+    await manager.myBill(this, username,session);
   }
   @override
   void initState() {

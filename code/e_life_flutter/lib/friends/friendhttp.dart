@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class friendHttp {
 
-  var friendUrl = "http://zhimo.natapp1.cc/user-server/api/friend/friendList";
+  var friendUrl = "http://elife.natapp1.cc/user-server/api/friend/friendList";
 
-  var friendSearchListUrl = "http://zhimo.natapp1.cc/user-server/api/friend/friendSearchList";
+  var friendSearchListUrl = "http://elife.natapp1.cc/user-server/api/friend/friendSearchList";
 
-  var requestListUrl = "http://zhimo.natapp1.cc/user-server/api/friend/responseList";
+  var requestListUrl = "http://elife.natapp1.cc/user-server/api/friend/responseList";
 
-  var responseListUrl= "http://zhimo.natapp1.cc/user-server/api/friend/requestList";
+  var responseListUrl= "http://elife.natapp1.cc/user-server/api/friend/requestList";
 
-  var sendRequestUrl= "http://zhimo.natapp1.cc/user-server/api/friend/sendFriendRequest";
+  var sendRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/sendFriendRequest";
 
-  var acceptRequestUrl= "http://zhimo.natapp1.cc/user-server/api/friend/acceptRequest";
+  var acceptRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/acceptRequest";
 
-  var rejectRequestUrl= "http://zhimo.natapp1.cc/user-server/api/friend/rejectRequest";
+  var rejectRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/rejectRequest";
 
-  var deleteFriendUrl= "http://zhimo.natapp1.cc/user-server/api/friend/deleteFriend";
+  var deleteFriendUrl= "http://elife.natapp1.cc/user-server/api/friend/deleteFriend";
 
 
   /**
@@ -25,10 +25,13 @@ class friendHttp {
    * @param username
    * @return friend list
    */
-  getFriendList(NetListener net,String username) {
+  getFriendList(NetListener net,String username,String session) {
     var client = new http.Client();
     client.post(
         friendUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
         }
@@ -47,10 +50,13 @@ class friendHttp {
     );
   }
 
-  getFriendSearchList(NetListener net,String username) {
+  getFriendSearchList(NetListener net,String username,String session) {
     var client = new http.Client();
     client.post(
         friendSearchListUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
         }
@@ -69,12 +75,16 @@ class friendHttp {
     );
   }
 
-  getRequestList(NetListener net,String username) {
+  getRequestList(NetListener net,String username,String session) {
     var client = new http.Client();
     client.post(
         requestListUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
+
         }
     ).then((
         response,
@@ -91,10 +101,13 @@ class friendHttp {
     );
   }
 
-  getResponseList(NetListener net,String username) {
+  getResponseList(NetListener net,String username,String session) {
     var client = new http.Client();
     client.post(
         responseListUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
         }
@@ -113,10 +126,13 @@ class friendHttp {
     );
   }
 
-  sendRequest(NetListener net,String username,String friend,String content) {
+  sendRequest(NetListener net,String username,String friend,String content,String session) {
     var client = new http.Client();
     client.post(
         sendRequestUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
           "friend": friend,
@@ -135,10 +151,13 @@ class friendHttp {
     );
   }
 
-  acceptRequest(NetListener net,int id) {
+  acceptRequest(NetListener net,int id,String session) {
     var client = new http.Client();
     client.post(
         acceptRequestUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "id": id.toString(),
         }
@@ -156,10 +175,13 @@ class friendHttp {
     );
   }
 
-  rejectRequest(NetListener net,int id) {
+  rejectRequest(NetListener net,int id,String session) {
     var client = new http.Client();
     client.post(
         rejectRequestUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "id": id.toString(),
         }
@@ -176,10 +198,13 @@ class friendHttp {
     );
   }
 
-  deleteFriend(NetListener net,String username,String friend) {
+  deleteFriend(NetListener net,String username,String friend,String session) {
     var client = new http.Client();
     client.post(
         deleteFriendUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "username": username,
           "friend":friend,
