@@ -1,3 +1,4 @@
+import 'package:e_life_flutter/service/service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:oktoast/oktoast.dart';
@@ -11,10 +12,11 @@ import '../user.dart';
 class newswidget extends StatefulWidget {
   final communityId;
   final usename;
-  newswidget(this.communityId, this.usename);
+  var session;
+  newswidget(this.communityId, this.usename,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new myWidget(communityId, usename);
+    return new myWidget(communityId, usename,session);
   }
 }
 
@@ -29,8 +31,9 @@ class myWidget extends State<newswidget>
     with SingleTickerProviderStateMixin, NetListener {
   final communityId;
   final username;
+  var session;
   String bigphoto;
-  myWidget(this.communityId, this.username);
+  myWidget(this.communityId, this.username,this.session);
   List<urgent> urgentList = [];
   List<News> newsList = [];
   List<Activity> activityList = [];
@@ -88,7 +91,7 @@ class myWidget extends State<newswidget>
   _joinActivity(int id) {
     Navigator.push<String>(context,
         new MaterialPageRoute(builder: (BuildContext context) {
-      return new joinActivity(id.toString(), username);
+      return new joinActivity(id.toString(), username,session);
     })).then((String result) {
       print("报名收到的信息为:" + result);
       showToast(result);
@@ -132,7 +135,7 @@ class myWidget extends State<newswidget>
               trailing: null,
               onTap: () async {
                 print("路径为" + path);
-                manager.getPhoto(this, path);
+                manager.getPhoto(this, path,session);
                 await new Future.delayed(new Duration(milliseconds: 1500));
                 //print("前端收到的图片为"+bigphoto);
                 String tmp = bigphoto.split(',')[1];
@@ -222,7 +225,7 @@ class myWidget extends State<newswidget>
 
               onTap: () async {
                 print("路径为" + path);
-                manager.getPhoto(this, path);
+                manager.getPhoto(this, path,session);
                 await new Future.delayed(new Duration(milliseconds: 1500));
                 //print("前端收到的图片为"+bigphoto);
                 String tmp = bigphoto.split(',')[1];
@@ -453,9 +456,9 @@ class myWidget extends State<newswidget>
   }
 
   _getMessage() async {
-    await manager.getNews(this, communityId);
-    await manager.getUrgent(this, communityId);
-    await manager.getActivity(this, communityId);
+    await manager.getNews(this, communityId,session);
+    await manager.getUrgent(this, communityId,session);
+    await manager.getActivity(this, communityId,session);
     return true;
   }
 

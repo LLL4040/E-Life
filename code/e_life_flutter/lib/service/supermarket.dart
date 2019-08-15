@@ -3,16 +3,18 @@ import 'comsuphttp.dart';
 import 'package:url_launcher/url_launcher.dart';
 class surpermarket extends StatefulWidget {
   final communityId;
-  surpermarket(this.communityId);
+  var session;
+  surpermarket(this.communityId,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new surpermarketCenter(communityId);
+    return new surpermarketCenter(communityId,session);
   }
 }
 
 class surpermarketCenter extends State<surpermarket> with SingleTickerProviderStateMixin,NetListener {
   final communityId;
-  surpermarketCenter(this.communityId);
+  var session;
+  surpermarketCenter(this.communityId,this.session);
   _launchURL(String phone) async {
     String url="tel: "+phone;
     if (await canLaunch(url)) {
@@ -82,7 +84,7 @@ class surpermarketCenter extends State<surpermarket> with SingleTickerProviderSt
     );
   }
   void _returnSupermarketMerchant()async{
-    await manager.mySupermarket(this);
+    await manager.mySupermarket(this,session);
   }
   @override
   void initState() {

@@ -1,27 +1,31 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 class httpManager {
 
-  var urgentUrl = "http://zhimo.natapp1.cc/news-server/api/Urgent/findHistory";
+  var urgentUrl = "http://elife.natapp1.cc/news-server/api/Urgent/findHistory";
 
-  var newsUrl = "http://zhimo.natapp1.cc/news-server/api/News/findNews";
+  var newsUrl = "http://elife.natapp1.cc/news-server/api/News/findNews";
 
-  var activityUrl = "http://zhimo.natapp1.cc/news-server/api/Activity/findNewActivity";
+  var activityUrl = "http://elife.natapp1.cc/news-server/api/Activity/findNewActivity";
 
-  var joinUrl = "http://zhimo.natapp1.cc/news-server/api/Activity/saveParticipator";
+  var joinUrl = "http://elife.natapp1.cc/news-server/api/Activity/saveParticipator";
 
-  var photoUrl= "http://zhimo.natapp1.cc/news-server/api/Activity/photo";
+  var photoUrl= "http://elife.natapp1.cc/news-server/api/Activity/photo";
 
 
-  getUrgent(NetListener net,String communityId) {
+  getUrgent(NetListener net,String communityId,String session) {
     var client = new http.Client();
     client.post(
         urgentUrl,
+      headers: {
+    "cookie": session,
+    },
         body: {
           "communityId": communityId,
           "page": "1"
-        }
+        },
     ).then((
         response,
         ) {
@@ -37,10 +41,13 @@ class httpManager {
     );
   }
 
-  getNews(NetListener net,String communityId) {
+  getNews(NetListener net,String communityId,String session) {
     var client = new http.Client();
     client.post(
         newsUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "communityId": communityId,
         }
@@ -58,10 +65,13 @@ class httpManager {
     );
   }
 
-  getActivity(NetListener net,String communityId) {
+  getActivity(NetListener net,String communityId,String session) {
     var client = new http.Client();
     client.post(
         activityUrl,
+      headers: {
+        "cookie": session,
+      },
         body: {
           "communityId": communityId,
         }
@@ -80,10 +90,13 @@ class httpManager {
     );
   }
 
-  saveParticipator(NetListener net,String aid,String content,String username){
+  saveParticipator(NetListener net,String aid,String content,String username,String session){
     var client = new http.Client();
     client.post(
         joinUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "aid": aid,
           "content": content,
@@ -103,11 +116,14 @@ class httpManager {
     );
   }
 
-  getPhoto(NetListener net,String path) {
+  getPhoto(NetListener net,String path,String session) {
     var client = new http.Client();
 
     client.post(
         photoUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "path": path,
         }

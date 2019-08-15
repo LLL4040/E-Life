@@ -12,18 +12,22 @@ import java.util.List;
  * postComments class
  *
  * @author 符永锐
- * @date 2019/07/04*/
+ * @date 2019/07/04
+ * @author ztHou
+ * @date 2019/08/15
+ * */
 
 public interface PostService {
     /**
      * 此函数存一条帖子
      * @param title 帖子
-     * @param postContent
-     * @param posterName
-     * @param communityId
-     * @param photo
+     * @param postContent post content
+     * @param tag tag
+     * @param posterName poster name
+     * @param communityId community id
+     * @param photo photo
      * @return 返回成功储存的id号*/
-    String save(String title, String postContent, String posterName, int communityId, List<MultipartFile> photo)throws IOException;
+    String save(String title, String tag, String postContent, String posterName, int communityId, List<MultipartFile> photo) throws IOException;
     /**
      * 此函数以列表形式返回所有帖子
      * @return 以列表形式返回的所有帖子
@@ -48,6 +52,6 @@ public interface PostService {
      */
     JSONObject getBigPhoto(String path);
 
-
+    JSONArray getAllTags(Long communityId);
 
 }

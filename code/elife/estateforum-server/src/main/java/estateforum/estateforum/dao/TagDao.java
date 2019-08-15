@@ -17,6 +17,22 @@ public interface TagDao {
     Tag save(Tag tag);
 
     /**
+     * whether exists content and community id
+     * @param tag tag
+     * @param communityId community id
+     * @return whether exists
+     */
+    Boolean existsByContentAndCommunityId(String tag, Long communityId);
+
+    /**
+     * find tag by content in community with id
+     * @param content tag content
+     * @param communityId community id
+     * @return tag
+     */
+    Tag findTagByContentAndCommunityId(String content, Long communityId);
+
+    /**
      * get all tags
      * @return all tags
      */

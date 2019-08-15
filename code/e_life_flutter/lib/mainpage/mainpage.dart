@@ -9,10 +9,11 @@ import 'package:oktoast/oktoast.dart';
 class mainpage extends StatefulWidget {
   final communityId;
   final username;
-  mainpage(this.communityId, this.username);
+  var session;
+  mainpage(this.communityId, this.username,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new mainpageWidget(communityId, username);
+    return new mainpageWidget(communityId, username,session);
   }
 }
 
@@ -27,7 +28,8 @@ class mainpageWidget extends State<mainpage>
     with SingleTickerProviderStateMixin, NetListener {
   final communityId;
   final username;
-  mainpageWidget(this.communityId, this.username);
+  var session;
+  mainpageWidget(this.communityId, this.username,this.session);
   estateforumHttp manager = new estateforumHttp();
   List<Choice> tabs = []; //导航栏
   TabController mTabController;
@@ -61,7 +63,7 @@ class mainpageWidget extends State<mainpage>
 //        }));
                 Navigator.push<String>(context,
                     new MaterialPageRoute(builder: (context) {
-                      return new postDetail(pid, username, post);
+                      return new postDetail(pid, username, post,session);
                     }));
               },
               dense: true,
@@ -101,7 +103,7 @@ class mainpageWidget extends State<mainpage>
 //    forums.add(post2);
 
     //小区资讯界面
-    Widget newsContain = new newswidget(communityId, username);
+    Widget newsContain = new newswidget(communityId, username,session);
     //小区论坛界面
     Widget forumConatin = new Container(
       child: new ListView.builder(
@@ -179,7 +181,7 @@ class mainpageWidget extends State<mainpage>
 
   _getPost() async {
     print("aaaaaaaaa");
-    await manager.getPostList(this, communityId, "1", "100");
+    await manager.getPostList(this, communityId, "1", "100",session);
     return true;
   }
 

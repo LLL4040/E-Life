@@ -74,6 +74,7 @@ public class UserController {
         JSONObject result = ("1".equals(id)) ? userService.loginManager(username, password) : userService.login(username, password, id);
         if ("1".equals(result.getAsString("login"))) {
             HttpSession session = request.getSession();
+            System.out.println(session);
             String name = (String) session.getAttribute("username");
             if (StringUtils.isEmpty(name)) {
                 session.setAttribute("username", username);

@@ -5,19 +5,22 @@ class estateforumHttp {
 
 
 
-  var getPostUrl= "http://zhimo.natapp1.cc/estateforum-server/api/post/findPost";
+  var getPostUrl= "http://elife.natapp1.cc/estateforum-server/api/post/findPost";
 
-  var getCommentsUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/findComments";
+  var getCommentsUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/findComments";
 
-  var addCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/addComments";
+  var addCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/addComments";
 
-  var deleteCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/deleteComments";
+  var deleteCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/deleteComments";
 
 
-  getPostList(NetListener net,String communityId,String page,String size) {
+  getPostList(NetListener net,String communityId,String page,String size,String session) {
     var client = new http.Client();
     client.post(
         getPostUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "communityId": communityId,
           "page": page,
@@ -38,10 +41,13 @@ class estateforumHttp {
     );
   }
 
-  getCommentList(NetListener net,String pid,String page,String size) {
+  getCommentList(NetListener net,String pid,String page,String size,String session) {
     var client = new http.Client();
     client.post(
         getCommentsUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "pid": pid,
           "page": page,
@@ -62,10 +68,13 @@ class estateforumHttp {
     );
   }
 
-  addComment(NetListener net,String pid, String commenterName, String postComment){
+  addComment(NetListener net,String pid, String commenterName, String postComment,String session){
     var client = new http.Client();
     client.post(
         addCommentUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "pid": pid,
           "commenterName": commenterName,
@@ -83,10 +92,13 @@ class estateforumHttp {
     );
   }
 
-  deleteComment(NetListener net,String pid, String location){
+  deleteComment(NetListener net,String pid, String location,String session){
     var client = new http.Client();
     client.post(
         deleteCommentUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "pid": pid,
           "location": location,

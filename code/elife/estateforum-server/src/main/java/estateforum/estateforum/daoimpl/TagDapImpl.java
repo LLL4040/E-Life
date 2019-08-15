@@ -23,6 +23,16 @@ public class TagDapImpl implements TagDao {
     }
 
     @Override
+    public Boolean existsByContentAndCommunityId(String tag, Long communityId){
+        return tagRepository.existsTagByContentAndCommunityId(tag, communityId);
+    }
+
+    @Override
+    public Tag findTagByContentAndCommunityId(String content, Long communityId){
+        return tagRepository.findTagByContentAndCommunityId(content, communityId);
+    }
+
+    @Override
     public List<Tag> getAllTags(){
         return tagRepository.findAll();
     }

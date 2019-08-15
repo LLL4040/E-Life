@@ -23,18 +23,19 @@ public class Post {
     private String id;
     private String posterName;
     private String title;
+    private String tag;
     private String postContent;
     private String postTime;
     private int communityId;
     private String path;
 
 
-    public Post(String title,String postContent,String postTime,String posterName,int communityId,String path){
+    public Post(String title,String tag, String postContent,String postTime,String posterName,int communityId,String path){
         this.title=title;
         this.postContent=postContent;
         this.postTime=postTime;
         this.posterName=posterName;
-
+        this.tag = tag;
         this.communityId=communityId;
         this.path =path;
 
@@ -58,6 +59,14 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public void setPostContent(String postContent) {

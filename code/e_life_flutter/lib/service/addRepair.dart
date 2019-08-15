@@ -3,17 +3,19 @@ import 'package:e_life_flutter/service/maintainhttp.dart';
 
 class addRepair extends StatefulWidget {
   final username;
-  addRepair(this.username);
+  var session;
+  addRepair(this.username,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new addRepairCenter(username);
+    return new addRepairCenter(username,session);
   }
 }
 
 class addRepairCenter extends State<addRepair>
     with SingleTickerProviderStateMixin, NetListener {
   final username;
-  addRepairCenter(this.username);
+  var session;
+  addRepairCenter(this.username,this.session);
   maintainHttp manager = new maintainHttp();
   final TextEditingController _phoneController =
   new TextEditingController.fromValue(new TextEditingValue(text: ""));
@@ -26,7 +28,7 @@ class addRepairCenter extends State<addRepair>
       print(_phoneController.text);
       print(_contentController.text);
       manager.addMaintain(
-          this, username, _phoneController.text, _contentController.text);
+          this, username, _phoneController.text, _contentController.text,session);
       Navigator.pop(context, "发送维修请求成功");
     }
 

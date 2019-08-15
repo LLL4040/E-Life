@@ -9,10 +9,11 @@ class postDetail extends StatefulWidget {
   final pid;
   final username;
   final Post post;
-  postDetail(this.pid, this.username, this.post);
+  var session;
+  postDetail(this.pid, this.username, this.post,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new postDetailCenter(pid, username, post);
+    return new postDetailCenter(pid, username, post,session);
   }
 }
 
@@ -21,7 +22,8 @@ class postDetailCenter extends State<postDetail>
   final pid;
   final username;
   final Post post;
-  postDetailCenter(this.pid, this.username, this.post);
+  var session;
+  postDetailCenter(this.pid, this.username, this.post,this.session);
   String success1;
   List<Comment> postCommentList = []; //存后端数据
   final TextEditingController _commentController =
@@ -331,7 +333,7 @@ class postDetailCenter extends State<postDetail>
 
   _addComment(String username, String pid, String comment) async {
     print(pid + "帖子id号");
-    manager.addComment(this, pid, username, comment);
+    manager.addComment(this, pid, username, comment,session);
     await new Future.delayed(new Duration(milliseconds: 1000));
     if (success1 == "true") {
       showToast("评论成功");
@@ -508,7 +510,7 @@ class postDetailCenter extends State<postDetail>
 
   void _returnPostComment() async {
     print(pid);
-    await manager.getCommentList(this, pid, "1", "100");
+    await manager.getCommentList(this, pid, "1", "100",session);
   }
 
   @override
@@ -534,7 +536,9 @@ class postDetailCenter extends State<postDetail>
       success1 = "false";
     }
     setState(() {
-      manager.getCommentList(this, pid, "1", "100");
+
+      manager.getCommentList(this, pid,"1","100",session);
+
     });
   }
 

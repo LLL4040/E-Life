@@ -9,16 +9,18 @@ import 'package:oktoast/oktoast.dart';
 
 class myRepair extends StatefulWidget {
   final username;
-  myRepair(this.username);
+  var session;
+  myRepair(this.username,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new RepairCenter(username);
+    return new RepairCenter(username,session);
   }
 }
 
 class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,NetListener {
   final username;
-  RepairCenter(this.username);
+  var session;
+  RepairCenter(this.username,this.session);
 
   List<Maintain> maintainList=[];
   maintainHttp manager = new maintainHttp();
@@ -89,7 +91,7 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
 
   void _toaddRepair() {
     Navigator.push<String>(context, new MaterialPageRoute(builder: (context) {
-      return new addRepair(username);
+      return new addRepair(username,session);
     })).then((String result) {
       print(result);
       showToast(result,textStyle: TextStyle(
@@ -99,7 +101,7 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
       ));
       setState(() async{
         await new Future.delayed(new Duration(milliseconds: 1000));
-        manager.myMaintain(this, username);
+        manager.myMaintain(this, username,session);
 
       });
 
@@ -110,7 +112,7 @@ class RepairCenter extends State<myRepair> with SingleTickerProviderStateMixin,N
 
   _getMaintain1() async {
     print(username);
-    await manager.myMaintain(this, username);
+    await manager.myMaintain(this, username,session);
     return true;
   }
   @override

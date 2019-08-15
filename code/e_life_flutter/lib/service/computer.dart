@@ -3,16 +3,18 @@ import 'comsuphttp.dart';
 import 'package:url_launcher/url_launcher.dart';
 class computer extends StatefulWidget {
   final communityId;
-  computer(this.communityId);
+  var session;
+  computer(this.communityId,this.session);
   @override
   State<StatefulWidget> createState() {
-    return new computerCenter(communityId);
+    return new computerCenter(communityId,session);
   }
 }
 
 class computerCenter extends State<computer> with SingleTickerProviderStateMixin,NetListener {
   final communityId;
-  computerCenter(this.communityId);
+  var session;
+  computerCenter(this.communityId,this.session);
   _launchURL(String phone) async {
     String url="tel: "+phone;
     if (await canLaunch(url)) {
@@ -83,7 +85,7 @@ class computerCenter extends State<computer> with SingleTickerProviderStateMixin
     );
   }
   void _returnComputerMerchant()async{
-    await manager.myComputer(this);
+    await manager.myComputer(this,session);
   }
   @override
   void initState() {
