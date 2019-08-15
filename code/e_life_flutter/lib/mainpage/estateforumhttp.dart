@@ -14,10 +14,13 @@ class estateforumHttp {
   var deleteCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/deleteComments";
 
 
-  getPostList(NetListener net,String communityId,String page,String size) {
+  getPostList(NetListener net,String communityId,String page,String size,String session) {
     var client = new http.Client();
     client.post(
         getPostUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "communityId": communityId,
           "page": page,
@@ -26,8 +29,8 @@ class estateforumHttp {
     ).then((
         response,
         ) {
-      print(response.body);
-      print(jsonDecode(response.body));
+      //print(response.body);
+      //print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Post> post = responseJson.map((m) => new Post.fromJson(m)).toList();
       net.onAllPostResponse(post);
@@ -38,10 +41,13 @@ class estateforumHttp {
     );
   }
 
-  getCommentList(NetListener net,String pid,String page,String size) {
+  getCommentList(NetListener net,String pid,String page,String size,String session) {
     var client = new http.Client();
     client.post(
         getCommentsUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "pid": pid,
           "page": page,
@@ -62,10 +68,13 @@ class estateforumHttp {
     );
   }
 
-  addComment(NetListener net,String pid, String commenterName, String postComment){
+  addComment(NetListener net,String pid, String commenterName, String postComment,String session){
     var client = new http.Client();
     client.post(
         addCommentUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "pid": pid,
           "commenterName": commenterName,
@@ -74,6 +83,7 @@ class estateforumHttp {
     ).then((response,) {
       Map<String, dynamic> responseJson = json.decode(response.body);
       bool success = responseJson.containsValue("1");
+
       net.onAddComment(success);
     }, onError: (error) {
       net.onError(error);
@@ -82,10 +92,13 @@ class estateforumHttp {
     );
   }
 
-  deleteComment(NetListener net,String pid, String location){
+  deleteComment(NetListener net,String pid, String location,String session){
     var client = new http.Client();
     client.post(
         deleteCommentUrl,
+        headers: {
+          "cookie": session,
+        },
         body: {
           "pid": pid,
           "location": location,
@@ -109,7 +122,7 @@ abstract class NetListener {
 
 
 
-  void onAllPostResponse(List<Post> postList);
+  void onAllPostResponse(List<Post> body);
   void onAllCommentsResponse(List<Comment> commentList);
   void onAddComment(bool success);
   void onDeleteComment(bool success);
@@ -124,8 +137,8 @@ class Post{
   final String title;
   final String postContent;
   final String postTime;
-  final int communityId;
-  final List<String> photo;
+  final String communityId;
+  final List photo;
 
 
   Post({
@@ -139,14 +152,23 @@ class Post{
   }) ;
 
   factory Post.fromJson(Map<String, dynamic> json){
+    List photo1 =new List();
+    if(json['photo']!=null){
+      photo1=json['photo'];
+    }
+    else{
+       photo1 = null;
+    }
     return new Post(
       id: json['id'].toString(),
       posterName: json['posterName'],
       postTime: json['postTime'],
       postContent: json['postContent'],
       title: json['title'],
-      communityId: json['communityId'],
-      photo: json['photo'],
+      communityId: json['communityId'].toString(),
+      photo: photo1,
+
+      //photo: null,
     );
   }
 }
@@ -174,7 +196,7 @@ class Comment{
       postComment: json['postComment'],
       commentsTime: json['commentsTime'],
       commenterName: json['commenterName'],
-      location: json['location'],
+      location: json['location'].toString(),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'user.dart';
-import 'newsHttp.dart';
+import '../user.dart';
+import 'newshttp.dart';
 import 'package:oktoast/oktoast.dart';
 
 class joinActivity extends StatefulWidget {
@@ -22,11 +22,12 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
   var session;
   joinActivityWidget(this.id,this.username,this.session);
   httpManager manager = new httpManager();
+  final TextEditingController _contentController =
+  new TextEditingController.fromValue(new TextEditingValue(text: ""));
   @override
   Widget build(BuildContext context) {
 
-    final TextEditingController _contentController =
-    new TextEditingController.fromValue(new TextEditingValue(text: ""));
+
 
     return  ScopedModelDescendant<UserModel>(
         builder: (context, child, model) {

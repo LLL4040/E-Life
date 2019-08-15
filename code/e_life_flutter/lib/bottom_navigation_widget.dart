@@ -1,8 +1,8 @@
-import 'package:e_life_flutter/message.dart';
+import 'package:e_life_flutter/message/message.dart';
 import 'package:flutter/material.dart';
-import 'mycenter.dart';
+import 'usercenter/mycenter.dart';
 import 'package:e_life_flutter/service/service.dart';
-import 'mainpage.dart';
+import 'mainpage/mainpage.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 class BottomNavigationWidget extends StatefulWidget {

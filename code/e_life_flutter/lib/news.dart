@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:oktoast/oktoast.dart';
 import 'dart:convert';
-import 'newsHttp.dart';
-import 'joinActivity.dart';
+import 'package:e_life_flutter/mainpage/newshttp.dart';
+import 'package:e_life_flutter/mainpage/joinActivity.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 
