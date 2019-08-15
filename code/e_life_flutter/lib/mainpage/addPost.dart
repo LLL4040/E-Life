@@ -9,16 +9,18 @@ import 'package:image_picker/image_picker.dart';
 class addPost extends StatefulWidget {
   final username;
   final communityId;
-  addPost(this.username, this.communityId);
+  var session;
+  addPost(this.username, this.communityId,this.session);
   @override
-  _addPostCenter createState() => _addPostCenter(username, communityId);
+  _addPostCenter createState() => _addPostCenter(username, communityId,session);
 }
 
 class _addPostCenter extends State<addPost>
     with SingleTickerProviderStateMixin {
   final username;
   final communityId;
-  _addPostCenter(this.username, this.communityId);
+  var session;
+  _addPostCenter(this.username, this.communityId,this.session);
   final TextEditingController _titleController =
       new TextEditingController.fromValue(new TextEditingValue(text: ""));
   final TextEditingController _contentController =
@@ -191,15 +193,18 @@ class _addPostCenter extends State<addPost>
       "posterName": username,
       "communityId": communityId,
       "photo": photos,
+
 //      "photo":new UploadFileInfo(new File(path), name,
 //          contentType: ContentType.parse("image/$suffix")),
     });
 
     Dio dio = new Dio();
     //改成你的内网穿透网址
+
     var respone = await dio.post<String>(
         "http://zhimo.natapp1.cc/estateforum-server/api/post/addPost/",
         data: formData);
+
     if (respone.statusCode == 200) {
       //showToast("图片上传成功");
       //print("图片上传成功");

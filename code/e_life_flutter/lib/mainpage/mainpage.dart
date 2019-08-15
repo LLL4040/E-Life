@@ -166,7 +166,7 @@ class mainpageWidget extends State<mainpage>
         onPressed: () async {
           Navigator.push<String>(context,
               new MaterialPageRoute(builder: (context) {
-            return new addPost(username,communityId);
+            return new addPost(username,communityId,session);
           })).then((String result) {
             print("报名收到的信息为:" + result);
             showToast(result);

@@ -378,12 +378,12 @@ class postDetailCenter extends State<postDetail>
             postComments.add(photo1);
           }
           if (length == 1) {
-            Widget photo1 = _getPhoto1(post.photo[length + 1]);
+            Widget photo1 = _getPhoto1(post.photo[length1 ]);
             postComments.add(photo1);
           }
           if (length == 2) {
             Widget photo1 =
-                _getPhoto2(post.photo[length + 1], post.photo[length + 2]);
+                _getPhoto2(post.photo[length], post.photo[length1+1]);
             postComments.add(photo1);
           }
         }
