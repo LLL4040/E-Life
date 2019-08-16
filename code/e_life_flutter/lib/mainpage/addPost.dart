@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class addPost extends StatefulWidget {
   final username;
@@ -12,7 +13,10 @@ class addPost extends StatefulWidget {
   var session;
   addPost(this.username, this.communityId,this.session);
   @override
-  _addPostCenter createState() => _addPostCenter(username, communityId,session);
+  @override
+  State<StatefulWidget> createState() {
+    return new _addPostCenter(username, communityId,session);
+  }
 }
 
 class _addPostCenter extends State<addPost>
@@ -39,13 +43,314 @@ class _addPostCenter extends State<addPost>
     photos.add(new UploadFileInfo(new File(path), name,
         contentType: ContentType.parse("image/$suffix")));
     images.add(image);
-    //_upLoadImage();
+
     setState(() {
       //_image = image;
 
     });
   }
+  Widget _getPhoto1(var photo1,var num) {
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+        //elevation: 0.0, //设置阴影
+//设置shape，这里设置成了R角
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+        clipBehavior: Clip.antiAlias,
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
+            new Row(
+              children: <Widget>[
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(10.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
+                  height: 100, //设置高度
+                  width: 100, //设置宽度
 
+                child: Stack(
+                  alignment:Alignment.center ,
+                  children: <Widget>[
+                     new Card(
+                    //elevation: 0.1, //设置阴影
+                    //设置shape，这里设置成了R角
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                    clipBehavior: Clip.antiAlias,
+
+                    child: photo1 == ""
+                        ? Text("null")
+                        : Image.file(
+                      photo1,
+                      fit: BoxFit.fill, //填充
+                      gaplessPlayback: true, //防止重绘
+                    ),
+                  ),
+                    IconButton(
+                      icon: Icon(Icons.delete_outline,color: Colors.black38,),
+                      onPressed: () {
+                        photos.removeAt(num);
+                        images.removeAt(num);
+                        setState(() {
+
+                        });
+                      },),
+                  ],
+                ),
+                ),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+              ],
+            ),
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
+          ],
+        ),
+      ),
+
+    );
+  }
+
+  Widget _getPhoto2(var photo1,var num1, var photo2,var num2) {
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+//        elevation: 15.0, //设置阴影
+        //设置shape，这里设置成了R角
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+        clipBehavior: Clip.antiAlias,
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
+            new Row(
+              children: <Widget>[
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(11.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
+                  height: 100, //设置高度
+                  width: 100, //设置宽度
+                  child: Stack(
+                    alignment:Alignment.center ,
+                    children: <Widget>[
+                      new Card(
+                        //elevation: 0.1, //设置阴影
+                        //设置shape，这里设置成了R角
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                        clipBehavior: Clip.antiAlias,
+
+                        child: photo1 == ""
+                            ? Text("null")
+                            : Image.file(
+                          photo1,
+                          fit: BoxFit.fill, //填充
+                          gaplessPlayback: true, //防止重绘
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete_outline,color: Colors.black38,),
+                        onPressed: () {
+                          photos.removeAt(num1);
+                          images.removeAt(num1);
+                          setState(() {
+
+                          });
+                        },),
+                    ],
+                  ),
+                ),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
+                  height: 100, //设置高度
+                  width: 100, //设置宽度
+                  child: Stack(
+                    alignment:Alignment.center ,
+                    children: <Widget>[
+                      new Card(
+                        //elevation: 0.1, //设置阴影
+                        //设置shape，这里设置成了R角
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                        clipBehavior: Clip.antiAlias,
+
+                        child: photo2 == ""
+                            ? Text("null")
+                            : Image.file(
+                          photo2,
+                          fit: BoxFit.fill, //填充
+                          gaplessPlayback: true, //防止重绘
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete_outline,color: Colors.black38,),
+                        onPressed: () {
+                          photos.removeAt(num2);
+                          images.removeAt(num2);
+                          setState(() {
+
+                          });
+                        },),
+                    ],
+                  ),
+                ),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+              ],
+            ),
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getPhoto3(var photo1,var num1 ,var photo2,var num2, var photo3, var num3) {
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+        //elevation: 5.0, //设置阴影
+        //设置shape，这里设置成了R角
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+        clipBehavior: Clip.antiAlias,
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
+            new Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new SizedBox(
+                  height: 100, //设置高度
+                  width: 100, //设置宽度
+                  child: Stack(
+                    alignment:Alignment.center ,
+                    children: <Widget>[
+                      new Card(
+                        //elevation: 0.1, //设置阴影
+                        //设置shape，这里设置成了R角
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                        clipBehavior: Clip.antiAlias,
+
+                        child: photo1 == ""
+                            ? Text("null")
+                            : Image.file(
+                          photo1,
+                          fit: BoxFit.fill, //填充
+                          gaplessPlayback: true, //防止重绘
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete_outline,color: Colors.black38,),
+                        onPressed: () {
+                          photos.removeAt(num1);
+                          images.removeAt(num1);
+                          setState(() {
+
+                          });
+                        },),
+                    ],
+                  ),
+                ),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
+                  height: 100, //设置高度
+                  width: 100, //设置宽度
+                  child: Stack(
+                    alignment:Alignment.center ,
+                    children: <Widget>[
+                      new Card(
+                        //elevation: 0.1, //设置阴影
+                        //设置shape，这里设置成了R角
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                        clipBehavior: Clip.antiAlias,
+
+                        child: photo2 == ""
+                            ? Text("null")
+                            : Image.file(
+                          photo2,
+                          fit: BoxFit.fill, //填充
+                          gaplessPlayback: true, //防止重绘
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete_outline,color: Colors.black38,),
+                        onPressed: () {
+                          photos.removeAt(num2);
+                          images.removeAt(num2);
+                          setState(() {
+
+                          });
+                        },),
+                    ],
+                  ),
+                ),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
+                  height: 100, //设置高度
+                  width: 100, //设置宽度
+                  child: Stack(
+                    alignment:Alignment.center ,
+                    children: <Widget>[
+                      new Card(
+                        //elevation: 0.1, //设置阴影
+                        //设置shape，这里设置成了R角
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                        clipBehavior: Clip.antiAlias,
+
+                        child: photo3 == ""
+                            ? Text("null")
+                            : Image.file(
+                          photo3,
+                          fit: BoxFit.fill, //填充
+                          gaplessPlayback: true, //防止重绘
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete_outline,color: Colors.black38,),
+                        onPressed: () {
+                          photos.removeAt(num3);
+                          images.removeAt(num3);
+                          setState(() {
+
+                          });
+                        },),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
+          ],
+        ),
+      ),
+    );
+  }
   List<Widget> postWidgets = [];
   Widget buildpostBody(BuildContext ctxt, int index) {
     return postWidgets[index];
@@ -121,44 +426,41 @@ class _addPostCenter extends State<addPost>
     postWidgets.add(addContent);
     //postWidgets.add(addPhotos);
 
-    if(photos.length>0){
-      for(int i=0;i<photos.length;i++){
-        Widget addphoto1= SizedBox(
-          //height: 210.0, //设置高度
-          child: new Card(
-            //elevation: 0.0, //设置阴影
-//设置shape，这里设置成了R角
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
-            clipBehavior: Clip.antiAlias,
-            child: new ListTile(
 
-              leading: new Icon(
-                Icons.photo,
-                color: Colors.blue[500],
-              ),
-              //title: _image==null?new Text('图片区域'):Image.file(_image),
-              title: SizedBox(
-                height: 100,
-                width: 100,
-                child: images[i]==null?new Text('图片区域'):Image.file(images[i]),
+    if (images != null) {
+      if (images.length <= 3&&images.length>=0) {
+        if (images.length == 3) {
+          Widget photo1 =
+          _getPhoto3(images[0],0, images[1],1, images[2],2);
+          postWidgets.add(photo1);
+        }
+        if (images.length == 2) {
+          Widget photo1 = _getPhoto2(images[0],0,images[1],1);
+          postWidgets.add(photo1);
+        } else if (images.length == 1){
+          Widget photo1 = _getPhoto1(images[0],0);
+          postWidgets.add(photo1);
+        }
+      }
+      if (images.length > 3) {
+        int length = images.length % 3;
+        print(length.toString() + "jsjs");
 
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  photos.removeAt(i);
-                  images.removeAt(i);
-                  setState(() {
-
-                  });
-                },),
-            ),
-          ),
-        );
-        postWidgets.add(addphoto1);
-
+        int length1 = images.length - length;
+        for (int i = 0; i < length1 / 3; i++) {
+          Widget photo1 = _getPhoto3(images[3 * i],3 * i, images[3 * i + 1],3 * i + 1,
+              images[3 * i + 2],3 * i + 2);
+          postWidgets.add(photo1);
+        }
+        if (length == 1) {
+          Widget photo1 = _getPhoto1(images[length1 ],length1);
+          postWidgets.add(photo1);
+        }
+        if (length == 2) {
+          Widget photo1 =
+          _getPhoto2(images[length1],length1, images[length1+1],length1+1);
+          postWidgets.add(photo1);
+        }
       }
     }
     postWidgets.add(postall);
@@ -193,6 +495,7 @@ class _addPostCenter extends State<addPost>
       "posterName": username,
       "communityId": communityId,
       "photo": photos,
+      "tag":"111",
 
 //      "photo":new UploadFileInfo(new File(path), name,
 //          contentType: ContentType.parse("image/$suffix")),
@@ -200,10 +503,13 @@ class _addPostCenter extends State<addPost>
 
     Dio dio = new Dio();
     //改成你的内网穿透网址
-
-    var respone = await dio.post<String>(
-        "http://zhimo.natapp1.cc/estateforum-server/api/post/addPost/",
-        data: formData);
+    Map<String, dynamic> headers = new Map();
+    headers['cookie'] = session;
+    var respone = await dio.post(
+        "http://zhimo.natapp1.cc/estateforum-server/api/post/addPost",
+        data: formData,options: Options(
+      headers: headers,
+    ),);
 
     if (respone.statusCode == 200) {
       //showToast("图片上传成功");
@@ -214,4 +520,5 @@ class _addPostCenter extends State<addPost>
     photos = [];
     images=[];
   }
+
 }
