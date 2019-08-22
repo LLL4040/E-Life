@@ -7,14 +7,15 @@ import 'addPost.dart';
 import 'news.dart';
 import 'package:oktoast/oktoast.dart';
 import 'estateforum.dart';
+
 class mainpage extends StatefulWidget {
   final communityId;
   final username;
   var session;
-  mainpage(this.communityId, this.username,this.session);
+  mainpage(this.communityId, this.username, this.session);
   @override
   State<StatefulWidget> createState() {
-    return new mainpageWidget(communityId, username,session);
+    return new mainpageWidget(communityId, username, session);
   }
 }
 
@@ -30,51 +31,14 @@ class mainpageWidget extends State<mainpage>
   final communityId;
   final username;
   var session;
-  mainpageWidget(this.communityId, this.username,this.session);
+  mainpageWidget(this.communityId, this.username, this.session);
   estateforumHttp manager = new estateforumHttp();
   List<Choice> tabs = []; //导航栏
   TabController mTabController;
+//  TabController fTabController;
   int mCurrentPosition = 0;
-
-  List<Post> postList = [];
-
-  Widget _getpost(
-      String name, String time, String title, String pid, Post post) {
-    return new SizedBox(
-      //height: 210.0, //设置高度
-      child: new Card(
-        //elevation: 0.1, //设置阴影
-//        shape: const RoundedRectangleBorder(
-//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
-        child: new Column(
-          // card只能有一个widget，但这个widget内容可以包含其他的widget
-          children: [
-            new ListTile(
-              leading: new Text(name),
-              title: new Text(title),
-              subtitle: new Row(
-                children: <Widget>[
-                  new Text('时间:' + time),
-                ],
-              ),
-              trailing: new Icon(Icons.keyboard_arrow_right),
-              onTap: () {
-//        Navigator.push<String>(context, new MaterialPageRoute(builder: (context) {
-//          return new HeadImageUploadPage();
-//        }));
-                Navigator.push<String>(context,
-                    new MaterialPageRoute(builder: (context) {
-                      return new postDetail(pid, username, post,session);
-                    }));
-              },
-              dense: true,
-            ),
-          ],
-        ),
-      ),
-    );
-
-  }
+  //int fCurrentPosition = 0;
+  List<forumTabs> forumTabsList =[];
 
   List<Widget> forums = [];
   // 从 itemBuilder 调用的独立函数
@@ -84,40 +48,17 @@ class mainpageWidget extends State<mainpage>
 
   @override
   Widget build(BuildContext context) {
-    forums = [];
-//    Widget post1 = _getpost("小王", "2019/5/7", "有人一起赏月吗","1",null);
-//    Widget post2 = _getpost("老王", "2019/5/7", "有人一起逛街吗","1",null);
-
-    if (postList.length > 0) {
-      print("加载帖子成功");
-      for (int i = 1; i < postList.length; i++) {
-//        print(postList[i].posterName);
-//        print(postList[i].postTime);
-//        print(postList[i].title);
-        Widget post5 = _getpost(postList[i].posterName, postList[i].postTime,
-            postList[i].title, postList[i].id, postList[i]);
-
-        forums.add(post5);
-      }
-    }
-//    forums.add(post1);
-//    forums.add(post2);
 
     //小区资讯界面
-    Widget newsContain = new newswidget(communityId, username,session);
+    Widget newsContain = new newswidget(communityId, username, session);
     //小区论坛界面
-    Widget forumConatin = new Container(
-      child: new ListView.builder(
-          scrollDirection:Axis.vertical,
-          itemCount: forums.length,
-          itemBuilder: (BuildContext ctxt, int index) =>
-              buildforumBody(ctxt, index)),
-    );
+
+    Widget forumWidget = new estateforum(communityId, username, session,forumTabsList);
 /**
  * 尤其注意，这个顺序变了之后可能导致数据显示不正常，不能及时渲染*/
     List<Widget> widgetList = []; //!!!要显示的下方组件
     widgetList.add(newsContain);
-    widgetList.add(forumConatin);
+    widgetList.add(forumWidget);
 
     return Scaffold(
       body: NestedScrollView(
@@ -157,34 +98,36 @@ class mainpageWidget extends State<mainpage>
           controller: mTabController,
         ),
       ),
-      floatingActionButton: mCurrentPosition==1?RaisedButton(
-        color: Colors.blue,
-        highlightColor: Colors.blue[700],
-        colorBrightness: Brightness.dark,
-        splashColor: Colors.grey,
-        child: Text("发布帖子"),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        onPressed: () async {
-          Navigator.push<String>(context,
-              new MaterialPageRoute(builder: (context) {
-            //return new addPost(username,communityId,session);
-                return new estateforum(username,communityId,session);
-          })).then((String result) {
-            print("报名收到的信息为:" + result);
-            showToast(result);
-            setState(() {
-              _getPost();
-            });
-          });
-        },
-      ):null,
+      floatingActionButton: mCurrentPosition == 1
+          ? RaisedButton(
+              color: Colors.blue,
+              highlightColor: Colors.blue[700],
+              colorBrightness: Brightness.dark,
+              splashColor: Colors.grey,
+              child: Text("发布帖子"),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              onPressed: () async {
+                Navigator.push<String>(context,
+                    new MaterialPageRoute(builder: (context) {
+                  return new addPost(username,communityId,session);
+                  //return new estateforum(username, communityId, session);
+                })).then((String result) {
+                  print("报名收到的信息为:" + result);
+                  showToast(result);
+                  setState(() {
+                    _getPost();
+                  });
+                });
+              },
+            )
+          : null,
     );
   }
 
   _getPost() async {
     print("aaaaaaaaa");
-    await manager.getPostList(this, communityId, "1", "100",session);
+    await manager.getTabs(this, communityId);
     return true;
   }
 
@@ -195,6 +138,7 @@ class mainpageWidget extends State<mainpage>
     tabs.add(Choice(title: '资讯', icon: Icons.fiber_new, position: 0));
     tabs.add(Choice(title: '论坛', icon: Icons.message, position: 1));
     mTabController = new TabController(vsync: this, length: tabs.length);
+
     //判断TabBar是否切换
     mTabController.addListener(() {
       if (mTabController.indexIsChanging) {
@@ -203,6 +147,7 @@ class mainpageWidget extends State<mainpage>
         });
       }
     });
+
   }
 
   @override
@@ -213,7 +158,6 @@ class mainpageWidget extends State<mainpage>
 
   @override
   void onAllPostResponse(List<Post> body) {
-    postList = body;
     setState(() {});
   }
 
@@ -223,6 +167,13 @@ class mainpageWidget extends State<mainpage>
   void onAddComment(bool success) {}
   @override
   void onDeleteComment(bool success) {}
+  @override
+  void onAllTabsResponse(List<forumTabs> body){
+    forumTabsList = body;
+    setState(() {
+
+    });
+  }
   @override
   void onError(error) {}
 }

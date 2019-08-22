@@ -545,5 +545,7 @@ class postDetailCenter extends State<postDetail>
   @override
   void onDeleteComment(bool success) {}
   @override
+  void onAllTabsResponse(List<forumTabs> body){}
+  @override
   void onError(error) {}
 }

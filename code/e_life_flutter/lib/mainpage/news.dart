@@ -418,6 +418,7 @@ class myWidget extends State<newswidget>
         length: tabs.length,
         child: MaterialApp(
           home: Scaffold(
+            backgroundColor:Colors.white70,
             appBar: TabBar(
               tabs: tabs.map((Choice choice) {
                 return new Tab(
