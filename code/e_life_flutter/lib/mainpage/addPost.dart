@@ -25,6 +25,8 @@ class _addPostCenter extends State<addPost>
   final communityId;
   var session;
   _addPostCenter(this.username, this.communityId, this.session);
+  final TextEditingController _tagController =
+  new TextEditingController.fromValue(new TextEditingValue(text: ""));
   final TextEditingController _titleController =
       new TextEditingController.fromValue(new TextEditingValue(text: ""));
   final TextEditingController _contentController =
@@ -378,6 +380,15 @@ class _addPostCenter extends State<addPost>
   @override
   Widget build(BuildContext context) {
     postWidgets = [];
+    Widget addtag = ListTile(
+      title: new TextField(
+        controller: _tagController,
+        decoration: new InputDecoration(
+          hintText: '输入标签',
+        ),
+      ),
+      leading: Text("标签: "),
+    );
     Widget addtitle = ListTile(
       title: new TextField(
         controller: _titleController,
@@ -437,7 +448,7 @@ class _addPostCenter extends State<addPost>
         ],
       ),
     );
-
+    postWidgets.add(addtag);
     postWidgets.add(addtitle);
     postWidgets.add(addContent);
     //postWidgets.add(addPhotos);
@@ -508,7 +519,7 @@ class _addPostCenter extends State<addPost>
       "posterName": username,
       "communityId": communityId,
       "photo": photos,
-      "tag": "111",
+      "tag": _tagController.text,
 
 //      "photo":new UploadFileInfo(new File(path), name,
 //          contentType: ContentType.parse("image/$suffix")),

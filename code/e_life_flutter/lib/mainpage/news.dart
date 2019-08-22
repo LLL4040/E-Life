@@ -456,6 +456,7 @@ class myWidget extends State<newswidget>
   }
 
   _getMessage() async {
+    print("sssss");
     await manager.getNews(this, communityId,session);
     await manager.getUrgent(this, communityId,session);
     await manager.getActivity(this, communityId,session);

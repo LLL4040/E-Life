@@ -6,6 +6,7 @@ import 'package:e_life_flutter/mainpage/estateforumhttp.dart';
 import 'addPost.dart';
 import 'news.dart';
 import 'package:oktoast/oktoast.dart';
+import 'estateforum.dart';
 class mainpage extends StatefulWidget {
   final communityId;
   final username;
@@ -107,6 +108,7 @@ class mainpageWidget extends State<mainpage>
     //小区论坛界面
     Widget forumConatin = new Container(
       child: new ListView.builder(
+          scrollDirection:Axis.vertical,
           itemCount: forums.length,
           itemBuilder: (BuildContext ctxt, int index) =>
               buildforumBody(ctxt, index)),
@@ -166,7 +168,8 @@ class mainpageWidget extends State<mainpage>
         onPressed: () async {
           Navigator.push<String>(context,
               new MaterialPageRoute(builder: (context) {
-            return new addPost(username,communityId,session);
+            //return new addPost(username,communityId,session);
+                return new estateforum(username,communityId,session);
           })).then((String result) {
             print("报名收到的信息为:" + result);
             showToast(result);
