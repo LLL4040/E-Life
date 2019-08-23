@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class merchantHttp {
 //  三天预报
-  var merhcantUrl = "http://elife.natapp1.cc/user-server/api/merchant/getMerchantByUsername";
+  var merhcantUrl = "http://zhimo.natapp1.cc/user-server/api/merchant/getMerchantByUsername";
 
 
   /**

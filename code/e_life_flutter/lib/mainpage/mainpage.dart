@@ -98,35 +98,13 @@ class mainpageWidget extends State<mainpage>
           controller: mTabController,
         ),
       ),
-      floatingActionButton: mCurrentPosition == 1
-          ? RaisedButton(
-              color: Colors.blue,
-              highlightColor: Colors.blue[700],
-              colorBrightness: Brightness.dark,
-              splashColor: Colors.grey,
-              child: Text("发布帖子"),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
-              onPressed: () async {
-                Navigator.push<String>(context,
-                    new MaterialPageRoute(builder: (context) {
-                  return new addPost(username,communityId,session);
-                  //return new estateforum(username, communityId, session);
-                })).then((String result) {
-                  print("报名收到的信息为:" + result);
-                  showToast(result);
-                  setState(() {
-                    _getPost();
-                  });
-                });
-              },
-            )
-          : null,
+
     );
   }
 
   _getPost() async {
     print("aaaaaaaaa");
+
     await manager.getTabs(this, communityId);
     return true;
   }

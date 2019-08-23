@@ -1,7 +1,7 @@
 
 import 'package:e_life_flutter/userhttp.dart' as prefix0;
 import 'package:flutter/material.dart';
-import '../map.dart';
+//import '../map.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../user.dart';
 import 'package:e_life_flutter/friends/friend.dart';
@@ -28,15 +28,15 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
   myCenterWidget(this.username1,this.role1,this.session1);
   prefix0.userHttp manager = new prefix0.userHttp();
 
-  void _toMap() {
-    var androidView = new AndroidView(viewType: "MyMap");
-    Navigator.push(context,
-        new MaterialPageRoute(builder: (context) {
-          return new Map(androidView : androidView);
-        })).then((var onValue){
-          androidView = onValue;
-    });
-  }
+//  void _toMap() {
+//    var androidView = new AndroidView(viewType: "MyMap");
+//    Navigator.push(context,
+//        new MaterialPageRoute(builder: (context) {
+//          return new Map(androidView : androidView);
+//        })).then((var onValue){
+//          androidView = onValue;
+//    });
+//  }
  String username="未登录";
  String role = "用户";
   @override

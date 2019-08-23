@@ -98,14 +98,6 @@ class postDetailCenter extends State<postDetail>
             ),
             //new Divider(),
 
-//            new ListTile(
-//              title: new Text('图片区域'),
-//              leading: new Icon(
-//                Icons.photo,
-//                color: Colors.blue[500],
-//              ),
-//
-//            ),
           ],
         ),
       ),

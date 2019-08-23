@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../bottom_navigation_widget.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -29,6 +30,8 @@ class estateforumWidget extends State<estateforum>
   final username;
   var session;
   var forumTabsList;
+  final TextEditingController _searchFieldController =
+  new TextEditingController.fromValue(new TextEditingValue(text: ""));
   estateforumWidget(this.communityId, this.username,this.session,this.forumTabsList);
 
   estateforumHttp manager = new estateforumHttp();
@@ -84,6 +87,104 @@ class estateforumWidget extends State<estateforum>
   Widget build(BuildContext context) {
 
     forums = [];
+
+    Widget searchField=Container(
+      height: 30,
+      padding: EdgeInsets.only(left: 20,right: 20),
+      child: new TextField(
+        controller: _searchFieldController,
+        decoration: new InputDecoration(
+          hintText: '输入用户名',
+        ),
+        onSubmitted: (text) {//内容提交(按回车)的回调
+          _searchFieldController.text="";
+          print('submit $text');
+        },
+      ),
+    );
+
+    forums.add(searchField);
+    Widget tabsBar = new TabBar(
+      labelPadding: EdgeInsets.only(left: 5,top: 5),
+
+      labelColor: Colors.blueAccent,
+      unselectedLabelColor: Colors.black45,
+      tabs: tabs.map((tabChoice choice) {
+
+        return new Tab(
+          icon: new Container(
+            width: 60,
+            height: 25,
+            decoration: new BoxDecoration(
+              borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+
+            ),
+
+            alignment: Alignment.center,
+
+            child: new RaisedButton(
+              color: mCurrentPosition==choice.position?Colors.blue[400]:Colors.white,
+
+              child: Text(choice.title,
+                style: TextStyle(
+                  color:  mCurrentPosition==choice.position?Colors.white:Colors.grey[400],
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+
+                ),
+              ),
+              shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+              onPressed: () async {
+                mCurrentPosition=choice.position;
+                print(choice.num);
+                setState(() {
+
+                });
+              },
+
+            ),
+          ),
+
+        );
+        return new Container(
+          //height: 210.0, //设置高度
+          child:  new Tab(
+            icon: new Container(
+              width: 60,
+              height: 25,
+              decoration: new BoxDecoration(
+                borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+                color: Colors.grey,
+              ),
+
+              alignment: Alignment.center,
+
+              child: new RaisedButton(
+                //color: Colors.grey[400],
+
+                child: Text(choice.title,
+                  style: TextStyle(
+                    color:  Colors.white,
+                  ),
+                ),
+                shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                onPressed: () async {
+                  print(choice.num);
+                },
+
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+      controller: mTabController,
+      isScrollable: true,
+      indicator: const BoxDecoration(),//加了之后指示条消失
+    );
+    forums.add(tabsBar);
+
     if (postList.length > 0) {
       print("加载帖子成功");
       for (int i = 1; i < postList.length; i++) {
@@ -96,39 +197,9 @@ class estateforumWidget extends State<estateforum>
         forums.add(post5);
       }
     }
-    List<Widget> widgetList = []; //!!!要显示的下方组件
-    //widgetList.add(value);
     return Scaffold(
-      backgroundColor:Colors.white70,
-      appBar: new TabBar(
+      //backgroundColor:Colors.white70,
 
-        labelColor: Colors.blue,
-        unselectedLabelColor: Colors.blueAccent,
-        tabs: tabs.map((tabChoice choice) {
-
-          return new SizedBox(
-            //height: 210.0, //设置高度
-            child:  new Tab(
-                icon: new RaisedButton(
-                  color: Colors.blueAccent,
-                  highlightColor: Colors.blue[700],
-                  colorBrightness: Brightness.dark,
-                  splashColor: Colors.grey,
-                  child: Text(choice.title),
-                  shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                  onPressed: () async {
-                    print(choice.num);
-                  },
-
-                )
-            ),
-          );
-        }).toList(),
-        controller: mTabController,
-        isScrollable: true,
-        indicator: const BoxDecoration(),//加了之后指示条消失
-      ),
       body: new Container(
         child: new ListView.builder(
             scrollDirection: Axis.vertical,
@@ -136,9 +207,10 @@ class estateforumWidget extends State<estateforum>
             itemBuilder: (BuildContext ctxt, int index) =>
                 buildforumBody(ctxt, index)),
       ),
-      floatingActionButton: mCurrentPosition==1?RaisedButton(
+
+      floatingActionButton: RaisedButton(
         color: Colors.blue,
-        highlightColor: Colors.blue[700],
+        highlightColor: Colors.blue[400],
         colorBrightness: Brightness.dark,
         splashColor: Colors.grey,
         child: Text("发布帖子"),
@@ -152,13 +224,13 @@ class estateforumWidget extends State<estateforum>
             print("报名收到的信息为:" + result);
             showToast(result);
             setState(() {
-
+              _getPost();
             });
 
 
           });
         },
-      ):null,
+      ),
     );
   }
   _getPost() async {

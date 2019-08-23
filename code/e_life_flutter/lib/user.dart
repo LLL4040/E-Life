@@ -17,7 +17,7 @@ class UserModel extends Model with NetListener{
     notifyListeners();
       await new Future.delayed(new Duration(milliseconds: 1000));
     print("login请求");
-    return temp;
+    return loginSuccess;
   }
   Future<bool>  _getLogin(String username,String password,String id)  async{
     bool temp = await manager.login(this, username,password,id);

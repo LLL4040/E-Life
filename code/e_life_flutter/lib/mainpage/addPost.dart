@@ -413,7 +413,7 @@ class _addPostCenter extends State<addPost>
           ),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-            color: Colors.blue, //边框颜色为绿色
+            color: Colors.blue,
             width: 2, //宽度为5
           )),
         ),
