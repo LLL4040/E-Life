@@ -174,6 +174,14 @@ public class PostServiceImpl implements PostService {
     public JSONArray getAllTags(Long communityId){
         JSONArray jsonArray = new JSONArray();
         List<Tag> tagList = tagDao.getAllTagsByCommunityId(communityId);
+        tagList.sort(new Comparator<Tag>() {
+            @Override
+            public int compare(Tag o1, Tag o2) {
+                int a = o1.getNum();
+                int b = o2.getNum();
+                return Integer.compare(a, b);
+            }
+        });
         for(Tag tag : tagList){
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("tag", tag.getContent());
