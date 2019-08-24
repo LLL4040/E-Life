@@ -72,7 +72,7 @@ public interface UserRepository extends JpaRepository<User, String> {
      * @return all username
      */
     @Modifying
-    @Query(value = "select username from user where community_id = ?1", nativeQuery = true)
+    @Query(value = "select username from user where community_id = ?1 and role=0", nativeQuery = true)
     List<String> findUsernameByCommunityId(Long communityId);
 
 }
