@@ -17,12 +17,13 @@ class addRepairCenter extends State<addRepair>
   var session;
   addRepairCenter(this.username,this.session);
   maintainHttp manager = new maintainHttp();
+  final TextEditingController _phoneController =
+  new TextEditingController.fromValue(new TextEditingValue(text: ""));
+  final TextEditingController _contentController =
+  new TextEditingController.fromValue(new TextEditingValue(text: ""));
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _phoneController =
-        new TextEditingController.fromValue(new TextEditingValue(text: ""));
-    final TextEditingController _contentController =
-        new TextEditingController.fromValue(new TextEditingValue(text: ""));
+
     void _addRepair() {
       print(_phoneController.text);
       print(_contentController.text);

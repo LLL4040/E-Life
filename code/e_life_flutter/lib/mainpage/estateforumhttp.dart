@@ -5,13 +5,15 @@ class estateforumHttp {
 
 
 
-  var getPostUrl= "http://elife.natapp1.cc/estateforum-server/api/post/findPost";
+  var getPostUrl= "http://zhimo.natapp1.cc/estateforum-server/api/post/findPost";
 
-  var getCommentsUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/findComments";
+  var getCommentsUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/findComments";
 
-  var addCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/addComments";
+  var addCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/addComments";
 
-  var deleteCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/deleteComments";
+  var deleteCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/deleteComments";
+
+  var getTabsUrl= "http://zhimo.natapp1.cc/estateforum-server/api/post/tags";
 
 
   getPostList(NetListener net,String communityId,String page,String size,String session) {
@@ -113,6 +115,26 @@ class estateforumHttp {
       client.close,
     );
   }
+  getTabs(NetListener net,String communityId){
+    var client = new http.Client();
+    client.post(
+        getTabsUrl,
+
+        body: {
+          "communityId": communityId,
+        }
+    ).then((response,) {
+//      print(response.body);
+//      print(jsonDecode(response.body));
+      List responseJson = json.decode(response.body);
+      List<forumTabs> mytabs = responseJson.map((m) => new forumTabs.fromJson(m)).toList();
+      net.onAllTabsResponse(mytabs);
+    }, onError: (error) {
+      net.onError(error);
+    }).whenComplete(
+      client.close,
+    );
+  }
 }
 
 /**
@@ -127,6 +149,7 @@ abstract class NetListener {
   void onAddComment(bool success);
   void onDeleteComment(bool success);
   void onError(error);
+  void onAllTabsResponse(List<forumTabs> body);
 }
 
 
@@ -172,7 +195,22 @@ class Post{
     );
   }
 }
+class forumTabs{
+  final String tag;
+  final String num;
+  forumTabs({
+    this.tag,
+    this.num,
+});
+  factory forumTabs.fromJson(Map<String, dynamic> json){
 
+    return new forumTabs(
+      tag: json['tag'],
+      num: json['num'].toString(),
+
+    );
+  }
+}
 class Comment{
   final String pid;
   final String commenterName;

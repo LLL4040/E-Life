@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'estateforumhttp.dart';
 import 'package:oktoast/oktoast.dart';
 import 'dart:convert';
+
 class postDetail extends StatefulWidget {
   final pid;
   final username;
@@ -31,19 +32,6 @@ class postDetailCenter extends State<postDetail>
 
   Widget _getpostComment(
       String name, String time, String comment, String location) {
-//    return new ListTile(
-//      leading: new Text(name),
-//      title: new Text(time),
-//      subtitle: new Column(
-//        crossAxisAlignment: CrossAxisAlignment.start,
-//        children: <Widget>[
-//          new Text(comment),
-//        ],
-//      ),
-//      onTap: () {},
-//      trailing: new Text(location),
-//      dense: true,
-//    );
     return new SizedBox(
       //height: 210.0, //设置高度
       child: new Card(
@@ -110,139 +98,231 @@ class postDetailCenter extends State<postDetail>
             ),
             //new Divider(),
 
-//            new ListTile(
-//              title: new Text('图片区域'),
-//              leading: new Icon(
-//                Icons.photo,
-//                color: Colors.blue[500],
-//              ),
-//
-//            ),
           ],
         ),
       ),
     );
   }
-  Widget _getPhoto1(String photo1){
 
+  Widget _getPhoto1(String photo1) {
     return new SizedBox(
       //height: 210.0, //设置高度
       child: new Card(
-//        elevation: 15.0, //设置阴影
-//        shape: const RoundedRectangleBorder(
-//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
-        child: new Row(
+        //elevation: 0.0, //设置阴影
+//设置shape，这里设置成了R角
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+        clipBehavior: Clip.antiAlias,
+        child: new Column(
           // card只能有一个widget，但这个widget内容可以包含其他的widget
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-
-           new Row(
-             children: <Widget>[
-               new Padding(padding: new EdgeInsets.fromLTRB(10.0, 0.0, 5.0, 0.0)),
-               photo1==""?Text("null"):Image.memory(
-                 base64.decode(photo1.split(',')[1]),
-                 height: 100, //设置高度
-                 width: 100, //设置宽度
-                 fit: BoxFit.fill, //填充
-                 gaplessPlayback: true, //防止重绘
-               ),
-               new Padding(padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
-
-             ],
-           )
-          ],
-        ),
-      ),
-    );
-  }
-  Widget _getPhoto2(String photo1,String photo2){
-
-    return new SizedBox(
-      //height: 210.0, //设置高度
-      child: new Card(
-//        elevation: 15.0, //设置阴影
-//        shape: const RoundedRectangleBorder(
-//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
-        child: new Row(
-          // card只能有一个widget，但这个widget内容可以包含其他的widget
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
             new Row(
               children: <Widget>[
-                new Padding(padding: new EdgeInsets.fromLTRB(11.0, 0.0, 5.0, 0.0)),
-                photo1==""?Text("null"):Image.memory(
-                  base64.decode(photo1.split(',')[1]),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(10.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
                   height: 100, //设置高度
                   width: 100, //设置宽度
-                  fit: BoxFit.fill, //填充
-                  gaplessPlayback: true, //防止重绘
-                ),
-                new Padding(padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
-                photo2==""?Text("null"):Image.memory(
-                  base64.decode(photo2.split(',')[1]),
-                  height: 100, //设置高度
-                  width: 100, //设置宽度
-                  fit: BoxFit.fill, //填充
-                  gaplessPlayback: true, //防止重绘
-                ),
-                new Padding(padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+                  child: new Card(
+                    //elevation: 0.1, //设置阴影
+                    //设置shape，这里设置成了R角
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                    clipBehavior: Clip.antiAlias,
 
+                    child: photo1 == ""
+                        ? Text("null")
+                        : Image.memory(
+                            base64.decode(photo1.split(',')[1]),
+
+                            fit: BoxFit.fill, //填充
+                            gaplessPlayback: true, //防止重绘
+                          ),
+                  ),
+                ),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
               ],
-            )
+            ),
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
           ],
         ),
       ),
     );
   }
-  Widget _getPhoto3(String photo1,String photo2,String photo3){
 
+  Widget _getPhoto2(String photo1, String photo2) {
     return new SizedBox(
       //height: 210.0, //设置高度
       child: new Card(
 //        elevation: 15.0, //设置阴影
-//        shape: const RoundedRectangleBorder(
-//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
-        child: new Row(
+        //设置shape，这里设置成了R角
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+        clipBehavior: Clip.antiAlias,
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
+            new Row(
+              children: <Widget>[
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(11.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
+                  height: 100, //设置高度
+                  width: 100, //设置宽度
+                  child: new Card(
+                    //elevation: 0.1, //设置阴影
+                    //设置shape，这里设置成了R角
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                    clipBehavior: Clip.antiAlias,
+                    child: photo1 == ""
+                        ? Text("null")
+                        : Image.memory(
+                            base64.decode(photo1.split(',')[1]),
+
+                            fit: BoxFit.fill, //填充
+                            gaplessPlayback: true, //防止重绘
+                          ),
+                  ),
+                ),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
+                  height: 100, //设置高度
+                  width: 100, //设置宽度
+                  child: new Card(
+                    //elevation: 0.1, //设置阴影
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                    clipBehavior: Clip.antiAlias,
+                    //semanticContainer: false,
+                    child: photo2 == ""
+                        ? Text("null")
+                        : Image.memory(
+                            base64.decode(photo2.split(',')[1]),
+
+                            fit: BoxFit.fill, //填充
+                            gaplessPlayback: true, //防止重绘
+                          ),
+                  ),
+                ),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+              ],
+            ),
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getPhoto3(String photo1, String photo2, String photo3) {
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+        //elevation: 5.0, //设置阴影
+        //设置shape，这里设置成了R角
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+        clipBehavior: Clip.antiAlias,
+        child: new Column(
           // card只能有一个widget，但这个widget内容可以包含其他的widget
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
             new Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                photo1==""?Text("null"):Image.memory(
-                  base64.decode(photo1.split(',')[1]),
+                new SizedBox(
                   height: 100, //设置高度
                   width: 100, //设置宽度
-                  fit: BoxFit.fill, //填充
-                  gaplessPlayback: true, //防止重绘
+                  child: new Card(
+                    //elevation: 0.1, //设置阴影
+                    //设置shape，这里设置成了R角
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                    clipBehavior: Clip.antiAlias,
+                    child: photo1 == ""
+                        ? Text("null")
+                        : Image.memory(
+                            base64.decode(photo1.split(',')[1]),
+
+                            fit: BoxFit.fill, //填充
+                            gaplessPlayback: true, //防止重绘
+                          ),
+                  ),
                 ),
-                new Padding(padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
-                photo2==""?Text("null"):Image.memory(
-                  base64.decode(photo2.split(',')[1]),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
                   height: 100, //设置高度
                   width: 100, //设置宽度
-                  fit: BoxFit.fill, //填充
-                  gaplessPlayback: true, //防止重绘
+                  child: new Card(
+                    //elevation: 0.1, //设置阴影
+                    //设置shape，这里设置成了R角
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                    clipBehavior: Clip.antiAlias,
+                    child: photo2 == ""
+                        ? Text("null")
+                        : Image.memory(
+                            base64.decode(photo2.split(',')[1]),
+
+                            fit: BoxFit.fill, //填充
+                            gaplessPlayback: true, //防止重绘
+                          ),
+                  ),
                 ),
-                new Padding(padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
-                photo3==""?Text("null"):Image.memory(
-                  base64.decode(photo3.split(',')[1]),
+                new Padding(
+                    padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0)),
+                new SizedBox(
                   height: 100, //设置高度
                   width: 100, //设置宽度
-                  fit: BoxFit.fill, //填充
-                  gaplessPlayback: true, //防止重绘
+                  child: new Card(
+                    //elevation: 0.1, //设置阴影
+                    //设置shape，这里设置成了R角
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                    clipBehavior: Clip.antiAlias,
+                    child: photo3 == ""
+                        ? Text("null")
+                        : Image.memory(
+                            base64.decode(photo3.split(',')[1]),
+
+                            fit: BoxFit.fill, //填充
+                            gaplessPlayback: true, //防止重绘
+                          ),
+                  ),
                 ),
               ],
-            )
+            ),
+            new Padding(padding: new EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0)),
           ],
         ),
       ),
     );
   }
+
   _addComment(String username, String pid, String comment) async {
     print(pid + "帖子id号");
     manager.addComment(this, pid, username, comment,session);
@@ -264,42 +344,45 @@ class postDetailCenter extends State<postDetail>
       Widget post1 = _getpostCart(
           post.posterName, post.postTime, post.title, "1", post.postContent);
       postComments.add(post1);
-
-      if(post.photo.length<=3){
-        if(post.photo.length==3){
-          Widget photo1=_getPhoto3(post.photo[0],post.photo[1],post.photo[2]);
-          postComments.add(photo1);
+      if (post.photo != null) {
+        if (post.photo.length <= 3) {
+          if (post.photo.length == 3) {
+            Widget photo1 =
+                _getPhoto3(post.photo[0], post.photo[1], post.photo[2]);
+            postComments.add(photo1);
+          }
+          if (post.photo.length == 2) {
+            Widget photo1 = _getPhoto2(post.photo[0], post.photo[1]);
+            postComments.add(photo1);
+          } else {
+            Widget photo1 = _getPhoto1(post.photo[0]);
+            postComments.add(photo1);
+          }
         }
-        if(post.photo.length==2){
-          Widget photo1=_getPhoto2(post.photo[0],post.photo[1]);
-          postComments.add(photo1);
-        }else{
-          Widget photo1=_getPhoto1(post.photo[0]);
-          postComments.add(photo1);
+        if (post.photo.length > 3) {
+          int length = post.photo.length % 3;
+          print(length.toString() + "jsjs");
+
+          int length1 = post.photo.length - length;
+          for (int i = 0; i < length1 / 3; i++) {
+            Widget photo1 = _getPhoto3(post.photo[3 * i], post.photo[3 * i + 1],
+                post.photo[3 * i + 2]);
+            postComments.add(photo1);
+          }
+          if (length == 1) {
+            Widget photo1 = _getPhoto1(post.photo[length1 ]);
+            postComments.add(photo1);
+          }
+          if (length == 2) {
+            Widget photo1 =
+                _getPhoto2(post.photo[length1], post.photo[length1+1]);
+            postComments.add(photo1);
+          }
         }
       }
-      if(post.photo.length>3){
-        int length = post.photo.length%3;
-        print(length.toString()+"jsjs");
 
-        int length1= post.photo.length-length;
-        for(int i = 0; i < length1/3;i++){
-          Widget photo1=_getPhoto3(post.photo[3*i],post.photo[3*i+1],post.photo[3*i+2]);
-         postComments.add(photo1);
-        }
-        if(length==1){
-          Widget photo1=_getPhoto1(post.photo[length+1]);
-          postComments.add(photo1);
-        }
-        if(length==2){
-          Widget photo1=_getPhoto2(post.photo[length+1],post.photo[length+2]);
-          postComments.add(photo1);
-        }
-      }
       if (postCommentList.length > 1) {
         for (int i = 1; i < postCommentList.length; i++) {
-
-
           Widget postComment = _getpostComment(
               postCommentList[i].commenterName,
               postCommentList[i].commentsTime,
@@ -445,11 +528,16 @@ class postDetailCenter extends State<postDetail>
       success1 = "false";
     }
     setState(() {
+
       manager.getCommentList(this, pid,"1","100",session);
+
     });
   }
+
   @override
   void onDeleteComment(bool success) {}
+  @override
+  void onAllTabsResponse(List<forumTabs> body){}
   @override
   void onError(error) {}
 }

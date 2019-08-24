@@ -5,6 +5,13 @@
 <!--    </div>-->
     <div align="left">
       <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
+      &nbsp;&nbsp;
+      <el-select v-model="cId" @change="loadPost()">
+        <el-option v-for="item in communities" :key="item.id" :label="item.label" :value="item.id">
+          <span style="float: left">{{ item.label }}</span>
+          <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+        </el-option>
+      </el-select>
     </div>
     <el-row :gutter="10" style="padding-top: 20px" v-if="dialogFormVisibleMain">
       <el-col :span="18">
@@ -17,17 +24,18 @@
           <div v-if="postData.length !== 0">
             <div v-for="o in postData" :key="o" class="text item">
               <el-card style="margin-bottom: 8px">
-                <el-button style="float: left; padding: 3px 0; font-size: 16px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
-                <p style="float:right; font-size: 12px;">{{o.poster}}</p>
+                <el-tag style="float: left; font-size: 12px;" size="small" type="danger">{{ o.tag }}</el-tag>
+                <el-button style="float: left; padding: 3px 0; font-size: 16px; margin-left: 5px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
+                <p style="float:right; font-size: 14px;">{{o.poster}}</p>
                 <br>
-                <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,20)}}</p>
-                <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 20) ? "...": "")}}</p>
-                <br>
+                <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,30)}}</p>
+                <p style="float: left; padding-bottom: 1px; font-size: 14px;">{{((o.content.length > 30) ? "...": "")}}</p>
+                <br><br>
                 <span v-for="(x, index) in o.photo" :key="index">
                   <button @click="show(o.path[index])" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
                       <img :src="x" style="width: 100%; height: 100%">
                     </button>
-<!--                <img :src="x" style="width: 30%"/>-->
+                  &nbsp; &nbsp;
                 </span>
                 <br>
                 <p style="float:right; font-size: 12px;">{{o.time}}</p>
@@ -46,21 +54,10 @@
             <el-button style="float: right; padding: 3px 0; font-size: 16px;" type="text" @click="dialogFormVisible = true">我要发帖</el-button>
           </div>
           <el-row :gutter="10">
-            <el-col :span="7">
-              <el-tag>标签一</el-tag>
-            </el-col>
-            <el-col :span="7">
-            <el-tag type="success">标签二</el-tag>
-            </el-col>
-              <el-col :span="7">
-            <el-tag type="info">标签三</el-tag>
-              </el-col>
-                <el-col :span="7">
-            <el-tag type="warning">标签四</el-tag>
-                </el-col>
-                  <el-col :span="7">
-            <el-tag type="danger">标签五</el-tag>
-                  </el-col>
+            <el-button v-for="item in tags" :key="item.tag" type="primary" plain size="small" style="margin-left: 9px; margin-top: 6px;" @click="toTag(item.tag)">
+              <span>{{ item.tag }}</span>&nbsp;
+              <span style="color: #efa2a9;">{{ item.num }}</span>
+            </el-button>
           </el-row>
         </el-card>
       </el-col>
@@ -70,17 +67,17 @@
         <el-col :span="20" style="float: left">
           <div v-for="o in commentData" :key="o" class="text item">
             <el-card style="margin-bottom: 0">
-              <el-col :span="4" style="float: left" >
+              <el-col :span="4" style="float: left">
                 <p style="float: bottom; font-size: 16px">{{o.commenterName}}</p>
               </el-col>
               <el-col :span="20" style="float: left">
                 <p style="float:left; font-size: 16px;">{{o.postComment}}</p>
-                <br>
+                <br><br>
                 <span v-for="(x, index) in o.photo" :key="index">
                   <button @click="show(o.path[index])" type="button" style="cursor: pointer; background-color: transparent; border: 0;">
                       <img :src="x" style="width: 100%; height: 100%">
                     </button>
-                  <!--                <img :src="x" style="width: 30%"/>-->
+                  &nbsp; &nbsp;
                 </span>
                 <br>
                 <p style="float: right; font-size: 12px;">{{o.location + '楼，发布于' + o.commentsTime}}</p>
@@ -104,6 +101,20 @@
         <el-form-item label="标题">
           <el-input v-model="myPost.title" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="标签">
+          <el-select v-model="myPost.tag" filterable
+                     allow-create
+                     default-first-option
+                     placeholder="请选择帖子标签，或输入自定义标签" style="width: 300px;">
+            <el-option
+              v-for="item in myTag"
+              :key="item.tag"
+              :label="item.tag"
+              :value="item.tag">
+              <span style="float: left;">{{ item.tag }}</span>
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="内容">
           <el-input v-model="myPost.content" autocomplete="off" type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
         </el-form-item>
@@ -114,6 +125,7 @@
             </div>
             <div class="upload_warp_text">
               已选中{{imgList.length}}张图片
+              <el-button type="danger" plain @click="deleteAllImg()" style="margin-left: 12px;">清空图片</el-button>
             </div>
             <div class="upload_warp" style="border: 1px solid white;">
               <div class="upload_warp_img" v-show="imgList.length!=0" >
@@ -122,7 +134,6 @@
                     <div class="upload_warp_img_div_text" >
                       {{item.file.name}}
                     </div>
-                    <img src="../../public/img/del.png" class="upload_warp_img_div_del" @click="fileDel(index)">
                   </div>
                   <img :src="item.file.src">
                 </div>
@@ -169,19 +180,24 @@ export default {
         email: '',
         phone: ''
       },
+      communities: [],
       search: '',
       dialogFormVisibleMain: true,
       dialogFormVisible: false,
       dialogFormVisibleDetail: false,
       dialogFormVisiblePhoto: false,
+      tags: [],
+      myTag: [],
       myPost: {
         username: '',
+        tag: '',
         title: '',
         content: ''
       },
       myComment: {
         content: ''
       },
+      cId: 0,
       postData: [],
       commentData: [],
       imgList: [],
@@ -201,8 +217,11 @@ export default {
   methods: {
     refresh () {
       this.loadData()
+      this.loadCommunity()
       this.loadPost()
+      this.loadMyTag()
       this.formData = new FormData()
+      this.imgList = []
       this.$forceUpdate()
     },
     loadData () {
@@ -213,6 +232,7 @@ export default {
       this.userInfo.phone = sessionStorage.getItem('phone')
       this.userInfo.communityId = sessionStorage.getItem('communityId')
       this.userInfo.email = sessionStorage.getItem('email')
+      this.cId = parseInt(this.userInfo.communityId)
       let bodyFormData = new FormData()
       bodyFormData.set('id', this.userInfo.communityId)
       let url = '/user-server/api/user/getCommunityById'
@@ -226,9 +246,63 @@ export default {
         sessionStorage.setItem('community', this.userInfo.community)
       })
     },
+    loadCommunity () {
+      this.communities = []
+      this.$axios
+        .get('/user-server/api/user/communities')
+        .then(response => {
+          for (let i = 0; i < response.data.length; i++) {
+            let item = {
+              id: response.data[i].id,
+              value: response.data[i].information,
+              label: response.data[i].name
+            }
+            this.communities.push(item)
+          }
+        })
+    },
+    loadMyTag () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.userInfo.communityId)
+      let url = '/estateforum-server/api/post/tags'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.myTag = response.data
+        }
+      })
+    },
+    loadTags () {
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.cId)
+      let url = '/estateforum-server/api/post/tags'
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.tags = response.data
+          console.log(this.tags)
+        }
+      })
+    },
+    toTag (tag) {
+      this.$alert(tag)
+    },
     addForum () {
       this.dialogFormVisible = false
       this.formData.set('title', this.myPost.title)
+      this.formData.set('tag', this.myPost.tag)
       this.formData.set('postContent', this.myPost.content)
       this.formData.set('posterName', this.userInfo.username)
       this.formData.set('communityId', this.userInfo.communityId)
@@ -245,6 +319,7 @@ export default {
           if (response.data.post) {
             this.$alert('发布帖子成功！')
             this.loadPost()
+            this.loadTags()
             this.$forceUpdate()
           } else {
             this.$alert('发布帖子失败！')
@@ -254,7 +329,7 @@ export default {
     },
     loadPost () {
       let bodyFormData = new FormData()
-      bodyFormData.set('communityId', this.userInfo.communityId)
+      bodyFormData.set('communityId', this.cId)
       bodyFormData.set('page', this.pageNum1)
       bodyFormData.set('size', this.pageSize1)
       this.$axios({
@@ -273,14 +348,15 @@ export default {
               'photo': response.data[i].photo,
               'path': response.data[i].path,
               'title': response.data[i].title,
+              'tag': response.data[i].tag,
               'poster': response.data[i].posterName,
               'content': response.data[i].postContent,
               'time': response.data[i].postTime,
               'id': response.data[i].id
             }
-            console.log(objproject.path)
             this.postData.push(objproject)
           }
+          this.loadTags()
         }
       })
     },
@@ -416,9 +492,10 @@ export default {
         this.vue.imgList.push({ file })
       }
     },
-    fileDel (index) { // 删除已选择的图片
-      this.size = this.size - this.imgList[index].file.size// 总大小
-      this.imgList.splice(index, 1)
+    deleteAllImg () {
+      this.size = 0
+      this.imgList = []
+      this.formData.delete('photo')
     },
     show (path) {
       console.log(path)
@@ -518,7 +595,7 @@ export default {
   }
 
   .upload_warp_left button {
-    margin: 5px 5px 0px 5px;
+    margin: 6px 6px 0px 6px;
     cursor:pointer;
   }
 

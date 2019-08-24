@@ -51,30 +51,48 @@ class friendWidgetState extends State<friendWidget>
   }
 
   Widget _getFriend(String name, String phone, String email) {
-    return new ListTile(
-      leading: new Icon(Icons.message),
-      title: new Text(name),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text("手机: " + phone),
-          new Text("邮箱: " + email),
-        ],
+
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+        elevation: 0.0, //设置阴影
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))), //设置圆角
+        semanticContainer: false,
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            ListTile(
+              leading: new Icon(Icons.message),
+              title: new Text(name),
+              subtitle: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text("手机: " + phone),
+                  new Text("邮箱: " + email),
+                ],
+              ),
+              trailing: new Icon(
+                Icons.delete,
+                color: Colors.black54,
+              ),
+              onTap: ()async{
+                print(username+"用户名");
+                manager.deleteFriend(this, username,name,session);
+                await new Future.delayed(new Duration(milliseconds: 1000));
+                if (success2=="true"){
+                  showToast("删除好友成功");
+                }
+                showToast("删除好友成功");
+              },
+              dense: true,
+            ),
+            //new Divider(),
+
+          ],
+        ),
       ),
-      trailing: new Icon(
-        Icons.delete,
-        color: Colors.black54,
-      ),
-      onTap: ()async{
-        print(username+"用户名");
-        manager.deleteFriend(this, username,name,session);
-        await new Future.delayed(new Duration(milliseconds: 1000));
-        if (success2=="true"){
-          showToast("删除好友成功");
-        }
-        showToast("删除好友成功");
-      },
-      dense: true,
+
     );
   }
   Widget _getUser(String user, String community) {

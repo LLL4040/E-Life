@@ -25,11 +25,11 @@
       </el-card>
     </div>
     <el-dialog title="处理报修" :visible.sync="dialogFormVisible">
-      <el-form :model="handleR">
-        <el-form-item label="修理人员姓名">
+      <el-form ref="handleR" :rules="rules" :model="handleR" class="demo-ruleForm" >
+        <el-form-item label="修理人员姓名" prop="repairman">
           <el-input v-model="handleR.repairman"></el-input>
         </el-form-item>
-        <el-form-item label="修理人员手机号">
+        <el-form-item label="修理人员手机号" prop="phone">
           <el-input v-model="handleR.phone"></el-input>
         </el-form-item>
       </el-form>
@@ -63,7 +63,21 @@ export default {
       pageNum: 1,
       pageSize: 10,
       total: 1,
-      requestId: ''
+      requestId: '',
+      rules: {
+        repairman:
+          [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        phone:
+          [{ required: true, message: '请输入手机号码', trigger: 'blur' },
+            { validator: function (rule, value, callback) {
+              if (/^1[34578]\d{9}$/.test(value) === false) {
+                callback(new Error('请输入正确的手机号'))
+              } else {
+                callback()
+              }
+            },
+            trigger: 'blur' }]
+      }
     }
   },
   mounted () {

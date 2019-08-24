@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class payHttp {
 
-  var myBillUrl = "http://elife.natapp1.cc/pay-server/api/Pay/findNew";
+  var myBillUrl = "http://zhimo.natapp1.cc/pay-server/api/Pay/findHistory";
 
 
 
   myBill(NetListener net, String username,String session) {
+    print("session:"+session);
     var client = new http.Client();
     client.post(
         myBillUrl,
@@ -16,6 +17,8 @@ class payHttp {
         },
         body: {
           "username": username,
+          "page":"1",
+
         }
     ).then((response,) {
       List responseJson = json.decode(response.body);

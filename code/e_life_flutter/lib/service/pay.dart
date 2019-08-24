@@ -19,33 +19,58 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   List<Bill> billList=[];//存后端数据
 
   payHttp manager = payHttp();
-  Widget _getMyBill(String time, double bill, int status) {
+  Widget _getMyBill(var bill) {
     String repairStatus;
-    if (status == 0) {
-      repairStatus = "未处理";
+    if (bill.status == -1||bill.status == -2) {
+      repairStatus = "未缴费";
     }
-    if (status == 1) {
-      repairStatus = "处理中";
+    else if (bill.status == 1||bill.status == 2) {
+      repairStatus = "已缴费";
     }
-    if (status == 2) {
-      repairStatus = "已完成";
+    else if (bill.status == -11||bill.status== -12) {
+      repairStatus = "支付中";
     }else{
       repairStatus ="其他";
     }
-    return new ListTile(
-      leading: new Icon(Icons.settings),
-      title: new Text(bill.toString()),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(time),
-          new Text(repairStatus),
-        ],
+
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+//        elevation: 15.0, //设置阴影
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0))), //设置圆角
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            ListTile(
+              leading: bill.status==-1||bill.status==1||bill.status==11?new Icon(Icons.departure_board):new Icon(Icons.settings),
+              title: new Text(bill.bill.toString()),
+              subtitle: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(bill.time.toString()),
+
+
+                ],
+              ),
+
+              trailing: new RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                color: repairStatus=="已缴费"?Colors.blue[300]:repairStatus=="支付中"?Colors.orangeAccent[200]:Colors.redAccent[200],
+                textColor: Colors.white,
+                child: Text(repairStatus,
+                ),
+                onPressed: () {
+                  // ...
+                },
+              ),
+              dense: true,
+            )
+
+          ],
+        ),
       ),
-      onTap: () {
-        print(bill);
-      },
-      dense: true,
     );
   }
 
@@ -58,8 +83,8 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   Widget build(BuildContext context) {
     myMyBills = [];
     if(billList.length>0){
-      for(int i=0;i<billList.length;i++){
-        Widget mybill1 = _getMyBill(billList[i].time, billList[i].bill, billList[i].status);
+      for(int i=0;i<billList.length-1;i++){
+        Widget mybill1 = _getMyBill(billList[i]);
         myMyBills.add(mybill1);
       }
     }

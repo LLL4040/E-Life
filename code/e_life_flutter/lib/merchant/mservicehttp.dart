@@ -4,11 +4,11 @@ import 'package:http/http.dart' as http;
 class mServiceHttp {
 
 
-  var allDemandUrl= "http://elife.natapp1.cc/group-server/api/demand/getAllDemand";
+  var allDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/getAllDemand";
 
-  var getDiscountUrl= "http://elife.natapp1.cc/group-server/api/discount/findDiscountByMerchantId";
+  var getDiscountUrl= "http://zhimo.natapp1.cc/group-server/api/discount/findDiscountByMerchantId";
 
-  var getBargainUrl = "http://elife.natapp1.cc/group-server/api/bargain/getBargainByMerchantId";
+  var getBargainUrl = "http://zhimo.natapp1.cc/group-server/api/bargain/getBargainByMerchantId";
 
 
   getDemandList(NetListener net,String communityId) {
