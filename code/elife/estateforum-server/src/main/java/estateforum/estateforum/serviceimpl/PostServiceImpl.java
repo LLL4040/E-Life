@@ -93,7 +93,7 @@ public class PostServiceImpl implements PostService {
     public JSONArray findAllByCommunityId(int communityId, int page, int size) throws IOException {
         List<Post> postList = postDao.findAllByCommunityId(communityId,page,size);
         JSONObject jsonObject1 = new JSONObject();
-        int count = postDao.findAllByCommunityId(communityId,1,1000000000).size();
+        int count = postDao.count(communityId);
         int pageNum = count/size;
         if (count%size!=0){
             pageNum=pageNum+1;
@@ -188,6 +188,56 @@ public class PostServiceImpl implements PostService {
             jsonObject.put("num", tag.getNum());
             jsonArray.appendElement(jsonObject);
         }
+        return jsonArray;
+    }
+
+    @Override
+    public JSONArray findAllByCommunityIdAndTag(int communityId, String tag, int page, int size)throws IOException{
+        List<Post> postList = postDao.findAllByCommunityIdAndTag(communityId, tag, page, size);
+        Tag tag1 = tagDao.findTagByContentAndCommunityId(tag, (long)communityId);
+        JSONObject jsonObject1 = new JSONObject();
+        int count = tag1.getNum();
+        int pageNum = count / size;
+        if (count % size != 0){
+            pageNum=pageNum+1;
+        }
+        jsonObject1.put("pageNum",pageNum);
+        JSONArray jsonArray =new JSONArray();
+        jsonArray.add(jsonObject1);
+        Iterator<Post> iter = postList.iterator();
+        while(iter.hasNext()){
+            Post temp = iter.next();
+            JSONObject jsonObject = new JSONObject();
+            if(temp.getPath().equals("")){
+                jsonObject.put("photo" , null);
+            }else {
+                String[]paths = temp.getPath().split("/");
+                System.out.println(paths);
+                int length = paths.length;
+                List<String> photos=new ArrayList<>();
+                for (int i=0;i<length;i++){
+                    System.out.println("图片为"+paths[i]);
+                    File file = new File("./estateforum-server/cpic/"+paths[i]);
+                    byte[] data = Files.readAllBytes(file.toPath());
+                    String photo="data:image/jpg;base64,"+ Base64.encodeBase64String(data);
+                    photos.add(photo);
+                }
+                jsonObject.put("photo" , photos);
+                jsonObject.put("path" , paths);
+            }
+            jsonObject.put("title",temp.getTitle());
+            jsonObject.put("tag", temp.getTag());
+
+            jsonObject.put("posterName", temp.getPosterName());
+            jsonObject.put("postContent", temp.getPostContent());
+
+            jsonObject.put("postTime",temp.getPostTime());
+            jsonObject.put("id",temp.getId());
+            jsonObject.put("communityId",temp.getCommunityId());
+            jsonArray.add(jsonObject);
+        }
+
+
         return jsonArray;
     }
 

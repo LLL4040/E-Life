@@ -79,7 +79,14 @@ public class PostCommentsController {
     }
     @RequestMapping(path = "/deleteComments")
     @ResponseBody
-    public JSONObject deleteComments(@RequestParam String pid,@RequestParam int location){
+    public JSONObject deleteComments(HttpServletRequest request, @RequestParam String pid,@RequestParam int location){
+        HttpSession session = request.getSession();
+        String role = (String) session.getAttribute("role");
+        if (!"1".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            return jsonObject;
+        }
         postCommentsService.deleteComments(pid,location);
         net.minidev.json.JSONObject object = new net.minidev.json.JSONObject();
         object.put("deleteComments", "1");

@@ -46,12 +46,26 @@ public interface PostService {
     void deletePost(String id);
 
     /**
-     * get big photo by path
-     * @param path
-     * @return
+     * 该方法返回大图
+     * @param path 图片路径
+     * @return 大图
      */
     JSONObject getBigPhoto(String path);
 
+    /**
+     * 该方法返回小区所有的标签
+     * @param communityId 小区id
+     * @return 标签列表
+     */
     JSONArray getAllTags(Long communityId);
+
+    /**
+     * 此函数以列表形式返回所有帖子
+     * @return 以列表形式返回的所有帖子
+     * @param communityId 小区id
+     * @param tag 标签
+     * @param page 当前页数
+     * @param size 大小*/
+    JSONArray findAllByCommunityIdAndTag(int communityId, String tag, int page, int size)throws IOException;
 
 }
