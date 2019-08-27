@@ -15,7 +15,7 @@ class UserModel extends Model with NetListener{
   Future<bool> login(String username,String password,String id) async{
      bool temp = await _getLogin(username,password,id);
     notifyListeners();
-      await new Future.delayed(new Duration(milliseconds: 1000));
+      await new Future.delayed(new Duration(milliseconds: 2000));
     print("login请求");
     return loginSuccess;
   }
@@ -38,5 +38,9 @@ class UserModel extends Model with NetListener{
   @override
   void onError(error) {
     // TODO: implement onError
+  }
+  @override
+  void onGetNoteResponse(bool ifGetNote){
+
   }
 }

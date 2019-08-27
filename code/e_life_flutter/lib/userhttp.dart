@@ -6,7 +6,9 @@ class userHttp {
   var userUrl = "http://zhimo.natapp1.cc/user-server/api/user/login";
 
   var logOutUrl = "http://zhimo.natapp1.cc/user-server/api/user/logout";
-
+  var phoneAvailableUrl="http://zhimo.natapp1.cc/user-server/api/user/phoneAvailable";
+  var sendIdentifyUrl="http://zhimo.natapp1.cc/user-server/api/user/sendIdentify";
+  var phoneLoginUrl="http://zhimo.natapp1.cc/user-server/api/user/loginPhone";
 
   /**
    * 三天预报
@@ -32,14 +34,12 @@ class userHttp {
       user.session=response.headers["set-cookie"];
       print(user.session+"session");
       bool login = false;
-
-
       if(user.login==1){
         print("httpTrue");
         login=true;
       }
       net.onUserResponse(user,login);
-      await new Future.delayed(new Duration(milliseconds: 1));
+      //await new Future.delayed(new Duration(milliseconds: 1000));
       print("userhttp");
       return  login;
     }, onError: (error) {
@@ -48,7 +48,80 @@ class userHttp {
       client.close,
     );
   }
+  phoneLogin(NetListener net,String phone,String code,String id){
+    var client = new http.Client();
+    client.post(
+        phoneLoginUrl,
 
+        body: {
+          "phone": phone,
+          "code": code,
+          "id": id,
+        }
+    ).then((
+        response,
+        ) async{
+      print(response.headers);
+      Map<String,dynamic> responseJson = json.decode(response.body);
+      print(responseJson.toString());
+      User user = User.fromJson(responseJson);
+      user.session=response.headers["set-cookie"];
+      print(user.session+"session");
+      bool login = false;
+      if(user.login==1){
+        print("httpTrue");
+        login=true;
+      }
+      net.onUserResponse(user,login);
+      //await new Future.delayed(new Duration(milliseconds: 1000));
+      print("userhttp");
+      return  login;
+    }, onError: (error) {
+      net.onError(error);
+    }).whenComplete(
+      client.close,
+    );
+  }
+  getNote(NetListener net,String phone,String id){
+    var client = new http.Client();
+
+    client.post(
+      phoneAvailableUrl,
+
+      body: {
+        "phone": phone,
+        "id":id,
+      },
+    ).then((response,) {
+      print(response.body);
+      Map<String, dynamic> responseJson = json.decode(response.body);
+      bool success = (responseJson["available"]==0);
+      print(success.toString()+"是否可用");
+      if(success){
+        print("hahah");
+        client.post(
+          sendIdentifyUrl,
+
+          body: {
+            "phone": phone,
+            "id":id,
+          },
+        ).then((response,) {
+          print(response.body+"00000");
+//          Map<String, dynamic> responseJson = json.decode(response.body);
+          bool success1 =  response.body=="true";
+          print("success1==="+success1.toString());
+          net.onGetNoteResponse(success1);
+        });
+      }
+
+    }, onError: (error) {
+      net.onError(error);
+    }).whenComplete(
+      client.close,
+    );
+
+  }
   logout(NetListener net,String username,String session){
     var client = new http.Client();
     client.post(
@@ -82,6 +155,7 @@ abstract class NetListener {
   //三天预报
   void onUserResponse(User body,bool login) ;
   void onLogoutResponse(bool logout);
+  void onGetNoteResponse(bool ifGetNote);
   void onError(error);
 }
 

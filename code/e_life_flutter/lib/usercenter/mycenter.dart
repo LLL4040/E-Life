@@ -146,6 +146,10 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
   void onError(error) {
     // TODO: implement onError
   }
+  @override
+  void onGetNoteResponse(bool ifGetNote){
+
+  }
 
   }
 

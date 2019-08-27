@@ -4,6 +4,7 @@ import 'bottom_navigation_widget.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 import 'package:oktoast/oktoast.dart';
+import 'noteLogin.dart';
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -49,37 +50,8 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
       new TextEditingController.fromValue(new TextEditingValue(text: ""));
   final TextEditingController _password =
       new TextEditingController.fromValue(new TextEditingValue(text: ""));
-  Widget quickLogibSession = new Container(
-    width: 320.0,
-    child: new Card(
-      color: Colors.white,
-      elevation: 16.0,
-      child: new FlatButton(
-        child: new Padding(
-          padding: new EdgeInsets.all(10.0),
-          child: new Text(
-            '手机号快捷登录',
-            style: new TextStyle(color: Colors.black, fontSize: 16.0),
-          ),
-        ),
-      ),
-    ),
-  );
-  Widget forgetSession = new Container(
-    width: 320.0,
-    child: new Card(
-      color: Colors.white,
-      elevation: 16.0,
-      child: new FlatButton(
-          child: new Padding(
-            padding: new EdgeInsets.all(10.0),
-            child: new Text(
-              '忘记密码',
-              style: new TextStyle(color: Colors.black, fontSize: 16.0),
-            ),
-          )),
-    ),
-  );
+
+
 
   String role = "0";
   @override
@@ -109,12 +81,52 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
 //                    }));
 //              }
 //            }
+            Widget quickLogibSession = new Container(
+              width: 320.0,
+              child: new Card(
+                color: Colors.grey[200],
+                elevation: 0.0,
+                child: new FlatButton(
+                  child: new Padding(
+                    padding: new EdgeInsets.all(10.0),
+                    child: new Text(
+                      '手机号快捷登录',
+                      style: new TextStyle(color: Colors.grey[900], fontSize: 16.0),
+                    ),
+                  ),
+                  onPressed:(){
+                    Navigator.push<String>(context,
+                        new MaterialPageRoute(builder: (context) {
+                          return new noteLogin();
+                        }));
+                  } ,
+                ),
+              ),
+            );
+            Widget forgetSession = new Container(
+              width: 320.0,
+              child: new Card(
+                color: Colors.white,
 
+                elevation: 16.0,
+                child: new FlatButton(
+
+                  child: new Padding(
+                    padding: new EdgeInsets.all(10.0),
+                    child: new Text(
+                      '忘记密码',
+                      style: new TextStyle(color: Colors.black, fontSize: 16.0),
+                    ),
+                  ),
+
+                ),
+              ),
+            );
             Widget loginSection = Container(
               width: 320.0,
               child: new Card(
-                color: Colors.blue,
-                elevation: 16.0,
+                color: Colors.blue[400],
+                elevation: 0.0,
                 child: new FlatButton(
                     child: new Padding(
                       padding: new EdgeInsets.all(10.0),
@@ -155,9 +167,10 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        new Padding(
-                          padding: new EdgeInsets.all(30.0),
+                        new SizedBox(
+                          height: 200,
                           child: new Image.asset(
+
                             'images/app.png',
                             scale: 4.0,
                           ),
@@ -178,6 +191,7 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                                   controller: _username,
                                   decoration: new InputDecoration(
                                     hintText: '请输入用户名',
+
                                   ),
                                 ))
                               ]),
@@ -244,7 +258,7 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                           ],
                         ),
                         loginSection,
-                        //quickLogibSession,
+                        quickLogibSession,
                         //forgetSession,
                         new Padding(
                           padding:
