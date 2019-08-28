@@ -52,7 +52,8 @@ dependencies:
 
   flutter_swiper: ^1.1.6
   scoped_model: ^1.0.1
-#  amap_base: any
+  flutter_map: any
+  #amap_base_map: ^0.4.4+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -75,6 +76,7 @@ flutter:
   assets:
     - images/app.png
     - images/alert.jpg
+    - images/pin.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
