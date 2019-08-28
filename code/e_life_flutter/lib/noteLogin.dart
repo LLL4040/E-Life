@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:e_life_flutter/userhttp.dart';
 import 'bottom_navigation_widget.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'user.dart';
 import 'package:oktoast/oktoast.dart';
 

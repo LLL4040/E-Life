@@ -14,7 +14,7 @@ class estateforumHttp {
   var deleteCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/deleteComments";
 
   var getTabsUrl= "http://zhimo.natapp1.cc/estateforum-server/api/post/tags";
-
+  var getPostByTabs= "http://zhimo.natapp1.cc/estateforum-server/api/post/findPostByTag";
 
   getPostList(NetListener net,String communityId,String page,String size,String session) {
     var client = new http.Client();
@@ -58,10 +58,11 @@ class estateforumHttp {
     ).then((
         response,
         ) {
-      print(response.body);
-      print(jsonDecode(response.body));
+      //print(response.body);
+      //print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Comment> comment = responseJson.map((m) => new Comment.fromJson(m)).toList();
+
       net.onAllCommentsResponse(comment);
     }, onError: (error) {
       net.onError(error);
@@ -129,6 +130,33 @@ class estateforumHttp {
       List responseJson = json.decode(response.body);
       List<forumTabs> mytabs = responseJson.map((m) => new forumTabs.fromJson(m)).toList();
       net.onAllTabsResponse(mytabs);
+    }, onError: (error) {
+      net.onError(error);
+    }).whenComplete(
+      client.close,
+    );
+  }
+  getPostListByTag(NetListener net,String communityId,String tag,String page,String size,String session) async{
+    var client = new http.Client();
+    client.post(
+        getPostByTabs,
+        headers: {
+          "cookie": session,
+        },
+        body: {
+          "communityId": communityId,
+          "tag":tag,
+          "page": page,
+          "size": size,
+        }
+    ).then((
+        response,
+        ) {
+      //print(response.body);
+      //print(jsonDecode(response.body));
+      List responseJson = json.decode(response.body);
+      List<Post> post = responseJson.map((m) => new Post.fromJson(m)).toList();
+      net.onAllPostResponse(post);
     }, onError: (error) {
       net.onError(error);
     }).whenComplete(

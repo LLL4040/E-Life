@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'comsuphttp.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:oktoast/oktoast.dart';
 class computer extends StatefulWidget {
   final communityId;
   var session;
@@ -42,7 +43,58 @@ class computerCenter extends State<computer> with SingleTickerProviderStateMixin
         ],
       ),
       onTap: () {
-        _launchURL(phone);
+          showDialog<Null>(
+            context: context,
+            builder: (BuildContext context) {
+              return new SimpleDialog(
+                title: new Text('是否拨打电话'),
+                children: <Widget>[
+                  new Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new SimpleDialogOption(
+                        child: FlatButton(
+                          color: Colors.blue,
+                          highlightColor: Colors.blue[700],
+                          colorBrightness: Brightness.dark,
+                          splashColor: Colors.grey,
+                          child: Text("确定"),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)),
+                          onPressed: () {
+                            _launchURL(phone);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+
+                      ),
+                      new SimpleDialogOption(
+                        child: FlatButton(
+                          color: Colors.black54,
+                          highlightColor: Colors.black38,
+                          colorBrightness: Brightness.dark,
+                          splashColor: Colors.grey,
+                          child: Text("取消"),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)),
+                          onPressed: () {
+                            showToast("取消拨打电话");
+                            Navigator.of(context).pop();
+                          },
+                        ),
+
+                      ),
+                    ],
+                  ),
+
+                ],
+              );
+            },
+          ).then((val) {
+            print(val);
+          });
+
       },
       dense: true,
     );

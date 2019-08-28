@@ -1,7 +1,7 @@
 
 import 'package:e_life_flutter/userhttp.dart' as prefix0;
 import 'package:flutter/material.dart';
-//import '../map.dart';
+import '../map.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../user.dart';
 import 'package:e_life_flutter/friends/friend.dart';
@@ -29,15 +29,14 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
   myCenterWidget(this.username1,this.role1,this.session1);
   prefix0.userHttp manager = new prefix0.userHttp();
 
-//  void _toMap() {
-//    var androidView = new AndroidView(viewType: "MyMap");
-//    Navigator.push(context,
-//        new MaterialPageRoute(builder: (context) {
-//          return new Map(androidView : androidView);
-//        })).then((var onValue){
-//          androidView = onValue;
-//    });
-//  }
+  void _toMap() {
+
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (context) {
+          return myMap() ;
+        })).then((var onValue){
+    });
+  }
  String username="未登录";
  String role = "用户";
   @override
@@ -100,13 +99,13 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
             Expanded(
               child: ListView(
                 children: <Widget>[
-//                ListTile(
-//                  leading: const Icon(Icons.fiber_new),
-//                  title: const Text('我的周边'),
-//                  onTap:  () {
-//                    _toMap();
-//                  },
-//                ),
+                ListTile(
+                  leading: const Icon(Icons.fiber_new),
+                  title: const Text('我的周边'),
+                  onTap:  () {
+                    _toMap();
+                  },
+                ),
                   ListTile(
                     leading: const Icon(Icons.people_outline),
                     title: const Text('我的好友'),

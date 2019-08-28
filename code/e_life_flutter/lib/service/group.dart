@@ -91,7 +91,7 @@ class groupWeightState extends State<groupWeight>
                Container(
                  child: Column(
 
-                   crossAxisAlignment: CrossAxisAlignment.start,
+                   crossAxisAlignment: CrossAxisAlignment.center,
                    children: <Widget>[
                      Text(
                        demand.title,
