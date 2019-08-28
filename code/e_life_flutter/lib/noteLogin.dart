@@ -57,6 +57,7 @@ class noteLoginWidget extends State<noteLogin>
                     decoration: new InputDecoration(
                       contentPadding:
                           const EdgeInsets.symmetric(vertical: 12.0),
+
                     ),
                   ),
                   trailing: new FlatButton(
@@ -73,16 +74,11 @@ class noteLoginWidget extends State<noteLogin>
                         borderRadius: BorderRadius.circular(5.0)),
                     onPressed: ()async {
                       print(_phoneNum.text);
-                      manager.getNote(this, _phoneNum.text, role);
+                      await manager.getNote(this, _phoneNum.text, role);
                       //manager.getNote(this, _phoneNum.text, role);
 //                      print(manager.getNote(this, _phoneNum.text, role).toString());
-                      await new Future.delayed(new Duration(milliseconds: 2000));
-                      if(getNoteSuccess!=false){
-                        showToast("验证码已发送");
-                      }else{
-                        showToast("验证码发送失败");
+                      //await new Future.delayed(new Duration(milliseconds: 2000));
 
-                      }
 
                     },
                   ),
@@ -153,15 +149,7 @@ class noteLoginWidget extends State<noteLogin>
                       onPressed:()async{
                         manager.phoneLogin(this, _phoneNum.text, _authCode.text, role);
                         await new Future.delayed(new Duration(milliseconds: 1000));
-                        if(loginSuccess!=false){
-                          Navigator.of(context).pushAndRemoveUntil(
-                              new MaterialPageRoute(
-                                  builder: (context) => new BottomNavigationWidget(user.username,user.communityId.toString(),user.role.toString(),user.session)),
-                                  (route) => route == null);
-                          showToast("登录成功");
-                        }else{
-                          showToast("登录失败");
-                        }
+
 
                       } ,
                     ),
@@ -195,12 +183,21 @@ class noteLoginWidget extends State<noteLogin>
     );
   }
   @override
-  void onUserResponse(User body,bool login) {
+  onUserResponse(User body,bool login) {
     user = body;
     loginSuccess = login;
     setState(() {
 
     });
+    if(loginSuccess!=false){
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(
+              builder: (context) => new BottomNavigationWidget(user.username,user.communityId.toString(),user.role.toString(),user.session)),
+              (route) => route == null);
+      showToast("登录成功");
+    }else{
+      showToast("登录失败");
+    }
   }
   @override void onLogoutResponse(bool logout) {
     // TODO: implement onLogoutResponse
@@ -210,10 +207,16 @@ class noteLoginWidget extends State<noteLogin>
     // TODO: implement onError
   }
   @override
-  void onGetNoteResponse(bool ifGetNote){
+   onGetNoteResponse(bool ifGetNote){
     getNoteSuccess=ifGetNote;
     setState(() {
 
     });
+    if(getNoteSuccess!=false){
+      showToast("验证码已发送");
+    }else{
+      showToast("验证码发送失败");
+
+    }
   }
 }

@@ -6,6 +6,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../user.dart';
 import 'package:e_life_flutter/friends/friend.dart';
 import '../main.dart';
+import 'package:oktoast/oktoast.dart';
 
 
 
@@ -125,9 +126,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
           manager.logout(this,username,session1);
-          Navigator.push<String>(context, new MaterialPageRoute(builder: (context) {
-            return new MyApp();
-          }));
+
         },
         tooltip: '退出登录',
         child: Icon(Icons.keyboard_return),
@@ -136,11 +135,25 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
     });
   }
   @override
-  void onUserResponse(prefix0.User body,bool login) {
+   onUserResponse(prefix0.User body,bool login) {
 
   }
   @override void onLogoutResponse(bool logout) {
     // TODO: implement onLogoutResponse
+    if(logout!=false){
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(
+              builder: (context) => new MyApp()),
+              (route) => route == null);
+
+      showToast("登出成功");
+    }else{
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(
+              builder: (context) => new MyApp()),
+              (route) => route == null);
+      showToast("登出失败");
+    }
   }
   @override
   void onError(error) {

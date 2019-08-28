@@ -116,9 +116,9 @@ class httpManager {
     );
   }
 
-  getPhoto(NetListener net,String path,String session) {
+  getPhoto(NetListener net,String path,String session)async {
     var client = new http.Client();
-
+    String photo;
     client.post(
         photoUrl,
         headers: {
@@ -129,20 +129,22 @@ class httpManager {
         }
     ).then((
         response,
-        ) {
+        ) async{
       Map<String,dynamic> responseJson = json.decode(response.body);
       //await new Future.delayed(new Duration(milliseconds: 1500));
-      String photo = responseJson["photo"];
-      //print(photo);
+      photo = await responseJson["photo"];
+      //print("photo"+photo);
       //print(response.body);
       //print(jsonDecode(response.body));
       net.onPhotoResponse(photo);
+      return photo;
 
     }, onError: (error) {
       net.onError(error);
     }).whenComplete(
       client.close,
     );
+    //return photo;
   }
 
 }
@@ -157,7 +159,7 @@ abstract class NetListener {
   void onActivityResponse(List<Activity> body);
   void onSaveParticipantResponse(String body);
   void onError(error);
-  void onPhotoResponse(String photo);
+   onPhotoResponse(String photo);
 }
 
 class urgent{

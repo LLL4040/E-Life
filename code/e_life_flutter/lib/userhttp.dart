@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 class userHttp {
@@ -15,7 +16,7 @@ class userHttp {
    * cityName 城市名称 我们应该使用外部传入
    * net 监听网络请求的结果 因为他不是同步的
    */
-  Future login(NetListener net,String username,String password,String id) {
+  Future login(NetListener net,String username,String password,String id) async{
     var client = new http.Client();
     client.post(
         userUrl,
@@ -26,13 +27,13 @@ class userHttp {
         }
     ).then((
         response,
-        ) async{
+        ) {
       print(response.headers);
       Map<String,dynamic> responseJson = json.decode(response.body);
       print(responseJson.toString());
       User user = User.fromJson(responseJson);
       user.session=response.headers["set-cookie"];
-      print(user.session+"session");
+      //print(user.session+"session");
       bool login = false;
       if(user.login==1){
         print("httpTrue");
@@ -48,7 +49,7 @@ class userHttp {
       client.close,
     );
   }
-  phoneLogin(NetListener net,String phone,String code,String id){
+  phoneLogin(NetListener net,String phone,String code,String id)async{
     var client = new http.Client();
     client.post(
         phoneLoginUrl,
@@ -66,7 +67,6 @@ class userHttp {
       print(responseJson.toString());
       User user = User.fromJson(responseJson);
       user.session=response.headers["set-cookie"];
-      print(user.session+"session");
       bool login = false;
       if(user.login==1){
         print("httpTrue");
@@ -82,7 +82,7 @@ class userHttp {
       client.close,
     );
   }
-  getNote(NetListener net,String phone,String id){
+  getNote(NetListener net,String phone,String id)async{
     var client = new http.Client();
 
     client.post(
@@ -122,20 +122,20 @@ class userHttp {
     );
 
   }
-  logout(NetListener net,String username,String session){
+  logout(NetListener net,String username,String session)async{
     var client = new http.Client();
     client.post(
       logOutUrl,
       headers: {
         "cookie": session,
       },
-      body: {
-        "username": username,
-      },
+//      body: {
+//        "username": username,
+//      },
     ).then((response,) {
-      print(response);
+      print(response.body);
       Map<String, dynamic> responseJson = json.decode(response.body);
-      bool success =  responseJson.containsValue("1");
+      bool success =   (responseJson["logout"]==1);
 
       net.onLogoutResponse(success);
     }, onError: (error) {
@@ -153,9 +153,9 @@ class userHttp {
  */
 abstract class NetListener {
   //三天预报
-  void onUserResponse(User body,bool login) ;
+  onUserResponse(User body,bool login) ;
   void onLogoutResponse(bool logout);
-  void onGetNoteResponse(bool ifGetNote);
+  onGetNoteResponse(bool ifGetNote);
   void onError(error);
 }
 

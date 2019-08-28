@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'bottom_navigation_widget.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'userhttp.dart';
 import 'user.dart';
 import 'package:oktoast/oktoast.dart';
 import 'noteLogin.dart';
@@ -39,7 +40,7 @@ class LoginWidget extends StatefulWidget {
   }
 }
 
-class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
+class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin,NetListener {
   @override
   void initState() {
 
@@ -51,9 +52,11 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
   final TextEditingController _password =
       new TextEditingController.fromValue(new TextEditingValue(text: ""));
 
-
-
+  User user;
+  bool loginSuccess = false;
+  bool getNoteSuccess = false;
   String role = "0";
+  userHttp manager = new userHttp();
   @override
   Widget build(BuildContext context) {
 
@@ -138,19 +141,9 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                     ),
                     onPressed: ()async{
 
-                      bool temp = await model.login(_username.text,_password.text,role);
-                      if(temp==true){
-                        print("哈哈哈哈哈哈");
-                      }
-                      if(model.loginSuccess!=false){
-                        Navigator.of(context).pushAndRemoveUntil(
-                            new MaterialPageRoute(
-                                builder: (context) => new BottomNavigationWidget(model.user.username,model.user.communityId.toString(),model.user.role.toString(),model.user.session)),
-                                (route) => route == null);
-                        showToast("登录成功");
-                      }else{
-                        showToast("登录失败");
-                      }
+                       manager.login(this,_username.text,_password.text,role);
+
+
 
                     }),
               ),
@@ -270,5 +263,43 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin {
                 ));
           },
         );
+  }
+  @override
+  onUserResponse(User body,bool login) {
+    user = body;
+    loginSuccess = login;
+    print(login.toString()+"jsjs");
+//    setState(() {
+//
+//    });
+    if(login!=false){
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(
+              builder: (context) => new BottomNavigationWidget(user.username,user.communityId.toString(),user.role.toString(),user.session)),
+              (route) => route == null);
+      showToast("登录成功");
+    }else{
+      showToast("登录失败");
+    }
+  }
+  @override void onLogoutResponse(bool logout) {
+    // TODO: implement onLogoutResponse
+  }
+  @override
+  void onError(error) {
+    // TODO: implement onError
+  }
+  @override
+  void onGetNoteResponse(bool ifGetNote){
+    getNoteSuccess=ifGetNote;
+    setState(() {
+
+    });
+    if(getNoteSuccess!=false){
+      showToast("验证码已发送");
+    }else{
+      showToast("验证码发送失败");
+
+    }
   }
 }
