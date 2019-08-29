@@ -164,10 +164,12 @@ class myMapWidget extends State<myMap>
     body: Container(
       child: Stack(
             children: <Widget>[
-              FlutterMap(
+              merchantList.length==0&&bargainList.length==0?Center(
+                child: Text("地图加载中"),
+              ):FlutterMap(
                 options: new MapOptions(
 //                  center: new LatLng(31.029766, 121.437648),
-                center: merchantList.length>0?new LatLng(double.parse(merchantList[0].address.substring(19)),double.parse(merchantList[0].address.substring(4,14))):LatLng(31.029766, 121.437648),
+                  center: merchantList.length>0?new LatLng(double.parse(merchantList[0].address.substring(19)),double.parse(merchantList[0].address.substring(4,14))):new LatLng(double.parse(bargainList[0].address.substring(19)),double.parse(bargainList[0].address.substring(4,14))),
                   zoom: 13.0,
                 ),
                 layers: [
@@ -224,6 +226,7 @@ class myMapWidget extends State<myMap>
                             await manager.allMerchant(this, session);
                           },
                         ),
+
                       ),
                       Row(
                         children: <Widget>[

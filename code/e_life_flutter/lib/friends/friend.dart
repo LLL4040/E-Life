@@ -84,7 +84,7 @@ class friendWidgetState extends State<friendWidget>
                   context: context,
                   builder: (BuildContext context) {
                     return new SimpleDialog(
-                      title: new Text('确定提取吗'),
+                      title: new Text('确定删除好友吗'),
                       children: <Widget>[
                         new Row(
                           mainAxisSize: MainAxisSize.max,
@@ -120,7 +120,7 @@ class friendWidgetState extends State<friendWidget>
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0)),
                                 onPressed: () {
-                                  showToast("取消提取邮包");
+                                  showToast("取消删除好友");
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -217,10 +217,9 @@ class friendWidgetState extends State<friendWidget>
                 new IconButton(
                   icon: new Icon(Icons.add),
                   onPressed: () {
-                    print("id是");
-                    print(id);
+
                     manager.acceptRequest(this, id,session);
-                    showToast("加好友成功");
+
 
                   },
                 ),
@@ -228,8 +227,8 @@ class friendWidgetState extends State<friendWidget>
                   icon: new Icon(Icons.delete),
                   onPressed: () {
                     manager.rejectRequest(this, id,session);
-                    print("拒绝成功");
-                    showToast("拒绝成功");
+
+
                   },
                 ),
               ],
@@ -269,40 +268,40 @@ class friendWidgetState extends State<friendWidget>
     //Widget apply2 = _getApply("妞妞", "已拒绝", "江浙沪包邮");
 
     if (myFriendList.length > 0) {
-      print(myFriendList.length.toString() + "长度");
+      //print(myFriendList.length.toString() + "长度");
       for (int i = 0; i < myFriendList.length; i++) {
-        print(myFriendList[i].email);
-        print(myFriendList[i].friend);
-        print(myFriendList[i].phone);
+//        print(myFriendList[i].email);
+//        print(myFriendList[i].friend);
+//        print(myFriendList[i].phone);
 
         Widget friend5 = _getFriend(myFriendList[i].friend,
             myFriendList[i].phone, myFriendList[i].email);
-        print("奇奇怪怪");
+        //print("奇奇怪怪");
 
         friends.add(friend5);
       }
     }
     if (searchUserList.length > 0) {
-      print(searchUserList.length.toString() + "长度");
+      //print(searchUserList.length.toString() + "长度");
       for (int i = 0; i < searchUserList.length; i++) {
 
 
         Widget user2 = _getUser(searchUserList[i].searchUser,
              searchUserList[i].communityId);
-        print("奇奇怪怪oo");
+        //print("奇奇怪怪oo");
 
         users.add(user2);
       }
     }
     if (friendRequestList.length > 0) {
-      print(friendRequestList.length.toString() + "长度");
+      //print(friendRequestList.length.toString() + "长度");
       for (int i = 0; i < friendRequestList.length; i++) {
         Widget apply1 = _getApply(
             friendRequestList[i].request,
             friendRequestList[i].status.toString(),
             friendRequestList[i].content,
             friendRequestList[i].id);
-        print("奇奇怪ee怪");
+        //print("奇奇怪ee怪");
 
         applys.add(apply1);
       }
@@ -457,6 +456,11 @@ class friendWidgetState extends State<friendWidget>
 
   @override
   void onAcceptRequestResponse(bool accept) {
+    if(accept){
+      showToast("加好友成功");
+    }else{
+      showToast("加好友失败");
+    }
     setState(() {
       manager.getRequestList(this, username,session);
     });
@@ -464,6 +468,11 @@ class friendWidgetState extends State<friendWidget>
 
   @override
   void onRejectRequestResponse(bool reject) {
+    if(reject){
+      showToast("拒绝成功");
+    }else{
+      showToast("拒绝失败");
+    }
     setState(() {
       manager.getRequestList(this, username,session);
     });

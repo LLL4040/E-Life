@@ -141,51 +141,66 @@ class groupWeightState extends State<groupWeight>
   }
 
   Widget _getDemand(Demand demand){
-    return new ListTile(
-      leading: new Icon(Icons.shopping_basket),
-      title: new Text(demand.title),
-    onTap: (){
-      showDialog<Null>(
-        context: context,
-        builder: (BuildContext context) {
-          return new SimpleDialog(
-            children: <Widget>[
-               Container(
-                   child: Column(
-                     children: <Widget>[
-                       ListTile(
-                         leading: Text(
-                           demand.title,
-                           textAlign: TextAlign.left,
-                           textScaleFactor: 1.5,
-                         ),
-                         trailing:Text("发起人：" + demand.username),
-                       ),
-                       new Divider(),
-                       ListTile(
-                         //subtitle: Text("开始时间：" + demand.start),
-                         subtitle: Column(
-                            crossAxisAlignment:CrossAxisAlignment.start,
-                           children: <Widget>[
-                             Text("开始时间：" + demand.start),
-                             Text("结束时间：" + demand.end),
-                           ],
-                         ),
-                       ),
-                       new Divider(),
-                       ListTile(
-                         title: Text("团购内容：" + demand.content),
-                       ),
+
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+//        elevation: 15.0, //设置阴影
+//        shape: const RoundedRectangleBorder(
+//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            new ListTile(
+              leading: new Icon(Icons.shopping_basket),
+              title: new Text(demand.title),
+              onTap: (){
+                showDialog<Null>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return new SimpleDialog(
+                        children: <Widget>[
+                          Container(
+                              child: Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: Text(
+                                      demand.title,
+                                      textAlign: TextAlign.left,
+                                      textScaleFactor: 1.5,
+                                    ),
+                                    trailing:Text("发起人：" + demand.username),
+                                  ),
+                                  new Divider(),
+                                  ListTile(
+                                    //subtitle: Text("开始时间：" + demand.start),
+                                    subtitle: Column(
+                                      crossAxisAlignment:CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text("开始时间：" + demand.start),
+                                        Text("结束时间：" + demand.end),
+                                      ],
+                                    ),
+                                  ),
+                                  new Divider(),
+                                  ListTile(
+                                    title: Text("团购内容：" + demand.content),
+                                  ),
 
 
-                     ],
-                   )
-               ),
-            ],
-          );
-        }
-      );
-    },
+                                ],
+                              )
+                          ),
+                        ],
+                      );
+                    }
+                );
+              },
+            ),
+            //new Divider(),
+          ],
+        ),
+      ),
     );
   }
 

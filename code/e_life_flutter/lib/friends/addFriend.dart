@@ -23,10 +23,10 @@ class addFriendCenter extends State<addFriend>
     final TextEditingController _contentController =
         new TextEditingController.fromValue(new TextEditingValue(text: ""));
 
-    void _addRepair() {
-      print(_contentController.text);
+    void _addRequest() {
+      //print(_contentController.text);
       manager.sendRequest(this, username, friend, _contentController.text,session);
-      Navigator.pop(context, "发送添加好友请求成功");
+
     }
 
     Widget addFriendSection = new Container(
@@ -85,7 +85,7 @@ class addFriendCenter extends State<addFriend>
                   child: Text("确定"),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
-                  onPressed: _addRepair,
+                  onPressed: _addRequest,
                 ),
                 FlatButton(
                   color: Colors.black54,
@@ -142,6 +142,11 @@ class addFriendCenter extends State<addFriend>
 
   @override
   void onSendRequestResponse(bool send) {
+    if(send){
+      Navigator.pop(context, "发送添加好友请求成功");
+    }else{
+      Navigator.pop(context, "发送添加好友请求失败");
+    }
     setState(() {});
   }
 

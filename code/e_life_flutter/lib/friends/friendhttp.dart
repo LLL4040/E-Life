@@ -38,8 +38,8 @@ class friendHttp {
     ).then((
         response,
         ) {
-      print(response.body);
-      print(jsonDecode(response.body));
+      //print(response.body);
+      //print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Friend> friendList = responseJson.map((m) => new Friend.fromJson(m)).toList();
       net.onFriendResponse(friendList);
@@ -63,8 +63,8 @@ class friendHttp {
     ).then((
         response,
         ) {
-      print(response.body);
-      print(jsonDecode(response.body));
+      //print(response.body);
+      //print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Friend> friendList = responseJson.map((m) => new Friend.fromJson(m)).toList();
       net.onFriendSearchResponse(friendList);
@@ -89,8 +89,8 @@ class friendHttp {
     ).then((
         response,
         ) {
-      print(response.body);
-      print(jsonDecode(response.body));
+      //print(response.body);
+      //print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<friendRequest> requestList = responseJson.map((m) => new friendRequest.fromJson(m)).toList();
       net.onRequestListResponse(requestList);
@@ -114,8 +114,8 @@ class friendHttp {
     ).then((
         response,
         ) {
-      print(response.body);
-      print(jsonDecode(response.body));
+      //print(response.body);
+      //print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<friendRequest> responseList = responseJson.map((m) => new friendRequest.fromJson(m)).toList();
       net.onResponseListResponse(responseList);
@@ -141,8 +141,9 @@ class friendHttp {
     ).then((
         response,
         ) {
+      //print(response.body);
       Map<String,dynamic> responseJson = json.decode(response.body);
-      bool success = responseJson.containsValue("1");
+      bool success = responseJson["send"]==1;
       net.onSendRequestResponse(success);
     }, onError: (error) {
       net.onError(error);
@@ -164,9 +165,10 @@ class friendHttp {
     ).then((
         response,
         ) {
+      //print(response.body);
       Map<String,dynamic> responseJson = json.decode(response.body);
-      print("请求加好友成功");
-      bool success = responseJson.containsValue("1");
+      //print("请求加好友成功");
+      bool success = responseJson["accept"]==1;
       net.onAcceptRequestResponse(success);
     }, onError: (error) {
       net.onError(error);
@@ -188,8 +190,9 @@ class friendHttp {
     ).then((
         response,
         ) {
+      //print(response.body);
       Map<String,dynamic> responseJson = json.decode(response.body);
-      bool success = responseJson.containsValue("1");
+      bool success = responseJson["reject"]==1;
       net.onRejectRequestResponse(success);
     }, onError: (error) {
       net.onError(error);
@@ -212,7 +215,7 @@ class friendHttp {
     ).then((
         response,
         ) {
-      print(response.body);
+      //print(response.body);
       Map<String,dynamic> responseJson = json.decode(response.body);
 
       bool success = responseJson["delete"]==1;
