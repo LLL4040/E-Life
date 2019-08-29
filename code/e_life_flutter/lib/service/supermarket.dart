@@ -158,5 +158,9 @@ class surpermarketCenter extends State<surpermarket> with SingleTickerProviderSt
     });
   }
   @override
+  void allMerchantResponse(List<Merchant> merchant){}
+  @override
+  void allBargainResponse(List<Bargain> bargain){}
+  @override
   void onError(error){}
 }

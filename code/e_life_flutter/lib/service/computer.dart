@@ -156,5 +156,9 @@ class computerCenter extends State<computer> with SingleTickerProviderStateMixin
   @override
   void onMySupermarketResponse(List<Merchant> supermarket){}
   @override
+  void allMerchantResponse(List<Merchant> merchant){}
+  @override
+  void allBargainResponse(List<Bargain> bargain){}
+  @override
   void onError(error){}
 }

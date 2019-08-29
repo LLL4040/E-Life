@@ -77,6 +77,11 @@ flutter:
     - images/app.png
     - images/alert.jpg
     - images/pin.png
+    - images/blue.png
+    - images/green.png
+    - images/brown.png
+    - images/purple.png
+    - images/black.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

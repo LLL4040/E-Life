@@ -50,38 +50,100 @@ class groupWeightState extends State<groupWeight>
     });
   }
 
-  Widget _getDiscount(Discount discount) {
-    return new ListTile(
-      leading: Image.memory(
-        base64.decode(
-            discount.photo.split(',')[1]),
-        height:80,    //设置高度
-        width:80,    //设置宽度
-        fit: BoxFit.fill,    //填充
-        gaplessPlayback:true, //防止重绘
-      ),
-      title: new Text(discount.title),
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context){
-              return new DiscountDetail(discount);
-            })
-        );
-      }
-    );
+  List<bool> visibleList=[];
+  Widget _getDiscount(Discount discount,int i) {
+    if(visibleList.length>0){
+      return new SizedBox(
+
+        height: visibleList[i]?250.0:100, //设置高度
+        child: new Card(
+//        elevation: 15.0, //设置阴影
+//        shape: const RoundedRectangleBorder(
+//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
+          child: new Column(
+            // card只能有一个widget，但这个widget内容可以包含其他的widget
+            children: [
+              ListTile(
+
+                  leading:SizedBox(
+
+                    child: new Card(
+                      //elevation: 0.1, //设置阴影
+                      //设置shape，这里设置成了R角
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                      //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                      clipBehavior: Clip.antiAlias,
+                      child:Image.memory(
+                        base64.decode( discount.photo.split(',')[1]),
+
+                        fit: BoxFit.fill, //填充
+                        gaplessPlayback: true, //防止重绘
+                      ),
+                    ),
+                  ),
+                  title: new Text(discount.title,style: TextStyle(
+                    color: Colors.grey[600],
+                  ),),
+                  subtitle: new Text("人数上限:"+discount.num.toString()),
+                  trailing: IconButton(
+                    icon: Icon(visibleList[i]?Icons.keyboard_arrow_up:Icons.keyboard_arrow_down),
+                    onPressed: (){
+
+                      setState(() {
+                        if(visibleList[i]){
+                          visibleList[i]=false;
+                        }else{
+                          visibleList[i]=true;
+                        }
+                      });
+                    },
+                  ),
+                  onTap: (){
+                    setState(() {
+                      if(visibleList[i]){
+                        visibleList[i]=false;
+                      }else{
+                        visibleList[i]=true;
+                      }
+                    });
+                  }
+              ),
+              visibleList[i]?new Divider():Padding(
+                padding: EdgeInsets.only(),
+              ),
+              visibleList[i]?new ListTile(
+                subtitle: Column(
+                  crossAxisAlignment:CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("开始时间：" + discount.start),
+                    Text("结束时间：" + discount.end),
+                  ],
+                ),
+              ):Padding(
+                padding: EdgeInsets.only(),
+              ),
+              visibleList[i]?new Divider():Padding(
+                padding: EdgeInsets.only(),
+              ),
+              visibleList[i]?new ListTile(
+                subtitle: Text("团购内容: "+discount.content),
+              ):Padding(
+                padding: EdgeInsets.only(),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+
   }
 
   Widget _getDemand(Demand demand){
     return new ListTile(
       leading: new Icon(Icons.shopping_basket),
       title: new Text(demand.title),
-//      onTap: (){
-//        Navigator.push(context, MaterialPageRoute(
-//            builder: (context){
-//              return new DemandDetail(demand);
-//            })
-//        );
-//      },
     onTap: (){
       showDialog<Null>(
         context: context,
@@ -89,21 +151,35 @@ class groupWeightState extends State<groupWeight>
           return new SimpleDialog(
             children: <Widget>[
                Container(
-                 child: Column(
+                   child: Column(
+                     children: <Widget>[
+                       ListTile(
+                         leading: Text(
+                           demand.title,
+                           textAlign: TextAlign.left,
+                           textScaleFactor: 1.5,
+                         ),
+                         trailing:Text("发起人：" + demand.username),
+                       ),
+                       new Divider(),
+                       ListTile(
+                         //subtitle: Text("开始时间：" + demand.start),
+                         subtitle: Column(
+                            crossAxisAlignment:CrossAxisAlignment.start,
+                           children: <Widget>[
+                             Text("开始时间：" + demand.start),
+                             Text("结束时间：" + demand.end),
+                           ],
+                         ),
+                       ),
+                       new Divider(),
+                       ListTile(
+                         title: Text("团购内容：" + demand.content),
+                       ),
 
-                   crossAxisAlignment: CrossAxisAlignment.center,
-                   children: <Widget>[
-                     Text(
-                       demand.title,
-                       textAlign: TextAlign.left,
-                       textScaleFactor: 1.5,
-                     ),
-                     Text("开始时间：" + demand.start),
-                     Text("结束时间：" + demand.end),
-                     Text("团购内容：" + demand.content),
-                     Text("发起人：" + demand.username),
-                   ],
-                 ),
+
+                     ],
+                   )
                ),
             ],
           );
@@ -155,16 +231,17 @@ class groupWeightState extends State<groupWeight>
 
     discounts = [];
     demands = [];
-
+    //visibleList=[];
     if(discountList.length > 0){
-      print(discountList.length);
+      //print(discountList.length);
       for(int i = 0; i < discountList.length; i++){
-        Widget newDiscount = _getDiscount(discountList[i]);
+        Widget newDiscount = _getDiscount(discountList[i],i);
+
         discounts.add(newDiscount);
       }
     }
     if(demandList.length > 0){
-      print(demandList.length);
+      //print(demandList.length);
       for(int i = 0; i < demandList.length; i++){
         Widget newDemand = _getDemand(demandList[i]);
         demands.add(newDemand);
@@ -232,7 +309,7 @@ class groupWeightState extends State<groupWeight>
             controller: mTabController,
           ),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: mCurrentPosition==0?null:FloatingActionButton(
           onPressed: _toaddDemand,
           tooltip: 'addDemand',
           child: Icon(Icons.add),
@@ -258,6 +335,9 @@ class groupWeightState extends State<groupWeight>
   @override
   void onAllDiscountResponse(List<Discount> discountList) {
     this.discountList = discountList;
+    for(int i=0;i<discountList.length;i++){
+      visibleList.add(false);
+    }
     print("get discountList");
     setState(() {});
   }
@@ -291,65 +371,5 @@ class Choice {
   final IconData icon;
 }
 
-class DiscountDetail extends StatelessWidget {
-  final Discount discount;
-  DiscountDetail(this.discount);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("团购详情"),),
-      body: Center(
-        child: ListView(
-          children: <Widget>[
-            Text(
-              discount.title,
-              textAlign: TextAlign.left,
-              textScaleFactor: 1.5,
-            ),
-            Image.memory(
-              base64.decode(
-                  discount.photo.split(',')[1]),
-              height:80,    //设置高度
-              width:80,    //设置宽度
-              //fit: BoxFit.fill,    //填充
-              alignment: Alignment.topLeft,
-              gaplessPlayback:true, //防止重绘
-            ),
-            Text("开始时间：" + discount.start),
-            Text("结束时间：" + discount.end),
-            Text("团购内容：" + discount.content),
-            Text("团购数量：" + discount.num.toString()),
-          ],
-        )
-      ),
-    );
-  }
-}
 
-class DemandDetail extends StatelessWidget {
-  final Demand demand;
-  DemandDetail(this.demand);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("需求详情"),),
-      body: Center(
-          child: ListView(
-            children: <Widget>[
-              Text(
-                demand.title,
-                textAlign: TextAlign.left,
-                textScaleFactor: 1.5,
-              ),
-              Text("开始时间：" + demand.start),
-              Text("结束时间：" + demand.end),
-              Text("团购内容：" + demand.content),
-              Text("发起人：" + demand.username),
-            ],
-          )
-      ),
-    );
-  }
-}

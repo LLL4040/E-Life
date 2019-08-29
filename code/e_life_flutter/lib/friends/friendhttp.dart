@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class friendHttp {
 
-  var friendUrl = "http://elife.natapp1.cc/user-server/api/friend/friendList";
+  var friendUrl = "http://zhimo.natapp1.cc/user-server/api/friend/friendList";
 
-  var friendSearchListUrl = "http://elife.natapp1.cc/user-server/api/friend/friendSearchList";
+  var friendSearchListUrl = "http://zhimo.natapp1.cc/user-server/api/friend/friendSearchList";
 
-  var requestListUrl = "http://elife.natapp1.cc/user-server/api/friend/responseList";
+  var requestListUrl = "http://zhimo.natapp1.cc/user-server/api/friend/responseList";
 
-  var responseListUrl= "http://elife.natapp1.cc/user-server/api/friend/requestList";
+  var responseListUrl= "http://zhimo.natapp1.cc/user-server/api/friend/requestList";
 
-  var sendRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/sendFriendRequest";
+  var sendRequestUrl= "http://zhimo.natapp1.cc/user-server/api/friend/sendFriendRequest";
 
-  var acceptRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/acceptRequest";
+  var acceptRequestUrl= "http://zhimo.natapp1.cc/user-server/api/friend/acceptRequest";
 
-  var rejectRequestUrl= "http://elife.natapp1.cc/user-server/api/friend/rejectRequest";
+  var rejectRequestUrl= "http://zhimo.natapp1.cc/user-server/api/friend/rejectRequest";
 
-  var deleteFriendUrl= "http://elife.natapp1.cc/user-server/api/friend/deleteFriend";
+  var deleteFriendUrl= "http://zhimo.natapp1.cc/user-server/api/friend/deleteFriend";
 
 
   /**
@@ -198,7 +198,7 @@ class friendHttp {
     );
   }
 
-  deleteFriend(NetListener net,String username,String friend,String session) {
+  deleteFriend(NetListener net,String username,String friend,String session)async {
     var client = new http.Client();
     client.post(
         deleteFriendUrl,
@@ -212,9 +212,10 @@ class friendHttp {
     ).then((
         response,
         ) {
-      print(response);
+      print(response.body);
       Map<String,dynamic> responseJson = json.decode(response.body);
-      bool success = responseJson.containsValue("1");
+
+      bool success = responseJson["delete"]==1;
       net.onDeleteFriendResponse(success);
     }, onError: (error) {
       net.onError(error);
@@ -236,7 +237,7 @@ abstract class NetListener {
   void onSendRequestResponse(bool send);
   void onAcceptRequestResponse(bool accept);
   void onRejectRequestResponse(bool reject);
-  void onDeleteFriendResponse(bool delete);
+  onDeleteFriendResponse(bool delete);
   void onError(error);
 }
 

@@ -1,7 +1,7 @@
 
 import 'package:e_life_flutter/userhttp.dart' as prefix0;
 import 'package:flutter/material.dart';
-import '../map.dart';
+import 'map.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../user.dart';
 import 'package:e_life_flutter/friends/friend.dart';
@@ -33,7 +33,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
 
     Navigator.push(context,
         new MaterialPageRoute(builder: (context) {
-          return myMap() ;
+          return myMap(session1) ;
         })).then((var onValue){
     });
   }
