@@ -3,15 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class payHttp {
 
-<<<<<<< HEAD
   var myBillUrl = "http://elife.natapp1.cc/pay-server/api/Pay/findHistory";
 
   var myOrdersUrl = "http://elife.natapp1.cc/pay-server/api/Pay/getOrderInfo";
 
   var payUrl = "http://elife.natapp1.cc/pay-server/api/Pay/aliMobile";
-=======
-  var myBillUrl = "http://zhimo.natapp1.cc/pay-server/api/Pay/findHistory";
->>>>>>> 53ebc789b87f7a3ac76b886ef2fb15f9d7ef894d
 
 
 
@@ -25,12 +21,7 @@ class payHttp {
         },
         body: {
           "username": username,
-<<<<<<< HEAD
           "page": 1.toString(),
-=======
-          "page":"1",
-
->>>>>>> 53ebc789b87f7a3ac76b886ef2fb15f9d7ef894d
         }
     ).then((response,) {
       List responseJson = json.decode(response.body);

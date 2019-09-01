@@ -19,38 +19,6 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
 
   List<Bill> billList=[];//存后端数据
   payHttp manager = payHttp();
-<<<<<<< HEAD
-  Widget _getMyBill(String id,String time, double bill, int status) {
-    String repairStatus;
-    if (status == -1 || status==-2) {
-      repairStatus = "未处理";
-    }
-    if (status == -11 || status==-12) {
-      repairStatus = "处理中";
-    }
-    if (status == 2 || status==1) {
-      repairStatus = "已完成";
-    }else{
-      repairStatus ="其他";
-    }
-    return new ListTile(
-      leading: new Icon(Icons.settings),
-      title: new Text(bill.toString()),
-      subtitle: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(time),
-          new Text(repairStatus),
-          OutlineButton(child: Text("获取订单"), onPressed: () {
-            print(id);
-            getOrderInfo(id,bill.toString(),time);
-          }),
-          OutlineButton(child: Text("支付"), onPressed: () {
-            print(":"+_payInfo+":1222");
-            doPayExec(_payInfo);
-          }),
-        ],
-=======
   Widget _getMyBill(var bill) {
     String repairStatus;
     if (bill.status == -1||bill.status == -2) {
@@ -96,13 +64,20 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
                 onPressed: () {
                   // ...
                 },
+                 OutlineButton(child: Text("获取订单"), onPressed: () {
+            print(id);
+            getOrderInfo(id,bill.toString(),time);
+          }),
+          OutlineButton(child: Text("支付"), onPressed: () {
+            print(":"+_payInfo+":1222");
+            doPayExec(_payInfo);
+          }),
               ),
               dense: true,
             )
 
           ],
         ),
->>>>>>> 53ebc789b87f7a3ac76b886ef2fb15f9d7ef894d
       ),
     );
   }
@@ -122,11 +97,7 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
 
     if(billList.length>0){
       for(int i=0;i<billList.length-1;i++){
-<<<<<<< HEAD
-        Widget mybill1 = _getMyBill(billList[i].id.toString(),billList[i].time, billList[i].bill, billList[i].status);
-=======
         Widget mybill1 = _getMyBill(billList[i]);
->>>>>>> 53ebc789b87f7a3ac76b886ef2fb15f9d7ef894d
         myMyBills.add(mybill1);
       }
     }

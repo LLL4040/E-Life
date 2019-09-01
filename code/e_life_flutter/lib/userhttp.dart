@@ -6,15 +6,10 @@ class userHttp {
 //  三天预报
   var userUrl = "http://elife.natapp1.cc/user-server/api/user/login";
 
-<<<<<<< HEAD
-  var logOutUrl = "http://elife.natapp1.cc/user-server/api/user/logout";
-
-=======
   var logOutUrl = "http://zhimo.natapp1.cc/user-server/api/user/logout";
   var phoneAvailableUrl="http://zhimo.natapp1.cc/user-server/api/user/phoneAvailable";
   var sendIdentifyUrl="http://zhimo.natapp1.cc/user-server/api/user/sendIdentify";
   var phoneLoginUrl="http://zhimo.natapp1.cc/user-server/api/user/loginPhone";
->>>>>>> 53ebc789b87f7a3ac76b886ef2fb15f9d7ef894d
 
   /**
    * 三天预报

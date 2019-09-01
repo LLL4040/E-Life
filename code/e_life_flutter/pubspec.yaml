@@ -17,28 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-<<<<<<< HEAD
   tobias: any
-=======
-#  fluttertoast: any
-#  image_picker: any
-#  dio: any
-#  flutter_picker: ^1.0.11
-#  url_launcher: ^5.1.2
-#  #  flutter_baidu_map: ^0.0.5
-#  http: ^0.12.0+2
-#  flutter:
-#    sdk: flutter
-#
-#  # The following adds the Cupertino Icons font to your application.
-#  # Use with the CupertinoIcons class for iOS style icons.
-#  cupertino_icons: ^0.1.2
-#  #  fluttertoast: ^2.2.11
-#  oktoast: ^2.1.7
-##  amap_base: any
-#  flutter_swiper: ^1.1.6
-#  scoped_model: ^1.0.1
->>>>>>> 53ebc789b87f7a3ac76b886ef2fb15f9d7ef894d
   fluttertoast: any
   image_picker: any
   dio: any
