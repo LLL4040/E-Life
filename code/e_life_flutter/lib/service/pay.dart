@@ -49,7 +49,14 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Text(bill.time.toString()),
-
+    OutlineButton(child: Text("获取订单"), onPressed: () {
+    print(bill.id);
+    getOrderInfo(bill.id.toString(),bill.bill.toString(),bill.time.toString());
+    }),
+    OutlineButton(child: Text("支付"), onPressed: () {
+    print(":"+_payInfo+":1222");
+    doPayExec(_payInfo);
+    }),
 
                 ],
               ),
@@ -64,18 +71,9 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
                 onPressed: () {
                   // ...
                 },
-                 OutlineButton(child: Text("获取订单"), onPressed: () {
-            print(id);
-            getOrderInfo(id,bill.toString(),time);
-          }),
-          OutlineButton(child: Text("支付"), onPressed: () {
-            print(":"+_payInfo+":1222");
-            doPayExec(_payInfo);
-          }),
-              ),
-              dense: true,
             )
 
+            )
           ],
         ),
       ),
