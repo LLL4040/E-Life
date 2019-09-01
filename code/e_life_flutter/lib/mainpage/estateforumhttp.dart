@@ -5,13 +5,13 @@ class estateforumHttp {
 
 
 
-  var getPostUrl= "http://zhimo.natapp1.cc/estateforum-server/api/post/findPost";
+  var getPostUrl= "http://elife.natapp1.cc/estateforum-server/api/post/findPost";
 
-  var getCommentsUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/findComments";
+  var getCommentsUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/findComments";
 
-  var addCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/addComments";
+  var addCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/addComments";
 
-  var deleteCommentUrl= "http://zhimo.natapp1.cc/estateforum-server/api/postComments/deleteComments";
+  var deleteCommentUrl= "http://elife.natapp1.cc/estateforum-server/api/postComments/deleteComments";
 
 
   getPostList(NetListener net,String communityId,String page,String size,String session) {

@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class userHttp {
 //  三天预报
-  var userUrl = "http://zhimo.natapp1.cc/user-server/api/user/login";
+  var userUrl = "http://elife.natapp1.cc/user-server/api/user/login";
 
-  var logOutUrl = "http://zhimo.natapp1.cc/user-server/api/user/logout";
+  var logOutUrl = "http://elife.natapp1.cc/user-server/api/user/logout";
 
 
   /**

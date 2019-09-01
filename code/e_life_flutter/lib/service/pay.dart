@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:e_life_flutter/service/addRepair.dart';
 import 'payhttp.dart';
+import 'package:tobias/tobias.dart' as tobias;
 class pay extends StatefulWidget {
   final username;
   var session;
@@ -17,17 +18,16 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   payCenter(this.username,this.session);
 
   List<Bill> billList=[];//存后端数据
-
   payHttp manager = payHttp();
-  Widget _getMyBill(String time, double bill, int status) {
+  Widget _getMyBill(String id,String time, double bill, int status) {
     String repairStatus;
-    if (status == 0) {
+    if (status == -1 || status==-2) {
       repairStatus = "未处理";
     }
-    if (status == 1) {
+    if (status == -11 || status==-12) {
       repairStatus = "处理中";
     }
-    if (status == 2) {
+    if (status == 2 || status==1) {
       repairStatus = "已完成";
     }else{
       repairStatus ="其他";
@@ -40,6 +40,14 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
         children: <Widget>[
           new Text(time),
           new Text(repairStatus),
+          OutlineButton(child: Text("获取订单"), onPressed: () {
+            print(id);
+            getOrderInfo(id,bill.toString(),time);
+          }),
+          OutlineButton(child: Text("支付"), onPressed: () {
+            print(":"+_payInfo+":1222");
+            doPayExec(_payInfo);
+          }),
         ],
       ),
       onTap: () {
@@ -50,6 +58,10 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   }
 
   List<Widget> myMyBills = [];
+  var  _payInfo;
+  Orders order;
+  Map _payresult = {};
+  String msg = "";
   Widget buildMyBillBody(BuildContext ctxt, int index) {
     return myMyBills[index];
   }
@@ -57,9 +69,10 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   @override
   Widget build(BuildContext context) {
     myMyBills = [];
+
     if(billList.length>0){
-      for(int i=0;i<billList.length;i++){
-        Widget mybill1 = _getMyBill(billList[i].time, billList[i].bill, billList[i].status);
+      for(int i=0;i<billList.length-1;i++){
+        Widget mybill1 = _getMyBill(billList[i].id.toString(),billList[i].time, billList[i].bill, billList[i].status);
         myMyBills.add(mybill1);
       }
     }
@@ -88,6 +101,33 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   void _returnMyBill()async{
     await manager.myBill(this, username,session);
   }
+  void doPayExec(String apyInfo) async {
+    Map payResult;
+    try {
+      payResult = await tobias.pay(_payInfo.toString());
+    }
+    on Exception catch (e) {
+      payResult = {};
+      print("hhh");
+      return;
+    }
+    finally{
+      print("hhha");
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _payresult = payResult;
+    });
+
+  }
+  getOrderInfo(String id,String bill,String time) async {
+    print(id);
+    await manager.myOrders(this, username, id, bill);
+    await new Future.delayed(new Duration(milliseconds: 1000));
+    await manager.pay(this, order.id.toString(), order.bill.toString(), order.time);
+
+  }
   @override
   void initState() {
 
@@ -101,6 +141,21 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
     setState(() {
 
     });
+  }
+  @override
+  void onOrderResponse(Orders myOrder){
+    order = myOrder;
+    setState(() {
+
+    });
+  }
+  @override
+  void onAliResponse(String pay){
+    _payInfo = pay;
+    setState(() {
+
+    });
+
   }
   @override
   void onError(error){

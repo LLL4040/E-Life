@@ -4,6 +4,7 @@ import com.alipay.api.AlipayApiException;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.util.StringUtils;
+import payserver.dao.PayDao;
 import payserver.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ import java.math.BigDecimal;
 public class PayController {
     @Autowired
     private PayService payService;
+
+    @Autowired
+    private PayDao payDao;
 
     /**
      * savePay status= -1 parkBill status =-2 managerBill
@@ -118,6 +122,11 @@ public class PayController {
             , String id,String bill,String time) throws IOException, AlipayApiException {
         payService.ali(response,request,id,bill,time);
     }
+    @RequestMapping("/aliMobile")
+    public void aliMobile(HttpServletResponse response, HttpServletRequest request
+            , String id,String bill,String time) throws IOException, AlipayApiException {
+         payService.aliMobile(response,request,id,bill,time);
+    }
 
     @RequestMapping("/return")
     public void returnUrl(HttpServletResponse response, HttpServletRequest request) throws IOException, AlipayApiException {
@@ -142,4 +151,15 @@ public class PayController {
     public JSONArray getOrders(String username, int pid) {
         return payService.getOrders(username,pid);
     }
+
+    @RequestMapping("/getOrderInfo")
+    @ResponseBody
+    public Object getOrderInfo(String username, int pid, BigDecimal bill) {
+        int status=payDao.findOne(pid).getStatus();
+        if(status==-1||status==-2) {
+            payService.saveOrders(pid, username, bill);
+        }
+        return payService.getOrders(username,pid).get(0);
+    }
+
 }
