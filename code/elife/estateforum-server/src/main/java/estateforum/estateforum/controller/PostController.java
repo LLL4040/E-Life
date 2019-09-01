@@ -23,7 +23,10 @@ import java.util.List;
  * postComments class
  *
  * @author 符永锐
- * @date 2019/07/04*/
+ * @date 2019/07/04
+ * @author ztHou
+ * @date 2019/08/25
+ */
 @RequestMapping(path = "/api/post")
 @Controller
 public class PostController {
@@ -74,6 +77,23 @@ public class PostController {
         }
         return postService.findAllByCommunityId(communityId,page,size);
     }
+
+    @RequestMapping(path = "/findPostByTag")
+    @ResponseBody
+    public JSONArray findPostByTag(HttpServletRequest request, @RequestParam int communityId, @RequestParam String tag, @RequestParam int page, @RequestParam int size)throws IOException{
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        if (StringUtils.isEmpty(name) || "2".equals(role)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login", 0);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            return jsonArray;
+        }
+        return postService.findAllByCommunityIdAndTag(communityId, tag, page, size);
+    }
+
     @RequestMapping(path = "/deletePost")
     @ResponseBody JSONObject deletePost(HttpServletRequest request, @RequestParam String id){
         HttpSession session = request.getSession();

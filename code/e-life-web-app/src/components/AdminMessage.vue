@@ -46,7 +46,6 @@
               :label="item.username"
               :value="item.username">
               <span style="float: left">{{ item.username }}</span>
-<!--              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
             </el-option>
           </el-select>
         </el-form-item>
@@ -85,7 +84,11 @@ export default {
       pageNum: 1,
       pageSize: 10,
       total: 1,
-      userList: []
+      userList: [
+        {
+          username: '所有用户'
+        }
+      ]
     }
   },
   mounted () {
@@ -152,7 +155,9 @@ export default {
         if (response.data.length > 0 && response.data[0].login === 0) {
           this.$router.push({ name: 'Login' })
         } else {
-          this.userList = response.data
+          console.log(response.data)
+          this.userList = this.userList.concat(response.data)
+          console.log(this.userList)
         }
       })
     },
@@ -168,7 +173,11 @@ export default {
       bodyFormData.set('managerName', this.userInfo.username)
       bodyFormData.set('communityId', this.userInfo.communityId)
       bodyFormData.set('username', this.newMessage.user)
-      bodyFormData.set('isMass', 0)
+      if (this.newMessage.user === '所有用户') {
+        bodyFormData.set('isMass', 1)
+      } else {
+        bodyFormData.set('isMass', 0)
+      }
       let url = '/news-server/api/notice/addNotice'
       this.$axios({
         method: 'post',

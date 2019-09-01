@@ -7,6 +7,7 @@ import 'newshttp.dart';
 import 'joinActivity.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../user.dart';
+import 'dart:io';
 
 //资讯的widget
 class newswidget extends StatefulWidget {
@@ -102,8 +103,12 @@ class myWidget extends State<newswidget>
   Widget _getActivity(int id, String title, String photo, String content,
       String startTime, String endTime, int status, String path) {
     String activity = status == 0 ? "报名中" : "已结束";
-    return new SizedBox(
+    return new Container(
       //height: 210.0, //设置高度
+      decoration:BoxDecoration(//背景装饰
+
+
+      ),
       child: new Card(
         elevation: 0.0, //设置阴影
 //        shape: const RoundedRectangleBorder(
@@ -112,12 +117,24 @@ class myWidget extends State<newswidget>
           // card只能有一个widget，但这个widget内容可以包含其他的widget
           children: [
             new ListTile(
-              leading: Image.memory(
-                base64.decode(photo.split(',')[1]),
-                height: 100, //设置高度
-                width: 80, //设置宽度
-                fit: BoxFit.fill, //填充
-                gaplessPlayback: true, //防止重绘
+
+              leading:SizedBox(
+
+                child: new Card(
+                  //elevation: 0.1, //设置阴影
+                  //设置shape，这里设置成了R角
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                  clipBehavior: Clip.antiAlias,
+                  child:Image.memory(
+                    base64.decode(photo.split(',')[1]),
+                    height: 120, //设置高度
+                    width: 80, //设置宽度
+                    fit: BoxFit.fill, //填充
+                    gaplessPlayback: true, //防止重绘
+                  ),
+                ),
               ),
               title: new Text(title),
               subtitle: new Column(
@@ -135,31 +152,13 @@ class myWidget extends State<newswidget>
               trailing: null,
               onTap: () async {
                 print("路径为" + path);
-                manager.getPhoto(this, path,session);
-                await new Future.delayed(new Duration(milliseconds: 1500));
-                //print("前端收到的图片为"+bigphoto);
-                String tmp = bigphoto.split(',')[1];
+                await manager.getPhoto(this, path,session);
+                //await new Future.delayed(new Duration(milliseconds: 5000));
                 setState(() {
-                  bigphoto = "";
                 });
 
-                return showDialog<Null>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return new SimpleDialog(
-                        children: <Widget>[
-                          Image.memory(
-                            base64.decode(tmp),
-                            height: 200, //设置高度
-                            width: 200, //设置宽度
-                            fit: BoxFit.fill, //填充
-                            gaplessPlayback: true, //防止重绘
-                          ),
-                        ],
-                      );
-                    });
+
               },
-              //dense: true,
             ),
             //new Divider(),
             Row(
@@ -202,16 +201,22 @@ class myWidget extends State<newswidget>
           // card只能有一个widget，但这个widget内容可以包含其他的widget
           children: [
             new ListTile(
-              leading: Image.memory(
-                base64.decode(photo.split(',')[1]),
 
-                height: 100, //设置高度
+              leading:SizedBox(
 
-                width: 80, //设置宽度
-
-                fit: BoxFit.fill, //填充
-
-                gaplessPlayback: true, //防止重绘
+                child: new Card(
+                  //elevation: 0.1, //设置阴影
+                  //设置shape，这里设置成了R角
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  //对Widget截取的行为，比如这里 Clip.antiAlias 指抗锯齿
+                  clipBehavior: Clip.antiAlias,
+                  child:Image.memory(
+                    base64.decode(photo.split(',')[1]),
+                    fit: BoxFit.fill, //填充
+                    gaplessPlayback: true, //防止重绘
+                  ),
+                ),
               ),
               //title: new Text(photo),
               subtitle: new Column(
@@ -225,42 +230,19 @@ class myWidget extends State<newswidget>
 
               onTap: () async {
                 print("路径为" + path);
-                manager.getPhoto(this, path,session);
-                await new Future.delayed(new Duration(milliseconds: 1500));
+                await manager.getPhoto(this, path,session);
+
                 //print("前端收到的图片为"+bigphoto);
-                String tmp = bigphoto.split(',')[1];
+                //String tmp = bigphoto.split(',')[1];
+                //bigphoto=null;
                 setState(() {
-                  bigphoto = '';
+
                 });
 
-                return showDialog<Null>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return new SimpleDialog(
-                        children: <Widget>[
-                          Image.memory(
-                            base64.decode(tmp),
-                            height: 200, //设置高度
-                            width: 200, //设置宽度
-                            fit: BoxFit.fill, //填充
-                            gaplessPlayback: true, //防止重绘
-                          ),
-                        ],
-                      );
-                    });
               },
               //dense: true,
             ),
             //new Divider(),
-
-//            new ListTile(
-//              title: new Text('图片区域'),
-//              leading: new Icon(
-//                Icons.photo,
-//                color: Colors.blue[500],
-//              ),
-//
-//            ),
           ],
         ),
       ),
@@ -313,42 +295,42 @@ class myWidget extends State<newswidget>
     urgents = [];
     activitys = [];
     news = [];
-    Widget mydiv = SizedBox(
-      //height: 210.0, //设置高度
-      child: new Card(
-//        elevation: 15.0, //设置阴影
-//        shape: const RoundedRectangleBorder(
-//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
-        child: new Column(
-          // card只能有一个widget，但这个widget内容可以包含其他的widget
-          children: [
 
-            Container(
-              padding: EdgeInsets.all(10),
-              child: new Image.asset(
-                'images/app.png',
-                height: 100,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Text(
-                '紧急通知',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            //new Divider(),
 
-          ],
-        ),
-      ),
-    );
 
     if (urgentList.length > 0) {
+      Widget mydiv = SizedBox(
+        //height: 210.0, //设置高度
+        child: new Card(
+//        elevation: 15.0, //设置阴影
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))), //设置圆角
+          child: new Stack(
+            alignment: Alignment.center,
+            children: [
+
+              Container(
+                //padding: EdgeInsets.all(10),
+                child: new Image.asset(
+                  'images/alert.jpg',
+
+
+                ),
+              ),
+
+              urgentList[0].content!=null?Text(urgentList[0].content,
+                style: TextStyle(
+                  color: Colors.grey[700],
+                ),):Text("暂无紧急通知",
+                style: TextStyle(
+                  color: Colors.grey[700],
+                ),),
+              //new Divider(),
+
+            ],
+          ),
+        ),
+      );
       urgents.add(mydiv);
       for (int i = 0; i < urgentList.length - 1; i++) {
         Widget urgent = _getUrgent(urgentList[i].time,
@@ -418,6 +400,7 @@ class myWidget extends State<newswidget>
         length: tabs.length,
         child: MaterialApp(
           home: Scaffold(
+            //backgroundColor:Colors.white70,
             appBar: TabBar(
               tabs: tabs.map((Choice choice) {
                 return new Tab(
@@ -456,6 +439,7 @@ class myWidget extends State<newswidget>
   }
 
   _getMessage() async {
+    print("sssss");
     await manager.getNews(this, communityId,session);
     await manager.getUrgent(this, communityId,session);
     await manager.getActivity(this, communityId,session);
@@ -498,8 +482,26 @@ class myWidget extends State<newswidget>
   }
 
   @override
-  void onPhotoResponse(String photo) {
-    bigphoto = photo;
-    setState(() {});
+   onPhotoResponse(String photo) {
+    if(photo!=null){
+      bigphoto = photo;
+    }
+    setState(() {
+
+    });
+    return showDialog<Null>(
+        context: context,
+        builder: (BuildContext context) {
+          return new SimpleDialog(
+            children: <Widget>[
+              bigphoto!=""?Image.memory(
+                base64.decode(bigphoto.split(',')[1]),
+                fit: BoxFit.fill, //填充
+                gaplessPlayback: true, //防止重绘
+              ):Text("无"),
+            ],
+          );
+        }
+    );
   }
 }

@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class packageHttp {
 
-  var myPackageUrl = "http://elife.natapp1.cc/package-server/api/Package/findNew";
+  var myPackageUrl = "http://zhimo.natapp1.cc/package-server/api/Package/findNew";
 
-  var takeOutUrl = "http://elife.natapp1.cc/package-server/api/Package/takeOut";
+  var takeOutUrl = "http://zhimo.natapp1.cc/package-server/api/Package/takeOut";
 
-  var deleteUrl = "http://elife.natapp1.cc/package-server/api/Package/deleteOne";
+  var deleteUrl = "http://zhimo.natapp1.cc/package-server/api/Package/deleteOne";
 
 
 
@@ -34,7 +34,7 @@ class packageHttp {
     );
   }
 
-  takeOut(packNetListener net,String id,String session) {
+  takeOut(packNetListener net,String id,String session) async{
     var client = new http.Client();
 
     client.post(

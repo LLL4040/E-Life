@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class demandHttp {
 
-  var addDemandUrl = "http://elife.natapp1.cc/group-server/api/demand/addDemand";
+  var addDemandUrl = "http://zhimo.natapp1.cc/group-server/api/demand/addDemand";
 
-  var allDemandUrl= "http://elife.natapp1.cc/group-server/api/demand/getAllDemand";
+  var allDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/getAllDemand";
 
-  var joinDemandUrl= "http://elife.natapp1.cc/group-server/api/demand/participateDemand";
+  var joinDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/participateDemand";
 
-  var quitDemandUrl= "http://elife.natapp1.cc/group-server/api/demand/quitDemand";
+  var quitDemandUrl= "http://zhimo.natapp1.cc/group-server/api/demand/quitDemand";
 
-  var getDiscountUrl= "http://elife.natapp1.cc/group-server/api/discount/findDiscountByCommunityId";
+  var getDiscountUrl= "http://zhimo.natapp1.cc/group-server/api/discount/findDiscountByCommunityId";
 
 
 
@@ -61,7 +61,7 @@ class demandHttp {
     ).then((
         response,
         ) {
-      print(response.body);
+      //print(response.body);
       print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Demand> demandList = responseJson.map((m) => new Demand.fromJson(m)).toList();
@@ -134,8 +134,8 @@ class demandHttp {
     ).then((
         response,
         ) {
-      print(response.body);
-      print(jsonDecode(response.body));
+      //print(response.body);
+      //print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Discount> discount = responseJson.map((m) => new Discount.fromJson(m)).toList();
       net.onAllDiscountResponse(discount);

@@ -78,12 +78,63 @@ class friendWidgetState extends State<friendWidget>
               ),
               onTap: ()async{
                 print(username+"用户名");
-                manager.deleteFriend(this, username,name,session);
-                await new Future.delayed(new Duration(milliseconds: 1000));
-                if (success2=="true"){
-                  showToast("删除好友成功");
-                }
-                showToast("删除好友成功");
+                //await new Future.delayed(new Duration(milliseconds: 1000));
+
+                showDialog<Null>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return new SimpleDialog(
+                      title: new Text('确定删除好友吗'),
+                      children: <Widget>[
+                        new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            new SimpleDialogOption(
+                              child: FlatButton(
+                                color: Colors.blue,
+                                highlightColor: Colors.blue[700],
+                                colorBrightness: Brightness.dark,
+                                splashColor: Colors.grey,
+                                child: Text("确定"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                onPressed: ()async {
+                                 await manager.deleteFriend(this, username,name,session);
+                                  setState(() {
+
+                                  });
+                                  //showToast("删除好友成功");
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+
+                            ),
+                            new SimpleDialogOption(
+                              child: FlatButton(
+                                color: Colors.black54,
+                                highlightColor: Colors.black38,
+                                colorBrightness: Brightness.dark,
+                                splashColor: Colors.grey,
+                                child: Text("取消"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                onPressed: () {
+                                  showToast("取消删除好友");
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    );
+                  },
+                ).then((val) {
+                  print(val);
+                });
               },
               dense: true,
             ),
@@ -123,53 +174,68 @@ class friendWidgetState extends State<friendWidget>
     );
   }
   Widget _getApply(String name, String status, String message, int id) {
-    return new ListTile(
-      leading: new Icon(Icons.account_circle),
-      title: new Text(name),
-      subtitle: new Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        //crossAxisAlignment:CrossAxisAlignment.start,
-        //textDirection: TextDirection.rtl,
-        children: <Widget>[
-          SizedBox(
-            width: 130.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+
+    return new SizedBox(
+      //height: 210.0, //设置高度
+      child: new Card(
+//        elevation: 15.0, //设置阴影
+//        shape: const RoundedRectangleBorder(
+//            borderRadius: BorderRadius.all(Radius.circular(0.0))), //设置圆角
+        child: new Column(
+          // card只能有一个widget，但这个widget内容可以包含其他的widget
+          children: [
+            new ListTile(
+              leading: new Icon(Icons.account_circle),
+              title: new Text(name),
+              subtitle: new Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                //crossAxisAlignment:CrossAxisAlignment.start,
+                //textDirection: TextDirection.rtl,
+                children: <Widget>[
+                  SizedBox(
+                    width: 130.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text('请求id:' + id.toString()),
+                        //new Text('状态:' + status),
+                        new Text('留言:' + message),
+                      ],
+                    ),
+                  ),
+
+                ],
+              ),
+              dense: true,
+            ),
+            //new Divider(),
+            Row(
+              mainAxisAlignment:MainAxisAlignment.end,
+              textDirection: TextDirection.ltr,
               children: <Widget>[
-                new Text('请求id:' + id.toString()),
-                new Text('状态:' + status),
-                new Text('留言:' + message),
+                new IconButton(
+                  icon: new Icon(Icons.add),
+                  onPressed: () {
+
+                    manager.acceptRequest(this, id,session);
+
+
+                  },
+                ),
+                new IconButton(
+                  icon: new Icon(Icons.delete),
+                  onPressed: () {
+                    manager.rejectRequest(this, id,session);
+
+
+                  },
+                ),
               ],
             ),
-          ),
-          Row(
-            //crossAxisAlignment:CrossAxisAlignment.start,
-            textDirection: TextDirection.ltr,
-            children: <Widget>[
-              new IconButton(
-                icon: new Icon(Icons.add),
-                onPressed: () {
-                  print("id是");
-                  print(id);
-                  manager.acceptRequest(this, id,session);
-                  showToast("加好友成功");
-
-                },
-              ),
-              new IconButton(
-                icon: new Icon(Icons.delete),
-                onPressed: () {
-                  manager.rejectRequest(this, id,session);
-                  print("拒绝成功");
-                  showToast("拒绝成功");
-                },
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
-      dense: true,
     );
   }
 
@@ -202,40 +268,40 @@ class friendWidgetState extends State<friendWidget>
     //Widget apply2 = _getApply("妞妞", "已拒绝", "江浙沪包邮");
 
     if (myFriendList.length > 0) {
-      print(myFriendList.length.toString() + "长度");
+      //print(myFriendList.length.toString() + "长度");
       for (int i = 0; i < myFriendList.length; i++) {
-        print(myFriendList[i].email);
-        print(myFriendList[i].friend);
-        print(myFriendList[i].phone);
+//        print(myFriendList[i].email);
+//        print(myFriendList[i].friend);
+//        print(myFriendList[i].phone);
 
         Widget friend5 = _getFriend(myFriendList[i].friend,
             myFriendList[i].phone, myFriendList[i].email);
-        print("奇奇怪怪");
+        //print("奇奇怪怪");
 
         friends.add(friend5);
       }
     }
     if (searchUserList.length > 0) {
-      print(searchUserList.length.toString() + "长度");
+      //print(searchUserList.length.toString() + "长度");
       for (int i = 0; i < searchUserList.length; i++) {
 
 
         Widget user2 = _getUser(searchUserList[i].searchUser,
              searchUserList[i].communityId);
-        print("奇奇怪怪oo");
+        //print("奇奇怪怪oo");
 
         users.add(user2);
       }
     }
     if (friendRequestList.length > 0) {
-      print(friendRequestList.length.toString() + "长度");
+      //print(friendRequestList.length.toString() + "长度");
       for (int i = 0; i < friendRequestList.length; i++) {
         Widget apply1 = _getApply(
             friendRequestList[i].request,
             friendRequestList[i].status.toString(),
             friendRequestList[i].content,
             friendRequestList[i].id);
-        print("奇奇怪ee怪");
+        //print("奇奇怪ee怪");
 
         applys.add(apply1);
       }
@@ -390,6 +456,11 @@ class friendWidgetState extends State<friendWidget>
 
   @override
   void onAcceptRequestResponse(bool accept) {
+    if(accept){
+      showToast("加好友成功");
+    }else{
+      showToast("加好友失败");
+    }
     setState(() {
       manager.getRequestList(this, username,session);
     });
@@ -397,18 +468,28 @@ class friendWidgetState extends State<friendWidget>
 
   @override
   void onRejectRequestResponse(bool reject) {
+    if(reject){
+      showToast("拒绝成功");
+    }else{
+      showToast("拒绝失败");
+    }
     setState(() {
       manager.getRequestList(this, username,session);
     });
   }
 
   @override
-  void onDeleteFriendResponse(bool delete) {
+  onDeleteFriendResponse(bool delete) {
     print("delete:"+delete.toString());
     if(delete==true){
       success2="true";
     }else{
       success2="false";
+    }
+    if (delete){
+      showToast("删除好友成功");
+    }else{
+      showToast("删除好友失败");
     }
     setState(() {
       manager.getFriendList(this, username,session);

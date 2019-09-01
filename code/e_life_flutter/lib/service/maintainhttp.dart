@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class maintainHttp {
 
-  var addMaintainUrl = "http://elife.natapp1.cc/lifeservice-server/api/maintain/addMaintain";
+  var addMaintainUrl = "http://zhimo.natapp1.cc/lifeservice-server/api/maintain/addMaintain";
 
-  var myMaintainUrl = "http://elife.natapp1.cc/lifeservice-server/api/maintain/userFindMaintain";
+  var myMaintainUrl = "http://zhimo.natapp1.cc/lifeservice-server/api/maintain/userFindMaintain";
 
   addMaintain(NetListener net, String username, String userphone,
-      String content,String session) {
+      String content,String session)async {
     var client = new http.Client();
     print(session+"添加维修");
     client.post(
@@ -22,8 +22,10 @@ class maintainHttp {
           "content": content,
         }
     ).then((response,) {
+      print(response.body);
       Map<String, dynamic> responseJson = json.decode(response.body);
-      bool success = responseJson.containsValue("1");
+      bool success = responseJson["addMaintain"]=="1";
+
       net.onAddMaintainResponse(success);
     }, onError: (error) {
       net.onError(error);

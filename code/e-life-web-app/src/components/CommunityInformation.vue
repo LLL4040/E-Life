@@ -45,8 +45,8 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column prop="time" label="时间" align="center"></el-table-column>
             <el-table-column prop="title" label="标题" align="center"></el-table-column>
+            <el-table-column prop="time" label="时间" align="center"></el-table-column>
           </el-table>
           <div class="block" align="center" v-if="newsMore">
             <el-pagination @current-change="handleCurrentChange1" :current-page.sync="pageNum1" :page-count="pageSize1" :pager-count="5" layout="prev, pager, next, jumper"></el-pagination>

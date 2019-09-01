@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class noticeHttp {
 
-  var myNoticeHttp = "http://elife.natapp1.cc/news-server/api/notice/findMyNotice";
+  var myNoticeHttp = "http://zhimo.natapp1.cc/news-server/api/notice/findMyNotice";
 
-  var deleteNoticeHttp = "http://elife.natapp1.cc/news-server/api/notice/deleteMyOneNotice";
+  var deleteNoticeHttp = "http://zhimo.natapp1.cc/news-server/api/notice/deleteMyOneNotice";
 
 
 
@@ -32,7 +32,7 @@ class noticeHttp {
       client.close,
     );
   }
-  deleteNotice(NetListener net, String username, int noticeId,String session){
+  deleteNotice(NetListener net, String username, int noticeId,String session)async{
     var client = new http.Client();
     client.post(
         deleteNoticeHttp,
