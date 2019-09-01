@@ -49,7 +49,7 @@ packages:
       name: dio
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.13"
+    version: "2.1.16"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -87,7 +87,7 @@ packages:
       name: fluttertoast
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.2"
   http:
     dependency: "direct main"
     description:
@@ -108,7 +108,7 @@ packages:
       name: image_picker
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.6.1+2"
+    version: "0.6.1+4"
   matcher:
     dependency: transitive
     description:
@@ -205,6 +205,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.5"
+  tobias:
+    dependency: "direct main"
+    description:
+      name: tobias
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.0+1"
   transformer_page_view:
     dependency: transitive
     description:
@@ -225,7 +232,7 @@ packages:
       name: url_launcher
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "5.1.0"
+    version: "5.1.2"
   vector_math:
     dependency: transitive
     description:
