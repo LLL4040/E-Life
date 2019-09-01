@@ -49,11 +49,9 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Text(bill.time.toString()),
-    OutlineButton(child: Text("获取订单"), onPressed: () {
-    print(bill.id);
-    getOrderInfo(bill.id.toString(),bill.bill.toString(),bill.time.toString());
-    }),
-    OutlineButton(child: Text("支付"), onPressed: () {
+    OutlineButton(child: Text("支付"), onPressed: () async{
+      getOrderInfo(bill.id.toString(),bill.bill.toString(),bill.time.toString());
+      await new Future.delayed(new Duration(milliseconds: 1500));
     print(":"+_payInfo+":1222");
     doPayExec(_payInfo);
     }),
@@ -81,7 +79,7 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   }
 
   List<Widget> myMyBills = [];
-  var  _payInfo;
+  String  _payInfo;
   Orders order;
   Map _payresult = {};
   String msg = "";
@@ -127,7 +125,7 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   void doPayExec(String apyInfo) async {
     Map payResult;
     try {
-      payResult = await tobias.pay(_payInfo.toString());
+      payResult = await tobias.pay(apyInfo.trim());
     }
     on Exception catch (e) {
       payResult = {};
