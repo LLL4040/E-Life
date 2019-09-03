@@ -1,11 +1,12 @@
 
 import 'package:e_life_flutter/userhttp.dart' as prefix0;
 import 'package:flutter/material.dart';
-//import '../map.dart';
+import 'map.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../user.dart';
 import 'package:e_life_flutter/friends/friend.dart';
 import '../main.dart';
+import 'package:oktoast/oktoast.dart';
 
 
 
@@ -28,15 +29,14 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
   myCenterWidget(this.username1,this.role1,this.session1);
   prefix0.userHttp manager = new prefix0.userHttp();
 
-//  void _toMap() {
-//    var androidView = new AndroidView(viewType: "MyMap");
-//    Navigator.push(context,
-//        new MaterialPageRoute(builder: (context) {
-//          return new Map(androidView : androidView);
-//        })).then((var onValue){
-//          androidView = onValue;
-//    });
-//  }
+  void _toMap() {
+
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (context) {
+          return myMap(session1) ;
+        })).then((var onValue){
+    });
+  }
  String username="未登录";
  String role = "用户";
   @override
@@ -99,13 +99,13 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
             Expanded(
               child: ListView(
                 children: <Widget>[
-//                ListTile(
-//                  leading: const Icon(Icons.fiber_new),
-//                  title: const Text('我的周边'),
-//                  onTap:  () {
-//                    _toMap();
-//                  },
-//                ),
+                ListTile(
+                  leading: const Icon(Icons.fiber_new),
+                  title: const Text('我的周边'),
+                  onTap:  () {
+                    _toMap();
+                  },
+                ),
                   ListTile(
                     leading: const Icon(Icons.people_outline),
                     title: const Text('我的好友'),
@@ -125,9 +125,7 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
           manager.logout(this,username,session1);
-          Navigator.push<String>(context, new MaterialPageRoute(builder: (context) {
-            return new MyApp();
-          }));
+
         },
         tooltip: '退出登录',
         child: Icon(Icons.keyboard_return),
@@ -136,15 +134,33 @@ class myCenterWidget extends State<mycenter> with SingleTickerProviderStateMixin
     });
   }
   @override
-  void onUserResponse(prefix0.User body,bool login) {
+   onUserResponse(prefix0.User body,bool login) {
 
   }
   @override void onLogoutResponse(bool logout) {
     // TODO: implement onLogoutResponse
+    if(logout!=false){
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(
+              builder: (context) => new MyApp()),
+              (route) => route == null);
+
+      showToast("登出成功");
+    }else{
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(
+              builder: (context) => new MyApp()),
+              (route) => route == null);
+      showToast("登出失败");
+    }
   }
   @override
   void onError(error) {
     // TODO: implement onError
+  }
+  @override
+  void onGetNoteResponse(bool ifGetNote){
+
   }
 
   }

@@ -96,6 +96,19 @@ public interface PayService {
     void ali(HttpServletResponse response, HttpServletRequest request
     ,String id,String bill,String time) throws AlipayApiException, IOException;
 
+
+    /**
+     * use aliPay interface by mobilePhone
+     * @param response
+     * @param request
+     * @param bill
+     * @param id
+     * @param time
+     * @throws AlipayApiException
+     * @throws IOException
+     */
+    void aliMobile(HttpServletResponse response, HttpServletRequest request
+            ,String id,String bill,String time) throws AlipayApiException, IOException;
 /**
      * aliBaBa return url
      * @param response

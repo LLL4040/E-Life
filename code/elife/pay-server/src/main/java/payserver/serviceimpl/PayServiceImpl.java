@@ -5,6 +5,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import net.minidev.json.JSONArray;
@@ -163,7 +164,40 @@ public class PayServiceImpl implements PayService {
         //以下写自己的订单代码
     }
 
+    @Override
+    public void aliMobile(HttpServletResponse response, HttpServletRequest request,
+                    String id,String bill,String time) throws AlipayApiException, IOException {
+        //设置编码
+        response.setContentType("text/html;charset=utf-8");
 
+        PrintWriter out = response.getWriter();
+        //获得初始化的AlipayClient
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
+        //设置请求参数
+        AlipayTradeAppPayRequest aliPayRequest = new AlipayTradeAppPayRequest();
+        //aliPayRequest.setReturnUrl(AlipayConfig.return_url);
+        aliPayRequest.setNotifyUrl(AlipayConfig.notify_url);
+
+        //商户订单号，后台可以写一个工具类生成一个订单号，必填
+        Date date=new Date();
+        String order_number = id;
+        //付款金额，从前台获取，必填
+        String total_amount = bill;
+        System.out.println(bill);
+        //订单名称，必填
+        String subject = new String("停车费支付");
+        aliPayRequest.setBizContent("{\"out_trade_no\":\"" + order_number + "\","
+                + "\"total_amount\":\"" + total_amount + "\","
+                + "\"subject\":\"" + subject + "\","
+                + "\"product_code\":\"QUICK_MSECURITY_PAY\"}");
+        //请求
+
+        String result = alipayClient.sdkExecute(aliPayRequest).getBody();
+        //输出
+        System.out.println(result);
+        out.println(result);
+        //以下写自己的订单代码
+    }
     @Override
     public boolean saveOrders(int pid,String username,BigDecimal bill){
         try{

@@ -7,6 +7,7 @@ import 'newshttp.dart';
 import 'joinActivity.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../user.dart';
+import 'dart:io';
 
 //资讯的widget
 class newswidget extends StatefulWidget {
@@ -151,32 +152,13 @@ class myWidget extends State<newswidget>
               trailing: null,
               onTap: () async {
                 print("路径为" + path);
-                manager.getPhoto(this, path,session);
-                await new Future.delayed(new Duration(milliseconds: 1500));
-                //print("前端收到的图片为"+bigphoto);
-                String tmp = bigphoto.split(',')[1];
+                await manager.getPhoto(this, path,session);
+                //await new Future.delayed(new Duration(milliseconds: 5000));
                 setState(() {
                 });
 
-                return showDialog<Null>(
-                    context: context,
-                    builder: (BuildContext context) {
 
-                      return new SimpleDialog(
-                        children: <Widget>[
-                          bigphoto!=""?Image.memory(
-                            base64.decode(bigphoto.split(',')[1]),
-//                            height: 200, //设置高度
-//                            width: 200, //设置宽度
-                            fit: BoxFit.fill, //填充
-                            gaplessPlayback: true, //防止重绘
-                          ):Text("无"),
-                        ],
-                      );
-                    }
-                    );
               },
-              //dense: true,
             ),
             //new Divider(),
             Row(
@@ -249,41 +231,18 @@ class myWidget extends State<newswidget>
               onTap: () async {
                 print("路径为" + path);
                 await manager.getPhoto(this, path,session);
-                await new Future.delayed(new Duration(milliseconds: 1500));
+
                 //print("前端收到的图片为"+bigphoto);
                 //String tmp = bigphoto.split(',')[1];
                 //bigphoto=null;
                 setState(() {
 
                 });
-                return showDialog<Null>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return new SimpleDialog(
-                        children: <Widget>[
-                          bigphoto!=null?Image.memory(
-                            base64.decode(bigphoto.split(',')[1]),
-//                            height: 200, //设置高度
-//                            width: 200, //设置宽度
-                            fit: BoxFit.fill, //填充
-                            gaplessPlayback: true, //防止重绘
-                          ):Text("无"),
-                        ],
-                      );
-                    });
+
               },
               //dense: true,
             ),
             //new Divider(),
-
-//            new ListTile(
-//              title: new Text('图片区域'),
-//              leading: new Icon(
-//                Icons.photo,
-//                color: Colors.blue[500],
-//              ),
-//
-//            ),
           ],
         ),
       ),
@@ -523,13 +482,26 @@ class myWidget extends State<newswidget>
   }
 
   @override
-  void onPhotoResponse(String photo) {
+   onPhotoResponse(String photo) {
     if(photo!=null){
-      bigphoto=null;
       bigphoto = photo;
     }
     setState(() {
 
     });
+    return showDialog<Null>(
+        context: context,
+        builder: (BuildContext context) {
+          return new SimpleDialog(
+            children: <Widget>[
+              bigphoto!=""?Image.memory(
+                base64.decode(bigphoto.split(',')[1]),
+                fit: BoxFit.fill, //填充
+                gaplessPlayback: true, //防止重绘
+              ):Text("无"),
+            ],
+          );
+        }
+    );
   }
 }

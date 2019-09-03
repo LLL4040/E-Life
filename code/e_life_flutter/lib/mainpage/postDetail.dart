@@ -10,10 +10,10 @@ class postDetail extends StatefulWidget {
   final username;
   final Post post;
   var session;
-  postDetail(this.pid, this.username, this.post,this.session);
+  postDetail(this.pid, this.username, this.post, this.session);
   @override
   State<StatefulWidget> createState() {
-    return new postDetailCenter(pid, username, post,session);
+    return new postDetailCenter(pid, username, post, session);
   }
 }
 
@@ -23,12 +23,16 @@ class postDetailCenter extends State<postDetail>
   final username;
   final Post post;
   var session;
-  postDetailCenter(this.pid, this.username, this.post,this.session);
+  postDetailCenter(this.pid, this.username, this.post, this.session);
   String success1;
   List<Comment> postCommentList = []; //存后端数据
   final TextEditingController _commentController =
       new TextEditingController.fromValue(new TextEditingValue(text: ""));
   estateforumHttp manager = new estateforumHttp();
+
+  ScrollController _scrollController = ScrollController(); //listview的控制器
+  int _page = 1; //加载的页数
+  bool isLoading = false; //是否正在加载数据
 
   Widget _getpostComment(
       String name, String time, String comment, String location) {
@@ -97,7 +101,6 @@ class postDetailCenter extends State<postDetail>
               dense: true,
             ),
             //new Divider(),
-
           ],
         ),
       ),
@@ -325,7 +328,7 @@ class postDetailCenter extends State<postDetail>
 
   _addComment(String username, String pid, String comment) async {
     print(pid + "帖子id号");
-    manager.addComment(this, pid, username, comment,session);
+    manager.addComment(this, pid, username, comment, session);
     await new Future.delayed(new Duration(milliseconds: 1000));
     if (success1 == "true") {
       showToast("评论成功");
@@ -370,19 +373,19 @@ class postDetailCenter extends State<postDetail>
             postComments.add(photo1);
           }
           if (length == 1) {
-            Widget photo1 = _getPhoto1(post.photo[length1 ]);
+            Widget photo1 = _getPhoto1(post.photo[length1]);
             postComments.add(photo1);
           }
           if (length == 2) {
             Widget photo1 =
-                _getPhoto2(post.photo[length1], post.photo[length1+1]);
+                _getPhoto2(post.photo[length1], post.photo[length1 + 1]);
             postComments.add(photo1);
           }
         }
       }
 
-      if (postCommentList.length > 1) {
-        for (int i = 1; i < postCommentList.length; i++) {
+      if (postCommentList.length > 0) {
+        for (int i = 0; i < postCommentList.length; i++) {
           Widget postComment = _getpostComment(
               postCommentList[i].commenterName,
               postCommentList[i].commentsTime,
@@ -399,6 +402,20 @@ class postDetailCenter extends State<postDetail>
           itemBuilder: (BuildContext ctxt, int index) =>
               buildpostCommentsBody(ctxt, index)),
     );
+    Widget myPostSection = RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: Container(
+          child: ListView.builder(
+            itemBuilder: (BuildContext ctxt, int index) {
+              if (index < postComments.length) {
+                return buildpostCommentsBody(ctxt, index);
+              }
+              return _getMoreWidget();
+            },
+            itemCount: postComments.length + 1,
+            controller: _scrollController,
+          ),
+        ));
     return Scaffold(
       appBar: AppBar(
         title: Text('帖子详情'),
@@ -406,7 +423,7 @@ class postDetailCenter extends State<postDetail>
       body: Column(
         children: <Widget>[
           new Expanded(
-            child: myComputerSection,
+            child: myPostSection,
           )
         ],
       ),
@@ -502,20 +519,106 @@ class postDetailCenter extends State<postDetail>
 
   void _returnPostComment() async {
     print(pid);
-    await manager.getCommentList(this, pid, "1", "100",session);
+    await manager.getCommentList(this, pid, "1", "5", session);
   }
+  /**
+   * 下拉刷新方法,为list重新赋值
+   */
+  Future<Null> _onRefresh() async {
+    postCommentList=[];
+    _page=1;
 
+    print("bbbbbbbbb");
+    await manager.getCommentList(this, pid, _page.toString(), "5", session);
+
+  }
+  /**
+   * 上拉加载更多
+   */
+  Future _getMore()async {
+    if (!isLoading) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+
+      await manager.getCommentList(this, pid, (_page+1).toString(), "5", session);
+
+    _page++;
+    print(_page.toString());
+    //isLoading = false;
+
+  }
+  /**
+   * 加载更多时显示的组件,给用户提示
+   */
+  _getMoreWidget(){
+    if(isLoading==true){
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '加载中...',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              CircularProgressIndicator(
+                strokeWidth: 1.0,
+              )
+            ],
+          ),
+        ),
+      );
+    }else{
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '已经到底了',
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+  }
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print('滑动到了最底部');
+        _getMore();
+      }
+    });
     _returnPostComment();
   }
-
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
   @override
   void onAllPostResponse(List<Post> body) {}
   @override
   void onAllCommentsResponse(List<Comment> commentList) {
-    postCommentList = commentList;
+    //postCommentList = commentList;
+    for(int i=1;i<commentList.length;i++){
+      postCommentList.add(commentList[i]);
+    }
+    if(_page*5>postCommentList.length){
+      isLoading=false;
+    }
     setState(() {});
   }
 
@@ -528,16 +631,16 @@ class postDetailCenter extends State<postDetail>
       success1 = "false";
     }
     setState(() {
-
-      manager.getCommentList(this, pid,"1","100",session);
-
+      _page=1;
+      postCommentList=[];
+      manager.getCommentList(this, pid, "1", "5", session);
     });
   }
 
   @override
   void onDeleteComment(bool success) {}
   @override
-  void onAllTabsResponse(List<forumTabs> body){}
+  void onAllTabsResponse(List<forumTabs> body) {}
   @override
   void onError(error) {}
 }
