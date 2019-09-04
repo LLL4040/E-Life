@@ -187,7 +187,7 @@ public class PayController {
     }
 
     /**
-     * 用不到
+     * 获取一个小区的房间范围即roomspace表 获取 type maxnum maxfloor 等范围找roomnuber给管理员搜索room
      * @param communityId
      * @return
      */
@@ -195,6 +195,19 @@ public class PayController {
     @ResponseBody
     public JSONArray getRoomSpace(int communityId) {
         return moneyService.getRoomSpace(communityId);
+    }
+
+    /**
+     * 用room number 获取room 给管理员修改
+     * @param type
+     * @param room
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/getRoomByRoomNumber")
+    @ResponseBody
+    public JSONObject getRoomByRoomNumber(String type,String room,int communityId) {
+        return moneyService.getRoomByRoomNumber(type, room, communityId);
     }
 
     /**

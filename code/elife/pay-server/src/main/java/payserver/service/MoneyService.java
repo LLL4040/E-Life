@@ -3,6 +3,7 @@ package payserver.service;
 
 import com.alipay.api.AlipayApiException;
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import payserver.entity.RoomSpace;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,4 +51,6 @@ public interface MoneyService {
     boolean changeParking(String username,String parking,String type, int communityId);
 
     boolean  calParking( int communityId);
+
+    JSONObject getRoomByRoomNumber(String type,String room,int communityId);
 }

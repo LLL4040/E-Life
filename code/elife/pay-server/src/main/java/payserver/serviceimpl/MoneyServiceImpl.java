@@ -10,6 +10,7 @@ import payserver.entity.RoomSpace;
 import payserver.service.MoneyService;
 
 import java.math.BigDecimal;
+import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -129,5 +130,19 @@ public class MoneyServiceImpl implements MoneyService {
     public boolean   calParking( int communityId){
         moneyDao.calParking(communityId);
         return true;
+    }
+
+    @Override
+    public JSONObject getRoomByRoomNumber(String type,String room,int communityId){
+        Room temp = moneyDao.getRoomByRoomNumber(type, room, communityId);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("username",temp.getUsername());
+        jsonObject.put("type",temp.getType());
+        jsonObject.put("room",temp.getRoom());
+        jsonObject.put("parking",temp.getParking());
+        jsonObject.put("pmoney",temp.getParkMoney());
+        jsonObject.put("mmoney",temp.getManagerMoney());
+        jsonObject.put("communityId",temp.getCommunityId());
+        return jsonObject;
     }
 }
