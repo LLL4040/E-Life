@@ -113,7 +113,7 @@ class estateforumWidget extends State<estateforum>
     );
 
     forums.add(searchField);
-    Widget tabsBar = new TabBar(
+    Widget tabsBar = forumTabsList.length!=0?new TabBar(
       labelPadding: EdgeInsets.only(left: 5, top: 5),
 
       labelColor: Colors.blueAccent,
@@ -151,9 +151,9 @@ class estateforumWidget extends State<estateforum>
                 print(choice.num);
                 if (choice.position != 0) {
                   manager.getPostListByTag(
-                      this, communityId, choice.title, "1", "5", session);
+                      this, communityId, choice.title, _page.toString(), "5", session);
                 } else {
-                  manager.getPostList(this, communityId, "1", "5", session);
+                  manager.getPostList(this, communityId, _page.toString(), "5", session);
                 }
 
                 setState(() {});
@@ -165,6 +165,13 @@ class estateforumWidget extends State<estateforum>
       controller: mTabController,
       isScrollable: true,
       indicator: const BoxDecoration(), //加了之后指示条消失
+    ):Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        CircularProgressIndicator(
+          strokeWidth: 3.0,
+        )
+      ],
     );
     forums.add(tabsBar);
 
@@ -264,17 +271,25 @@ class estateforumWidget extends State<estateforum>
    */
   Future _getMore()async {
     if (!isLoading) {
+      isLoading = true;
       setState(() {
-        isLoading = true;
+
+      });
+    }else{
+      isLoading = false;
+      setState(() {
+
       });
     }
+    _page++;
+
     if(mCurrentPosition==0){
-      await manager.getPostList(this, communityId, (_page+1).toString(), "5", session);
+      await manager.getPostList(this, communityId, (_page).toString(), "5", session);
     }else{
-      await manager.getPostListByTag(this, communityId,nowTitle, (_page+1).toString(), "5", session);
+      await manager.getPostListByTag(this, communityId,nowTitle, (_page).toString(), "5", session);
     }
 
-    _page++;
+   print(postList.length);
 
 
   }
@@ -366,7 +381,7 @@ class estateforumWidget extends State<estateforum>
     for(int i=1;i<body.length;i++){
       postList.add(body[i]);
     }
-    if(_page*5>postList.length){
+    if(_page*5>=postList.length){
       print(_page.toString());
       isLoading=false;
     }

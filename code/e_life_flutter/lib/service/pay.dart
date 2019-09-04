@@ -43,33 +43,33 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
           // card只能有一个widget，但这个widget内容可以包含其他的widget
           children: [
             ListTile(
-              leading: bill.status==-1||bill.status==1||bill.status==11?new Icon(Icons.departure_board):new Icon(Icons.settings),
-              title: new Text(bill.bill.toString()),
-              subtitle: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(bill.time.toString()),
-    OutlineButton(child: Text("支付"), onPressed: () async{
-      getOrderInfo(bill.id.toString(),bill.bill.toString(),bill.time.toString());
-      await new Future.delayed(new Duration(milliseconds: 1500));
-    print(":"+_payInfo+":1222");
-    doPayExec(_payInfo);
-    }),
+                leading: bill.status==-1||bill.status==1||bill.status==11?new Icon(Icons.departure_board):new Icon(Icons.settings),
+                title: new Text(bill.bill.toString()),
+                subtitle: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text(bill.time.toString()),
+                    OutlineButton(child: Text("支付"), onPressed: () async{
+                      getOrderInfo(bill.id.toString(),bill.bill.toString(),bill.time.toString());
+                      await new Future.delayed(new Duration(milliseconds: 1500));
+                      print(":"+_payInfo+":1222");
+                      doPayExec(_payInfo);
+                    }),
 
-                ],
-              ),
-
-              trailing: new RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
-                color: repairStatus=="已缴费"?Colors.blue[300]:repairStatus=="支付中"?Colors.orangeAccent[200]:Colors.redAccent[200],
-                textColor: Colors.white,
-                child: Text(repairStatus,
+                  ],
                 ),
-                onPressed: () {
-                  // ...
-                },
-            )
+
+                trailing: new RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: repairStatus=="已缴费"?Colors.blue[300]:repairStatus=="支付中"?Colors.orangeAccent[200]:Colors.redAccent[200],
+                  textColor: Colors.white,
+                  child: Text(repairStatus,
+                  ),
+                  onPressed: () {
+                    // ...
+                  },
+                )
 
             )
           ],
