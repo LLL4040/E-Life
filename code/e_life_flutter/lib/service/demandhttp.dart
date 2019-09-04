@@ -61,7 +61,7 @@ class demandHttp {
     ).then((
         response,
         ) {
-      print(response.body);
+      //print(response.body);
       print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Demand> demandList = responseJson.map((m) => new Demand.fromJson(m)).toList();
@@ -134,8 +134,8 @@ class demandHttp {
     ).then((
         response,
         ) {
-      print(response.body);
-      print(jsonDecode(response.body));
+      //print(response.body);
+      //print(jsonDecode(response.body));
       List responseJson = json.decode(response.body);
       List<Discount> discount = responseJson.map((m) => new Discount.fromJson(m)).toList();
       net.onAllDiscountResponse(discount);

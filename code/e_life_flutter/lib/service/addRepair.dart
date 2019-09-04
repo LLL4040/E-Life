@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:e_life_flutter/service/maintainhttp.dart';
-
+import 'package:oktoast/oktoast.dart';
 class addRepair extends StatefulWidget {
   final username;
   var session;
@@ -25,11 +25,11 @@ class addRepairCenter extends State<addRepair>
   Widget build(BuildContext context) {
 
     void _addRepair() {
-      print(_phoneController.text);
-      print(_contentController.text);
+//      print(_phoneController.text);
+//      print(_contentController.text);
       manager.addMaintain(
           this, username, _phoneController.text, _contentController.text,session);
-      Navigator.pop(context, "发送维修请求成功");
+
     }
 
     Widget addrepairSection =
@@ -142,6 +142,11 @@ class addRepairCenter extends State<addRepair>
 
   @override
   void onAddMaintainResponse(bool send) {
+    if(send){
+      Navigator.pop(context, "发送维修请求成功");
+    }else{
+      showToast("发送维修请求失败");
+    }
     setState(() {});
   }
 

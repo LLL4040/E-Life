@@ -14,7 +14,10 @@ import java.util.List;
  * postComments class
  *
  * @author 符永锐
- * @date 2019/07/04*/
+ * @date 2019/07/04
+ * @author ztHou
+ * @date 2019/08/25
+ */
 @Document(collection = "post")
 public class Post {
 

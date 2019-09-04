@@ -32,7 +32,7 @@ class noticeHttp {
       client.close,
     );
   }
-  deleteNotice(NetListener net, String username, int noticeId,String session){
+  deleteNotice(NetListener net, String username, int noticeId,String session)async{
     var client = new http.Client();
     client.post(
         deleteNoticeHttp,

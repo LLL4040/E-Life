@@ -71,13 +71,14 @@ class addDemandCenter extends State<addDemand>
   }
    String title;
   String content;
+  TextEditingController _titleController =
+  new TextEditingController.fromValue(new TextEditingValue());
+
+  TextEditingController _contentController =
+  new TextEditingController.fromValue(new TextEditingValue());
   @override
   Widget build(BuildContext context) {
-     TextEditingController _titleController =
-        new TextEditingController.fromValue(new TextEditingValue());
 
-     TextEditingController _contentController =
-        new TextEditingController.fromValue(new TextEditingValue());
 
     Widget addDemandSection = new Container(
       child: ListView(
@@ -214,12 +215,8 @@ class addDemandCenter extends State<addDemand>
                       communityId,
                       _titleController.text,
                       session);
-                  await new Future.delayed(new Duration(milliseconds: 1000));
-                  if (success1 == "true") {
-                    Navigator.pop(context, "发布需求成功");
-                  }else{
-                    showToast("请不要频繁操作");
-                  }
+                  //await new Future.delayed(new Duration(milliseconds: 1000));
+
                 },
               ),
               FlatButton(
@@ -252,10 +249,11 @@ class addDemandCenter extends State<addDemand>
   @override
   void onAddDemandResponse(bool success) {
     print(success);
-    if (success == true) {
-      success1 = "true";
-    } else {
-      success1 = "false";
+
+    if (success) {
+      Navigator.pop(context, "发布需求成功");
+    }else{
+      showToast("请不要频繁操作");
     }
     setState(() {});
   }

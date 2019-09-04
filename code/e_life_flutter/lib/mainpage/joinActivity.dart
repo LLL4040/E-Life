@@ -126,19 +126,8 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
                               return;
                             }
                             manager.saveParticipator(this, id, _contentController.text, username,session);
-                            String tmp;
-                            await new Future.delayed(new Duration(milliseconds: 1000));
-                            tmp =  joinResult;
-                            if(tmp=="true"){
-                              print("joinresult=true");
-                              joinResult="false";
-                              Navigator.pop(context,"发送报名请求成功");
 
-                            }else{
-                              showToast("您已参加过该活动",position: ToastPosition.top);
-                            }
-
-
+                            //await new Future.delayed(new Duration(milliseconds: 1000));
                             //Navigator.pop(context,joinResult);
                           },
                         ),
@@ -193,7 +182,16 @@ class joinActivityWidget extends State<joinActivity> with SingleTickerProviderSt
     joinResult =   body;
     print("response"+joinResult);
     setState(() {
+      String tmp;
+      tmp =  joinResult;
+      if(tmp=="true"){
+        print("joinresult=true");
+        joinResult="false";
+        Navigator.pop(context,"发送报名请求成功");
 
+      }else{
+        showToast("您已参加过该活动",position: ToastPosition.top);
+      }
     });
 
   }

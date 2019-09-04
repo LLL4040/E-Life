@@ -66,27 +66,71 @@ class messageState extends State<message>
                 Icons.delete,
                 color: Colors.black54,
               ),
-              onTap: () async {
-                print(id.toString() + "id号");
-                print(username + "用户名");
-                manager.deleteNotice(this, username, id,session);
-                await new Future.delayed(new Duration(milliseconds: 1000));
-                if (success1 == "true") {
-                  showToast("删除物业消息成功");
-                }
+//              onTap: () async {
+//                print(id.toString() + "id号");
+//                print(username + "用户名");
+//                await manager.deleteNotice(this, username, id,session);
+//                //await new Future.delayed(new Duration(milliseconds: 1000));
+//
+//              },
+              onTap: () {
+                showDialog<Null>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return new SimpleDialog(
+                      title: new Text('确定删除吗'),
+                      children: <Widget>[
+                        new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            new SimpleDialogOption(
+                              child: FlatButton(
+                                color: Colors.blue,
+                                highlightColor: Colors.blue[700],
+                                colorBrightness: Brightness.dark,
+                                splashColor: Colors.grey,
+                                child: Text("确定"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                onPressed: () async{
+                                  await manager.deleteNotice(this, username, id,session);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+
+                            ),
+                            new SimpleDialogOption(
+                              child: FlatButton(
+                                color: Colors.black54,
+                                highlightColor: Colors.black38,
+                                colorBrightness: Brightness.dark,
+                                splashColor: Colors.grey,
+                                child: Text("取消"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                onPressed: () {
+                                  showToast("取消删除物业消息");
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    );
+                  },
+                ).then((val) {
+                  print(val);
+                });
               },
               dense: true,
             ),
             //new Divider(),
 
-//            new ListTile(
-//              title: new Text('图片区域'),
-//              leading: new Icon(
-//                Icons.photo,
-//                color: Colors.blue[500],
-//              ),
-//
-//            ),
+
           ],
         ),
       ),
@@ -98,11 +142,9 @@ class messageState extends State<message>
 
   _takeOut(String id) async {
     print(id + "邮包id号");
-    manager1.takeOut(this, id,session);
-    await new Future.delayed(new Duration(milliseconds: 1000));
-    if (success2 == "true") {
-      showToast("提取邮包成功");
-    }
+    await manager1.takeOut(this, id,session);
+    //await new Future.delayed(new Duration(milliseconds: 1000));
+
   }
 
   Widget _getpackage(String status, String time, String manage, String id) {
@@ -128,7 +170,9 @@ class messageState extends State<message>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Text("负责人: " + manage),
-                  new Text(statustmp ,),
+                  new Text(statustmp ,style: TextStyle(
+                    color: statustmp=="未提取"?Colors.blue[400]:Colors.grey
+                  ),),
                 ],
               ),
               trailing: new Icon(Icons.offline_pin),
@@ -358,6 +402,9 @@ class messageState extends State<message>
     } else {
       success1 = "false";
     }
+    if (success1 == "true") {
+      showToast("删除物业消息成功");
+    }
     setState(() {
       manager.myNotice(this, username,session);
     });
@@ -379,6 +426,9 @@ class messageState extends State<message>
       success2 = "true";
     } else {
       success2 = "false";
+    }
+    if (success2 == "true") {
+      showToast("提取邮包成功");
     }
     setState(() {
       manager1.myPackage(this, username,session);
