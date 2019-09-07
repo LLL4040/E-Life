@@ -14,6 +14,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * @author ztHou
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class IdentifyControllerTest {
@@ -29,13 +32,13 @@ public class IdentifyControllerTest {
 
     @Test
     public void sendIdentifyTest() throws Exception {
-        mvc.perform(get("/user/sendIdentify").param("phone", "111111"))
+        mvc.perform(get("/api/user/sendIdentify").param("phone", "111111"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
 
     @Test
     public void verifyIdentifyTest() throws Exception {
-        mvc.perform(get("/user/verifyIdentify").param("phone", "111111").param("code", "111111"))
+        mvc.perform(get("/api/user/verifyIdentify").param("phone", "111111").param("code", "111111"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
 }

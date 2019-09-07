@@ -20,22 +20,23 @@ public class FriendServiceImpl implements FriendService {
 
     private final UserDao userDao;
     private final FriendDao friendDao;
-    private HashMap<Long, String> communityInfo;
+    private final CommunityRepository communityRepository;
 
     public FriendServiceImpl(UserDao userDao, FriendDao friendDao, CommunityRepository communityRepository) {
         this.userDao = userDao;
         this.friendDao = friendDao;
-        this.communityInfo = new HashMap<>();
-        List<Community> communityList = communityRepository.findAll();
-        for(Community community : communityList){
-            communityInfo.put(community.getId(), community.getCommunityName());
-        }
+        this.communityRepository = communityRepository;
     }
 
     @Override
     public JSONArray friendSearchList(String username){
         JSONArray result = new JSONArray();
         List<User> userList = userDao.findAllByUsernameContains(username);
+        HashMap<Long, String>communityInfo = new HashMap<>();
+        List<Community> communityList = communityRepository.findAll();
+        for(Community community : communityList){
+            communityInfo.put(community.getId(), community.getCommunityName());
+        }
         for(User user : userList){
             JSONObject object = new JSONObject();
             object.put("username", user.getUsername());
@@ -68,6 +69,11 @@ public class FriendServiceImpl implements FriendService {
     public JSONArray friendList(String username){
         JSONArray result = new JSONArray();
         List<Friend> friendList = friendDao.allFriends(username);
+        HashMap<Long, String>communityInfo = new HashMap<>();
+        List<Community> communityList = communityRepository.findAll();
+        for(Community community : communityList){
+            communityInfo.put(community.getId(), community.getCommunityName());
+        }
         for(Friend friend : friendList){
             JSONObject object = new JSONObject();
             String friendName = friend.getFriend();
