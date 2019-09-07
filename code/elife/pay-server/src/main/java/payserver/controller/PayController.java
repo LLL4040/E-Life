@@ -5,6 +5,7 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.util.StringUtils;
 import payserver.dao.PayDao;
+import payserver.service.MoneyService;
 import payserver.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,9 @@ public class PayController {
     @Autowired
     private PayDao payDao;
 
+    @Autowired
+    private MoneyService moneyService;
+
     /**
      * savePay status= -1 parkBill status =-2 managerBill
      * @param time
@@ -50,6 +54,7 @@ public class PayController {
         }
         return payService.save(time,bill,status,managerName,username,communityId);
     }
+
     @RequestMapping(path = "/findNew")
     @ResponseBody
     public JSONArray findNew(String username){
@@ -160,6 +165,144 @@ public class PayController {
             payService.saveOrders(pid, username, bill);
         }
         return payService.getOrders(username,pid).get(0);
+    }
+
+    /**
+     * 小区管理员初始化小区的房间号
+     * 例如A类型房间 100 平方米 有15栋这样的楼 一栋楼有20层 一层有4户
+     * maxnum=15 maxfloor=20 maxroom=4 roomSpace=100
+     * 生成 A010101这样的字符串存入数据库
+     * @param type
+     * @param maxNum
+     * @param maxFloor
+     * @param maxRoom
+     * @param roomSpace
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/saveRoom")
+    @ResponseBody
+    public boolean saveRoom(String type ,int maxNum,int maxFloor,int maxRoom,int roomSpace,int communityId) {
+       return moneyService.initRoom(type, maxNum, maxFloor, maxRoom,communityId,roomSpace);
+    }
+
+    /**
+     * 获取一个小区的房间范围即roomspace表 获取 type maxnum maxfloor 等范围找roomnuber给管理员搜索room
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/getRoomSpace")
+    @ResponseBody
+    public JSONArray getRoomSpace(int communityId) {
+        return moneyService.getRoomSpace(communityId);
+    }
+
+    /**
+     * 用room number 获取room 给管理员修改
+     * @param type
+     * @param room
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/getRoomByRoomNumber")
+    @ResponseBody
+    public JSONObject getRoomByRoomNumber(String type,String room,int communityId) {
+        return moneyService.getRoomByRoomNumber(type, room, communityId);
+    }
+
+    /**
+     * 给管理员修改room房间的用户名
+     * @param username
+     * @param type
+     * @param room
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/saveUsername")
+    @ResponseBody
+    public boolean saveUsername(String username,String type,String room,int communityId) {
+        return moneyService.saveUsername(username, type, room, communityId);
+    }
+
+    /**
+     * 给管理员保存停车方案 A是小车包月费 B是电动车包月费
+     * @param Amoney
+     * @param Bmoney
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/saveParkPlan")
+    @ResponseBody
+    public boolean saveParkPlan(BigDecimal Amoney,BigDecimal Bmoney,int communityId) {
+        return moneyService.initParkPlan(Amoney,Bmoney, communityId);
+    }
+
+    /**
+     * 自动计算管理费步骤一 更新room表
+     * @param money
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/calManMoney")
+    @ResponseBody
+    public boolean calManMoney(BigDecimal money,int communityId) {
+        return moneyService.calManMoney(money,communityId);
+    }
+
+    /**
+     * 自动计算管理费步骤2 存入账单表
+     * @param managerName
+     * @param communityId
+     * @return
+     */
+    @RequestMapping(path = "/AutoSaveManPay")
+    @ResponseBody
+    public boolean autoSaveManPay( String managerName, int communityId ){
+        return payService.autoSaveManPay(managerName,communityId);
+    }
+
+    /**
+     * 给管理员修改用户的停车方案 形如A2B2这样的字符串AB大写，默认A0B0
+     * @param username
+     * @param parking
+     * @param type
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/changeParking")
+    @ResponseBody
+    public boolean changeParking(String username,String parking,String type, int communityId){
+        moneyService.changeParking(username, parking, type, communityId);
+        return true;
+    }
+
+    /**
+     * 计算停车账单步骤一 更新room 表
+     * @param communityId
+     * @return
+     */
+    @RequestMapping("/calParking")
+    @ResponseBody
+    public boolean calParkingMoney(int communityId) {
+        return moneyService.calParking(communityId);
+    }
+
+    /**
+     * 计算停车账单步骤2 更新账单表
+     * @param managerName
+     * @param communityId
+     * @return
+     */
+    @RequestMapping(path = "/AutoSaveParkPay")
+    @ResponseBody
+    public boolean autoSaveParkPay( String managerName, int communityId ){
+        return payService.autoSaveParkPay(managerName,communityId);
+    }
+
+    @RequestMapping("/getParkPlan")
+    @ResponseBody
+    public JSONArray getParkPlan(int communityId) {
+        return moneyService.getParkPlan(communityId);
     }
 
 }

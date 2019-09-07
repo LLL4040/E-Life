@@ -13,8 +13,10 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import payserver.dao.PayDao;
+import payserver.dao.moneyDao;
 import payserver.entity.Orders;
 import payserver.entity.Pay;
+import payserver.entity.Room;
 import payserver.service.PayService;
 import payserver.util.AlipayConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +40,8 @@ public class PayServiceImpl implements PayService {
 
     @Autowired
     private PayDao payDao;
+    @Autowired
+    private payserver.dao.moneyDao moneyDao;
 
     public JSONArray listToJsonArray (List<Pay> list){
         JSONArray jsonArray =new JSONArray();
@@ -63,6 +67,36 @@ public class PayServiceImpl implements PayService {
             payDao.save(time, status,bill,managerName, username, communityId);
             return true;
 
+    }
+
+    @Override
+    public boolean autoSaveManPay(String mangername,int communityId){
+        List<Room> rooms = moneyDao.getRoom(communityId);
+        Iterator<Room> iterator = rooms.iterator();
+        Date date = new Date();
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+        while(iterator.hasNext()){
+            Room room = iterator.next();
+            if(room.getUsername()!=null){
+                System.out.println(room.getRoom());
+                payDao.save(dateStr,-2,room.getManagerMoney(),mangername,room.getUsername(),communityId);
+            }
+        }
+        return true;
+    }
+    @Override
+    public boolean autoSaveParkPay(String mangername,int communityId){
+        List<Room> rooms = moneyDao.getRoom(communityId);
+        Iterator<Room> iterator = rooms.iterator();
+        Date date = new Date();
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+        while(iterator.hasNext()){
+            Room room = iterator.next();
+            if(room.getUsername()!=null&&room.getParkMoney()!=null){
+                payDao.save(dateStr,-1,room.getParkMoney(),mangername,room.getUsername(),communityId);
+            }
+        }
+        return true;
     }
 
     @Override

@@ -29,6 +29,21 @@ public interface PayService {
     boolean save(String time, BigDecimal bill, int status, String managerName, String username, int communityId);
 
     /**
+     * auto save manager pay
+     * @param managerName
+     * @param communityId
+     * @return
+     */
+    boolean autoSaveManPay(String managerName, int communityId);
+
+    /**
+     * auto save parking pay
+     * @param managerName
+     * @param communityId
+     * @return
+     */
+    boolean autoSaveParkPay(String managerName, int communityId);
+    /**
      * find List<pay> turn to JSON
      *
      * @param username
