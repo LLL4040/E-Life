@@ -1,7 +1,9 @@
 package newsserver.repositoryTest;
 
 
+import newsserver.entity.Activity;
 import newsserver.entity.Participator;
+import newsserver.repository.ActivityRepository;
 import newsserver.repository.ParticipatorRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,16 +20,23 @@ import java.util.List;
 public class ParticipatorRepositoryTest {
     @Autowired
     private ParticipatorRepository participatorRepository;
+    @Autowired
+    private ActivityRepository activityRepository;
+     Activity activity = new Activity(1,"2019-07-09 11:22:11","2019-07-09 11:22:11","hello","admin",
+            "test",0,"guigui.jpg",1);
+
 
     @Test
     @Transactional
     public void SaveParticipatorTest(){
-        participatorRepository.savePaticipator(1,"hello",0,"1");
+        activityRepository.save(activity);
+        participatorRepository.savePaticipator(1,"hello",0,"user");
     }
     @Test
     @Transactional
     public void findAllParticipatorTest(){
-        Participator participator = new Participator(88888,1,"1","test",0);
+        activityRepository.save(activity);
+        Participator participator = new Participator(88888,1,"user","test",0);
         participatorRepository.save(participator);
         List<Participator> participators = participatorRepository.findAllParticipator(1,0,10);
         Participator participator1 = participators.get(participators.size()-1);
@@ -37,7 +46,8 @@ public class ParticipatorRepositoryTest {
     @Test
     @Transactional
     public void deleteAllTest(){
-        Participator participator = new Participator(88888,1,"1","test",0);
+        activityRepository.save(activity);
+        Participator participator = new Participator(88888,1,"user","test",0);
         participatorRepository.save(participator);
         participatorRepository.deleteAll(1);
         try{
@@ -51,9 +61,10 @@ public class ParticipatorRepositoryTest {
     @Test
     @Transactional
     public void exitsApply(){
-        Participator participator = new Participator(88888,1,"1","test",0);
+        activityRepository.save(activity);
+        Participator participator = new Participator(88888,1,"user","test",0);
         participatorRepository.save(participator);
-        List<Participator> list = participatorRepository.existApply(1,"1");
+        List<Participator> list = participatorRepository.existApply(1,"user");
     }
 
 }

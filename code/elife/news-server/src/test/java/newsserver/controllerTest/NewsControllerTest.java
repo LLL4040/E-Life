@@ -51,7 +51,13 @@ public class NewsControllerTest {
     }
     @Test
     public void Test8() throws Exception {
-        MvcResult result = mvc.perform(get("/api/News/findHistory").param("communityId", "1"))
+        MvcResult result = mvc.perform(get("/api/News/findHistory").param("communityId", "1")
+        .param("page","1"))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+    }
+    @Test
+    public void Test9() throws Exception {
+        MvcResult result = mvc.perform(get("/api/News/photo").param("path", "guigui.jpg"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
 
