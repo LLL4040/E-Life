@@ -298,4 +298,11 @@ public class PayController {
     public boolean autoSaveParkPay( String managerName, int communityId ){
         return payService.autoSaveParkPay(managerName,communityId);
     }
+
+    @RequestMapping("/getParkPlan")
+    @ResponseBody
+    public JSONArray getParkPlan(int communityId) {
+        return moneyService.getParkPlan(communityId);
+    }
+
 }

@@ -53,4 +53,6 @@ public interface MoneyService {
     boolean  calParking( int communityId);
 
     JSONObject getRoomByRoomNumber(String type,String room,int communityId);
+
+    JSONArray getParkPlan(int communityId);
 }

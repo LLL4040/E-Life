@@ -5,6 +5,7 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import payserver.dao.moneyDao;
+import payserver.entity.ParkPlan;
 import payserver.entity.Room;
 import payserver.entity.RoomSpace;
 import payserver.service.MoneyService;
@@ -144,5 +145,22 @@ public class MoneyServiceImpl implements MoneyService {
         jsonObject.put("mmoney",temp.getManagerMoney());
         jsonObject.put("communityId",temp.getCommunityId());
         return jsonObject;
+    }
+
+    @Override
+    public JSONArray getParkPlan(int communityId){
+        List<ParkPlan> list = moneyDao.getParkPlan(communityId);
+        JSONArray jsonArray =new JSONArray();
+        Iterator<ParkPlan> iter = list.iterator();
+        while(iter.hasNext()){
+            ParkPlan temp = iter.next();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id",temp.getId());
+            jsonObject.put("type",temp.getType());
+            jsonObject.put("montyPay",temp.getMonthPay());
+            jsonObject.put("communityId",temp.getCommunityId());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
     }
 }
