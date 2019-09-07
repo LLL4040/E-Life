@@ -45,10 +45,6 @@ public class Participate implements Serializable {
         this.id = id;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public void setDemand(Long demand) {
         this.demand = demand;
     }

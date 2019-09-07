@@ -32,6 +32,7 @@ public class DemandServiceImpl implements DemandService{
         try{
             Demand demand = new Demand(username, startTime, endTime, content, communityId, title);
             Long demandId = demandDao.save(demand).getId();
+            System.out.println(demandId);
             Participate participate = new Participate(username, demandId);
             participateDao.save(participate);
             result.put("add", 1);
@@ -61,7 +62,6 @@ public class DemandServiceImpl implements DemandService{
         String dateTime = df.format(new Date());
         List<Demand> demandList = demandDao.findAllByEndTimeAfterAndCommunityId(dateTime, communityId);
         for(Demand demand: demandList){
-            System.out.println(demand.getId());
             JSONObject object = new JSONObject();
             object.put("id", demand.getId());
             object.put("start", demand.getStartTime());

@@ -56,7 +56,6 @@ public class DiscountServiceImpl implements DiscountService {
                 return result;
             }
             catch (Exception e){
-                System.out.println(e);
                 return result;
             }
         }catch (Exception e){

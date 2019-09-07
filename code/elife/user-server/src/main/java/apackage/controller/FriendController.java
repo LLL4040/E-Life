@@ -27,10 +27,6 @@ public class FriendController {
         HttpSession session = request.getSession();
         String name = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
-        System.out.println(name);
-        System.out.println(username);
-        System.out.println(role);
-        System.out.println(name.equals(username));
         if (StringUtils.isEmpty(name) || "1".equals(role) || !(name.equals(username))) {
             JSONObject jsonObject = new JSONObject();
             JSONArray jsonArray = new JSONArray();
