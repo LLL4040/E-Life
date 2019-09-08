@@ -149,7 +149,7 @@ public class PayServiceImpl implements PayService {
         List<Pay> list = payDao.findUnPayHistoryManager(communityId,page);
         JSONArray jsonArray = listToJsonArray(list);
         JSONObject pageNum = new JSONObject();
-        pageNum.put("pageNum",payDao.getPageNumManager(communityId));
+        pageNum.put("pageNum",payDao.getPageNumUnpayManager(communityId));
         jsonArray.add(pageNum);
         return jsonArray;
     }
@@ -159,7 +159,7 @@ public class PayServiceImpl implements PayService {
         List<Pay> list = payDao.findPayHistoryManager(communityId, page);
         JSONArray jsonArray = listToJsonArray(list);
         JSONObject pageNum = new JSONObject();
-        pageNum.put("pageNum",payDao.getPageNumUnpayManager(communityId));
+        pageNum.put("pageNum",payDao.getPageNumManager(communityId));
         jsonArray.add(pageNum);
         return jsonArray;
     }
