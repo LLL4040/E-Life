@@ -145,7 +145,9 @@ public class PayDaoImpl implements PayDao {
     @Override
     public int getPageNumUnpayManager(int communityId){
         List<Pay> temp = payRepository.findPageNumUnpayManager(communityId);
+
         int pageNum=temp.size();
+        System.out.println(pageNum);
         if(pageNum%10!=0){
             pageNum=pageNum/10+1;
         }
