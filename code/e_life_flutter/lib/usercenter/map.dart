@@ -19,6 +19,7 @@ class myMapWidget extends State<myMap>
   myMapWidget(this.session);
   List<Merchant> merchantList = []; //存后端数据
   List<Bargain> bargainList = []; //存后端数据
+  List<Bargain> searchList = []; //存后端数据
   List<Marker> markerList = [];
   final TextEditingController _bargain =
   new TextEditingController.fromValue(new TextEditingValue(text: ""));
@@ -137,6 +138,163 @@ class myMapWidget extends State<myMap>
       ),
     );
   }
+  searchBargin(String text){
+    List<Marker> learchMerchant=[];
+    for(int i=0;i<bargainList.length;i++){
+      print("hahah");
+      if(bargainList[i].title==text){
+        var marker1=bargainBuild(bargainList[i]);
+        learchMerchant.add(marker1);
+      }
+    }
+
+    setState(() {
+      markerList=learchMerchant;
+    });
+  }
+  Widget sizebox(){
+    return new SizedBox(
+      height: 150,
+      child:new Card(
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              subtitle: new TextField(
+                controller: _bargain,
+                decoration: new InputDecoration(
+                  contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10.0),
+                  hintText: '搜索优惠商品',
+                ),
+                onSubmitted:(text){
+                  searchList=[];
+                  for(int i=0;i<bargainList.length;i++){
+                    print("hahah");
+                    if(bargainList[i].title==text){
+                      searchList.add(bargainList[i]);
+                    }
+                  }
+
+                },
+              ),
+              trailing: new FlatButton(
+                color: Colors.blue[400],
+                child: Text("全部优惠商品",style: TextStyle(
+                  color: Colors.white,
+
+                ),),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+                onPressed: ()async {
+                  await manager.allBargain(this, session);
+                },
+              ),
+            ),
+            ListTile(
+              leading:FlatButton(
+                color: Colors.blue[400],
+                child: Text("全部商家",style: TextStyle(
+                  color: Colors.white,
+                ),),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+                onPressed: ()async {
+                  await manager.allMerchant(this, session);
+                },
+              ),
+
+            ),
+            Row(
+              children: <Widget>[
+
+                Container(
+                  width: 70,
+                  height: 25,
+                  padding:EdgeInsets.only(right: 1.0),
+                  decoration: new BoxDecoration(
+                    borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+                  ),
+                  alignment: Alignment.center,
+                  child: FlatButton(
+                    color: Colors.blue[800],
+                    child: Text("购物",style: TextStyle(
+                      color: Colors.white,
+                    ),),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    onPressed: ()async {
+
+                    },
+                  ),
+                ),
+                Container(
+                  width: 70,
+                  height: 25,
+                  padding:EdgeInsets.only(right: 1.0),
+                  decoration: new BoxDecoration(
+                    borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+                  ),
+                  alignment: Alignment.center,
+                  child: FlatButton(
+                    color: Colors.green[400],
+                    child: Text("娱乐",style: TextStyle(
+                      color: Colors.white,
+                    ),),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    onPressed: ()async {
+
+                    },
+
+                  ),
+                ),
+                Container(
+                  width: 70,
+                  height: 25,
+                  padding:EdgeInsets.only(right: 1.0),
+                  decoration: new BoxDecoration(
+                    borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+                  ),
+                  alignment: Alignment.center,
+                  child: FlatButton(
+                    color: Colors.brown[400],
+                    child: Text("餐饮",style: TextStyle(
+                      color: Colors.white,
+                    ),),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    onPressed: ()async {
+
+                    },
+
+                  ),
+                ),
+                Container(
+                  width: 70,
+                  height: 25,
+                  decoration: new BoxDecoration(
+                    borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+                  ),
+                  alignment: Alignment.center,
+                  child: FlatButton(
+                    color: Colors.purple[400],
+                    child: Text("服务",style: TextStyle(
+                      color: Colors.white,
+                    ),),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    onPressed: ()async {
+
+                    },
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ) ,
+    );
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -154,6 +312,14 @@ class myMapWidget extends State<myMap>
       //merchantList=[];
       for(int i=0;i<bargainList.length;i++){
         var marker1=bargainBuild(bargainList[i]);
+        markerList.add(marker1);
+      }
+    }
+    if(searchList.length>0){
+      markerList=[];
+      merchantList=[];
+      for(int i=0;i<searchList.length;i++){
+        var marker1=bargainBuild(searchList[i]);
         markerList.add(marker1);
       }
     }
@@ -187,137 +353,7 @@ class myMapWidget extends State<myMap>
                   ),
                 ],
               ),
-              new SizedBox(
-                height: 150,
-                child:new Card(
-                  child: ListView(
-                    children: <Widget>[
-                      ListTile(
-                        subtitle: new TextField(
-                          controller: _bargain,
-                          decoration: new InputDecoration(
-                            contentPadding:
-                            const EdgeInsets.symmetric(vertical: 10.0),
-                            hintText: '搜索优惠商品',
-                          ),
-                        ),
-                        trailing: new FlatButton(
-                          color: Colors.blue[400],
-                          child: Text("全部优惠商品",style: TextStyle(
-                            color: Colors.white,
-
-                          ),),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          onPressed: ()async {
-                            await manager.allBargain(this, session);
-                          },
-                        ),
-                      ),
-                      ListTile(
-                        leading:FlatButton(
-                          color: Colors.blue[400],
-                          child: Text("全部商家",style: TextStyle(
-                            color: Colors.white,
-                          ),),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          onPressed: ()async {
-                            await manager.allMerchant(this, session);
-                          },
-                        ),
-
-                      ),
-                      Row(
-                        children: <Widget>[
-
-                          Container(
-                            width: 70,
-                            height: 25,
-                            padding:EdgeInsets.only(right: 1.0),
-                            decoration: new BoxDecoration(
-                              borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
-                            ),
-                            alignment: Alignment.center,
-                            child: FlatButton(
-                              color: Colors.blue[800],
-                              child: Text("购物",style: TextStyle(
-                                color: Colors.white,
-                              ),),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              onPressed: ()async {
-
-                              },
-                            ),
-                          ),
-                          Container(
-                            width: 70,
-                            height: 25,
-                            padding:EdgeInsets.only(right: 1.0),
-                            decoration: new BoxDecoration(
-                              borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
-                            ),
-                            alignment: Alignment.center,
-                            child: FlatButton(
-                              color: Colors.green[400],
-                              child: Text("娱乐",style: TextStyle(
-                                color: Colors.white,
-                              ),),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              onPressed: ()async {
-
-                              },
-
-                            ),
-                          ),
-                          Container(
-                            width: 70,
-                            height: 25,
-                            padding:EdgeInsets.only(right: 1.0),
-                            decoration: new BoxDecoration(
-                              borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
-                            ),
-                            alignment: Alignment.center,
-                            child: FlatButton(
-                              color: Colors.brown[400],
-                              child: Text("餐饮",style: TextStyle(
-                                color: Colors.white,
-                              ),),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              onPressed: ()async {
-
-                              },
-
-                            ),
-                          ),
-                          Container(
-                            width: 70,
-                            height: 25,
-                            decoration: new BoxDecoration(
-                              borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
-                            ),
-                            alignment: Alignment.center,
-                            child: FlatButton(
-                              color: Colors.purple[400],
-                              child: Text("服务",style: TextStyle(
-                                color: Colors.white,
-                              ),),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              onPressed: ()async {
-
-                              },
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ) ,
-              ),
+              sizebox(),
 
             ],
 
@@ -344,6 +380,7 @@ class myMapWidget extends State<myMap>
   @override
   void allMerchantResponse(List<Merchant> merchant) {
     bargainList=[];
+    searchList=[];
     merchantList = merchant;
     setState(() {});
   }

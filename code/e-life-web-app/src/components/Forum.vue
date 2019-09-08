@@ -6,7 +6,7 @@
     <div align="left">
       <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
       &nbsp;&nbsp;
-      <el-select v-model="cId" @change="loadPost()">
+      <el-select v-model="cId" filterable @change="loadPost()">
         <el-option v-for="item in communities" :key="item.id" :label="item.label" :value="item.id">
           <span style="float: left">{{ item.label }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
@@ -26,6 +26,7 @@
               <el-card style="margin-bottom: 8px">
                 <el-tag style="float: left; font-size: 12px;" size="small" type="danger">{{ o.tag }}</el-tag>
                 <el-button style="float: left; padding: 3px 0; font-size: 16px; margin-left: 5px;" type="text" @click="toDetail(o)">{{o.title}}</el-button>
+                <el-button v-if="identity === 'manager'" size="mini" type="danger" icon="el-icon-delete" circle @click="handleDelete(o.id)" style="float: right"></el-button>
                 <p style="float:right; font-size: 14px;">{{o.poster}}</p>
                 <br>
                 <p style="float: left; padding: 3px 0; font-size: 14px;">{{o.content.slice(0,30)}}</p>
@@ -173,6 +174,7 @@ export default {
   data () {
     return {
       formData: null,
+      identity: '',
       userInfo: {
         community: '',
         communityId: 0,
@@ -233,6 +235,7 @@ export default {
       this.userInfo.communityId = sessionStorage.getItem('communityId')
       this.userInfo.email = sessionStorage.getItem('email')
       this.cId = parseInt(this.userInfo.communityId)
+      this.identity = sessionStorage.getItem('identity')
       let bodyFormData = new FormData()
       bodyFormData.set('id', this.userInfo.communityId)
       let url = '/user-server/api/user/getCommunityById'
@@ -297,7 +300,37 @@ export default {
       })
     },
     toTag (tag) {
-      this.$alert(tag)
+      let bodyFormData = new FormData()
+      bodyFormData.set('communityId', this.cId)
+      bodyFormData.set('tag', tag)
+      bodyFormData.set('page', this.pageNum1)
+      bodyFormData.set('size', this.pageSize1)
+      this.$axios({
+        method: 'post',
+        url: '/estateforum-server/api/post/findPostByTag',
+        data: bodyFormData,
+        config: { headers: { 'Content-type': 'multipart/form-data' } } }
+      ).then(response => {
+        if (response.data.length > 0 && response.data[0].login === 0) {
+          this.$router.push({ name: 'Login' })
+        } else {
+          this.postData = []
+          this.total1 = response.data[0].pageNum
+          for (let i = 1; i < response.data.length; i++) {
+            let objproject = {
+              'photo': response.data[i].photo,
+              'path': response.data[i].path,
+              'title': response.data[i].title,
+              'tag': response.data[i].tag,
+              'poster': response.data[i].posterName,
+              'content': response.data[i].postContent,
+              'time': response.data[i].postTime,
+              'id': response.data[i].id
+            }
+            this.postData.push(objproject)
+          }
+        }
+      })
     },
     addForum () {
       this.dialogFormVisible = false
@@ -498,7 +531,6 @@ export default {
       this.formData.delete('photo')
     },
     show (path) {
-      console.log(path)
       let bodyFormData = new FormData()
       bodyFormData.set('path', path)
       let url = '/estateforum-server/api/post/photo'
@@ -514,6 +546,38 @@ export default {
           this.photo = response.data.photo
           this.dialogFormVisiblePhoto = true
         }
+      })
+    },
+    handleDelete (id) {
+      this.$confirm('此操作将永久删除该帖子, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let bodyFormData = new FormData()
+        bodyFormData.set('id', id)
+        let url = '/estateforum-server/api/post/deletePost'
+        this.$axios({
+          method: 'post',
+          url: url,
+          data: bodyFormData,
+          config: { headers: { 'Content-type': 'multipart/form-data' } } }
+        ).then(response => {
+          if (response.data.login === 0) {
+            this.$router.push({ name: 'Login' })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.loadPost()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     }
   }

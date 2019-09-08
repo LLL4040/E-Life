@@ -125,7 +125,7 @@
             <el-form ref="form" :rules="rules" :model="form" label-width="70px" class="demo-ruleForm" >
               <el-form-item label="手机号" prop="phone">
                 <el-input v-model="form.phone" style="float:left; width: 63%"></el-input>
-                <el-button type="primary" @click="getPass()" style="float:left">获取验证码</el-button>
+                <el-button :disabled="!canClick" type="primary" @click="countDown()" style="float:left">{{ text }}</el-button>
               </el-form-item>
               <el-form-item label="验证码" prop="code">
                 <el-input v-model="form.code"></el-input>
@@ -171,6 +171,9 @@ export default {
   name: 'Register',
   data () {
     return {
+      text: '发送验证码',
+      totalTime: 60, // 发送验证码倒计时60s
+      canClick: true,
       x: 0,
       address_detail: '',
       userlocation: { lng: '', lat: '' },
@@ -441,6 +444,26 @@ export default {
           })
       }
     },
+    countDown () {
+      if (!this.canClick) return
+      if (this.form.phone === '') {
+        this.$alert('请输入手机号！')
+      } else {
+        this.canClick = false
+        this.getPass()
+        this.text = this.totalTime + 's后重新发送'
+        let clock = window.setInterval(() => {
+          this.totalTime--
+          this.text = this.totalTime + 's后重新发送'
+          if (this.totalTime < 0) { //当倒计时小于0时清除定时器
+            window.clearInterval(clock)
+            this.text = '重新发送验证码'
+            this.totalTime = 60
+            this.canClick = true  //这里重新开启
+          }
+        }, 1000)
+      }
+    },
     getPass () {
       if (this.form.phone === '') {
         this.$alert('请输入手机号！')
@@ -476,7 +499,6 @@ export default {
           }
         })
       }
-      console.log('获取验证码！')
     },
     checkName () {
       if (this.form.username === '') {

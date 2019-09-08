@@ -44,12 +44,14 @@
           <el-menu-item index="0" @click="toPage2(0, 0)" v-if="userInfo.final === '1'">
             <i class="el-icon-s-check"></i><span slot="title" style="font-size: 16px">管理审核</span>
           </el-menu-item>
-          <el-menu-item index="1" @click="toPage2(1, 7)">
-            <i class="el-icon-chat-dot-round"></i><span slot="title" style="font-size: 16px">管理资讯</span>
-          </el-menu-item>
-          <el-menu-item index="2" @click="toPage2(2, 8)">
-            <i class="el-icon-alarm-clock"></i><span slot="title" style="font-size: 16px">管理活动</span>
-          </el-menu-item>
+          <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-document"></i>
+              <span style="font-size: 16px">录入信息</span>
+            </template>
+            <el-menu-item index="6-1" @click="toPage2(6-1, 15)">初始化房间信息</el-menu-item>
+            <el-menu-item index="6-2" @click="toPage2(6-2, 16)">绑定用户信息</el-menu-item>
+          </el-submenu>
           <el-submenu index="3">
             <template slot="title" style="font-size: 16px">
               <i class="el-icon-user"></i>
@@ -62,6 +64,12 @@
             </el-submenu>
             <el-menu-item index="3-2" @click="toPage2(3-2, 11)">管理通知</el-menu-item>
           </el-submenu>
+          <el-menu-item index="1" @click="toPage2(1, 7)">
+            <i class="el-icon-chat-dot-round"></i><span slot="title" style="font-size: 16px">管理资讯</span>
+          </el-menu-item>
+          <el-menu-item index="2" @click="toPage2(2, 8)">
+            <i class="el-icon-alarm-clock"></i><span slot="title" style="font-size: 16px">管理活动</span>
+          </el-menu-item>
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-service"></i>
@@ -119,6 +127,8 @@ import page11 from './AdminMessage.vue'
 import page12 from './AdminRepairW.vue'
 import page13 from './AdminRepairY.vue'
 import page14 from './AdminParcel.vue'
+import page15 from './AdminRoomspace.vue'
+import page16 from './AdminRoomUser.vue'
 
 export default {
   name: 'Manager',
@@ -256,7 +266,9 @@ export default {
     page11,
     page12,
     page13,
-    page14
+    page14,
+    page15,
+    page16
   },
   mounted () {
     this.loadData()
