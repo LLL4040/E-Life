@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:e_life_flutter/service/addRepair.dart';
 import 'payhttp.dart';
 import 'package:tobias/tobias.dart' as tobias;
+import 'package:oktoast/oktoast.dart';
 class pay extends StatefulWidget {
   final username;
   var session;
@@ -49,12 +50,12 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     new Text(bill.time.toString()),
-                    OutlineButton(child: Text("支付"), onPressed: () async{
-                      getOrderInfo(bill.id.toString(),bill.bill.toString(),bill.time.toString());
-                      await new Future.delayed(new Duration(milliseconds: 1500));
-                      print(":"+_payInfo+":1222");
-                      doPayExec(_payInfo);
-                    }),
+//                    OutlineButton(child: Text("支付"), onPressed: () async{
+//                      getOrderInfo(bill.id.toString(),bill.bill.toString(),bill.time.toString());
+//                      await new Future.delayed(new Duration(milliseconds: 1500));
+//                      print(":"+_payInfo+":1222");
+//                      doPayExec(_payInfo);
+//                    }),
 
                   ],
                 ),
@@ -66,8 +67,17 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
                   textColor: Colors.white,
                   child: Text(repairStatus,
                   ),
-                  onPressed: () {
+                  onPressed: () async{
                     // ...
+                    if(repairStatus!="已缴费"){
+                      getOrderInfo(bill.id.toString(),bill.bill.toString(),bill.time.toString());
+                      //await new Future.delayed(new Duration(milliseconds: 1500));
+                      //print(":"+_payInfo+":1222");
+
+                    }else{
+                      showToast("已缴费");
+                    }
+
                   },
                 )
 
@@ -139,14 +149,15 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
 
     setState(() {
       _payresult = payResult;
+      manager.myBill(this, username,session);
     });
 
   }
   getOrderInfo(String id,String bill,String time) async {
     print(id);
     await manager.myOrders(this, username, id, bill);
-    await new Future.delayed(new Duration(milliseconds: 1000));
-    await manager.pay(this, order.id.toString(), order.bill.toString(), order.time);
+    //await new Future.delayed(new Duration(milliseconds: 1000));
+
 
   }
   @override
@@ -166,6 +177,7 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   @override
   void onOrderResponse(Orders myOrder){
     order = myOrder;
+    manager.pay(this, order.id.toString(), order.bill.toString(), order.time);
     setState(() {
 
     });
@@ -173,6 +185,7 @@ class payCenter extends State<pay> with SingleTickerProviderStateMixin,NetListen
   @override
   void onAliResponse(String pay){
     _payInfo = pay;
+    doPayExec(_payInfo);
     setState(() {
 
     });
