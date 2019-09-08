@@ -3,7 +3,7 @@
     <div align="left">
       <el-button style="margin-top: -20px" size="medium" type="primary" plain icon="el-icon-refresh" circle @click="refresh()"></el-button>
     </div>
-    <div align="center" style="width: 500px; margin-left: 250px;">
+    <div align="center" style="width: 550px; margin-left: 250px;">
       <el-input placeholder="请输入需要查找的房间号，如：010101" v-model="room" class="input-with-select">
         <el-select v-model="type" slot="prepend" filterable placeholder="输入户型关键字搜索" style="width: 180px;">
           <el-option
@@ -204,6 +204,10 @@ export default {
       }
       ).then(response => {
         if (response.data) {
+          this.$message({
+            type: 'success',
+            message: '绑定用户成功!'
+          })
           this.loadUserDetail()
           this.$forceUpdate()
         } else {
@@ -227,6 +231,10 @@ export default {
       }
       ).then(response => {
         if (response.data) {
+          this.$message({
+            type: 'success',
+            message: '绑定停车方案成功!'
+          })
           this.loadUserDetail()
           this.$forceUpdate()
         } else {
@@ -252,7 +260,7 @@ export default {
         if (response.data) {
           this.handleModify2()
         } else {
-          this.$alert('绑定用户失败！')
+          this.$alert('绑定失败！')
         }
       })
     }

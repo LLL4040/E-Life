@@ -26,7 +26,7 @@
     <el-dialog title="新增户型" :visible.sync="dialogFormVisible">
       <el-form :model="newRoom" align="center" style="padding-left: 40px;">
         <el-form-item label="户型(只能为单个英文字母)">
-          <el-input v-model="newRoom.type" style="width: 220px; padding-left: 40px;"></el-input>
+          <el-input v-model="newRoom.type" style="width: 180px; margin-left: -88px;"></el-input>
         </el-form-item>
         <el-form-item label="该户型面积">
           <el-input-number v-model="newRoom.roomSpace" :precision="2" :step="0.1"></el-input-number>
@@ -136,6 +136,10 @@ export default {
         config: { headers: { 'Content-type': 'multipart/form-data' } } }
       ).then(response => {
         if (response.data) {
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
           this.loadRoomspace()
           this.$forceUpdate()
         } else {
