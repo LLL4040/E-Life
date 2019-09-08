@@ -27,7 +27,7 @@ public class NewsUsedRepositoryTest {
     @Test
     @Transactional
     public void findHistoryTest(){
-        NewsUsed newsUsed=new NewsUsed(55555,"hello","1","test","gugugui",1);
+        NewsUsed newsUsed=new NewsUsed(55555,"hello","admin","test","gugugui",1);
         newsUsedRepository.save(newsUsed);
         newsUsedRepository.findHistory(1);
     }

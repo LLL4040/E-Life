@@ -23,7 +23,7 @@ public class ActivityRepositoryTest {
     @Test
     @Transactional
     public void saveNewsTest(){
-        activityRepository.saveActivity("2019-07-09 11:22:11","2019-07-09 11:22:11","hello","1",
+        activityRepository.saveActivity("2019-07-09 11:22:11","2019-07-09 11:22:11","hello","admin",
                 "test",0,"guigui.jpg",1);
 
     }
@@ -32,10 +32,10 @@ public class ActivityRepositoryTest {
     @Transactional
     public void findAllActivityTest(){
         Activity activity = new Activity(99999,"todayHaveFun","2019-07-09 11:22:11"
-                ,"2020-07-09 11:22:11","1","hello",0,"guigui.jpg",1);
+                ,"2020-07-09 11:22:11","admin","hello",0,"guigui.jpg",1);
         activityRepository.save(activity);
         List<Activity> list = activityRepository.findAllActivity(1,0,10);
-        Activity activity1 = list.get(list.size()-1);
+        Activity activity1 = list.get(0);
         Assert.assertEquals("findNewTest fails", 99999, activity1.getId());
 
 
@@ -45,11 +45,16 @@ public class ActivityRepositoryTest {
     @Transactional
     public void findNewTest(){
          Activity activity = new Activity(99999,"todayHaveFun","2019-07-09 11:22:11"
-                ,"2020-07-09 11:22:11","1","hello",0,"guigui.jpg",1);
+                ,"2020-07-09 11:22:11","admin","hello",0,"guigui.jpg",1);
         activityRepository.save(activity);
         List<Activity> list = activityRepository.findNew(1);
         Activity activity1 = list.get(0);
         Assert.assertEquals("findNewTest fails", 99999, activity1.getId());
 
+    }
+
+    @Test
+    public void findPageNumTest(){
+        activityRepository.findPageNum(1);
     }
 }

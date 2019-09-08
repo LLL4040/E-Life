@@ -1,4 +1,4 @@
-package urgent.controllerTest;
+package newsserver.controllerTest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,42 +29,43 @@ public class UrgentControllerTest {
     }
     @Test
     public void Test1() throws Exception {
-        MvcResult result = mvc.perform(get("/api/urgent/saveUrgent").param("id", "55555").param("managerName","1").param("content","222@.com").param("status","0").param("communityId","1"))
+        MvcResult result = mvc.perform(get("/api/Urgent/saveUrgent").param("id", "55555").param("managerName","admin").param("content","222@.com").param("status","0").param("communityId","1"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
     public void Test2() throws Exception {
-        MvcResult result = mvc.perform(get("/api/urgent/getUrgent").param("id", "55555"))
+        MvcResult result = mvc.perform(get("/api/Urgent/getUrgent").param("id", "55555"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
     public void Test3() throws Exception {
-        MvcResult result = mvc.perform(get("/api/urgent/getNewUrgent").param("communityId", "1"))
+        MvcResult result = mvc.perform(get("/api/Urgent/getNewUrgent").param("communityId", "1"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
     public void Test4() throws Exception {
-        MvcResult result = mvc.perform(get("/api/urgent/getUrgent").param("id", "555555"))
+        MvcResult result = mvc.perform(get("/api/Urgent/getUrgent").param("id", "555555"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
     public void Test6() throws Exception {
-        MvcResult result = mvc.perform(get("/api/urgent/deleteUrgent").param("id", "55555"))
+        MvcResult result = mvc.perform(get("/api/Urgent/deleteUrgent").param("id", "55555"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
     public void Test7() throws Exception {
-        MvcResult result = mvc.perform(get("/api/urgent/deleteUrgent").param("id", "555555"))
+        MvcResult result = mvc.perform(get("/api/Urgent/deleteUrgent").param("id", "555555"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
     public void Test5() throws Exception {
-        MvcResult result = mvc.perform(get("/api/urgent/moveTable"))
+        MvcResult result = mvc.perform(get("/api/Urgent/moveTable"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
     public void Test8() throws Exception {
-        MvcResult result = mvc.perform(get("/api/urgent/findHistory").param("communityId", "1"))
+        MvcResult result = mvc.perform(get("/api/Urgent/findHistory").param("communityId", "1")
+        .param("page","1"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
 
