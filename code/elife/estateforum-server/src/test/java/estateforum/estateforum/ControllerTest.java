@@ -26,34 +26,22 @@ public class ControllerTest {
     public void setUp(){
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
-    @Test
-    public void addPost() throws Exception {
-        mvc.perform(get("/api/addPost").param("title","赏月").param("postContent","有小伙伴一起赏月的吗").param("posterName","二郎神").param("communityId","12").param("photo",null))
-                .andExpect(status().isOk()).andDo(print()).andReturn();
-    }
-    @Test
-    public void findPost() throws Exception{
-        mvc.perform(get("/api/findPost").param("communityId","12"))
-                .andExpect(status().isOk()).andDo(print()).andReturn();
-    }
+
+
     @Test
     public void deletePostTest() throws Exception{
-        mvc.perform(get("/api/deletePost").param("id","1"))
+        mvc.perform(get("/api/post/deletePost").param("id","1"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
-    @Test
-    public void findCommentsTest() throws Exception{
-        mvc.perform(get("/api/findComments").param("pid","1"))
-                .andExpect(status().isOk()).andDo(print()).andReturn();
-    }
+
     @Test
     public void addCommentsTest() throws Exception{
-        mvc.perform(post("/api/addComments").param("pid","1").param("commenterName","我是小二").param("postComment","人家想和哥哥一起赏月嗷"))
+        mvc.perform(post("/api/postComments/addComments").param("pid","1").param("commenterName","我是小二").param("postComment","人家想和哥哥一起赏月嗷"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
     @Test
     public void deleteCommentsTest() throws Exception{
-        mvc.perform(get("/api/deleteComments").param("pid","1").param("location","1"))
+        mvc.perform(get("/api/postComments/deleteComments").param("pid","1").param("location","1"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
 
