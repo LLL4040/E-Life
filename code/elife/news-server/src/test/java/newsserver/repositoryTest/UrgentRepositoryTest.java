@@ -23,12 +23,12 @@ public class UrgentRepositoryTest {
     @Transactional
     public void getONETest(){
         urgentRepository.changeStatus(1);
-        Urgent urgent = new Urgent(55556,"1","test",0,1);
+        Urgent urgent = new Urgent(55556,"admin","test",0,1);
         urgentRepository.save(urgent);
         //urgentRepository.changeStatus(1);
         Urgent urgentResult=this.urgentRepository.getONE(55556);
         Assert.assertEquals("urgent findNew fails", 55556,urgentResult.getId());
-        Assert.assertEquals("urgent findNew fails", "1",urgentResult.getManagerName());
+        Assert.assertEquals("urgent findNew fails", "admin",urgentResult.getManagerName());
         Assert.assertEquals("urgent findNew fails", "test",urgentResult.getContent());
         Assert.assertEquals("urgent findNew fails", 0,urgentResult.getStatus());
         Assert.assertEquals("urgent findNew fails", 1,urgentResult.getCommunityId());
@@ -37,12 +37,12 @@ public class UrgentRepositoryTest {
     @Test
     public void changeStatus(){
         urgentRepository.changeStatus(1);
-        Urgent urgent = new Urgent(55800,"1","test",0,1);
+        Urgent urgent = new Urgent(55800,"admin","test",0,1);
         urgentRepository.save(urgent);
         urgentRepository.changeStatus(1);
         Urgent urgentResult=this.urgentRepository.getONE(55800);
         Assert.assertEquals("urgent findNew fails", 55800,urgentResult.getId());
-        Assert.assertEquals("urgent findNew fails", "1",urgentResult.getManagerName());
+        Assert.assertEquals("urgent findNew fails", "admin",urgentResult.getManagerName());
         Assert.assertEquals("urgent findNew fails", "test",urgentResult.getContent());
         Assert.assertEquals("urgent findNew fails", 1,urgentResult.getStatus());
         Assert.assertEquals("urgent findNew fails", 1,urgentResult.getCommunityId());
@@ -53,9 +53,9 @@ public class UrgentRepositoryTest {
     @Transactional
     public void saveUrgentgetNewTest(){
         urgentRepository.changeStatus(1);
-        urgentRepository.saveUrgent("1","oop",0,1);
+        urgentRepository.saveUrgent("admin","oop",0,1);
         Urgent urgentResult=this.urgentRepository.findNew(1);
-        Assert.assertEquals("urgent save fails", "1",urgentResult.getManagerName());
+        Assert.assertEquals("urgent save fails", "admin",urgentResult.getManagerName());
         Assert.assertEquals("urgent save fails", "oop",urgentResult.getContent());
         Assert.assertEquals("urgent save fails", 0,urgentResult.getStatus());
         Assert.assertEquals("urgent save fails", 1,urgentResult.getCommunityId());
@@ -66,7 +66,7 @@ public class UrgentRepositoryTest {
     @Transactional
     public void moveTableTest(){
         urgentRepository.changeStatus(1);
-        Urgent urgent = new Urgent(5555,"1","test",0,1);
+        Urgent urgent = new Urgent(5555,"admin","test",0,1);
         urgentRepository.save(urgent);
         urgentRepository.moveTable(1);
     }
@@ -74,7 +74,7 @@ public class UrgentRepositoryTest {
     @Transactional
     public void findHistoryTest(){
         urgentRepository.changeStatus(1);
-        Urgent urgent = new Urgent(5556,"1","test",0,1);
+        Urgent urgent = new Urgent(5556,"admin","test",0,1);
         urgentRepository.save(urgent);
         urgentRepository.findHistory(1);
     }

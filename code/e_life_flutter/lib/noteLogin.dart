@@ -92,46 +92,46 @@ class noteLoginWidget extends State<noteLogin>
                     ),
                   ),
                 ),
-                Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: RadioListTile<String>(
-                        value: '0',
-                        title: Text('用户'),
-                        groupValue: role,
-                        onChanged: (value) {
-                          setState(() {
-                            role = value;
-                          });
-                        },
-                      ),
-                    ),
-                    Flexible(
-                      child: RadioListTile<String>(
-                        value: '1',
-                        title: Text('管理员'),
-                        groupValue: role,
-                        onChanged: (value) {
-                          setState(() {
-                            role = value;
-                          });
-                        },
-                      ),
-                    ),
-                    Flexible(
-                      child: RadioListTile<String>(
-                        value: '2',
-                        title: Text('商家'),
-                        groupValue: role,
-                        onChanged: (value) {
-                          setState(() {
-                            role = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+//                Row(
+//                  children: <Widget>[
+//                    Flexible(
+//                      child: RadioListTile<String>(
+//                        value: '0',
+//                        title: Text('用户'),
+//                        groupValue: role,
+//                        onChanged: (value) {
+//                          setState(() {
+//                            role = value;
+//                          });
+//                        },
+//                      ),
+//                    ),
+//                    Flexible(
+//                      child: RadioListTile<String>(
+//                        value: '1',
+//                        title: Text('管理员'),
+//                        groupValue: role,
+//                        onChanged: (value) {
+//                          setState(() {
+//                            role = value;
+//                          });
+//                        },
+//                      ),
+//                    ),
+//                    Flexible(
+//                      child: RadioListTile<String>(
+//                        value: '2',
+//                        title: Text('商家'),
+//                        groupValue: role,
+//                        onChanged: (value) {
+//                          setState(() {
+//                            role = value;
+//                          });
+//                        },
+//                      ),
+//                    ),
+//                  ],
+//                ),
                 new Container(
                   width: 320.0,
                   child: new Card(

@@ -1,9 +1,7 @@
 package user.service;
 
-import io.swagger.models.auth.In;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import user.dao.ManagerDao;
 import user.dao.UserDao;

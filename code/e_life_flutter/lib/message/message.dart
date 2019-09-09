@@ -269,7 +269,7 @@ class messageState extends State<message>
       for (int i = 0; i < mynoticeList.length; i++) {
         Widget notice4 = _getNotice(mynoticeList[i].managerName,
             mynoticeList[i].time, mynoticeList[i].content, mynoticeList[i].id);
-        print("sjsjj");
+        //print("sjsjj");
         notices.add(notice4);
       }
     }
@@ -280,7 +280,7 @@ class messageState extends State<message>
             mypackageList[i].time,
             mypackageList[i].managerName,
             mypackageList[i].id.toString());
-        print("jjjjssusu");
+        //print("jjjjssusu");
         packages.add(package4);
       }
     }

@@ -150,10 +150,13 @@ export default {
             sessionStorage.setItem('email', response.data.email)
             sessionStorage.setItem('final', response.data.final)
             if (this.form1.id === '0') {
+              sessionStorage.setItem('identity', 'user')
               self.$router.push({ name: 'User' })
             } else if (this.form1.id === '1') {
+              sessionStorage.setItem('identity', 'manager')
               self.$router.push({ name: 'Manager' })
             } else if (this.form1.id === '2') {
+              sessionStorage.setItem('identity', 'merchant')
               self.$router.push({ name: 'Merchant' })
             }
           } else if (response.data.login === -1) {
@@ -187,11 +190,14 @@ export default {
             sessionStorage.setItem('phone', response.data.phone)
             sessionStorage.setItem('email', response.data.email)
             sessionStorage.setItem('final', response.data.final)
-            if (this.form2.id === '0') {
+            if (this.form1.id === '0') {
+              sessionStorage.setItem('identity', 'user')
               self.$router.push({ name: 'User' })
-            } else if (this.form2.id === '1') {
+            } else if (this.form1.id === '1') {
+              sessionStorage.setItem('identity', 'manager')
               self.$router.push({ name: 'Manager' })
-            } else if (this.form2.id === '2') {
+            } else if (this.form1.id === '2') {
+              sessionStorage.setItem('identity', 'merchant')
               self.$router.push({ name: 'Merchant' })
             }
           } else if (response.data.login === -1) {

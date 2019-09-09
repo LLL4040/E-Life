@@ -22,10 +22,10 @@ public class UrgentServiceTest {
     @Test
     @Transactional
     public void saveTest(){
-        urgentService.save("1","test",0,1);
+        urgentService.save("admin","test",0,1);
         JSONObject urgentResult = urgentService.findNew(1);
         Assert.assertNotNull(urgentResult);
-        Assert.assertEquals("get urgent fail", "1", urgentResult.getAsString("managerName"));
+        Assert.assertEquals("get urgent fail", "admin", urgentResult.getAsString("managerName"));
         Assert.assertEquals("get urgent fail","test",urgentResult.getAsString("content"));
         Assert.assertEquals("get urgent fail","0",urgentResult.getAsString("status"));
         Assert.assertEquals("get urgent fail","1",urgentResult.getAsString("communityId"));
@@ -34,10 +34,10 @@ public class UrgentServiceTest {
     @Test
     @Transactional
     public void findNewTest(){
-        urgentService.save("1","hhh",0,1);
+        urgentService.save("admin","hhh",0,1);
         JSONObject urgentResult = urgentService.findNew(1);
         Assert.assertNotNull(urgentResult);
-        Assert.assertEquals("findOneTest fail", "1", urgentResult.getAsString("managerName"));
+        Assert.assertEquals("findOneTest fail", "admin", urgentResult.getAsString("managerName"));
         Assert.assertEquals("findOneTest fail","hhh",urgentResult.getAsString("content"));
         Assert.assertEquals("findOneTest fail","0",urgentResult.getAsString("status"));
         Assert.assertEquals("findOneTest fail","1",urgentResult.getAsString("communityId"));
@@ -51,12 +51,17 @@ public class UrgentServiceTest {
     @Test
     @Transactional
     public void deleteOneTest(){
-        Urgent urgent = new Urgent(55555,"1","jjj",0,1);
+        Urgent urgent = new Urgent(55555,"admin","jjj",0,1);
         urgentRepository.save(urgent);
         boolean tempt = urgentService.deleteOne(55555);
         Assert.assertEquals("deleteOneTest fail",true,tempt);
         boolean temp = urgentService.deleteOne(55555);
         Assert.assertEquals("deleteOneTest fail",false,temp);
+    }
+    @Test
+    public void runTest(){
+        urgentService.findNew(1);
+        urgentService.findHistory(1,1);
     }
 }
 

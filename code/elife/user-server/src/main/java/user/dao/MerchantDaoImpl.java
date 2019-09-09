@@ -1,6 +1,5 @@
 package user.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import user.entity.Merchant;
 import user.repository.MerchantRepository;
