@@ -19,7 +19,7 @@ import java.util.List;
  * @author wyx
  * @Date 2019.09.03
  */
-public class moneyDaoImpl implements moneyDao {
+public class MoneyDaoImpl implements moneyDao {
     @Autowired
     RoomRepository roomRepository;
     @Autowired

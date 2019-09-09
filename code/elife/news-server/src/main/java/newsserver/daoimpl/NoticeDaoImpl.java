@@ -19,7 +19,7 @@ import java.util.List;
  * @date 2019/07/05*/
 @Repository
 
-public class NoticeDaoimpl implements NoticeDao {
+public class NoticeDaoImpl implements NoticeDao {
     @Autowired
     private NoticeRepository noticeRepository;
     @Autowired
