@@ -1,4 +1,4 @@
-package estateforum.estateforum;
+package user.controller;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,38 +11,34 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * @author ztHou
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-public class ControllerTest {
+public class IdentifyControllerTest {
     private MockMvc mvc;
 
     @Autowired
     private WebApplicationContext wac;
+
     @Before
-    public void setUp(){
+    public void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
-
     @Test
-    public void deletePostTest() throws Exception{
-        mvc.perform(get("/api/post/deletePost").param("id","1"))
+    public void sendIdentifyTest() throws Exception {
+        mvc.perform(get("/api/user/sendIdentify").param("phone", "111111"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
 
     @Test
-    public void addCommentsTest() throws Exception{
-        mvc.perform(post("/api/postComments/addComments").param("pid","1").param("commenterName","我是小二").param("postComment","人家想和哥哥一起赏月嗷"))
+    public void verifyIdentifyTest() throws Exception {
+        mvc.perform(get("/api/user/verifyIdentify").param("phone", "111111").param("code", "111111"))
                 .andExpect(status().isOk()).andDo(print()).andReturn();
     }
-    @Test
-    public void deleteCommentsTest() throws Exception{
-        mvc.perform(get("/api/postComments/deleteComments").param("pid","1").param("location","1"))
-                .andExpect(status().isOk()).andDo(print()).andReturn();
-    }
-
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'bottom_navigation_widget.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'userhttp.dart';
@@ -41,11 +41,24 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin,NetListener {
+
+//  initLogin()async{
+//    SharedPreferences preferences = await SharedPreferences.getInstance();
+//    String session = preferences.get('session');
+//    print('读取到session为:'+session);
+//    setState(() {
+//      if(session!=""){
+//        manager.login(this,_username.text,_password.text,role,session);
+//      }
+//    });
+//
+//  }
   @override
   void initState() {
 
     super.initState();
     print(1111);
+//    initLogin();
   }
   final TextEditingController _username =
       new TextEditingController.fromValue(new TextEditingValue(text: ""));
@@ -210,46 +223,46 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin,NetL
                                 ))
                               ]),
                         ),
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: RadioListTile<String>(
-                                value: '0',
-                                title: Text('用户'),
-                                groupValue: role,
-                                onChanged: (value) {
-                                  setState(() {
-                                    role = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            Flexible(
-                              child: RadioListTile<String>(
-                                value: '1',
-                                title: Text('管理员'),
-                                groupValue: role,
-                                onChanged: (value) {
-                                  setState(() {
-                                    role = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            Flexible(
-                              child: RadioListTile<String>(
-                                value: '2',
-                                title: Text('商家'),
-                                groupValue: role,
-                                onChanged: (value) {
-                                  setState(() {
-                                    role = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+//                        Row(
+//                          children: <Widget>[
+//                            Flexible(
+//                              child: RadioListTile<String>(
+//                                value: '0',
+//                                title: Text('用户'),
+//                                groupValue: role,
+//                                onChanged: (value) {
+//                                  setState(() {
+//                                    role = value;
+//                                  });
+//                                },
+//                              ),
+//                            ),
+//                            Flexible(
+//                              child: RadioListTile<String>(
+//                                value: '1',
+//                                title: Text('管理员'),
+//                                groupValue: role,
+//                                onChanged: (value) {
+//                                  setState(() {
+//                                    role = value;
+//                                  });
+//                                },
+//                              ),
+//                            ),
+//                            Flexible(
+//                              child: RadioListTile<String>(
+//                                value: '2',
+//                                title: Text('商家'),
+//                                groupValue: role,
+//                                onChanged: (value) {
+//                                  setState(() {
+//                                    role = value;
+//                                  });
+//                                },
+//                              ),
+//                            ),
+//                          ],
+//                        ),
                         loginSection,
                         quickLogibSession,
                         //forgetSession,
@@ -265,14 +278,20 @@ class _Login extends State<LoginWidget> with SingleTickerProviderStateMixin,NetL
         );
   }
   @override
-  onUserResponse(User body,bool login) {
+  onUserResponse(User body,bool login) async{
     user = body;
     loginSuccess = login;
     print(login.toString()+"jsjs");
 //    setState(() {
 //
 //    });
+
     if(login!=false){
+//      SharedPreferences preferences = await SharedPreferences.getInstance();
+//      preferences.setString('session', body.session);
+//      print('存储session为:'+body.session);
+//      String session = preferences.get('session');
+//      print('读取到session为:'+session);
       Navigator.of(context).pushAndRemoveUntil(
           new MaterialPageRoute(
               builder: (context) => new BottomNavigationWidget(user.username,user.communityId.toString(),user.role.toString(),user.session)),

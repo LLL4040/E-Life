@@ -16,7 +16,7 @@ class tabChoice {
 }
 
 class estateforum extends StatefulWidget {
-  final communityId;
+  var communityId;
   final username;
   var session;
   var forumTabsList;
@@ -30,7 +30,7 @@ class estateforum extends StatefulWidget {
 
 class estateforumWidget extends State<estateforum>
     with SingleTickerProviderStateMixin, NetListener {
-  final communityId;
+  var communityId;
   final username;
   var session;
   var forumTabsList;
@@ -102,12 +102,23 @@ class estateforumWidget extends State<estateforum>
       child: new TextField(
         controller: _searchFieldController,
         decoration: new InputDecoration(
-          hintText: '输入用户名',
+          hintText: '输入小区名',
         ),
-        onSubmitted: (text) {
+        onSubmitted: (text) async{
           //内容提交(按回车)的回调
           _searchFieldController.text = "";
-          print('submit $text');
+          communityId=text;
+          print(communityId+"xiaoqu");
+          await manager.getTabs(this, communityId);
+          postList=[];
+          _page=1;
+          if (mCurrentPosition != 0) {
+            manager.getPostListByTag(
+                this, communityId,nowTitle, _page.toString(), "5", session);
+          } else {
+            manager.getPostList(this, communityId, _page.toString(), "5", session);
+          }
+
         },
       ),
     );
@@ -396,7 +407,13 @@ class estateforumWidget extends State<estateforum>
   @override
   void onDeleteComment(bool success) {}
   @override
-  void onAllTabsResponse(List<forumTabs> body) {}
+  void onAllTabsResponse(List<forumTabs> body) {
+    print(body.length.toString()+"hahahaha");
+    forumTabsList = body;
+    setState(() {
+
+    });
+  }
   @override
   void onError(error) {}
 }
