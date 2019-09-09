@@ -432,7 +432,14 @@ FOREIGN KEY (`username`)
 /* Table: identify                                                                                                                     */
 /*==============================================================*/
 
-CREATE TABLE identify (CREATE TABLE room
+CREATE TABLE identify (
+    `phone` VARCHAR(20) NOT NULL,
+    `code` VARCHAR(10) NOT NULL,
+    `time` VARCHAR(20) NOT NULL,
+    PRIMARY KEY (`phone`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+CREATE TABLE room
 (
     `id`        bigint AUTO_INCREMENT,
     `username`  varchar(50) ,
@@ -477,14 +484,6 @@ PRIMARY KEY(`id`),
         REFERENCES community (`id`)
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
-
-
-    `phone` VARCHAR(20) NOT NULL,
-    `code` VARCHAR(10) NOT NULL,
-    `time` VARCHAR(20) NOT NULL,
-    PRIMARY KEY (`phone`)
-)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
-
 
 
 /*=======================*/
