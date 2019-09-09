@@ -18,14 +18,14 @@ import java.util.List;
 public class EntityTest {
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String postTime = df.format(new Date());
-//    private Post post= new Post("赏月","有小伙伴一起赏月的吗",postTime,"二郎神",1,null);
-//    @Test
-//    public void titleTest(){
-//        Assert.assertEquals("get title fail","赏月",post.getTitle());
-//        post.setTitle("赏月2");
-//        Assert.assertEquals("get title fail","赏月2",post.getTitle());
-//        post.setTitle("赏月");
-//    }
+    private Post post= new Post("赏月","有小伙伴一起赏月的吗",postTime,"二郎神","name",1,null);
+    @Test
+    public void titleTest(){
+        Assert.assertEquals("get title fail","赏月",post.getTitle());
+        post.setTitle("赏月2");
+        Assert.assertEquals("get title fail","赏月2",post.getTitle());
+        post.setTitle("赏月");
+    }
 //    @Test
 //    public void postContentTest(){
 //        Assert.assertEquals("get postContent fail","有小伙伴一起赏月的吗",post.getPostContent());

@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2019/08/13
  */
 @Repository
-public class TagDapImpl implements TagDao {
+public class TagDaoImpl implements TagDao {
     @Autowired
     private TagRepository tagRepository;
 

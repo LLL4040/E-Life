@@ -36,6 +36,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   scoped_model: ^1.0.1
   flutter_map: any
+  shared_preferences: 0.5.3+4
   #amap_base_map: ^0.4.4+1
 dev_dependencies:
   flutter_test:
