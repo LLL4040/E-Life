@@ -432,12 +432,60 @@ FOREIGN KEY (`username`)
 /* Table: identify                                                                                                                     */
 /*==============================================================*/
 
-CREATE TABLE identify (
+CREATE TABLE identify (CREATE TABLE room
+(
+    `id`        bigint AUTO_INCREMENT,
+    `username`  varchar(50) ,
+		`type`      VARCHAR(1),
+    `room`      varchar(6) NOT NULL,
+    `parking`   varchar(4) NOT NULL DEFAULT 'A0B0',
+    `pmoney`    DECIMAL(8,2),
+    `mmoney`    DECIMAL(8,2),
+     `community_id` bigint,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY (`username`)
+        REFERENCES user (`username`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+ FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+CREATE TABLE roomspace
+(
+    `id`        bigint AUTO_INCREMENT,
+    `type`  varchar(1) NOT NULL,
+`maxnum`      int NOT NULL,
+`maxfloor`      int NOT NULL,
+`maxroom`      int NOT NULL,    
+`space`      int NOT NULL,
+     `community_id` bigint,
+PRIMARY KEY(`id`),
+ FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+CREATE TABLE parkplan
+(
+    `id`        bigint AUTO_INCREMENT,
+    `type`  varchar(1) NOT NULL,
+    `monthpay`      DECIMAL(8,2) NOT NULL,
+     `community_id` bigint,
+PRIMARY KEY(`id`),
+ FOREIGN KEY (`community_id`)
+        REFERENCES community (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+
     `phone` VARCHAR(20) NOT NULL,
     `code` VARCHAR(10) NOT NULL,
     `time` VARCHAR(20) NOT NULL,
     PRIMARY KEY (`phone`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+
 
 /*=======================*/
 /*change urgent STATUS*/
@@ -562,3 +610,10 @@ begin
 end;
 //
 DELIMITER ;
+INSERT INTO e_life.community(id, communityname, communityinfo, address, manager, password, phone, email, account) VALUES
+(1, '上海交通大学东区宿舍', '上海交通大学闵行校区东区宿舍?', 'lng:121.441731,lat:31.029642', 'manager', 'password', '15236936259', '123@qq.com', 'ahkaug8934@sandbox.com');
+INSERT INTO e_life.manager(username, password, phone, email, role, community_id) VALUES
+('admin', '123', '18621809689', '123456@qq.com', 1, 1),
+('manager', 'password', '15236936259', '123@qq.com', 1, 1);
+INSERT INTO e_life.user(username, password, phone, email, role, community_id) VALUES
+('user', '123', '18621809689', '123456@qq.com', 0, 1)；
